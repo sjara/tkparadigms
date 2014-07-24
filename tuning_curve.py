@@ -77,14 +77,15 @@ class Paradigm(QtGui.QMainWindow):
         self.params['stimDur'] = paramgui.NumericParam('Tone Duration (s)',
                                                         value=0.1,
                                                         group='Parameters')
-        self.params['isiMin'] = paramgui.NumericParam('Minimum Interstimulus \
-                                                       Interval (s)',
+        self.params['isiMin'] = paramgui.NumericParam('Minimum Interstimulus Interval (s)',
                                                        value=2,
                                                        group='Parameters')
         self.params['isiMax'] = paramgui.NumericParam('Maximum Interstimulus Interval',
                                                       value=4,
                                                       group='Parameters')
-
+        self.params['noiseAmp'] = paramgui.NumericParam('Amplitude in Noise-Mode',
+                                                       value=0.1,
+                                                       group='Parameters')
         self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
                                                          ['Ordered','Random'],
                                                          value=1,group='Parameters')
@@ -252,8 +253,9 @@ class Paradigm(QtGui.QMainWindow):
             sound = {'type':'chord', 'frequency':self.trialParams[0], 'duration':stimDur,
                   'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
         elif soundMode == 'Noise':
+            noiseAmp=self.params['noiseAmp'].get_value()
             sound = {'type':'noise', 'duration':stimDur,
-                     'amplitude':0.2}
+                     'amplitude':noiseAmp}
          
         self.soundClient.set_sound(1,sound)
 
@@ -281,16 +283,6 @@ class Paradigm(QtGui.QMainWindow):
     #    #timer_tic is sent whenever the dispatcher gets information from the Arduino
     #    pass 
     
-    #FIXME: This function produces a RuntimeError
-    def closeEvent(self, event):
-        '''
-        Executed when closing the main window.
-        This method is inherited from QtGui.QMainWindow, which explains
-        its camelCase naming.
-        '''
-        self.dispatcherModel.die()
-        event.accept()
-
     def save_to_file(self):
         '''Triggered by button-clicked signal'''
         self.saveData.to_file([self.params, self.dispatcherModel,
@@ -317,4 +309,3 @@ class Paradigm(QtGui.QMainWindow):
 if __name__ == "__main__":
     (app,paradigm) = paramgui.create_app(Paradigm)
 
-#edit1
