@@ -317,4 +317,4 @@ class Paradigm(QtGui.QMainWindow):
 if __name__ == "__main__":
     (app,paradigm) = paramgui.create_app(Paradigm)
 
-
+#edit1
