@@ -75,16 +75,16 @@ class Paradigm(QtGui.QMainWindow):
                                                        value=1,
                                                        group='Parameters')
         self.params['stimDur'] = paramgui.NumericParam('Tone Duration (s)',
-                                                        value=0.1,
+                                                        value=0.01,
                                                         group='Parameters')
         self.params['isiMin'] = paramgui.NumericParam('Minimum Interstimulus Interval (s)',
-                                                       value=2,
+                                                       value=1,
                                                        group='Parameters')
         self.params['isiMax'] = paramgui.NumericParam('Maximum Interstimulus Interval',
-                                                      value=4,
+                                                      value=3,
                                                       group='Parameters')
         self.params['noiseAmp'] = paramgui.NumericParam('Amplitude in Noise-Mode',
-                                                       value=0.1,
+                                                       value=0.3,
                                                        group='Parameters')
         self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
                                                          ['Ordered','Random'],
