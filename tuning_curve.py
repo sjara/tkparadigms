@@ -107,6 +107,10 @@ class Paradigm(QtGui.QMainWindow):
                                                            decimals=4)
         
         timingParams = self.params.layout_group('Parameters')
+        
+        # -- Load parameters from a file --
+        self.params.from_file(paramfile,paramdictname)
+
 
         # -- Create an empty state matrix --
         self.sm = statematrix.StateMatrix(inputs=rigsettings.INPUTS,
