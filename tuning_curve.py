@@ -121,6 +121,7 @@ class Paradigm(QtGui.QMainWindow):
 
         self.saveData = savedata.SaveData(rigsettings.DATA_DIR,
                                           remotedir=rigsettings.REMOTE_DIR)
+        self.saveData.checkInteractive.setChecked(True)
 
         # -- Add graphical widgets to main window --
         self.centralWidget = QtGui.QWidget()
@@ -273,11 +274,11 @@ class Paradigm(QtGui.QMainWindow):
                           transitions={'Tup':'output1On'})
         self.sm.add_state(name='output1On', statetimer=stimDur, 
                           transitions={'Tup':'output1Off'},
-                          outputsOn=['centerLED', 'byteout0'],
+                          outputsOn=['outBit0'], #'centerLED', 
                           serialOut=1)
         self.sm.add_state(name='output1Off', statetimer = 0.5 * isi,
                           transitions={'Tup':'readyForNextTrial'},
-                          outputsOff=['centerLED', 'byteout0'])
+                          outputsOff=['outBit0']) #'centerLED', 
 
         
         self.dispatcherModel.set_state_matrix(self.sm)
