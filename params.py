@@ -25,13 +25,14 @@ increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'de
 #switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4}
 #switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4,'currentBlock':'mid_boundary','lowFreq':5000,'midFreq':11000,'highFreq':24000}
 
-switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4,'lowFreq':5000,'midFreq':11000,'highFreq':24000}
 psyCurveMidBound = {'trialsPerBlock':2000,'punishTimeError':4,'lowFreq':5000,'midFreq':11000,'highFreq':24000,
                     'currentBlock':'mid_boundary','psycurveMode':'uniform'}
-#switchDailyMode = psyCurveMidBound
 
 shapingMode = {'lowFreq':5000,'midFreq':11000,'highFreq':24000, 'currentBlock':'mid_boundary','targetIntensityMode':'fixed'}
 
+
+switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4,'lowFreq':5000,'midFreq':11000,'highFreq':24000, 
+                   'delayToTargetMean':0.2, 'currentBlock':'high_boundary'}
 
 switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
 
@@ -63,31 +64,35 @@ test064.update({'subject':'test064','experimenter':'santiago'})
 
 test011 = switchBlocksMode.copy()
 test011.update({'subject':'test011','experimenter':'santiago'})
-test011.update({'currentBlock':'high_boundary','trialsPerBlock':200,'trainer':'sj'})
+test011.update({'currentBlock':'high_boundary','trialsPerBlock':200,'trainer':''})
 
 test012 = switchBlocksMode.copy()
 test012.update({'subject':'test012','experimenter':'santiago'})
+test012.update({'trialsPerBlock':2000,'currentBlock':'mid_boundary','psycurveMode':'uniform'})
 
 test013 = switchBlocksMode.copy()
 test013.update({'subject':'test013','experimenter':'santiago'})
+test013.update({'trialsPerBlock':2000,'currentBlock':'mid_boundary','psycurveMode':'uniform'})
 
 test014 = switchBlocksMode.copy()
 test014.update({'subject':'test014','experimenter':'santiago'})
+test014.update({'trialsPerBlock':2000,'currentBlock':'mid_boundary','psycurveMode':'uniform'})
 
 test015 = switchBlocksMode.copy()
 test015.update({'subject':'test015','experimenter':'santiago'})
-test015.update({'currentBlock':'low_boundary','trialsPerBlock':200,'trainer':'sj'})
+test015.update({'currentBlock':'low_boundary','trialsPerBlock':200,'trainer':''})
 
 test016 = switchBlocksMode.copy()
 test016.update({'subject':'test016','experimenter':'santiago'})
-test016.update({'currentBlock':'low_boundary','trialsPerBlock':200,'trainer':'sj'})
+test016.update({'currentBlock':'low_boundary','trialsPerBlock':200,'trainer':''})
 
 test017 = switchBlocksMode.copy()
 test017.update({'subject':'test017','experimenter':'santiago'})
-test017.update({'currentBlock':'high_boundary','trialsPerBlock':200,'trainer':'sj'})
+test017.update({'currentBlock':'low_boundary','trialsPerBlock':200,'trainer':''})
 
 test018 = switchBlocksMode.copy()
 test018.update({'subject':'test018','experimenter':'santiago'})
+test018.update({'currentBlock':'low_boundary','trialsPerBlock':200,'trainer':''})
 
 test019 = switchBlocksMode.copy()
 #test019.update({'subject':'test019','experimenter':'santiago', 'currentBlock':'low_boundary', 'trialsPerBlock':1000})
@@ -95,6 +100,7 @@ test019.update({'subject':'test019','experimenter':'santiago'})
 
 test020 = switchBlocksMode.copy()
 test020.update({'subject':'test020','experimenter':'santiago'})
+test020.update({'trialsPerBlock':2000,'currentBlock':'mid_boundary','psycurveMode':'uniform'})
 
 
 test050 = switchDailyMode.copy()
