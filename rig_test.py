@@ -37,15 +37,15 @@ class RigTest(QtGui.QMainWindow):
        
         # -- Add parameters --
         self.params = paramgui.Container()
-        self.params['timeWaterValveL'] = paramgui.NumericParam('Time valve left',value=0.13,
+        self.params['timeWaterValveL'] = paramgui.NumericParam('Time valve left',value=0.03,
                                                                units='s',group='Water delivery')
-        self.params['timeWaterValveR'] = paramgui.NumericParam('Time valve right',value=0.13,
+        self.params['timeWaterValveR'] = paramgui.NumericParam('Time valve right',value=0.03,
                                                                units='s',group='Water delivery')
-        self.params['offTime'] = paramgui.NumericParam('Time between',value=0.5,
+        self.params['offTime'] = paramgui.NumericParam('Time between',value=0.25,
                                                        units='s',group='Schedule')
         self.params['soundDuration'] = paramgui.NumericParam('Sound duration',value=0.26,decimals=2,
                                                              units='s',group='Sound',enabled=False)
-        self.params['soundIntensity'] = paramgui.NumericParam('Sound intensity',value=60,
+        self.params['soundIntensity'] = paramgui.NumericParam('Sound intensity',value=80,
                                                               units='dB-SPL',group='Sound')
         self.params['soundAmplitude'] = paramgui.NumericParam('Avg sound amp',value=0.1,decimals=4,
                                                               units='dB-SPL',group='Sound',enabled=False)
