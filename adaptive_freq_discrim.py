@@ -104,7 +104,8 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['targetIntensityMode'] = paramgui.MenuParam('Intensity mode',
                                                                ['fixed','randMinus20'],
                                                                value=1,group='Sound parameters')
-        self.params['targetMaxIntensity'] = paramgui.NumericParam('Max intensity',value=60,
+        # This intensity corresponds to the intensity of each component of the chord
+        self.params['targetMaxIntensity'] = paramgui.NumericParam('Max intensity',value=50,
                                                         units='dB-SPL',group='Sound parameters')
         self.params['targetIntensity'] = paramgui.NumericParam('Intensity',value=0.0,units='dB-SPL',
                                                         enabled=False,group='Sound parameters')
