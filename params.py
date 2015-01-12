@@ -36,6 +36,24 @@ switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4,'lowFreq':5000,'mid
 
 switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
 
+
+
+test089 = sidesDirectMode.copy()
+test089.update({'subject':'test089','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
+
+test088 = sidesDirectMode.copy()
+test088.update({'subject':'test088','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
+
+test087 = sidesDirectMode.copy()
+test087.update({'subject':'test087','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
+
+test086 = sidesDirectMode.copy()
+test086.update({'subject':'test086','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
+
+test085 = sidesDirectMode.copy()
+test085.update({'subject':'test085','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
+
+
 # -- Angie's mice --
 test071 = shapingMode.copy()
 test071.update({'subject':'test071','experimenter':'santiago'})
