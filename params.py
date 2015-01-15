@@ -16,7 +16,9 @@ sidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayTo
 directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                    'currentBlock':'mid_boundary'}
 increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
-                   'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.05,'targetMaxIntensity':80,'lowFreq':4000,'highFreq':13000}
+                     'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.05}
+
+#                   'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.05,'targetMaxIntensity':80,'lowFreq':4000,'highFreq':13000}
 
 #onNextCorrectMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
 #                   'currentBlock':'mid_boundary', 'targetDuration':0.1,'targetMaxIntensity':80,'lowFreq':4000,'highFreq':13000}
@@ -32,25 +34,25 @@ shapingMode = {'lowFreq':5000,'midFreq':11000,'highFreq':24000, 'currentBlock':'
 
 
 switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4,'lowFreq':5000,'midFreq':11000,'highFreq':24000, 
-                   'delayToTargetMean':0.2, 'currentBlock':'high_boundary'}
+                   'delayToTargetMean':0.2, 'currentBlock':'low_boundary'}
 
 switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
 
 
 
-test089 = directMode.copy()
+test089 = increaseDelayMode.copy()
 test089.update({'subject':'test089','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
 
-test088 = directMode.copy()
+test088 = increaseDelayMode.copy()
 test088.update({'subject':'test088','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
 
-test087 = directMode.copy()
+test087 = increaseDelayMode.copy()
 test087.update({'subject':'test087','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
 
-test086 = directMode.copy()
+test086 = increaseDelayMode.copy()
 test086.update({'subject':'test086','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
 
-test085 = directMode.copy()
+test085 = increaseDelayMode.copy()
 test085.update({'subject':'test085','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
 
 
