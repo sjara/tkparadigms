@@ -16,7 +16,8 @@ sidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayTo
 directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                    'currentBlock':'mid_boundary'}
 increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
-                     'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.05}
+                     'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.05,
+                     'antibiasMode':'repeat_mistake'}
 
 #                   'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.05,'targetMaxIntensity':80,'lowFreq':4000,'highFreq':13000}
 
@@ -34,7 +35,7 @@ shapingMode = {'lowFreq':5000,'midFreq':11000,'highFreq':24000, 'currentBlock':'
 
 
 switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4,'lowFreq':5000,'midFreq':11000,'highFreq':24000, 
-                   'delayToTargetMean':0.2, 'currentBlock':'low_boundary'}
+                   'delayToTargetMean':0.2, 'currentBlock':'mid_boundary'}
 
 switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
 
