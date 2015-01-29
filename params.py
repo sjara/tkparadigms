@@ -19,6 +19,8 @@ increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'de
                      'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.05,
                      'antibiasMode':'repeat_mistake'}
 
+basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary'}
+
 #                   'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.05,'targetMaxIntensity':80,'lowFreq':4000,'highFreq':13000}
 
 #onNextCorrectMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
@@ -41,19 +43,19 @@ switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
 
 
 
-test089 = increaseDelayMode.copy()
+test089 = basicDiscriminationMode.copy()
 test089.update({'subject':'test089','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
 
-test088 = increaseDelayMode.copy()
+test088 = basicDiscriminationMode.copy()
 test088.update({'subject':'test088','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
 
-test087 = increaseDelayMode.copy()
+test087 = basicDiscriminationMode.copy()
 test087.update({'subject':'test087','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
 
-test086 = increaseDelayMode.copy()
+test086 = basicDiscriminationMode.copy()
 test086.update({'subject':'test086','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
 
-test085 = increaseDelayMode.copy()
+test085 = basicDiscriminationMode.copy()
 test085.update({'subject':'test085','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
 
 
@@ -124,33 +126,33 @@ test020.update({'subject':'test020','experimenter':'santiago'})
 test020.update({'trialsPerBlock':2000,'currentBlock':'mid_boundary','psycurveMode':'uniform'})
 
 
-test050 = switchDailyMode.copy()
+test050 = psyCurveMidBound.copy()
 test050.update({'subject':'test050','experimenter':'santiago'})
 
-test051 = switchDailyMode.copy()
+test051 = psyCurveMidBound.copy()
 test051.update({'subject':'test051','experimenter':'santiago'})
 
-test052 = switchDailyMode.copy()
+test052 = psyCurveMidBound.copy()
 test052.update({'subject':'test052','experimenter':'santiago'})
 
-test053 = switchDailyMode.copy()
+test053 = psyCurveMidBound.copy()
 test053.update({'subject':'test053','experimenter':'santiago'})
 
-test054 = switchDailyMode.copy()
+test054 = psyCurveMidBound.copy()
 test054.update({'subject':'test054','experimenter':'santiago'})
 
-test055 = switchDailyMode.copy()
+test055 = psyCurveMidBound.copy()
 test055.update({'subject':'test055','experimenter':'santiago'})
 
-test056 = switchDailyMode.copy()
+test056 = psyCurveMidBound.copy()
 test056.update({'subject':'test056','experimenter':'santiago'})
 
-test057 = switchDailyMode.copy()
+test057 = psyCurveMidBound.copy()
 test057.update({'subject':'test057','experimenter':'santiago'})
 
-test058 = switchDailyMode.copy()
+test058 = psyCurveMidBound.copy()
 test058.update({'subject':'test058','experimenter':'santiago'})
 
-test059 = switchDailyMode.copy()
+test059 = psyCurveMidBound.copy()
 test059.update({'subject':'test059','experimenter':'santiago'})
 
