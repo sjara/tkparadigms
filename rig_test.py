@@ -14,6 +14,7 @@ from taskontrol.plugins import manualcontrol
 import numpy as np
 import time # For hardcoded waiting time to connect to sound server
 
+centerSoundFile = './center.wav'
 leftSoundFile = './left.wav'
 rightSoundFile = './right.wav'
 
@@ -78,9 +79,11 @@ class RigTest(QtGui.QMainWindow):
         print '***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****' ### DEBUG
         time.sleep(0.2)
         self.soundClient = soundclient.SoundClient()
-        self.soundLeftID = 1
-        self.soundRightID = 2
+        self.soundCenterID = 1
+        self.soundLeftID = 2
+        self.soundRightID = 3
         self.soundClient.start()
+        self.prepare_sounds()
 
         # -- Connect signals from dispatcher --
         self.dispatcherModel.prepareNextTrial.connect(self.prepare_next_trial)
@@ -116,16 +119,34 @@ class RigTest(QtGui.QMainWindow):
         self.soundClient.set_sound(self.soundLeftID,sNoise)
         self.soundClient.set_sound(self.soundRightID,sNoise)
         '''
+        sCenter = {'type':'fromfile', 'filename':centerSoundFile,
+                 'channel':'both', 'amplitude':soundAmplitude}
         sLeft = {'type':'fromfile', 'filename':leftSoundFile,
                  'channel':'left', 'amplitude':soundAmplitude}
         sRight = {'type':'fromfile', 'filename':rightSoundFile,
                   'channel':'right', 'amplitude':soundAmplitude}
+        self.soundClient.set_sound(self.soundCenterID,sCenter)
         self.soundClient.set_sound(self.soundLeftID,sLeft)
         self.soundClient.set_sound(self.soundRightID,sRight)
 
     def prepare_next_trial(self, nextTrial):
-        self.prepare_sounds()
         self.sm.reset_transitions()
+        if nextTrial==0:
+            self.prepare_automatic_trial() # This will change self.sm
+        else:
+            eventsLastTrial = self.dispatcherModel.events_one_trial(nextTrial-1)
+            # Check if last trial was aborted (by stopping paradigm)
+            # FIXME: the -1 (indicating forced transition) should not be hardcoded.
+            if eventsLastTrial[-1][1]==-1:
+                self.prepare_automatic_trial() # This will change self.sm
+            else:
+                self.prepare_manual_trial() # This will change self.sm
+        #print self.sm ### DEBUG
+        self.dispatcherModel.set_state_matrix(self.sm)
+        self.dispatcherModel.ready_to_start_trial()
+        pass
+
+    def prepare_automatic_trial(self):
         self.sm.add_state(name='startTrial', statetimer=0,
                           transitions={'Tup':'lightOnL'})
         self.sm.add_state(name='lightOnL', statetimer=self.params['timeWaterValveL'].get_value(),
@@ -153,10 +174,23 @@ class RigTest(QtGui.QMainWindow):
         self.sm.add_state(name='soundOffR', statetimer=self.params['offTime'].get_value(),
                           transitions={'Tup':'readyForNextTrial'})
 
-        #print self.sm ### DEBUG
-        self.dispatcherModel.set_state_matrix(self.sm)
-        self.dispatcherModel.ready_to_start_trial()
-        pass
+    def prepare_manual_trial(self):
+        self.sm.add_state(name='startTrial', statetimer=0,
+                          transitions={'Tup':'waitForPoke'})
+        self.sm.add_state(name='waitForPoke',statetimer=1000,
+                          transitions={'Cin':'soundOnC','Lin':'soundOnL','Rin':'soundOnR'})
+        self.sm.add_state(name='soundOnC', statetimer=self.params['soundDuration'].get_value(),
+                          transitions={'Tup':'soundOffC'}, serialOut=self.soundCenterID)
+        self.sm.add_state(name='soundOffC', statetimer=self.params['offTime'].get_value(),
+                          transitions={'Tup':'readyForNextTrial'})
+        self.sm.add_state(name='soundOnL', statetimer=self.params['soundDuration'].get_value(),
+                          transitions={'Tup':'soundOffL'}, serialOut=self.soundLeftID)
+        self.sm.add_state(name='soundOffL', statetimer=self.params['offTime'].get_value(),
+                          transitions={'Tup':'readyForNextTrial'})
+        self.sm.add_state(name='soundOnR', statetimer=self.params['soundDuration'].get_value(),
+                          transitions={'Tup':'soundOffR'}, serialOut=self.soundRightID)
+        self.sm.add_state(name='soundOffR', statetimer=self.params['offTime'].get_value(),
+                          transitions={'Tup':'readyForNextTrial'})
 
     def closeEvent(self, event):
         '''
