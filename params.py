@@ -44,6 +44,7 @@ test089 = pardict.copy()
 pardict = {'subject':'test088','experimenter':'santiago'}
 pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet5to24)
+pardict.update({'antibiasMode':'repeat_mistake'})
 test088 = pardict.copy()
 
 pardict = {'subject':'test087','experimenter':'santiago'}
@@ -54,11 +55,13 @@ test087 = pardict.copy()
 pardict = {'subject':'test086','experimenter':'santiago'}
 pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet5to24)
+pardict.update({'antibiasMode':'repeat_mistake'})
 test086 = pardict.copy()
 
 pardict = {'subject':'test085','experimenter':'santiago'}
 pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet5to24)
+pardict.update({'antibiasMode':'repeat_mistake'})
 test085 = pardict.copy()
 
 
