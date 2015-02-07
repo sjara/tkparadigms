@@ -10,7 +10,9 @@ test000 = {'targetDuration':0.2, 'targetIntensityMode':'fixed',
            'punishSoundAmplitude':0.1} #, 'outcomeMode':'simulated'
 
 frequencySet5to24 = {'lowFreq':5000,'midFreq':11000,'highFreq':24000}
+frequencySet6to19 = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
 frequencySet3to16 = {'lowFreq':3000,'midFreq':7000,'highFreq':16000}
+frequencySet4to13 = {'lowFreq':3800,'midFreq':7000,'highFreq':12600}
 
 sidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                    'currentBlock':'mid_boundary'}
@@ -38,30 +40,30 @@ switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
 
 pardict = {'subject':'test089','experimenter':'santiago'}
 pardict.update(basicDiscriminationMode)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 test089 = pardict.copy()
 
 pardict = {'subject':'test088','experimenter':'santiago'}
 pardict.update(basicDiscriminationMode)
-pardict.update(frequencySet5to24)
-pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
 test088 = pardict.copy()
 
 pardict = {'subject':'test087','experimenter':'santiago'}
 pardict.update(basicDiscriminationMode)
-pardict.update(frequencySet5to24)
-pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
 test087 = pardict.copy()
 
 pardict = {'subject':'test086','experimenter':'santiago'}
 pardict.update(basicDiscriminationMode)
-pardict.update(frequencySet5to24)
-pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
 test086 = pardict.copy()
 
 pardict = {'subject':'test085','experimenter':'santiago'}
 pardict.update(basicDiscriminationMode)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 test085 = pardict.copy()
 
@@ -70,52 +72,52 @@ test085 = pardict.copy()
 
 pardict = {'subject':'test050','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 test050 = pardict.copy()
 
 pardict = {'subject':'test051','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 test051 = pardict.copy()
 
 pardict = {'subject':'test052','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 test052 = pardict.copy()
 
 pardict = {'subject':'test053','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 test053 = pardict.copy()
 
 pardict = {'subject':'test054','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 test054 = pardict.copy()
 
 pardict = {'subject':'test055','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 test055 = pardict.copy()
 
 pardict = {'subject':'test056','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 test056 = pardict.copy()
 
 pardict = {'subject':'test057','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 test057 = pardict.copy()
 
 pardict = {'subject':'test058','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 test058 = pardict.copy()
 
 pardict = {'subject':'test059','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 test059 = pardict.copy()
 
 
@@ -124,27 +126,27 @@ test059 = pardict.copy()
 
 pardict = {'subject':'test011','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet3to16)
+pardict.update(frequencySet4to13)
 test011 = pardict.copy()
 
 pardict = {'subject':'test012','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet3to16)
+pardict.update(frequencySet4to13)
 test012 = pardict.copy()
 
 pardict = {'subject':'test015','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet3to16)
+pardict.update(frequencySet4to13)
 test015 = pardict.copy()
 
 pardict = {'subject':'test016','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet3to16)
+pardict.update(frequencySet4to13)
 test016 = pardict.copy()
 
 pardict = {'subject':'test017','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet3to16)
+pardict.update(frequencySet4to13)
 test017 = pardict.copy()
 
 pardict = {'subject':'test018','experimenter':'santiago'}
@@ -154,7 +156,7 @@ test018 = pardict.copy()
 
 pardict = {'subject':'test020','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
-pardict.update(frequencySet3to16)
+pardict.update(frequencySet4to13)
 test020 = pardict.copy()
 
 
