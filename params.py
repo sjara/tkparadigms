@@ -30,8 +30,7 @@ basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary'
 psyCurveMidBound = {'trialsPerBlock':2000,'punishTimeError':4,'delayToTargetMean':0.2,
                     'currentBlock':'mid_boundary','psycurveMode':'uniform'}
 
-switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4,'lowFreq':5000,'midFreq':11000,'highFreq':24000, 
-                   'delayToTargetMean':0.2, 'currentBlock':'mid_boundary'}
+switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4,'delayToTargetMean':0.2}
 
 switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
 
@@ -145,12 +144,12 @@ pardict.update(frequencySet4to13)
 test016 = pardict.copy()
 
 pardict = {'subject':'test017','experimenter':'santiago'}
-pardict.update(psyCurveMidBound)
+pardict.update(switchDailyMode)
 pardict.update(frequencySet4to13)
 test017 = pardict.copy()
 
 pardict = {'subject':'test018','experimenter':'santiago'}
-pardict.update(psyCurveMidBound)
+pardict.update(switchDailyMode)
 pardict.update(frequencySet3to16)
 test018 = pardict.copy()
 
