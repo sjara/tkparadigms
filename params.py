@@ -35,37 +35,37 @@ switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4,'delayToTargetMean'
 switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
 
 #pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update(basicDiscriminationMode)
 
 
 # -- To be trained on psychometric and switching --
 
 pardict = {'subject':'test089','experimenter':'santiago'}
 pardict.update(switchDailyMode)
-#pardict.update(basicDiscriminationMode)
+pardict.update({'currentBlock':'low_boundary'})
 pardict.update(frequencySet6to19)
 test089 = pardict.copy()
 
 pardict = {'subject':'test088','experimenter':'santiago'}
 pardict.update(switchDailyMode)
-#pardict.update(basicDiscriminationMode)
+pardict.update({'currentBlock':'low_boundary'})
 pardict.update(frequencySet6to19)
 test088 = pardict.copy()
 
 pardict = {'subject':'test087','experimenter':'santiago'}
 pardict.update(switchDailyMode)
-#pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
 test087 = pardict.copy()
 
 pardict = {'subject':'test086','experimenter':'santiago'}
 pardict.update(switchDailyMode)
-#pardict.update(basicDiscriminationMode)
+pardict.update({'currentBlock':'high_boundary'})
 pardict.update(frequencySet6to19)
 test086 = pardict.copy()
 
 pardict = {'subject':'test085','experimenter':'santiago'}
 pardict.update(switchDailyMode)
-#pardict.update(basicDiscriminationMode)
+pardict.update({'currentBlock':'low_boundary'})
 pardict.update(frequencySet6to19)
 test085 = pardict.copy()
 
