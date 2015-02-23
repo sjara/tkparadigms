@@ -42,7 +42,7 @@ switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
 
 pardict = {'subject':'test089','experimenter':'santiago'}
 pardict.update(switchDailyMode)
-pardict.update({'currentBlock':'low_boundary'})
+#pardict.update({'currentBlock':'low_boundary'})
 pardict.update(frequencySet6to19)
 test089 = pardict.copy()
 
@@ -59,13 +59,13 @@ test087 = pardict.copy()
 
 pardict = {'subject':'test086','experimenter':'santiago'}
 pardict.update(switchDailyMode)
-pardict.update({'currentBlock':'high_boundary'})
+#pardict.update({'currentBlock':'high_boundary'})
 pardict.update(frequencySet6to19)
 test086 = pardict.copy()
 
 pardict = {'subject':'test085','experimenter':'santiago'}
 pardict.update(switchDailyMode)
-pardict.update({'currentBlock':'low_boundary'})
+#pardict.update({'currentBlock':'low_boundary'})
 pardict.update(frequencySet6to19)
 test085 = pardict.copy()
 
