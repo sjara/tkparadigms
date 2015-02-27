@@ -38,7 +38,67 @@ switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
 #pardict.update(basicDiscriminationMode)
 
 
-# -- To be trained on psychometric and switching --
+# -- Cued discrimination task --
+
+pardict = {'subject':'cued001','experimenter':'santiago'}
+pardict.update(sidesDirectMode)
+pardict.update(frequencySet6to19)
+cued001 = pardict.copy()
+
+pardict = {'subject':'cued002','experimenter':'santiago'}
+pardict.update(sidesDirectMode)
+pardict.update(frequencySet6to19)
+cued002 = pardict.copy()
+
+pardict = {'subject':'cued003','experimenter':'santiago'}
+pardict.update(sidesDirectMode)
+pardict.update(frequencySet6to19)
+cued003 = pardict.copy()
+
+pardict = {'subject':'cued004','experimenter':'santiago'}
+pardict.update(sidesDirectMode)
+pardict.update(frequencySet6to19)
+cued004 = pardict.copy()
+
+pardict = {'subject':'cued005','experimenter':'santiago'}
+pardict.update(sidesDirectMode)
+pardict.update(frequencySet6to19)
+cued005 = pardict.copy()
+
+pardict = {'subject':'cued006','experimenter':'santiago'}
+pardict.update(sidesDirectMode)
+pardict.update(frequencySet6to19)
+cued006 = pardict.copy()
+
+
+# -- Adaptive categorization, psychometric and switching --
+
+pardict = {'subject':'adap001','experimenter':'santiago'}
+pardict.update(sidesDirectMode)
+pardict.update(frequencySet6to19)
+adap001 = pardict.copy()
+
+pardict = {'subject':'adap002','experimenter':'santiago'}
+pardict.update(sidesDirectMode)
+pardict.update(frequencySet6to19)
+adap002 = pardict.copy()
+
+pardict = {'subject':'adap003','experimenter':'santiago'}
+pardict.update(sidesDirectMode)
+pardict.update(frequencySet6to19)
+adap003 = pardict.copy()
+
+pardict = {'subject':'adap004','experimenter':'santiago'}
+pardict.update(sidesDirectMode)
+pardict.update(frequencySet6to19)
+adap004 = pardict.copy()
+
+pardict = {'subject':'adap005','experimenter':'santiago'}
+pardict.update(sidesDirectMode)
+pardict.update(frequencySet6to19)
+adap005 = pardict.copy()
+
+# -- Adaptive categorization, psychometric and switching --
 
 pardict = {'subject':'test089','experimenter':'santiago'}
 pardict.update(switchDailyMode)
