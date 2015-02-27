@@ -48,7 +48,7 @@ test089 = pardict.copy()
 
 pardict = {'subject':'test088','experimenter':'santiago'}
 pardict.update(switchDailyMode)
-pardict.update({'currentBlock':'low_boundary'})
+#pardict.update({'currentBlock':'low_boundary'})
 pardict.update(frequencySet6to19)
 test088 = pardict.copy()
 
