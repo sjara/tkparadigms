@@ -148,7 +148,7 @@ pardict.update(frequencySet6to19)
 test052 = pardict.copy()
 
 pardict = {'subject':'test053','experimenter':'santiago'}
-pardict.update(psyCurveMidBound)
+pardict.update(switchDailyMode)
 pardict.update(frequencySet6to19)
 test053 = pardict.copy()
 
@@ -163,7 +163,7 @@ pardict.update(frequencySet6to19)
 test055 = pardict.copy()
 
 pardict = {'subject':'test056','experimenter':'santiago'}
-pardict.update(psyCurveMidBound)
+pardict.update(switchDailyMode)
 pardict.update(frequencySet6to19)
 test056 = pardict.copy()
 
