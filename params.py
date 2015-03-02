@@ -74,12 +74,12 @@ cued006 = pardict.copy()
 # -- Adaptive categorization, psychometric and switching --
 
 pardict = {'subject':'adap001','experimenter':'santiago'}
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
 pardict.update(frequencySet6to19)
 adap001 = pardict.copy()
 
 pardict = {'subject':'adap002','experimenter':'santiago'}
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
 pardict.update(frequencySet6to19)
 adap002 = pardict.copy()
 
@@ -90,7 +90,7 @@ adap003 = pardict.copy()
 
 pardict = {'subject':'adap004','experimenter':'santiago'}
 pardict.update(directMode)
-pardict.update(frequencySet6to19)
+pardict.update(increaseDelayMode)
 adap004 = pardict.copy()
 
 pardict = {'subject':'adap005','experimenter':'santiago'}
