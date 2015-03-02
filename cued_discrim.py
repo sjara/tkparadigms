@@ -67,7 +67,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                         units='s',group='Timing parameters')
         self.params['cueInterval'] = paramgui.NumericParam('Cue interval',value=0.4,
                                                         units='s',group='Timing parameters')
-        self.params['ITI'] = paramgui.NumericParam('Inter-trial interval',value=1,
+        self.params['ITI'] = paramgui.NumericParam('Inter-trial interval',value=2,
                                                         units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
 
@@ -94,17 +94,17 @@ class Paradigm(templates.Paradigm2AFC):
         automationParams = self.params.layout_group('Automation')
 
         # 5000, 7000, 9800 (until 2014-03-19)
-        self.params['highFreq'] = paramgui.NumericParam('High freq',value=5000,
+        self.params['highFreq'] = paramgui.NumericParam('High freq',value=24000,
                                                         units='Hz',group='Sound parameters')
-        self.params['midFreq'] = paramgui.NumericParam('Middle freq',value=3000,
+        self.params['midFreq'] = paramgui.NumericParam('Middle freq',value=11000,
                                                         units='Hz',group='Sound parameters')
-        self.params['lowFreq'] = paramgui.NumericParam('Low freq',value=2000,
+        self.params['lowFreq'] = paramgui.NumericParam('Low freq',value=5000,
                                                         units='Hz',group='Sound parameters')
         self.params['targetFrequency'] = paramgui.NumericParam('Target freq',value=0,decimals=0,
                                                         units='Hz',enabled=False,group='Sound parameters')
         self.params['targetIntensityMode'] = paramgui.MenuParam('Intensity mode',
                                                                ['fixed','randMinus20'],
-                                                               value=0,group='Sound parameters')
+                                                               value=1,group='Sound parameters')
         # This intensity corresponds to the intensity of each component of the chord
         self.params['targetMaxIntensity'] = paramgui.NumericParam('Max intensity',value=50,
                                                         units='dB-SPL',group='Sound parameters')
@@ -120,7 +120,7 @@ class Paradigm(templates.Paradigm2AFC):
         '''                                                        
         self.params['targetAmplitude'] = paramgui.NumericParam('Target amplitude',value=0.0,units='[0-1]',
                                                         enabled=False,decimals=4,group='Sound parameters')
-        self.params['cueIntensity'] = paramgui.NumericParam('Cue intensity',value=40,units='dB-SPL',
+        self.params['cueIntensity'] = paramgui.NumericParam('Cue intensity',value=30,units='dB-SPL',
                                                         group='Sound parameters')
         self.params['cueFrequency'] = paramgui.NumericParam('Cue freq',value=0,decimals=0,
                                                         units='Hz',enabled=False,group='Sound parameters')
@@ -450,8 +450,21 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
                               outputsOn=trialStartOutput)
-            self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
-                              transitions={'Cin':'playTarget',correctSidePort:'playTarget'})
+            self.sm.add_state(name='waitForCenterPoke', statetimer=0,
+                              transitions={'Tup':'playCueOn'})
+            self.sm.add_state(name='playCueOn', statetimer=cueDuration,
+                              transitions={'Cin':'delayPeriod',correctSidePort:'playCueLast','Tup':'playCueOff'},
+                              serialOut=cueSoundID)
+            self.sm.add_state(name='playCueOff', statetimer=cueInterval,
+                              transitions={'Cin':'delayPeriod',correctSidePort:'playCueLast','Tup':'playCueOn'})
+            self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
+                              transitions={'Tup':'playCueLast'},
+                              serialOut=0)
+            self.sm.add_state(name='playCueLast', statetimer=0,
+                              transitions={'Tup':'delayAfterCue'}) # serialOut=cueSoundID
+            self.sm.add_state(name='delayAfterCue', statetimer=0,
+                              transitions={'Tup':'playTarget'},
+                              serialOut=0)
             self.sm.add_state(name='playTarget', statetimer=targetDuration,
                               transitions={'Tup':'reward'},
                               outputsOn=stimOutput,serialOut=targetSoundID,
@@ -461,14 +474,29 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOn=[rewardOutput],
                               outputsOff=stimOutput)
             self.sm.add_state(name='stopReward', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'interTrialInterval'},
                               outputsOff=[rewardOutput])
+            self.sm.add_state(name='interTrialInterval', statetimer=self.params['ITI'].get_value(),
+                              transitions={'Tup':'readyForNextTrial'})
         elif outcomeMode=='direct':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
                               outputsOn=trialStartOutput)
-            self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
-                              transitions={'Cin':'playTarget'})
+            self.sm.add_state(name='waitForCenterPoke', statetimer=0,
+                              transitions={'Tup':'playCueOn'})
+            self.sm.add_state(name='playCueOn', statetimer=cueDuration,
+                              transitions={'Cin':'delayPeriod','Tup':'playCueOff'},
+                              serialOut=cueSoundID)
+            self.sm.add_state(name='playCueOff', statetimer=cueInterval,
+                              transitions={'Cin':'delayPeriod','Tup':'playCueOn'})
+            self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
+                              transitions={'Tup':'playCueLast'},
+                              serialOut=0)
+            self.sm.add_state(name='playCueLast', statetimer=0,
+                              transitions={'Tup':'delayAfterCue'}) # serialOut=cueSoundID
+            self.sm.add_state(name='delayAfterCue', statetimer=0,
+                              transitions={'Tup':'playTarget'},
+                              serialOut=0)
             self.sm.add_state(name='playTarget', statetimer=targetDuration,
                               transitions={'Tup':'reward'},
                               outputsOn=stimOutput,serialOut=targetSoundID,
@@ -478,8 +506,10 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOn=[rewardOutput],
                               outputsOff=stimOutput)
             self.sm.add_state(name='stopReward', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'interTrialInterval'},
                               outputsOff=[rewardOutput])
+            self.sm.add_state(name='interTrialInterval', statetimer=self.params['ITI'].get_value(),
+                              transitions={'Tup':'readyForNextTrial'})
         elif outcomeMode=='on_next_correct':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
