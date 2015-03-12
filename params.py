@@ -75,29 +75,32 @@ cued006 = pardict.copy()
 # -- Adaptive categorization, psychometric and switching --
 
 pardict = {'subject':'adap001','experimenter':'santiago'}
-pardict.update(increaseDelayMode)
+pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
 adap001 = pardict.copy()
 
 pardict = {'subject':'adap002','experimenter':'santiago'}
-pardict.update(increaseDelayMode)
+pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
 adap002 = pardict.copy()
 
 pardict = {'subject':'adap003','experimenter':'santiago'}
 #pardict.update(directMode)
-pardict.update(increaseDelayMode)
+pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
 adap003 = pardict.copy()
 
 pardict = {'subject':'adap004','experimenter':'santiago'}
-pardict.update(directMode)
-pardict.update(increaseDelayMode)
+#pardict.update(directMode)
+pardict.update(basicDiscriminationMode)
+pardict.update(frequencySet6to19)
+# NOTE: there was a mistake here and this mouse was trained in 3 vs 16
 adap004 = pardict.copy()
 
 pardict = {'subject':'adap005','experimenter':'santiago'}
 #pardict.update(directMode)
-pardict.update(increaseDelayMode)
+#pardict.update(increaseDelayMode)
+pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
 adap005 = pardict.copy()
 
@@ -151,7 +154,7 @@ pardict.update(frequencySet6to19)
 test052 = pardict.copy()
 
 pardict = {'subject':'test053','experimenter':'santiago'}
-pardict.update(switchDailyMode)
+pardict.update(switchBlocksMode)
 pardict.update(frequencySet6to19)
 test053 = pardict.copy()
 
@@ -167,6 +170,7 @@ test055 = pardict.copy()
 
 pardict = {'subject':'test056','experimenter':'santiago'}
 pardict.update(switchDailyMode)
+pardict.update({'currentBlock':'high_boundary'})
 pardict.update(frequencySet6to19)
 test056 = pardict.copy()
 
@@ -184,6 +188,7 @@ test058 = pardict.copy()
 pardict = {'subject':'test059','experimenter':'santiago'}
 #pardict.update(psyCurveMidBound)
 pardict.update(switchDailyMode)
+pardict.update({'currentBlock':'high_boundary'})
 pardict.update(frequencySet6to19)
 test059 = pardict.copy()
 
@@ -217,9 +222,10 @@ pardict.update(frequencySet4to13)
 test017 = pardict.copy()
 
 pardict = {'subject':'test018','experimenter':'santiago'}
-pardict.update(switchDailyMode)
+#pardict.update(switchDailyMode)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet3to16)
-pardict.update({'currentBlock':'low_boundary'})
+#pardict.update({'currentBlock':'low_boundary'})
 test018 = pardict.copy()
 
 pardict = {'subject':'test020','experimenter':'santiago'}
