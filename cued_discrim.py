@@ -490,7 +490,7 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='playCueOff', statetimer=cueInterval,
                               transitions={'Cin':'delayPeriod','Tup':'playCueOn'})
             self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
-                              transitions={'Tup':'playCueLast'},
+                              transitions={'Tup':'playCueLast', 'Cout':'waitForCenterPoke'},
                               serialOut=0)
             self.sm.add_state(name='playCueLast', statetimer=0,
                               transitions={'Tup':'delayAfterCue'}) # serialOut=cueSoundID
@@ -733,8 +733,8 @@ class Paradigm(templates.Paradigm2AFC):
         automationMode = self.params['automationMode'].get_string()
         nValid = self.params['nValid'].get_value()
         if automationMode=='increase_delay':
-            if nValid>0 and not nValid%10:
-                self.params['delayToTargetMean'].add(0.010)
+            if nValid>0 and not nValid%2:
+                self.params['delayToTargetMean'].add(0.001)
 
     def closeEvent(self, event):
         '''
