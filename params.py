@@ -14,6 +14,7 @@ frequencySet6to19 = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
 frequencySet3to16 = {'lowFreq':3000,'midFreq':7000,'highFreq':16000}
 frequencySet4to13 = {'lowFreq':3800,'midFreq':7000,'highFreq':12600}
 
+# ======== Adaptive categorization task ========
 sidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                    'currentBlock':'mid_boundary'}
 directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
@@ -37,51 +38,54 @@ switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
 #pardict.update({'antibiasMode':'repeat_mistake'})
 #pardict.update(basicDiscriminationMode)
 
+# ======== Cued discrimination task ========
+cuedSidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+                   'currentBlock':'mid_boundary'}
+cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+                   'currentBlock':'mid_boundary'}
+
+
+
 
 # -- Cued discrimination task --
 
 pardict = {'subject':'cued000','experimenter':'santiago'} # FOR TESTING
-pardict.update(directMode)
+#pardict.update(directMode)
+pardict.update({'outcomeMode':'on_next_correct'})
 pardict.update({'lowFreq':1000,'midFreq':2000,'highFreq':4000})
 #pardict.update({'delayToTargetMean':0.5})
-pardict.update({'automationMode':'increase_delay'})
+#pardict.update({'automationMode':'increase_delay'})
+#pardict.update({'cuedIntensify':30})
 cued000 = pardict.copy()
 
 pardict = {'subject':'cued001','experimenter':'santiago'}
-pardict.update(directMode)
+pardict.update({'outcomeMode':'on_next_correct'})
 pardict.update(frequencySet6to19)
-#pardict.update({'cuedIntensify':30})
-pardict.update({'automationMode':'increase_delay'})
 cued001 = pardict.copy()
 
 pardict = {'subject':'cued002','experimenter':'santiago'}
-pardict.update(directMode)
+pardict.update({'outcomeMode':'on_next_correct'})
 pardict.update(frequencySet6to19)
-pardict.update({'automationMode':'increase_delay'})
 cued002 = pardict.copy()
 
 pardict = {'subject':'cued003','experimenter':'santiago'}
-pardict.update(directMode)
+pardict.update({'outcomeMode':'on_next_correct'})
 pardict.update(frequencySet6to19)
-pardict.update({'automationMode':'increase_delay'})
 cued003 = pardict.copy()
 
 pardict = {'subject':'cued004','experimenter':'santiago'}
-pardict.update(directMode)
+pardict.update({'outcomeMode':'on_next_correct'})
 pardict.update(frequencySet6to19)
-pardict.update({'automationMode':'increase_delay'})
 cued004 = pardict.copy()
 
 pardict = {'subject':'cued005','experimenter':'santiago'}
-pardict.update(directMode)
+pardict.update({'outcomeMode':'on_next_correct'})
 pardict.update(frequencySet6to19)
-pardict.update({'automationMode':'increase_delay'})
 cued005 = pardict.copy()
 
 pardict = {'subject':'cued006','experimenter':'santiago'}
-pardict.update(directMode)
+pardict.update({'outcomeMode':'on_next_correct'})
 pardict.update(frequencySet6to19)
-pardict.update({'automationMode':'increase_delay'})
 cued006 = pardict.copy()
 
 

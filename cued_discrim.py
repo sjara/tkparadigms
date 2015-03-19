@@ -48,7 +48,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                         value=0,group='Choice parameters')
         choiceParams = self.params.layout_group('Choice parameters')
 
-        self.params['delayToTargetMean'] = paramgui.NumericParam('Mean delay to target',value=0.01,
+        self.params['delayToTargetMean'] = paramgui.NumericParam('Mean delay to target',value=0.1,
                                                         units='s',group='Timing parameters')
         self.params['delayToTargetHalfRange'] = paramgui.NumericParam('+/-',value=0.0,
                                                         units='s',group='Timing parameters')
@@ -366,7 +366,7 @@ class Paradigm(templates.Paradigm2AFC):
         elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
             possibleCueFreq = freqsAll[freqsAll<targetFrequency]
         cueFrequency =  np.random.choice(possibleCueFreq)
-        self.params['cueFrequency'].set_value(targetFrequency)
+        self.params['cueFrequency'].set_value(cueFrequency)
 
         self.prepare_sounds(targetFrequency,cueFrequency)
 
@@ -514,6 +514,61 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
                               outputsOn=trialStartOutput)
+            self.sm.add_state(name='waitForCenterPoke', statetimer=0,
+                              transitions={'Tup':'playCueOn'})
+            self.sm.add_state(name='playCueOn', statetimer=cueDuration,
+                              transitions={'Cin':'delayPeriod','Tup':'playCueOff'},
+                              serialOut=cueSoundID)
+            self.sm.add_state(name='playCueOff', statetimer=cueInterval,
+                              transitions={'Cin':'delayPeriod','Tup':'playCueOn'})
+            self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
+                              transitions={'Tup':'playCueLast', 'Cout':'waitForCenterPoke'},
+                              serialOut=0)
+            self.sm.add_state(name='playCueLast', statetimer=0,
+                              transitions={'Tup':'delayAfterCue'}) # serialOut=cueSoundID
+            self.sm.add_state(name='delayAfterCue', statetimer=0,
+                              transitions={'Tup':'playTarget'},
+                              serialOut=0)
+            self.sm.add_state(name='playTarget', statetimer=targetDuration,
+                              transitions={'Tup':'waitForSidePoke'},
+                              outputsOn=stimOutput,serialOut=targetSoundID,
+                              outputsOff=trialStartOutput)
+            self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
+                              transitions={'Lin':'choiceLeft','Rin':'choiceRight',
+                                           'Tup':'noChoice'},
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='keepWaitForSide', statetimer=rewardAvailability,
+                              transitions={'Lin':'choiceLeft','Rin':'choiceRight',
+                                           'Tup':'noChoice'},
+                              outputsOff=stimOutput)
+            if correctSidePort=='Lin':
+                self.sm.add_state(name='choiceLeft', statetimer=0,
+                                  transitions={'Tup':'reward'})
+                self.sm.add_state(name='choiceRight', statetimer=0,
+                                  transitions={'Tup':'keepWaitForSide'})
+            elif correctSidePort=='Rin':
+                self.sm.add_state(name='choiceLeft', statetimer=0,
+                                  transitions={'Tup':'keepWaitForSide'})
+                self.sm.add_state(name='choiceRight', statetimer=0,
+                                  transitions={'Tup':'reward'})
+            self.sm.add_state(name='reward', statetimer=rewardDuration,
+                              transitions={'Tup':'stopReward'},
+                              outputsOn=[rewardOutput],
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='stopReward', statetimer=0,
+                              transitions={'Tup':'interTrialInterval'},
+                              outputsOff=[rewardOutput])
+            self.sm.add_state(name='punish', statetimer=punishTimeError,
+                              transitions={'Tup':'interTrialInterval'})
+            self.sm.add_state(name='noChoice', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'})
+            self.sm.add_state(name='interTrialInterval', statetimer=self.params['ITI'].get_value(),
+                              transitions={'Tup':'readyForNextTrial'})
+
+            '''
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'waitForCenterPoke'},
+                              outputsOn=trialStartOutput)
             self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
                               transitions={'Cin':'delayPeriod'})
             self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
@@ -553,7 +608,7 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'readyForNextTrial'})
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
-
+            '''
         elif outcomeMode=='only_if_correct':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
@@ -622,6 +677,11 @@ class Paradigm(templates.Paradigm2AFC):
         eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
         #print eventsThisTrial
         statesThisTrial = eventsThisTrial[:,2]
+
+
+        print eventsThisTrial
+        ####### FIX THIS #########
+
 
         # -- Find beginning of trial --
         startTrialStateID = self.sm.statesNameToIndex['startTrial']
@@ -717,13 +777,12 @@ class Paradigm(templates.Paradigm2AFC):
                            self.sm.statesNameToIndex['keepWaitForSide'] in eventsThisTrial[:,2]:
                        self.results['outcome'][trialIndex] = \
                            self.results.labels['outcome']['aftererror']
-                else:
-                    if self.sm.statesNameToIndex['earlyWithdrawal'] in eventsThisTrial[:,2]:
-                        self.results['outcome'][trialIndex] = \
-                            self.results.labels['outcome']['invalid']
-                    elif self.sm.statesNameToIndex['punish'] in eventsThisTrial[:,2]:
+                elif self.sm.statesNameToIndex['punish'] in eventsThisTrial[:,2]:
                         self.results['outcome'][trialIndex] = \
                             self.results.labels['outcome']['error']
+                else:
+                    # Note that outcome='nochoice' is already set when testing for choice
+                    pass
             	# -- Check if it was a valid trial --
             	if self.sm.statesNameToIndex['waitForSidePoke'] in eventsThisTrial[:,2]:
                 	self.params['nValid'].add(1)
