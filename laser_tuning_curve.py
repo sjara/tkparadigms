@@ -52,7 +52,7 @@ class Paradigm(QtGui.QMainWindow):
 
         super(Paradigm, self).__init__(parent)
 
-        self.name = 'tuning_curve'
+        self.name = 'laser_tuning_curve'
 
         # -- Read settings --
         smServerType = rigsettings.STATE_MACHINE_TYPE
