@@ -14,6 +14,7 @@ from taskontrol.core import savedata
 from taskontrol.settings import rigsettings
 from taskontrol.core import statematrix
 from taskontrol.plugins import speakercalibration
+from taskontrol.plugins import manualcontrol
 from numpy import log
 import numpy as np
 import itertools
@@ -65,6 +66,9 @@ class Paradigm(QtGui.QMainWindow):
 
         self.dispatcherView = dispatcher.DispatcherGUI(model=self.dispatcherModel)
 
+        # -- Manual control of outputs --
+        self.manualControl = manualcontrol.ManualControl(self.dispatcherModel.statemachine)
+
         # -- Add parameters --
         self.params = paramgui.Container()
         self.params['experimenter'] = paramgui.StringParam('Experimenter',
@@ -82,10 +86,10 @@ class Paradigm(QtGui.QMainWindow):
                                                          value=16,
                                                          group='Parameters')
         self.params['minInt'] = paramgui.NumericParam('Min Intensity (dB SPL)',
-                                                       value=70,
+                                                       value=60,
                                                        group='Parameters')
         self.params['maxInt'] = paramgui.NumericParam('Max Intensity (dB SPL)',
-                                                       value=70,
+                                                       value=60,
                                                        group='Parameters')
         self.params['numInt'] = paramgui.NumericParam('Number of Intensities',
                                                        value=1,
@@ -129,11 +133,11 @@ class Paradigm(QtGui.QMainWindow):
                                                            enabled=False,
                                                            group='Parameters',
                                                            decimals=4)
-        
+        '''
         self.params['laserDuration'] = paramgui.NumericParam('Laser duration',value=0.01,
                                                              group='Parameters',
                                                              decimals=4)
-        
+        '''
         timingParams = self.params.layout_group('Parameters')
         
         # -- Load parameters from a file --
@@ -163,6 +167,7 @@ class Paradigm(QtGui.QMainWindow):
 
         layoutCol1.addWidget(self.dispatcherView) #Add the dispatcher to col1
         layoutCol1.addWidget(self.saveData)
+        layoutCol1.addWidget(self.manualControl)
         layoutCol2.addWidget(timingParams)  #Add the parameter GUI to column 2
 
         self.centralWidget.setLayout(layoutMain) #Assign the layouts to the main window
@@ -299,7 +304,7 @@ class Paradigm(QtGui.QMainWindow):
             stimOutput = stimSync+laserSync
             serialOutput = 0
         else:
-            stimOutput = []
+            stimOutput = stimSync
             serialOutput = 1
             self.soundClient.set_sound(1,sound)
 
