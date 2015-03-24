@@ -621,11 +621,15 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='playCueOff', statetimer=cueInterval,
                               transitions={'Cin':'delayPeriod','Tup':'playCueOn'})
             self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
-                              transitions={'Tup':'playCueLast'},
+                              transitions={'Tup':'playCueLast', 'Cout':'waitForCenterPoke'},
                               serialOut=0)
+            '''
             self.sm.add_state(name='playCueLast', statetimer=cueDuration,
                               transitions={'Tup':'delayAfterCue'},
                               serialOut=cueSoundID)
+            '''
+            self.sm.add_state(name='playCueLast', statetimer=0,
+                              transitions={'Tup':'delayAfterCue'}) # serialOut=cueSoundID
             self.sm.add_state(name='delayAfterCue', statetimer=0,
                               transitions={'Tup':'playTarget'},
                               serialOut=0)
