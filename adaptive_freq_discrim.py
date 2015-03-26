@@ -120,7 +120,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['targetAmplitude'] = paramgui.NumericParam('Target amplitude',value=0.0,units='[0-1]',
                                                         enabled=False,decimals=4,group='Sound parameters')
         self.params['punishSoundAmplitude'] = paramgui.NumericParam('Punish amplitude',value=0.01,
-                                                              units='[0-1]',enabled=False,
+                                                              units='[0-1]',enabled=True,
                                                               group='Sound parameters')
         
         '''
