@@ -55,37 +55,43 @@ pardict.update({'outcomeMode':'on_next_correct'})
 pardict.update({'lowFreq':1000,'midFreq':2000,'highFreq':4000})
 #pardict.update({'delayToTargetMean':0.5})
 #pardict.update({'automationMode':'increase_delay'})
-#pardict.update({'cuedIntensify':30})
+pardict.update({'psycurveMode':'off'})
 cued000 = pardict.copy()
 
 pardict = {'subject':'cued001','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
 pardict.update(frequencySet6to19)
+pardict.update({'psycurveMode':'off'})
 cued001 = pardict.copy()
 
 pardict = {'subject':'cued002','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
 pardict.update(frequencySet6to19)
+pardict.update({'psycurveMode':'off'})
 cued002 = pardict.copy()
 
 pardict = {'subject':'cued003','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
 pardict.update(frequencySet6to19)
+pardict.update({'psycurveMode':'off'})
 cued003 = pardict.copy()
 
 pardict = {'subject':'cued004','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
 pardict.update(frequencySet6to19)
+pardict.update({'psycurveMode':'off'})
 cued004 = pardict.copy()
 
 pardict = {'subject':'cued005','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
 pardict.update(frequencySet6to19)
+pardict.update({'psycurveMode':'off'})
 cued005 = pardict.copy()
 
 pardict = {'subject':'cued006','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
 pardict.update(frequencySet6to19)
+pardict.update({'psycurveMode':'off'})
 cued006 = pardict.copy()
 
 

@@ -326,6 +326,8 @@ class Paradigm(templates.Paradigm2AFC):
         lowFreq = self.params['lowFreq'].get_value()
         currentBlock = self.params['currentBlock'].get_string()
         psycurveMode = self.params['psycurveMode'].get_string()
+
+        '''
         if psycurveMode=='off':
             if currentBlock=='mid_boundary':
                 freqsLH = [lowFreq,highFreq]
@@ -337,6 +339,21 @@ class Paradigm(templates.Paradigm2AFC):
                 targetFrequency = freqsLH[0]
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
                 targetFrequency = freqsLH[1]
+        '''
+        if psycurveMode=='off':
+            allTargetFreq = np.array([lowFreq,midFreq,highFreq])
+            allCueFreq = np.array([np.sqrt(lowFreq*midFreq),np.sqrt(midFreq*highFreq)])
+            randIndexTarget = np.random.randint(2)
+            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+                targetFrequency = allTargetFreq[0:2][randIndexTarget]
+                possibleCueFreq = allCueFreq[allCueFreq>targetFrequency]
+                randIndexCue = np.random.randint(len(possibleCueFreq))
+                cueFrequency = possibleCueFreq[randIndexCue]
+            if nextCorrectChoice==self.results.labels['rewardSide']['right']:
+                targetFrequency = allTargetFreq[1:3][randIndexTarget]
+                possibleCueFreq = allCueFreq[allCueFreq<targetFrequency]
+                randIndexCue = np.random.randint(len(possibleCueFreq))
+                cueFrequency = possibleCueFreq[randIndexCue]
         elif psycurveMode=='uniform':
             if currentBlock=='mid_boundary':
                 nFreqs = self.params['psycurveNfreq'].get_value()
@@ -355,19 +372,17 @@ class Paradigm(templates.Paradigm2AFC):
                 randindex = np.random.randint(len(freqsAll[rightFreqInds]))
                 targetFrequency = freqsAll[rightFreqInds][randindex]
                 #targetFrequency = np.random.choice(freqsAll[rightFreqInds])
-            pass
+            # -- Cue frequency --
+            nFreqs = self.params['psycurveNfreq'].get_value()
+            freqsAll = np.logspace(np.log10(lowFreq),np.log10(highFreq),nFreqs)
+            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+                possibleCueFreq = freqsAll[freqsAll>targetFrequency]
+            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+                possibleCueFreq = freqsAll[freqsAll<targetFrequency]
+            cueFrequency =  np.random.choice(possibleCueFreq)
+
         self.params['targetFrequency'].set_value(targetFrequency)
-
-        # -- Cue frequency --
-        nFreqs = self.params['psycurveNfreq'].get_value()
-        freqsAll = np.logspace(np.log10(lowFreq),np.log10(highFreq),nFreqs)
-        if nextCorrectChoice==self.results.labels['rewardSide']['left']:
-            possibleCueFreq = freqsAll[freqsAll>targetFrequency]
-        elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
-            possibleCueFreq = freqsAll[freqsAll<targetFrequency]
-        cueFrequency =  np.random.choice(possibleCueFreq)
         self.params['cueFrequency'].set_value(cueFrequency)
-
         self.prepare_sounds(targetFrequency,cueFrequency)
 
         # -- Prepare state matrix --
