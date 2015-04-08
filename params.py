@@ -98,24 +98,22 @@ cued006 = pardict.copy()
 # -- Adaptive categorization, psychometric and switching --
 
 pardict = {'subject':'adap001','experimenter':'santiago'}
-pardict.update(basicDiscriminationMode)
+pardict.update(switchDailyMode)
 pardict.update(frequencySet6to19)
 adap001 = pardict.copy()
 
 pardict = {'subject':'adap002','experimenter':'santiago'}
-pardict.update(basicDiscriminationMode)
+pardict.update(switchDailyMode)
 pardict.update(frequencySet6to19)
 adap002 = pardict.copy()
 
 pardict = {'subject':'adap003','experimenter':'santiago'}
-#pardict.update(directMode)
-pardict.update(basicDiscriminationMode)
+pardict.update(switchDailyMode)
 pardict.update(frequencySet6to19)
 adap003 = pardict.copy()
 
 pardict = {'subject':'adap004','experimenter':'santiago'}
-#pardict.update(directMode)
-pardict.update(basicDiscriminationMode)
+pardict.update(switchDailyMode)
 pardict.update(frequencySet6to19)
 # NOTE: there was a mistake here and this mouse was trained in 3 vs 16
 adap004 = pardict.copy()
@@ -123,7 +121,7 @@ adap004 = pardict.copy()
 pardict = {'subject':'adap005','experimenter':'santiago'}
 #pardict.update(directMode)
 #pardict.update(increaseDelayMode)
-pardict.update(basicDiscriminationMode)
+pardict.update(switchDailyMode)
 pardict.update(frequencySet6to19)
 adap005 = pardict.copy()
 
