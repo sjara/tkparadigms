@@ -81,7 +81,7 @@ class Paradigm(templates.Paradigm2AFC):
 
 
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
-                                                         ['off','uniform'],
+                                                         ['off','uniform','single_target'],
                                                          value=1,group='Psychometric parameters')
         self.params['psycurveNfreq'] = paramgui.NumericParam('N frequencies',value=8,decimals=0,
                                                              group='Psychometric parameters')
@@ -349,11 +349,18 @@ class Paradigm(templates.Paradigm2AFC):
                 possibleCueFreq = allCueFreq[allCueFreq>targetFrequency]
                 randIndexCue = np.random.randint(len(possibleCueFreq))
                 cueFrequency = possibleCueFreq[randIndexCue]
-            if nextCorrectChoice==self.results.labels['rewardSide']['right']:
+            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
                 targetFrequency = allTargetFreq[1:3][randIndexTarget]
                 possibleCueFreq = allCueFreq[allCueFreq<targetFrequency]
                 randIndexCue = np.random.randint(len(possibleCueFreq))
                 cueFrequency = possibleCueFreq[randIndexCue]
+        elif psycurveMode=='single_target':
+            allCueFreq = np.array([np.sqrt(lowFreq*midFreq),np.sqrt(midFreq*highFreq)])
+            targetFrequency = midFreq
+            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+                cueFrequency = allCueFreq[1]
+            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+                cueFrequency = allCueFreq[0]
         elif psycurveMode=='uniform':
             if currentBlock=='mid_boundary':
                 nFreqs = self.params['psycurveNfreq'].get_value()
@@ -697,10 +704,7 @@ class Paradigm(templates.Paradigm2AFC):
         #print eventsThisTrial
         statesThisTrial = eventsThisTrial[:,2]
 
-
-        print eventsThisTrial
-        ####### FIX THIS #########
-
+        ####### FIXME: Make sure resutls are calculated properly #########
 
         # -- Find beginning of trial --
         startTrialStateID = self.sm.statesNameToIndex['startTrial']

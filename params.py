@@ -60,38 +60,38 @@ cued000 = pardict.copy()
 
 pardict = {'subject':'cued001','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
-pardict.update(frequencySet6to19)
-pardict.update({'psycurveMode':'off'})
+pardict.update(frequencySet5to24)
+pardict.update({'psycurveMode':'single_target'})
 cued001 = pardict.copy()
 
 pardict = {'subject':'cued002','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
-pardict.update(frequencySet6to19)
-pardict.update({'psycurveMode':'off'})
+pardict.update(frequencySet5to24)
+pardict.update({'psycurveMode':'single_target'})
 cued002 = pardict.copy()
 
 pardict = {'subject':'cued003','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
-pardict.update(frequencySet6to19)
-pardict.update({'psycurveMode':'off'})
+pardict.update(frequencySet5to24)
+pardict.update({'psycurveMode':'single_target'})
 cued003 = pardict.copy()
 
 pardict = {'subject':'cued004','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
-pardict.update(frequencySet6to19)
-pardict.update({'psycurveMode':'off'})
+pardict.update(frequencySet5to24)
+pardict.update({'psycurveMode':'single_target'})
 cued004 = pardict.copy()
 
 pardict = {'subject':'cued005','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
-pardict.update(frequencySet6to19)
-pardict.update({'psycurveMode':'off'})
+pardict.update(frequencySet5to24)
+pardict.update({'psycurveMode':'single_target'})
 cued005 = pardict.copy()
 
 pardict = {'subject':'cued006','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
-pardict.update(frequencySet6to19)
-pardict.update({'psycurveMode':'off'})
+pardict.update(frequencySet5to24)
+pardict.update({'psycurveMode':'single_target'})
 cued006 = pardict.copy()
 
 
