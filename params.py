@@ -100,22 +100,26 @@ cued006 = pardict.copy()
 pardict = {'subject':'adap001','experimenter':'santiago'}
 pardict.update(switchDailyMode)
 pardict.update(frequencySet6to19)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap001 = pardict.copy()
 
 pardict = {'subject':'adap002','experimenter':'santiago'}
 pardict.update(switchDailyMode)
 pardict.update(frequencySet6to19)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap002 = pardict.copy()
 
 pardict = {'subject':'adap003','experimenter':'santiago'}
 pardict.update(switchDailyMode)
 pardict.update(frequencySet6to19)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap003 = pardict.copy()
 
 pardict = {'subject':'adap004','experimenter':'santiago'}
 pardict.update(switchDailyMode)
 pardict.update(frequencySet6to19)
 # NOTE: there was a mistake here and this mouse was trained in 3 vs 16
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap004 = pardict.copy()
 
 pardict = {'subject':'adap005','experimenter':'santiago'}
@@ -123,6 +127,7 @@ pardict = {'subject':'adap005','experimenter':'santiago'}
 #pardict.update(increaseDelayMode)
 pardict.update(switchDailyMode)
 pardict.update(frequencySet6to19)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap005 = pardict.copy()
 
 # -- Adaptive categorization, psychometric and switching --
@@ -131,29 +136,34 @@ pardict = {'subject':'test089','experimenter':'santiago'}
 pardict.update(switchBlocksMode)
 #pardict.update({'currentBlock':'low_boundary'})
 pardict.update(frequencySet6to19)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 test089 = pardict.copy()
 
 pardict = {'subject':'test088','experimenter':'santiago'}
 pardict.update(switchDailyMode)
 #pardict.update({'currentBlock':'low_boundary'})
 pardict.update(frequencySet6to19)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 test088 = pardict.copy()
 
 pardict = {'subject':'test087','experimenter':'santiago'}
 pardict.update(switchBlocksMode)
 pardict.update(frequencySet6to19)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 test087 = pardict.copy()
 
 pardict = {'subject':'test086','experimenter':'santiago'}
 pardict.update(switchBlocksMode)
 #pardict.update({'currentBlock':'high_boundary'})
 pardict.update(frequencySet6to19)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 test086 = pardict.copy()
 
 pardict = {'subject':'test085','experimenter':'santiago'}
 pardict.update(switchDailyMode)
 #pardict.update({'currentBlock':'high_boundary'})
 pardict.update(frequencySet6to19)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 test085 = pardict.copy()
 
 
