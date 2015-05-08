@@ -147,7 +147,8 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 test089 = pardict.copy()
 
 pardict = {'subject':'test088','experimenter':'santiago'}
-pardict.update(switchDailyMode)
+#pardict.update(switchDailyMode)
+pardict.update(switchBlocksMode)
 #pardict.update({'currentBlock':'low_boundary'})
 pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
@@ -155,7 +156,8 @@ test088 = pardict.copy()
 
 pardict = {'subject':'test087','experimenter':'santiago'}
 pardict.update(switchBlocksMode)
-pardict.update(frequencySet6to19)
+#pardict.update(frequencySet6to19)
+pardict.update(frequencySet5to24)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 test087 = pardict.copy()
 
@@ -167,7 +169,7 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 test086 = pardict.copy()
 
 pardict = {'subject':'test085','experimenter':'santiago'}
-pardict.update(switchDailyMode)
+pardict.update(switchBlocksMode)
 #pardict.update({'currentBlock':'high_boundary'})
 pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
@@ -209,7 +211,8 @@ test055 = pardict.copy()
 pardict = {'subject':'test056','experimenter':'santiago'}
 #pardict.update(switchDailyMode)
 #pardict.update({'currentBlock':'high_boundary'})
-pardict.update(switchBlocksMode)
+#pardict.update(switchBlocksMode)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 test056 = pardict.copy()
 
