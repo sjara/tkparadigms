@@ -102,6 +102,40 @@ cued006 = pardict.copy()
 
 
 # -- Adaptive categorization, psychometric and switching --
+latestMiceMode = sidesDirectMode
+
+pardict = {'subject':'adap006','experimenter':'santiago'}
+pardict.update(latestMiceMode)
+pardict.update(frequencySet5to24)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap006 = pardict.copy()
+
+pardict = {'subject':'adap007','experimenter':'santiago'}
+pardict.update(latestMiceMode)
+pardict.update(frequencySet5to24)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap007 = pardict.copy()
+
+pardict = {'subject':'adap008','experimenter':'santiago'}
+pardict.update(latestMiceMode)
+pardict.update(frequencySet5to24)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap008 = pardict.copy()
+
+pardict = {'subject':'adap009','experimenter':'santiago'}
+pardict.update(latestMiceMode)
+pardict.update(frequencySet5to24)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap009 = pardict.copy()
+
+pardict = {'subject':'adap010','experimenter':'santiago'}
+pardict.update(latestMiceMode)
+pardict.update(frequencySet5to24)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap010 = pardict.copy()
+
+
+# -- Adaptive categorization, psychometric and switching --
 
 pardict = {'subject':'adap001','experimenter':'santiago'}
 pardict.update(switchBlocksMode)
