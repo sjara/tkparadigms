@@ -190,8 +190,8 @@ test088 = pardict.copy()
 
 pardict = {'subject':'test087','experimenter':'santiago'}
 pardict.update(switchBlocksMode)
-#pardict.update(frequencySet6to19)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
+#pardict.update(frequencySet5to24)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 test087 = pardict.copy()
 
