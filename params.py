@@ -5,9 +5,9 @@ Define parameters for different subjects
 
 
 test000 = {'targetDuration':0.2, 'targetIntensityMode':'fixed',
-           'targetMaxIntensity':80,
-           'highFreq':2100, 'midFreq':1400,'lowFreq':1000, 'trialsPerBlock':3,
-           'punishSoundAmplitude':0.1} #, 'outcomeMode':'simulated'
+           'targetMaxIntensity':50,
+           'highFreq':2100, 'midFreq':1400,'lowFreq':1000, 'trialsPerBlock':30,
+           'punishSoundAmplitude':0.1, 'switchByPerformance':'on'} #, 'outcomeMode':'simulated'
 
 frequencySet5to24 = {'lowFreq':5000,'midFreq':11000,'highFreq':24000}
 frequencySet6to19 = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}

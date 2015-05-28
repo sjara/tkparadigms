@@ -76,6 +76,9 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['currentBlock'] = paramgui.MenuParam('Current block',
                                                          ['mid_boundary','low_boundary','high_boundary'],
                                                          value=0,group='Switching parameters')
+        self.params['switchByPerformance'] = paramgui.MenuParam('Switch by perform.',
+                                                         ['off','on'],
+                                                         value=0,group='Switching parameters')
         switchingParams = self.params.layout_group('Switching parameters')
 
 
@@ -252,6 +255,10 @@ class Paradigm(templates.Paradigm2AFC):
         self.punishSoundID = 127
         self.soundClient.start()
 
+
+        # -- Parameters for automatic switching --
+        self.lastSwitch = 0 # Last valid trials where a switch happened
+
         # -- Prepare first trial --
         #self.prepare_next_trial(0)
        
@@ -325,11 +332,29 @@ class Paradigm(templates.Paradigm2AFC):
                 if self.results['outcome'][nextTrial-1]==self.results.labels['outcome']['error']:
                     self.results['rewardSide'][nextTrial] = self.results['rewardSide'][nextTrial-1]
             # -- Set current block if switching --
-            trialsPerBlock = self.params['trialsPerBlock'].get_value()
-            nValid = self.params['nValid'].get_value()
-            ###print '{0} {1} {2}'.format(nValid,trialsPerBlock,np.mod(nValid,trialsPerBlock)) ### DEBUG
-            if (nValid>0) and not (np.mod(nValid,trialsPerBlock)):
-                if self.results['valid'][nextTrial-1]:
+            switchByPerformance = self.params['switchByPerformance'].get_string()
+            if switchByPerformance=='off':
+                trialsPerBlock = self.params['trialsPerBlock'].get_value()
+                nValid = self.params['nValid'].get_value()
+                ###print '{0} {1} {2}'.format(nValid,trialsPerBlock,np.mod(nValid,trialsPerBlock)) ### DEBUG
+                if (nValid>0) and not (np.mod(nValid,trialsPerBlock)):
+                    if self.results['valid'][nextTrial-1]:
+                        if self.params['currentBlock'].get_string()=='low_boundary':
+                            newBlock = 'high_boundary'
+                        elif self.params['currentBlock'].get_string()=='high_boundary':
+                            newBlock = 'low_boundary'
+                        else:
+                            newBlock = 'mid_boundary' # No switch
+                        self.params['currentBlock'].set_string(newBlock)
+            elif switchByPerformance=='on':
+                print '************************* CHECK {0} *******************************'.format(self.lastSwitch)
+                perfLevel = 0.6
+                nGoodTrials = 4
+                nValid = self.params['nValid'].get_value()
+                thisTrialValid = self.results['valid'][nextTrial-1]
+                perfEachFreq = [0.7,0.8,0.9]
+                if thisTrialValid and (nValid-self.lastSwitch)>=nGoodTrials and np.all(perfLevel):
+                    self.lastSwitch=nextTrial
                     if self.params['currentBlock'].get_string()=='low_boundary':
                         newBlock = 'high_boundary'
                     elif self.params['currentBlock'].get_string()=='high_boundary':
@@ -337,6 +362,8 @@ class Paradigm(templates.Paradigm2AFC):
                     else:
                         newBlock = 'mid_boundary' # No switch
                     self.params['currentBlock'].set_string(newBlock)
+                    
+                    
 
         #import pdb; pdb.set_trace() ### DEBUG
 
@@ -697,6 +724,15 @@ class Paradigm(templates.Paradigm2AFC):
             	if self.sm.statesNameToIndex['waitForSidePoke'] in eventsThisTrial[:,2]:
                 	self.params['nValid'].add(1)
                         self.results['valid'][trialIndex] = 1
+
+    def calculate_performance(self,nTrialsToUse):
+        '''Calculate performance of the last N valid trials'''
+        '''
+        You need to know:
+        - What block
+        - which frequencies are relevant for this block
+        - Take last N valid trials (there may be less than N)
+        '''
 
     def execute_automation(self):
         automationMode = self.params['automationMode'].get_string()
