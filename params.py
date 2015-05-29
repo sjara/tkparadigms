@@ -48,6 +48,8 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 
 
 # -- Cued discrimination task --
+#cuedMiceMode = {'targetMaxIntensity':30, 'cueIntensity':40, 'targetIntensityMode':'fixed','psycurveMode':'single_target'}
+cuedMiceMode = {'targetMaxIntensity':40, 'cueIntensity':40, 'targetIntensityMode':'fixed', 'psycurveMode':'off'}
 
 pardict = {'subject':'cued000','experimenter':'santiago'} # FOR TESTING
 #pardict.update(directMode)
@@ -61,48 +63,42 @@ cued000 = pardict.copy()
 pardict = {'subject':'cued001','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
 pardict.update(frequencySet5to24)
-pardict.update({'psycurveMode':'single_target'})
-pardict.update({'targetMaxIntensity':30, 'cueIntensity':40, 'targetIntensityMode':'fixed'})
+pardict.update(cuedMiceMode)
 cued001 = pardict.copy()
 
 pardict = {'subject':'cued002','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
 pardict.update(frequencySet5to24)
-pardict.update({'psycurveMode':'single_target'})
-pardict.update({'targetMaxIntensity':30, 'cueIntensity':40, 'targetIntensityMode':'fixed'})
+pardict.update(cuedMiceMode)
 cued002 = pardict.copy()
 
 pardict = {'subject':'cued003','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
 pardict.update(frequencySet5to24)
-pardict.update({'psycurveMode':'single_target'})
-pardict.update({'targetMaxIntensity':30, 'cueIntensity':40, 'targetIntensityMode':'fixed'})
+pardict.update(cuedMiceMode)
 cued003 = pardict.copy()
 
 pardict = {'subject':'cued004','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
 pardict.update(frequencySet5to24)
-pardict.update({'psycurveMode':'single_target'})
-pardict.update({'targetMaxIntensity':30, 'cueIntensity':40, 'targetIntensityMode':'fixed'})
+pardict.update(cuedMiceMode)
 cued004 = pardict.copy()
 
 pardict = {'subject':'cued005','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
 pardict.update(frequencySet5to24)
-pardict.update({'psycurveMode':'single_target'})
-pardict.update({'targetMaxIntensity':30, 'cueIntensity':40, 'targetIntensityMode':'fixed'})
+pardict.update(cuedMiceMode)
 cued005 = pardict.copy()
 
 pardict = {'subject':'cued006','experimenter':'santiago'}
 pardict.update({'outcomeMode':'only_if_correct'})
 pardict.update(frequencySet5to24)
-pardict.update({'psycurveMode':'single_target'})
-pardict.update({'targetMaxIntensity':30, 'cueIntensity':40, 'targetIntensityMode':'fixed'})
+pardict.update(cuedMiceMode)
 cued006 = pardict.copy()
 
 
 # -- Adaptive categorization, psychometric and switching --
-latestMiceMode = sidesDirectMode
+latestMiceMode = increaseDelayMode
 
 pardict = {'subject':'adap006','experimenter':'santiago'}
 pardict.update(latestMiceMode)
@@ -190,8 +186,8 @@ test088 = pardict.copy()
 
 pardict = {'subject':'test087','experimenter':'santiago'}
 pardict.update(switchBlocksMode)
-#pardict.update(frequencySet6to19)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
+#pardict.update(frequencySet5to24)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 test087 = pardict.copy()
 
