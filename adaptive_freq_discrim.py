@@ -334,9 +334,9 @@ class Paradigm(templates.Paradigm2AFC):
             # -- Set current block if switching --
             switchByPerformance = self.params['switchByPerformance'].get_string()
             if switchByPerformance=='off':
+                # --- Swith according to trialsPerBlock ---
                 trialsPerBlock = self.params['trialsPerBlock'].get_value()
                 nValid = self.params['nValid'].get_value()
-                ###print '{0} {1} {2}'.format(nValid,trialsPerBlock,np.mod(nValid,trialsPerBlock)) ### DEBUG
                 if (nValid>0) and not (np.mod(nValid,trialsPerBlock)):
                     if self.results['valid'][nextTrial-1]:
                         if self.params['currentBlock'].get_string()=='low_boundary':
@@ -347,22 +347,25 @@ class Paradigm(templates.Paradigm2AFC):
                             newBlock = 'mid_boundary' # No switch
                         self.params['currentBlock'].set_string(newBlock)
             elif switchByPerformance=='on':
-                print '************************* CHECK {0} *******************************'.format(self.lastSwitch)
+                # --- Swith according to performance of last nGoodTrials trials ---
                 perfLevel = 0.6
-                nGoodTrials = 4
+                nGoodTrials = 100
                 nValid = self.params['nValid'].get_value()
                 thisTrialValid = self.results['valid'][nextTrial-1]
-                perfEachFreq = [0.7,0.8,0.9]
-                if thisTrialValid and (nValid-self.lastSwitch)>=nGoodTrials and np.all(perfLevel):
+                rangeStart = max((nextTrial-nGoodTrials),0)
+                trialRange = range(rangeStart,nextTrial)
+                perfEachSide = self.calculate_performance(trialRange)
+                currentBlock = self.params['currentBlock'].get_string()
+                if currentBlock!='mid_boundary' and thisTrialValid and \
+                        (nValid-self.lastSwitch)>=nGoodTrials and np.all(perfEachSide>perfLevel):
                     self.lastSwitch=nextTrial
-                    if self.params['currentBlock'].get_string()=='low_boundary':
+                    if currentBlock=='low_boundary':
                         newBlock = 'high_boundary'
-                    elif self.params['currentBlock'].get_string()=='high_boundary':
+                    elif currentBlock=='high_boundary':
                         newBlock = 'low_boundary'
                     else:
-                        newBlock = 'mid_boundary' # No switch
+                        raise ValueError('currentBlock has an unknown value.')
                     self.params['currentBlock'].set_string(newBlock)
-                    
                     
 
         #import pdb; pdb.set_trace() ### DEBUG
@@ -725,14 +728,23 @@ class Paradigm(templates.Paradigm2AFC):
                 	self.params['nValid'].add(1)
                         self.results['valid'][trialIndex] = 1
 
-    def calculate_performance(self,nTrialsToUse):
+    def calculate_performance(self,trialRange):
         '''Calculate performance of the last N valid trials'''
-        '''
-        You need to know:
-        - What block
-        - which frequencies are relevant for this block
-        - Take last N valid trials (there may be less than N)
-        '''
+        correct = (self.results['outcome']==self.results.labels['outcome']['correct'])
+        rewardSide = self.results['rewardSide']
+        rewardSideLabels = self.results.labels['rewardSide']
+        validInRange = np.zeros(len(rewardSide),dtype=bool)
+        validInRange[trialRange] = True
+        validInRange = validInRange & self.results['valid']
+        validLeft = (rewardSide==rewardSideLabels['left']) & validInRange
+        validRight = (rewardSide==rewardSideLabels['right']) & validInRange
+        correctLeft = validLeft & correct
+        correctRight = validRight & correct
+        nValidLeft = np.sum(validLeft)
+        nValidRight = np.sum(validRight)
+        perfLeft = np.sum(correctLeft)/float(nValidLeft) if (nValidLeft>0) else 0.0
+        perfRight = np.sum(correctRight)/float(nValidRight) if (nValidRight>0) else 0.0
+        return np.array([perfLeft,perfRight])
 
     def execute_automation(self):
         automationMode = self.params['automationMode'].get_string()
