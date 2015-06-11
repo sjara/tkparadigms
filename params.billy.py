@@ -29,7 +29,7 @@ basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary'
 #                   'currentBlock':'mid_boundary', 'targetDuration':0.1,'targetMaxIntensity':80,'lowFreq':4000,'highFreq':13000}
 
 psyCurveMidBound = {'trialsPerBlock':2000,'punishTimeError':4,'delayToTargetMean':0.2,
-                    'currentBlock':'mid_boundary','psycurveMode':'uniform'}
+                    'currentBlock':'mid_boundary','psycurveMode':'uniform','psycurveNfreq':6}
 
 switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4,'delayToTargetMean':0.2}
 
@@ -207,32 +207,28 @@ test085 = pardict.copy()
 
 
 
-pardict = {'subject':'test059','experimenter':'santiago'}
-#pardict.update(psyCurveMidBound)
-#pardict.update(switchDailyMode)
-pardict.update(switchBlocksMode)
-#pardict.update({'currentBlock':'high_boundary'})
-pardict.update(frequencySet6to19)
-test059 = pardict.copy()
-
 ################################################################################################################################
 
-test055frequency = {'lowFreq':7650,'midFreq':8000,'highFreq':10000}
-
-pardict = {'subject':'test055','experimenter':'santiago'}
-pardict.update(psyCurveMidBound)
-pardict.update(test055frequency)
-test055 = pardict.copy()
-
-pardict = {'subject':'test053','experimenter':'santiago'}
-pardict.update(switchBlocksMode)
-pardict.update(frequencySet6to19)
-pardict.update({'punishTimeEarly':0.1,'punishSoundAmplitude':0.05})
-test053 = pardict.copy()
+test086frequency = {'lowFreq':8350,'midFreq':11000,'highFreq':14300}
+test053frequency = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
+fixIntensity = {'targetIntensityMode':'fixed','targetMaxIntensity':50}
 
 pardict = {'subject':'test086','experimenter':'santiago'}
-pardict.update(switchBlocksMode)
-#pardict.update({'currentBlock':'high_boundary'})
-pardict.update(frequencySet6to19)
-pardict.update({'punishTimeEarly':0.1,'punishSoundAmplitude':0.05})
+pardict.update(psyCurveMidBound)
+pardict.update(test086frequency)
+pardict.update(fixIntensity)
 test086 = pardict.copy()
+
+pardict = {'subject':'test053','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(test053frequency)
+pardict.update(fixIntensity)
+test086 = pardict.copy()
+
+pardict = {'subject':'test059','experimenter':'santiago'}
+pardict.update(switchBlocksMode)
+pardict.update(frequencySet6to19)
+pardict.update({'punishTimeEarly':0,'punishSoundAmplitude':0.01})
+pardict.update(fixIntensity)
+test053 = pardict.copy()
+
