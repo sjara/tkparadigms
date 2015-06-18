@@ -49,7 +49,8 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 
 # -- Cued discrimination task --
 #cuedMiceMode = {'targetMaxIntensity':30, 'cueIntensity':40, 'targetIntensityMode':'fixed','psycurveMode':'single_target'}
-cuedMiceMode = {'targetMaxIntensity':40, 'cueIntensity':40, 'targetIntensityMode':'fixed', 'psycurveMode':'off'}
+#cuedMiceMode = {'targetMaxIntensity':40, 'cueIntensity':40, 'targetIntensityMode':'fixed', 'psycurveMode':'off'}
+cuedMiceMode = {'targetMaxIntensity':40, 'cueIntensity':40, 'targetIntensityMode':'fixed', 'psycurveMode':'two_cues_psy'}
 
 pardict = {'subject':'cued000','experimenter':'santiago'} # FOR TESTING
 #pardict.update(directMode)
@@ -57,7 +58,7 @@ pardict.update({'outcomeMode':'on_next_correct'})
 pardict.update({'lowFreq':1000,'midFreq':2000,'highFreq':4000})
 #pardict.update({'delayToTargetMean':0.5})
 #pardict.update({'automationMode':'increase_delay'})
-pardict.update({'psycurveMode':'off'})
+pardict.update({'psycurveMode':'two_cues_psy'})
 cued000 = pardict.copy()
 
 pardict = {'subject':'cued001','experimenter':'santiago'}
