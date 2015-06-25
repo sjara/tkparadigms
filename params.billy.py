@@ -209,7 +209,7 @@ test085 = pardict.copy()
 
 ################################################################################################################################
 
-test086frequency = {'lowFreq':8350,'midFreq':11000,'highFreq':14300}
+test086frequency = {'lowFreq':9920,'midFreq':11000,'highFreq':12038}
 test053frequency = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
 fixIntensity = {'targetIntensityMode':'fixed','targetMaxIntensity':50}
 
