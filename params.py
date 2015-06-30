@@ -140,8 +140,9 @@ adap010 = pardict.copy()
 
 
 # -- Adaptive categorization, psychometric and switching --
-firstAdapMice = {'automationMode':'increase_delay','delayToTargetMean':0.1,'delayToTargetHalfRange':0,
-                 'trialsPerBlock':2000}
+#firstAdapMice = {'automationMode':'increase_delay','delayToTargetMean':0.1,'delayToTargetHalfRange':0,
+#                 'trialsPerBlock':2000}
+firstAdapMice = {'delayToTargetMean':0.2,'trialsPerBlock':300}
 
 pardict = {'subject':'adap001','experimenter':'santiago'}
 pardict.update(firstAdapMice)
