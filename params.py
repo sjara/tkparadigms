@@ -109,8 +109,8 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap006 = pardict.copy()
 
 pardict = {'subject':'adap007','experimenter':'santiago'}
-pardict.update(basicDiscriminationMode)
-#pardict.update(psyCurveMidBound)
+#pardict.update(basicDiscriminationMode)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet5to24)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
@@ -124,8 +124,8 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap008 = pardict.copy()
 
 pardict = {'subject':'adap009','experimenter':'santiago'}
-pardict.update(basicDiscriminationMode)
-#pardict.update(psyCurveMidBound)
+#pardict.update(basicDiscriminationMode)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet5to24)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
