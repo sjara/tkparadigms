@@ -33,7 +33,7 @@ psyCurveMidBound = {'trialsPerBlock':2000,'punishTimeError':4,'delayToTargetMean
 
 switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4,'delayToTargetMean':0.2}
 
-switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
+switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2,'trialsPerBlock':200,}
 
 #pardict.update({'antibiasMode':'repeat_mistake'})
 #pardict.update(basicDiscriminationMode)
