@@ -7,9 +7,12 @@ noisetest = {'stimDur':0.1,
              'isiMax':0.2,
              'randomMode':'Ordered',
              'soundMode':'Sine',
-             'minInt':80,
-             'maxInt':80,
+             'minInt':70,
+             'maxInt':70,
              'numInt':1,
+             'numTones':5,
+             'maxFreq':8000,
+             'minFreq':2000,
              'experimenter' : 'billy',
              'subject':'noisetest'}
 
@@ -201,4 +204,42 @@ test086freq = {'stimDur':0.1,
            'maxInt':50,
            'soundMode' : 'Chord',
            'subject':'test086',
+           'experimenter' : 'billy'}
+
+test059noise = {'stimDur':0.1,
+           'isiMin':0.5,
+           'isiMax': 1,
+           'minInt':50,
+           'maxInt':50,
+           'soundMode' : 'Noise',
+           'noiseAmp' : 0.05,
+           'subject':'test059',
+           'experimenter' : 'billy'}
+
+test059freq = {'stimDur':0.1,
+           'isiMin':0.5,
+           'isiMax':1,
+           'minInt':50,
+           'maxInt':50,
+           'soundMode' : 'Chord',
+           'subject':'test059',
+           'experimenter' : 'billy'}
+
+test089noise = {'stimDur':0.1,
+           'isiMin':0.5,
+           'isiMax': 1,
+           'minInt':50,
+           'maxInt':50,
+           'soundMode' : 'Noise',
+           'noiseAmp' : 0.05,
+           'subject':'test089',
+           'experimenter' : 'billy'}
+
+test089freq = {'stimDur':0.1,
+           'isiMin':0.5,
+           'isiMax':1,
+           'minInt':50,
+           'maxInt':50,
+           'soundMode' : 'Chord',
+           'subject':'test089',
            'experimenter' : 'billy'}
