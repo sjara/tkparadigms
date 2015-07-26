@@ -45,6 +45,32 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
                    'currentBlock':'mid_boundary'}
 
 
+# -- Drd1::ChR2 mice. Frequency discrimination task --
+
+pardict = {'subject':'d1pi002','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+d1pi002 = pardict.copy()
+
+pardict = {'subject':'d1pi003','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+d1pi003 = pardict.copy()
+
+pardict = {'subject':'d1pi004','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+d1pi004 = pardict.copy()
+
+pardict = {'subject':'d1pi005','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+d1pi005 = pardict.copy()
+
+pardict = {'subject':'d1pi006','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+d1pi006 = pardict.copy()
 
 
 # -- Cued discrimination task --
