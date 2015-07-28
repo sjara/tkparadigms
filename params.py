@@ -232,8 +232,9 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 test086 = pardict.copy()
 
 pardict = {'subject':'test085','experimenter':'santiago'}
-pardict.update(switchBlocksMode)
+#pardict.update(switchBlocksMode)
 #pardict.update({'currentBlock':'high_boundary'})
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 test085 = pardict.copy()
