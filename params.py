@@ -21,7 +21,8 @@ directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfR
                    'currentBlock':'mid_boundary'}
 increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                      'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.05,
-                     'antibiasMode':'repeat_mistake'}
+                     'punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
+#'antibiasMode':'repeat_mistake'
 
 basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary'}
 
@@ -49,17 +50,20 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 
 pardict = {'subject':'d1pi003','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
+pardict.update({'antibiasMode':'repeat_mistake'})
 d1pi003 = pardict.copy()
 
 pardict = {'subject':'d1pi004','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
+pardict.update({'antibiasMode':'repeat_mistake'})
 d1pi004 = pardict.copy()
 
 pardict = {'subject':'d1pi005','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
+pardict.update({'antibiasMode':'repeat_mistake'})
 d1pi005 = pardict.copy()
 
 pardict = {'subject':'d1pi006','experimenter':'santiago'}
