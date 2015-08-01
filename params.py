@@ -57,7 +57,7 @@ d1pi003 = pardict.copy()
 pardict = {'subject':'d1pi004','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
 pardict.update(increaseDelayMode)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 d1pi004 = pardict.copy()
 
 pardict = {'subject':'d1pi005','experimenter':'santiago'}
