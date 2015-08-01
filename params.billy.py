@@ -74,6 +74,7 @@ pardict = {'subject':'test087','experimenter':'santiago'}
 pardict.update(switchBlocksMode)
 pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.03})
+pardict.update(fixIntensity)
 test087 = pardict.copy()
 
 pardict = {'subject':'test089','experimenter':'santiago'}
@@ -81,4 +82,5 @@ pardict.update(switchBlocksMode)
 #pardict.update({'currentBlock':'low_boundary'})
 pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.03})
+pardict.update(fixIntensity)
 test089 = pardict.copy()
