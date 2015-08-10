@@ -172,7 +172,7 @@ adap010 = pardict.copy()
 firstAdapMice = {'delayToTargetMean':0.2,'trialsPerBlock':300}
 
 pardict = {'subject':'adap001','experimenter':'santiago'}
-pardict.update(firstAdapMice)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap001 = pardict.copy()
