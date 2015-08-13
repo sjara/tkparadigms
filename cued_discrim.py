@@ -81,9 +81,9 @@ class Paradigm(templates.Paradigm2AFC):
 
 
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
-                                                         ['off','uniform'],
+                                                         ['off','uniform','single_target','two_cues_psy'],
                                                          value=1,group='Psychometric parameters')
-        self.params['psycurveNfreq'] = paramgui.NumericParam('N frequencies',value=8,decimals=0,
+        self.params['psycurveNfreq'] = paramgui.NumericParam('N frequencies',value=7,decimals=0,
                                                              group='Psychometric parameters')
         psychometricParams = self.params.layout_group('Psychometric parameters')
 
@@ -326,6 +326,8 @@ class Paradigm(templates.Paradigm2AFC):
         lowFreq = self.params['lowFreq'].get_value()
         currentBlock = self.params['currentBlock'].get_string()
         psycurveMode = self.params['psycurveMode'].get_string()
+
+        '''
         if psycurveMode=='off':
             if currentBlock=='mid_boundary':
                 freqsLH = [lowFreq,highFreq]
@@ -337,6 +339,40 @@ class Paradigm(templates.Paradigm2AFC):
                 targetFrequency = freqsLH[0]
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
                 targetFrequency = freqsLH[1]
+        '''
+        if psycurveMode=='off':
+            allTargetFreq = np.array([lowFreq,midFreq,highFreq])
+            allCueFreq = np.array([np.sqrt(lowFreq*midFreq),np.sqrt(midFreq*highFreq)])
+            randIndexTarget = np.random.randint(2)
+            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+                targetFrequency = allTargetFreq[0:2][randIndexTarget]
+                possibleCueFreq = allCueFreq[allCueFreq>targetFrequency]
+                randIndexCue = np.random.randint(len(possibleCueFreq))
+                cueFrequency = possibleCueFreq[randIndexCue]
+            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+                targetFrequency = allTargetFreq[1:3][randIndexTarget]
+                possibleCueFreq = allCueFreq[allCueFreq<targetFrequency]
+                randIndexCue = np.random.randint(len(possibleCueFreq))
+                cueFrequency = possibleCueFreq[randIndexCue]
+        elif psycurveMode=='single_target':
+            allCueFreq = np.array([np.sqrt(lowFreq*midFreq),np.sqrt(midFreq*highFreq)])
+            targetFrequency = midFreq
+            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+                cueFrequency = allCueFreq[1]
+            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+                cueFrequency = allCueFreq[0]
+        elif psycurveMode=='two_cues_psy':
+            possibleCueFreq = np.array([np.sqrt(lowFreq*midFreq),np.sqrt(midFreq*highFreq)])
+            nFreqs = self.params['psycurveNfreq'].get_value()
+            allTargetFreq = np.logspace(np.log10(lowFreq),np.log10(highFreq),nFreqs)
+            randIndexCue = np.random.randint(len(possibleCueFreq))
+            cueFrequency = possibleCueFreq[randIndexCue]
+            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+                possibleTargetFreq = allTargetFreq[allTargetFreq<cueFrequency]
+            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+                possibleTargetFreq = allTargetFreq[allTargetFreq>cueFrequency]
+            randIndexTarget = np.random.randint(len(possibleTargetFreq))
+            targetFrequency = possibleTargetFreq[randIndexTarget]
         elif psycurveMode=='uniform':
             if currentBlock=='mid_boundary':
                 nFreqs = self.params['psycurveNfreq'].get_value()
@@ -355,19 +391,17 @@ class Paradigm(templates.Paradigm2AFC):
                 randindex = np.random.randint(len(freqsAll[rightFreqInds]))
                 targetFrequency = freqsAll[rightFreqInds][randindex]
                 #targetFrequency = np.random.choice(freqsAll[rightFreqInds])
-            pass
+            # -- Cue frequency --
+            nFreqs = self.params['psycurveNfreq'].get_value()
+            freqsAll = np.logspace(np.log10(lowFreq),np.log10(highFreq),nFreqs)
+            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+                possibleCueFreq = freqsAll[freqsAll>targetFrequency]
+            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+                possibleCueFreq = freqsAll[freqsAll<targetFrequency]
+            cueFrequency =  np.random.choice(possibleCueFreq)
+
         self.params['targetFrequency'].set_value(targetFrequency)
-
-        # -- Cue frequency --
-        nFreqs = self.params['psycurveNfreq'].get_value()
-        freqsAll = np.logspace(np.log10(lowFreq),np.log10(highFreq),nFreqs)
-        if nextCorrectChoice==self.results.labels['rewardSide']['left']:
-            possibleCueFreq = freqsAll[freqsAll>targetFrequency]
-        elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
-            possibleCueFreq = freqsAll[freqsAll<targetFrequency]
-        cueFrequency =  np.random.choice(possibleCueFreq)
         self.params['cueFrequency'].set_value(cueFrequency)
-
         self.prepare_sounds(targetFrequency,cueFrequency)
 
         # -- Prepare state matrix --
@@ -621,11 +655,15 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='playCueOff', statetimer=cueInterval,
                               transitions={'Cin':'delayPeriod','Tup':'playCueOn'})
             self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
-                              transitions={'Tup':'playCueLast'},
+                              transitions={'Tup':'playCueLast', 'Cout':'waitForCenterPoke'},
                               serialOut=0)
+            '''
             self.sm.add_state(name='playCueLast', statetimer=cueDuration,
                               transitions={'Tup':'delayAfterCue'},
                               serialOut=cueSoundID)
+            '''
+            self.sm.add_state(name='playCueLast', statetimer=0,
+                              transitions={'Tup':'delayAfterCue'}) # serialOut=cueSoundID
             self.sm.add_state(name='delayAfterCue', statetimer=0,
                               transitions={'Tup':'playTarget'},
                               serialOut=0)
@@ -678,10 +716,7 @@ class Paradigm(templates.Paradigm2AFC):
         #print eventsThisTrial
         statesThisTrial = eventsThisTrial[:,2]
 
-
-        print eventsThisTrial
-        ####### FIX THIS #########
-
+        ####### FIXME: Make sure resutls are calculated properly #########
 
         # -- Find beginning of trial --
         startTrialStateID = self.sm.statesNameToIndex['startTrial']

@@ -120,7 +120,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['targetAmplitude'] = paramgui.NumericParam('Target amplitude',value=0.0,units='[0-1]',
                                                         enabled=False,decimals=4,group='Sound parameters')
         self.params['punishSoundAmplitude'] = paramgui.NumericParam('Punish amplitude',value=0.01,
-                                                              units='[0-1]',enabled=False,
+                                                              units='[0-1]',enabled=True,
                                                               group='Sound parameters')
         
         '''
@@ -242,15 +242,24 @@ class Paradigm(templates.Paradigm2AFC):
         self.soundClient.set_sound(2,s2)
         '''
 
+        '''
+        # This code was moved to the method prepare_punish_sound()
         punishSoundAmplitude = self.params['punishSoundAmplitude'].get_value()
         sNoise = {'type':'noise', 'duration':0.5, 'amplitude':punishSoundAmplitude}
         self.punishSoundID = 127
         self.soundClient.set_sound(self.punishSoundID,sNoise)
+        '''
+        self.punishSoundID = 127
         self.soundClient.start()
 
         # -- Prepare first trial --
         #self.prepare_next_trial(0)
        
+    def prepare_punish_sound(self):
+        punishSoundAmplitude = self.params['punishSoundAmplitude'].get_value()
+        sNoise = {'type':'noise', 'duration':0.5, 'amplitude':punishSoundAmplitude}
+        self.soundClient.set_sound(self.punishSoundID,sNoise)
+        
     def prepare_target_sound(self,targetFrequency):
         if self.params['targetIntensityMode'].get_string() == 'randMinus20':
             possibleIntensities = self.params['targetMaxIntensity'].get_value()+\
@@ -373,6 +382,7 @@ class Paradigm(templates.Paradigm2AFC):
             pass
         self.params['targetFrequency'].set_value(targetFrequency)
         self.prepare_target_sound(targetFrequency)
+        self.prepare_punish_sound()
 
         # -- Prepare state matrix --
         self.set_state_matrix(nextCorrectChoice)
