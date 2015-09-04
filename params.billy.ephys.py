@@ -243,3 +243,41 @@ test089freq = {'stimDur':0.1,
            'soundMode' : 'Chord',
            'subject':'test089',
            'experimenter' : 'billy'}
+
+test087noise = {'stimDur':0.1,
+           'isiMin':0.5,
+           'isiMax': 1,
+           'minInt':50,
+           'maxInt':50,
+           'soundMode' : 'Noise',
+           'noiseAmp' : 0.05,
+           'subject':'test087',
+           'experimenter' : 'billy'}
+
+test087freq = {'stimDur':0.1,
+           'isiMin':0.5,
+           'isiMax':1,
+           'minInt':50,
+           'maxInt':50,
+           'soundMode' : 'Chord',
+           'subject':'test087',
+           'experimenter' : 'billy'}
+
+adap002noise = {'stimDur':0.1,
+           'isiMin':0.5,
+           'isiMax': 1,
+           'minInt':50,
+           'maxInt':50,
+           'soundMode' : 'Noise',
+           'noiseAmp' : 0.05,
+           'subject':'adap002',
+           'experimenter' : 'billy'}
+
+adap002freq = {'stimDur':0.1,
+           'isiMin':0.5,
+           'isiMax':1,
+           'minInt':50,
+           'maxInt':50,
+           'soundMode' : 'Chord',
+           'subject':'adap002',
+           'experimenter' : 'billy'}
