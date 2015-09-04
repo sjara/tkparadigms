@@ -303,7 +303,7 @@ class Paradigm(QtGui.QMainWindow):
             stimOutput = stimSync+laserSync
             serialOutput = 0
         else:
-            stimOutput = []
+            stimOutput = stimSync
             serialOutput = 1
             self.soundClient.set_sound(1,sound)
 
