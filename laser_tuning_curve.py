@@ -117,8 +117,8 @@ class Paradigm(QtGui.QMainWindow):
         self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
                                                          ['Ordered','Random'],
                                                          value=1,group='Parameters')
-        self.params['stimType'] = paramgui.MenuParam('Sound Type',
-                                                         ['Sine','Chord', 'Noise','Laser'],
+        self.params['stimType'] = paramgui.MenuParam('Stim Type',
+                                                         ['Sine','Chord', 'Noise','Laser', 'LaserTrain'],
                                                          value=2,group='Parameters')
         self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
                                                             value=0, units='Hz',
@@ -300,7 +300,7 @@ class Paradigm(QtGui.QMainWindow):
             sound = {'type':'noise', 'duration':stimDur,
                      'amplitude':noiseAmp}
 
-        if stimType == 'Laser':
+        if (stimType == 'Laser') or (stimType == 'LaserTrain'):
             stimOutput = stimSync+laserSync
             serialOutput = 0
         else:
@@ -313,15 +313,55 @@ class Paradigm(QtGui.QMainWindow):
         self.params['currentAmp'].set_value(targetAmp)
 
         # -- Prepare the state transition matrix --
-        self.sm.add_state(name='startTrial', statetimer = 0.5 * isi,  
-                          transitions={'Tup':'output1On'})
-        self.sm.add_state(name='output1On', statetimer=stimDur, 
-                          transitions={'Tup':'output1Off'},
-                          outputsOn=stimOutput, 
-                          serialOut=serialOutput)
-        self.sm.add_state(name='output1Off', statetimer = 0.5 * isi,
-                          transitions={'Tup':'readyForNextTrial'},
-                          outputsOff=stimOutput) 
+        soa = 0.2
+        if stimType == 'LaserTrain':
+            self.sm.add_state(name='startTrial', statetimer = 0.5 * isi,  
+                              transitions={'Tup':'output1On'})
+            self.sm.add_state(name='output1On', statetimer=stimDur, 
+                              transitions={'Tup':'output1Off'},
+                              outputsOn=stimOutput, 
+                              serialOut=serialOutput)
+            self.sm.add_state(name='output1Off', statetimer = soa-stimDur,
+                              transitions={'Tup':'output2On'},
+                              outputsOff=stimOutput) 
+            self.sm.add_state(name='output2On', statetimer=stimDur, 
+                              transitions={'Tup':'output2Off'},
+                              outputsOn=stimOutput, 
+                              serialOut=serialOutput)
+            self.sm.add_state(name='output2Off', statetimer = soa-stimDur,
+                              transitions={'Tup':'output3On'},
+                              outputsOff=stimOutput) 
+            self.sm.add_state(name='output3On', statetimer=stimDur, 
+                              transitions={'Tup':'output3Off'},
+                              outputsOn=stimOutput, 
+                              serialOut=serialOutput)
+            self.sm.add_state(name='output3Off', statetimer = soa-stimDur,
+                              transitions={'Tup':'output4On'},
+                              outputsOff=stimOutput) 
+            self.sm.add_state(name='output4On', statetimer=stimDur, 
+                              transitions={'Tup':'output4Off'},
+                              outputsOn=stimOutput, 
+                              serialOut=serialOutput)
+            self.sm.add_state(name='output4Off', statetimer = soa-stimDur,
+                              transitions={'Tup':'output5On'},
+                              outputsOff=stimOutput) 
+            self.sm.add_state(name='output5On', statetimer=stimDur, 
+                              transitions={'Tup':'output5Off'},
+                              outputsOn=stimOutput, 
+                              serialOut=serialOutput)
+            self.sm.add_state(name='output5Off', statetimer = 0.5 * isi,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=stimOutput) 
+        else:
+            self.sm.add_state(name='startTrial', statetimer = 0.5 * isi,  
+                              transitions={'Tup':'output1On'})
+            self.sm.add_state(name='output1On', statetimer=stimDur, 
+                              transitions={'Tup':'output1Off'},
+                              outputsOn=stimOutput, 
+                              serialOut=serialOutput)
+            self.sm.add_state(name='output1Off', statetimer = 0.5 * isi,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=stimOutput) 
 
         
         self.dispatcherModel.set_state_matrix(self.sm)
