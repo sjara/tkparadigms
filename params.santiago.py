@@ -9,3 +9,8 @@ tuningAM = {'subject':'test000', 'experimenter':'santiago',
             'stimType':'AM', 'stimDur':0.5,
             'isiMin':1, 'isiMax':2}
 
+tuningAM2 = {'subject':'test089', 'experimenter':'billy', 
+            'minFreq':4, 'maxFreq':128, 'numTones':11, 
+            'stimType':'AM', 'stimDur':0.5,
+            'isiMin':0.5, 'isiMax':2, 'noiseAmp':0.1}
+
