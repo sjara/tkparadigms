@@ -81,9 +81,9 @@ class Paradigm(templates.Paradigm2AFC):
 
 
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
-                                                         ['off','uniform','single_target'],
+                                                         ['off','uniform','single_target','two_cues_psy'],
                                                          value=1,group='Psychometric parameters')
-        self.params['psycurveNfreq'] = paramgui.NumericParam('N frequencies',value=8,decimals=0,
+        self.params['psycurveNfreq'] = paramgui.NumericParam('N frequencies',value=7,decimals=0,
                                                              group='Psychometric parameters')
         psychometricParams = self.params.layout_group('Psychometric parameters')
 
@@ -361,6 +361,18 @@ class Paradigm(templates.Paradigm2AFC):
                 cueFrequency = allCueFreq[1]
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
                 cueFrequency = allCueFreq[0]
+        elif psycurveMode=='two_cues_psy':
+            possibleCueFreq = np.array([np.sqrt(lowFreq*midFreq),np.sqrt(midFreq*highFreq)])
+            nFreqs = self.params['psycurveNfreq'].get_value()
+            allTargetFreq = np.logspace(np.log10(lowFreq),np.log10(highFreq),nFreqs)
+            randIndexCue = np.random.randint(len(possibleCueFreq))
+            cueFrequency = possibleCueFreq[randIndexCue]
+            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+                possibleTargetFreq = allTargetFreq[allTargetFreq<cueFrequency]
+            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+                possibleTargetFreq = allTargetFreq[allTargetFreq>cueFrequency]
+            randIndexTarget = np.random.randint(len(possibleTargetFreq))
+            targetFrequency = possibleTargetFreq[randIndexTarget]
         elif psycurveMode=='uniform':
             if currentBlock=='mid_boundary':
                 nFreqs = self.params['psycurveNfreq'].get_value()
