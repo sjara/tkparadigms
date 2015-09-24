@@ -93,3 +93,10 @@ pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.03})
 pardict.update({'punishTimeError':4})
 adap002 = pardict.copy()
+
+pardict = {'subject':'adap004','experimenter':'santiago'}
+pardict.update(firstAdapMice)
+pardict.update(frequencySet6to19)
+pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.03})
+pardict.update({'punishTimeError':4})
+adap004 = pardict.copy()
