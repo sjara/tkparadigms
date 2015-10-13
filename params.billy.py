@@ -86,17 +86,29 @@ pardict.update(fixIntensity)
 test089 = pardict.copy()
 
 firstAdapMice = {'delayToTargetMean':0.2,'trialsPerBlock':300}
-
+'''
 pardict = {'subject':'adap002','experimenter':'santiago'}
 pardict.update(firstAdapMice)
 pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.03})
 pardict.update({'punishTimeError':4})
 adap002 = pardict.copy()
-
+'''
 pardict = {'subject':'adap004','experimenter':'santiago'}
 pardict.update(firstAdapMice)
 pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.03})
 pardict.update({'punishTimeError':4})
+pardict.update(fixIntensity)
 adap004 = pardict.copy()
+
+
+adap002frequency = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
+
+pardict = {'subject':'adap002','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(adap002frequency)
+pardict.update(fixIntensity)
+pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.03})
+pardict.update({'punishTimeError':4})
+adap002 = pardict.copy()
