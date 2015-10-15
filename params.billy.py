@@ -103,7 +103,7 @@ pardict.update(fixIntensity)
 adap004 = pardict.copy()
 
 
-adap002frequency = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
+adap002frequency = {'lowFreq':6200,'midFreq':11000,'highFreq':16000}
 
 pardict = {'subject':'adap002','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
