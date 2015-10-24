@@ -126,7 +126,7 @@ cued006 = pardict.copy()
 
 
 # -- Adaptive categorization, psychometric and switching --
-adap3 = sidesDirectMode
+adap3 = directMode
 
 pardict = {'subject':'adap011','experimenter':'santiago'}
 pardict.update(adap3)
