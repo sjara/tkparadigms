@@ -130,35 +130,35 @@ adap3 = increaseDelayMode
 
 pardict = {'subject':'adap011','experimenter':'santiago'}
 pardict.update(adap3)
-pardict.update(frequencySet5to24)
-pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(frequencySet6to19)
+%pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap011 = pardict.copy()
 
 pardict = {'subject':'adap012','experimenter':'santiago'}
 pardict.update(adap3)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap012 = pardict.copy()
 
 pardict = {'subject':'adap013','experimenter':'santiago'}
 pardict.update(adap3)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap013 = pardict.copy()
 
 pardict = {'subject':'adap014','experimenter':'santiago'}
 pardict.update(adap3)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap014 = pardict.copy()
 
 pardict = {'subject':'adap015','experimenter':'santiago'}
 pardict.update(adap3)
-pardict.update(frequencySet5to24)
+pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap015 = pardict.copy()
