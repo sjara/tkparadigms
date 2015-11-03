@@ -51,7 +51,7 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 
 pardict = {'subject':'d1pi003','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(basicDiscriminationMode)
+pardict.update(psyCurveMidBound)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 d1pi003 = pardict.copy()
 
@@ -63,7 +63,7 @@ d1pi004 = pardict.copy()
 
 pardict = {'subject':'d1pi005','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(basicDiscriminationMode)
+pardict.update(psyCurveMidBound)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 d1pi005 = pardict.copy()
 
