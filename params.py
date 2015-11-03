@@ -209,7 +209,7 @@ adap010 = pardict.copy()
 # -- Adaptive categorization, psychometric and switching --
 #firstAdapMice = {'automationMode':'increase_delay','delayToTargetMean':0.1,'delayToTargetHalfRange':0,
 #                 'trialsPerBlock':2000}
-firstAdapMice = {'delayToTargetMean':0.2,'trialsPerBlock':300}
+firstAdapMice = {'punishTimeError':4, 'delayToTargetMean':0.2,'trialsPerBlock':300}
 
 frequencySet6to15 = {'lowFreq':6200,'midFreq':11000,'highFreq':15000}
 
