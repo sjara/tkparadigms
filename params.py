@@ -247,7 +247,7 @@ pardict = {'subject':'adap005','experimenter':'santiago'}
 #pardict.update(increaseDelayMode)
 #pardict.update(switchDailyMode)
 #pardict.update(switchBlocksMode)
-pardict.update(firstAdapMice)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap005 = pardict.copy()
