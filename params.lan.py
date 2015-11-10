@@ -53,3 +53,23 @@ tuningCurve = {'stimDur':0.1,
                'numInt':6,
                'subject':'d1pi002',
                'experimenter' : 'lan'}
+
+psyCurveChangeReward = {'punishTimeError':4,
+                     'delayToTargetMean':0.1,
+                     'currentBlock':'same_reward',
+                     'psycurveMode':'uniform',
+                     'automationMode':'same_left_right',
+                     'punishTimeEarly':0.5,
+                     'punishSoundAmplitude':0.05}
+
+pardict = {'subject':'adap005','experimenter':'santiago'}
+pardict.update(psyCurveChangeReward)
+pardict.update({'trialsPerBlock':150})
+pardict.update({'lowFreq':6200,'highFreq':19200})
+adap005 = pardict.copy()
+
+pardict = {'subject':'adap008','experimenter':'santiago'}
+pardict.update(psyCurveChangeReward)
+pardict.update({'trialsPerBlock':100})
+pardict.update({'lowFreq':5000,'highFreq':24000})
+adap008 = pardict.copy()
