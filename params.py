@@ -126,12 +126,14 @@ cued006 = pardict.copy()
 
 
 # -- Adaptive categorization, psychometric and switching --
-adap3 = increaseDelayMode
+adap3 = basicDiscriminationMode
+adap3.update({'delayToTargetMean':0.1})
 
 pardict = {'subject':'adap011','experimenter':'santiago'}
 pardict.update(adap3)
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'lowFreq':5000,'midFreq':9000,'highFreq':16000})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap011 = pardict.copy()
 
@@ -152,7 +154,7 @@ adap013 = pardict.copy()
 pardict = {'subject':'adap014','experimenter':'santiago'}
 pardict.update(adap3)
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap014 = pardict.copy()
 
