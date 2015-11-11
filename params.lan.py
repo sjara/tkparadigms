@@ -1,4 +1,8 @@
-
+laserSounds = {'subject':'d1pi007',
+               'experimenter' : 'lan',
+               'noiseAmp':0.1,
+               'laserFrontOverhang':0.01,
+               'laserBackOverhang':0.01}
 
 
 lasertrain = {'stimDur':0.01,
@@ -11,7 +15,7 @@ lasertrain = {'stimDur':0.01,
                'minInt':40,
                'maxInt':70,
                'numInt':4,
-               'subject':'d1pi002',
+               'subject':'d1pi007',
                'experimenter' : 'lan'}
 
 noisebursts = {'stimDur':0.1,
@@ -24,11 +28,11 @@ noisebursts = {'stimDur':0.1,
                'minInt':40,
                'maxInt':70,
                'numInt':4,
-               'subject':'d1pi002',
+               'subject':'d1pi007',
                'experimenter' : 'lan'}
 
-laserpulse = {'stimDur':0.1,
-               'isiMean':0.9,
+laserpulse = {'stimDur':0.05,
+               'isiMean':0.95,
                'isiHalfRange': 0,
                'noiseAmp':0.05,
                'stimType' : 'Laser',
@@ -37,7 +41,7 @@ laserpulse = {'stimDur':0.1,
                'minInt':40,
                'maxInt':70,
                'numInt':4,
-               'subject':'d1pi002',
+               'subject':'d1pi007',
                'experimenter' : 'lan'}
 
 
@@ -51,5 +55,31 @@ tuningCurve = {'stimDur':0.1,
                'minInt':20,
                'maxInt':70,
                'numInt':6,
-               'subject':'d1pi002',
+               'subject':'d1pi007',
                'experimenter' : 'lan'}
+
+tuningAM = {'subject':'d1pi007', 'experimenter':'lan', 
+            'minFreq':4, 'maxFreq':128, 'numTones':11, 
+            'stimType':'AM', 'stimDur':0.5,
+            'isiMin':1, 'isiMax':2}
+
+
+psyCurveChangeReward = {'punishTimeError':4,
+                     'delayToTargetMean':0.1,
+                     'currentBlock':'same_reward',
+                     'psycurveMode':'uniform',
+                     'automationMode':'same_left_right',
+                     'punishTimeEarly':0.5,
+                     'punishSoundAmplitude':0.05}
+
+pardict = {'subject':'adap005','experimenter':'santiago'}
+pardict.update(psyCurveChangeReward)
+pardict.update({'trialsPerBlock':150})
+pardict.update({'lowFreq':6200,'highFreq':19200})
+adap005 = pardict.copy()
+
+pardict = {'subject':'adap008','experimenter':'santiago'}
+pardict.update(psyCurveChangeReward)
+pardict.update({'trialsPerBlock':100})
+pardict.update({'lowFreq':5000,'highFreq':24000})
+adap008 = pardict.copy()
