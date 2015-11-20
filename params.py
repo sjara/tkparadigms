@@ -51,8 +51,8 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 
 pardict = {'subject':'d1pi003','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(basicDiscriminationMode)
-pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(psyCurveMidBound)
+#pardict.update({'antibiasMode':'repeat_mistake'})
 d1pi003 = pardict.copy()
 
 pardict = {'subject':'d1pi004','experimenter':'santiago'}
@@ -63,7 +63,7 @@ d1pi004 = pardict.copy()
 
 pardict = {'subject':'d1pi005','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(basicDiscriminationMode)
+pardict.update(psyCurveMidBound)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 d1pi005 = pardict.copy()
 
@@ -126,10 +126,52 @@ cued006 = pardict.copy()
 
 
 # -- Adaptive categorization, psychometric and switching --
-latestMiceMode = switchDailyMode
+adap3 = basicDiscriminationMode
+adap3.update({'delayToTargetMean':0.2})
+
+pardict = {'subject':'adap011','experimenter':'santiago'}
+pardict.update(adap3)
+pardict.update(frequencySet6to19)
+#pardict.update({'lowFreq':5000,'midFreq':9000,'highFreq':16000})
+pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap011 = pardict.copy()
+
+pardict = {'subject':'adap012','experimenter':'santiago'}
+pardict.update(adap3)
+pardict.update(frequencySet6to19)
+pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap012 = pardict.copy()
+
+pardict = {'subject':'adap013','experimenter':'santiago'}
+pardict.update(adap3)
+pardict.update(frequencySet6to19)
+pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap013 = pardict.copy()
+
+pardict = {'subject':'adap014','experimenter':'santiago'}
+pardict.update(adap3)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap014 = pardict.copy()
+
+pardict = {'subject':'adap015','experimenter':'santiago'}
+pardict.update(adap3)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap015 = pardict.copy()
+
+
+
+# -- Adaptive categorization, psychometric and switching --
+adap2 = switchBlocksMode
 
 pardict = {'subject':'adap006','experimenter':'santiago'}
-pardict.update(latestMiceMode)
+pardict.update(adap2)
 pardict.update(frequencySet5to24)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
@@ -144,7 +186,7 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap007 = pardict.copy()
 
 pardict = {'subject':'adap008','experimenter':'santiago'}
-pardict.update(latestMiceMode)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet5to24)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
@@ -159,7 +201,7 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap009 = pardict.copy()
 
 pardict = {'subject':'adap010','experimenter':'santiago'}
-pardict.update(latestMiceMode)
+pardict.update(adap2)
 pardict.update(frequencySet5to24)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
@@ -169,7 +211,11 @@ adap010 = pardict.copy()
 # -- Adaptive categorization, psychometric and switching --
 #firstAdapMice = {'automationMode':'increase_delay','delayToTargetMean':0.1,'delayToTargetHalfRange':0,
 #                 'trialsPerBlock':2000}
-firstAdapMice = {'delayToTargetMean':0.2,'trialsPerBlock':300}
+firstAdapMice = {'punishTimeError':4, 'delayToTargetMean':0.2,'trialsPerBlock':300}
+
+frequencySet6to15 = {'lowFreq':6200,'midFreq':11000,'highFreq':15000}
+
+frequencySet6to10 = {'lowFreq':6200,'midFreq':8000,'highFreq':10000}#This is for adap002
 
 pardict = {'subject':'adap001','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
@@ -178,9 +224,11 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap001 = pardict.copy()
 
 pardict = {'subject':'adap002','experimenter':'santiago'}
-pardict.update(firstAdapMice)
-pardict.update(frequencySet6to19)
-pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to10)
+pardict.update({'punishTimeError':2})
+pardict.update({'targetIntensityMode':'fixed','targetMaxIntensity':50})
+pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.05})
 adap002 = pardict.copy()
 
 pardict = {'subject':'adap003','experimenter':'santiago'}
@@ -201,7 +249,7 @@ pardict = {'subject':'adap005','experimenter':'santiago'}
 #pardict.update(increaseDelayMode)
 #pardict.update(switchDailyMode)
 #pardict.update(switchBlocksMode)
-pardict.update(firstAdapMice)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap005 = pardict.copy()

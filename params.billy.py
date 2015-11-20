@@ -70,26 +70,56 @@ pardict.update({'punishTimeEarly':0,'punishSoundAmplitude':0.01})
 pardict.update(fixIntensity)
 test059 = pardict.copy()
 
+test087frequency = {'lowFreq':6200,'midFreq':10000,'highFreq':18000}
 pardict = {'subject':'test087','experimenter':'santiago'}
 pardict.update(switchBlocksMode)
-pardict.update(frequencySet6to19)
-pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.03})
+pardict.update(test087frequency)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
 pardict.update(fixIntensity)
 test087 = pardict.copy()
 
+test089frequency = {'lowFreq':6200,'midFreq':9000,'highFreq':17000}
 pardict = {'subject':'test089','experimenter':'santiago'}
 pardict.update(switchBlocksMode)
 #pardict.update({'currentBlock':'low_boundary'})
-pardict.update(frequencySet6to19)
-pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.03})
+pardict.update(test089frequency)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
 pardict.update(fixIntensity)
 test089 = pardict.copy()
 
 firstAdapMice = {'delayToTargetMean':0.2,'trialsPerBlock':300}
-
+'''
 pardict = {'subject':'adap002','experimenter':'santiago'}
 pardict.update(firstAdapMice)
 pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.03})
 pardict.update({'punishTimeError':4})
 adap002 = pardict.copy()
+'''
+pardict = {'subject':'adap004','experimenter':'santiago'}
+pardict.update(firstAdapMice)
+pardict.update(frequencySet6to19)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
+pardict.update({'punishTimeError':4})
+pardict.update(fixIntensity)
+adap004 = pardict.copy()
+
+
+adap002frequency = {'lowFreq':6800,'midFreq':11000,'highFreq':16000}
+
+pardict = {'subject':'adap002','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(adap002frequency)
+pardict.update(fixIntensity)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
+pardict.update({'punishTimeError':4})
+adap002 = pardict.copy()
+
+
+pardict = {'subject':'adap010','experimenter':'santiago'}
+pardict.update(switchBlocksMode)
+pardict.update(frequencySet5to24)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
+pardict.update({'punishTimeError':4})
+adap010 = pardict.copy()
