@@ -94,7 +94,7 @@ class Paradigm(QtGui.QMainWindow):
         self.params['numInt'] = paramgui.NumericParam('Number of Intensities',
                                                        value=1,
                                                        group='Parameters')
-        self.params['stimDur'] = paramgui.NumericParam('Tone Duration (s)',
+        self.params['stimDur'] = paramgui.NumericParam('Stimulus Duration (s)',
                                                         value=0.01,
                                                         group='Parameters')
         '''
@@ -134,9 +134,6 @@ class Paradigm(QtGui.QMainWindow):
                                                            group='Parameters',
                                                            decimals=4)
 
-        self.params['laserDuration'] = paramgui.NumericParam('Laser duration',value=0.01,
-                                                             group='Parameters',
-                                                             decimals=4)
 
         timingParams = self.params.layout_group('Parameters')
 
