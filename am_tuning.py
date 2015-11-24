@@ -22,7 +22,7 @@ import random
 from taskontrol.plugins import soundclient
 import time
 
-#class clearButton(QtGui.QPushButton):
+# class clearButton(QtGui.QPushButton):
 #    def __init__(self, parent=None):
 #        super(OutputButton, self).__init__('Clear Tone List')
 #        self.clicked.connect(self.clear_tone_list)
@@ -165,6 +165,12 @@ class Paradigm(QtGui.QMainWindow):
         layoutCol1.addWidget(self.dispatcherView) #Add the dispatcher to col1
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.manualControl)
+
+        self.clearButton = QtGui.QPushButton('Clear Stim List', self)
+        self.clearButton.clicked.connect(self.clear_tone_list)
+        layoutCol1.addWidget(self.clearButton)
+
+
         layoutCol2.addWidget(timingParams)  #Add the parameter GUI to column 2
 
         self.centralWidget.setLayout(layoutMain) #Assign the layouts to the main window
@@ -384,7 +390,9 @@ class Paradigm(QtGui.QMainWindow):
     def clear_tone_list(self):
         '''Allow the user to clear the list of tones and assign new tones from the GUI'''
 
+        print self.soundParamList
         self.soundParamList = []
+        print self.soundParamList
 
     def closeEvent(self, event):
         '''
