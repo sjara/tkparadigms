@@ -93,8 +93,10 @@ pardict.update(switchBlocksMode)
 #pardict.update({'currentBlock':'low_boundary'})
 pardict.update(test089frequency)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
+pardict.update({'delayToTargetMean':0.13, 'delayToTargetHalfRange':0.02})
 pardict.update(fixIntensity)
 test089 = pardict.copy()
+
 
 firstAdapMice = {'delayToTargetMean':0.2,'trialsPerBlock':300}
 '''
