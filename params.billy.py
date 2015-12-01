@@ -69,7 +69,8 @@ pardict.update(frequencySet6to19)
 pardict.update({'punishTimeEarly':0,'punishSoundAmplitude':0.01})
 pardict.update(fixIntensity)
 test059 = pardict.copy()
-
+'''
+#started on psycurve 2015-11-28
 test087frequency = {'lowFreq':6200,'midFreq':10000,'highFreq':18000}
 pardict = {'subject':'test087','experimenter':'santiago'}
 pardict.update(switchBlocksMode)
@@ -77,6 +78,14 @@ pardict.update(test087frequency)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
 pardict.update(fixIntensity)
 test087 = pardict.copy()
+'''
+test087frequency = {'lowFreq':7400,'midFreq':10000,'highFreq':15100}
+pardict = {'subject':'test087','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(test087frequency)
+pardict.update(fixIntensity)
+pardict.update({'punishTimeEarly':0,'punishSoundAmplitude':0.01})
+test086 = pardict.copy()
 
 test089frequency = {'lowFreq':6200,'midFreq':9000,'highFreq':17000}
 pardict = {'subject':'test089','experimenter':'santiago'}
@@ -96,9 +105,10 @@ pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.03})
 pardict.update({'punishTimeError':4})
 adap002 = pardict.copy()
 '''
+adap004frequency = {'lowFreq':6200,'midFreq':10000,'highFreq':19200}
 pardict = {'subject':'adap004','experimenter':'santiago'}
 pardict.update(firstAdapMice)
-pardict.update(frequencySet6to19)
+pardict.update(adap004frequency)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
 pardict.update({'punishTimeError':4})
 pardict.update(fixIntensity)
