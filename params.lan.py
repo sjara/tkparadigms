@@ -84,3 +84,19 @@ pardict.update(psyCurveChangeReward)
 pardict.update({'trialsPerBlock':100})
 pardict.update({'lowFreq':5000,'highFreq':24000})
 adap008 = pardict.copy()
+
+
+
+basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary',
+                           'punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
+frequencySet5to24 = {'lowFreq':5000,'midFreq':11000,'highFreq':24000}
+frequencySet6to19 = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
+frequencySet3to16 = {'lowFreq':3000,'midFreq':7000,'highFreq':16000}
+frequencySet4to13 = {'lowFreq':3800,'midFreq':7000,'highFreq':12600}
+
+
+pardict = {'subject':'adap011','experimenter':'santiago'}
+pardict.update(basicDiscriminationMode)
+pardict.update(frequencySet6to19)
+pardict.update({'antibiasMode':'repeat_mistake'})
+adap011 = pardict.copy()
