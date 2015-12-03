@@ -1,4 +1,8 @@
-
+laserSounds = {'subject':'d1pi007',
+               'experimenter' : 'lan',
+               'noiseAmp':0.1,
+               'laserFrontOverhang':0.01,
+               'laserBackOverhang':0.01}
 
 
 lasertrain = {'stimDur':0.01,
@@ -11,7 +15,7 @@ lasertrain = {'stimDur':0.01,
                'minInt':40,
                'maxInt':70,
                'numInt':4,
-               'subject':'d1pi002',
+               'subject':'d1pi007',
                'experimenter' : 'lan'}
 
 noisebursts = {'stimDur':0.1,
@@ -24,11 +28,11 @@ noisebursts = {'stimDur':0.1,
                'minInt':40,
                'maxInt':70,
                'numInt':4,
-               'subject':'d1pi002',
+               'subject':'d1pi007',
                'experimenter' : 'lan'}
 
-laserpulse = {'stimDur':0.1,
-               'isiMean':0.9,
+laserpulse = {'stimDur':0.05,
+               'isiMean':0.95,
                'isiHalfRange': 0,
                'noiseAmp':0.05,
                'stimType' : 'Laser',
@@ -37,7 +41,7 @@ laserpulse = {'stimDur':0.1,
                'minInt':40,
                'maxInt':70,
                'numInt':4,
-               'subject':'d1pi002',
+               'subject':'d1pi007',
                'experimenter' : 'lan'}
 
 
@@ -51,9 +55,18 @@ tuningCurve = {'stimDur':0.1,
                'minInt':20,
                'maxInt':70,
                'numInt':6,
-               'subject':'d1pi002',
+               'subject':'d1pi007',
                'experimenter' : 'lan'}
 
+#<<<<<<< HEAD
+#=======
+tuningAM = {'subject':'d1pi007', 'experimenter':'lan', 
+            'minFreq':4, 'maxFreq':128, 'numTones':11, 
+            'stimType':'AM', 'stimDur':0.5,
+            'isiMin':1, 'isiMax':2}
+
+
+#>>>>>>> 8400c17489caa2c07b6fe38f395beb2554505f31
 psyCurveChangeReward = {'punishTimeError':4,
                      'delayToTargetMean':0.1,
                      'currentBlock':'same_reward',
