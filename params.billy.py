@@ -79,7 +79,7 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
 pardict.update(fixIntensity)
 test087 = pardict.copy()
 '''
-test087frequency = {'lowFreq':8400,'midFreq':10000,'highFreq':10600}
+test087frequency = {'lowFreq':8700,'midFreq':10000,'highFreq':10200}
 pardict = {'subject':'test087','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
 pardict.update(test087frequency)
