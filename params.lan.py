@@ -58,15 +58,13 @@ tuningCurve = {'stimDur':0.1,
                'subject':'d1pi007',
                'experimenter' : 'lan'}
 
-#<<<<<<< HEAD
-#=======
+
 tuningAM = {'subject':'d1pi007', 'experimenter':'lan', 
             'minFreq':4, 'maxFreq':128, 'numTones':11, 
             'stimType':'AM', 'stimDur':0.5,
             'isiMin':1, 'isiMax':2}
 
 
-#>>>>>>> 8400c17489caa2c07b6fe38f395beb2554505f31
 psyCurveChangeReward = {'punishTimeError':4,
                      'delayToTargetMean':0.1,
                      'currentBlock':'same_reward',
