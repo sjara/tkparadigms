@@ -109,13 +109,22 @@ adap002 = pardict.copy()
 '''
 adap004frequency = {'lowFreq':6200,'midFreq':10000,'highFreq':19200}
 pardict = {'subject':'adap004','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(adap004frequency)
+pardict.update(fixIntensity)
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
+pardict.update({'punishTimeError':4})
+adap004 = pardict.copy()
+'''
+#Switch to psychometric curve as of 2015-12-02
+pardict = {'subject':'adap004','experimenter':'santiago'}
 pardict.update(firstAdapMice)
 pardict.update(adap004frequency)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
 pardict.update({'punishTimeError':4})
 pardict.update(fixIntensity)
 adap004 = pardict.copy()
-
+'''
 
 adap002frequency = {'lowFreq':6800,'midFreq':11000,'highFreq':16000}
 
