@@ -49,12 +49,12 @@ tuningCurve = {'stimDur':0.1,
                'isiMean':0.8,
                'isiHalfRange': 0.1,
                'noiseAmp':0.05,
-               'stimType' : 'Sine',
+               'stimType' : 'Chord',
                'minFreq':2000,
                'maxFreq':40000,
-               'minInt':20,
-               'maxInt':70,
-               'numInt':6,
+               'minInt':60,
+               'maxInt':60,
+               'numInt':1,
                'subject':'adap011',
                'experimenter' : 'lan'}
 
@@ -95,7 +95,7 @@ frequencySet3to16 = {'lowFreq':3000,'midFreq':7000,'highFreq':16000}
 frequencySet4to13 = {'lowFreq':3800,'midFreq':7000,'highFreq':12600}
 
 
-pardict = {'subject':'adap011','experimenter':'santiago'}
+pardict = {'subject':'adap011','experimenter':'lan'}
 pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
 pardict.update({'antibiasMode':'repeat_mistake'})
