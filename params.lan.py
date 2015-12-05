@@ -98,5 +98,8 @@ frequencySet4to13 = {'lowFreq':3800,'midFreq':7000,'highFreq':12600}
 pardict = {'subject':'adap011','experimenter':'lan'}
 pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
+pardict.update({'punishSoundAmplitude':0.02})
 pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'targetMaxIntensity':70})
+pardict.update({'delayToTargetMean':0.15})
 adap011 = pardict.copy()
