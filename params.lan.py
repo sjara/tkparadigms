@@ -71,9 +71,10 @@ psyCurveChangeReward = {'punishTimeError':4,
                      'psycurveMode':'uniform',
                      'automationMode':'same_left_right',
                      'punishTimeEarly':0.5,
+                     'punishTimeError':2,
                      'punishSoundAmplitude':0.05}
 
-pardict = {'subject':'adap005','experimenter':'santiago'}
+pardict = {'subject':'adap005','experimenter':'lan'}
 pardict.update(psyCurveChangeReward)
 pardict.update({'trialsPerBlock':150})
 pardict.update({'lowFreq':6200,'highFreq':19200})
@@ -81,7 +82,7 @@ adap005 = pardict.copy()
 
 pardict = {'subject':'adap008','experimenter':'santiago'}
 pardict.update(psyCurveChangeReward)
-pardict.update({'trialsPerBlock':100})
+pardict.update({'trialsPerBlock':150})
 pardict.update({'lowFreq':5000,'highFreq':24000})
 adap008 = pardict.copy()
 
@@ -96,10 +97,15 @@ frequencySet4to13 = {'lowFreq':3800,'midFreq':7000,'highFreq':12600}
 
 
 pardict = {'subject':'adap011','experimenter':'lan'}
-pardict.update(basicDiscriminationMode)
-pardict.update(frequencySet6to19)
+pardict.update(psyCurveChangeReward)
+pardict.update({'automationMode':'left_right_left'})
+pardict.update({'currentBlock':'more_left'})
+pardict.update({'trialsPerBlock':150})
+#pardict.update(basicDiscriminationMode)
+#pardict.update(frequencySet6to19)
+pardict.update({'lowFreq':8100,'highFreq':26000,'psycurveMode':'off'})
 pardict.update({'punishSoundAmplitude':0.02})
-pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update({'targetMaxIntensity':70})
-pardict.update({'delayToTargetMean':0.15})
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'targetMaxIntensity':70,'targetIntensityMode':'fixed'})
+pardict.update({'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.03})
 adap011 = pardict.copy()

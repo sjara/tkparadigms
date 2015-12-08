@@ -94,7 +94,7 @@ class Paradigm(templates.Paradigm2AFC):
 
 
         self.params['automationMode'] = paramgui.MenuParam('Automation Mode',
-                                                           ['off','increase_delay','same_left_right','same_right_left'],
+                                                           ['off','increase_delay','same_left_right','same_right_left','left_right_left'],
                                                            value=0,group='Automation')
         automationParams = self.params.layout_group('Automation')
 
@@ -321,18 +321,22 @@ class Paradigm(templates.Paradigm2AFC):
             nValid = self.params['nValid'].get_value()
             ###print '{0} {1} {2}'.format(nValid,trialsPerBlock,np.mod(nValid,trialsPerBlock)) ### DEBUG
 
-            ############### FINISH THIS: here is where I select block switching ###################
             dictSameLeftRight = {'same_reward':'more_left', 'more_left':'more_right', 'more_right':'same_reward'}
             dictSameRightLeft = {'same_reward':'more_right', 'more_left':'same_reward', 'more_left':'more_right'}
+            dictLeftRightLeft = {'more_left':'more_right', 'more_right':'more_left','same_reward':'same_reward'}
             if (nValid>0) and not (np.mod(nValid,trialsPerBlock)):
                 if self.results['valid'][nextTrial-1]:
                     if self.params['automationMode'].get_string()=='same_left_right':
                         dictToUse = dictSameLeftRight
-                        newBlock = dictSameLeftRight[self.params['currentBlock'].get_string()]
+                        newBlock = dictToUse[self.params['currentBlock'].get_string()]
                         self.params['currentBlock'].set_string(newBlock)
                     elif self.params['automationMode'].get_string()=='same_right_left':
                         dictToUse = dictSameRightLeft
-                        newBlock = dictSameRightLeft[self.params['currentBlock'].get_string()]
+                        newBlock = dictToUse[self.params['currentBlock'].get_string()]
+                        self.params['currentBlock'].set_string(newBlock)
+                    elif self.params['automationMode'].get_string()=='left_right_left':
+                        dictToUse = dictLeftRightLeft 
+                        newBlock = dictToUse[self.params['currentBlock'].get_string()]
                         self.params['currentBlock'].set_string(newBlock)
 
         #import pdb; pdb.set_trace() ### DEBUG
