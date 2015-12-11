@@ -165,7 +165,7 @@ adap020 = pardict.copy()
 
 
 # -- Adaptive categorization, psychometric and switching --
-adap3 = basicDiscriminationMode
+adap3 = psyCurveMidBound
 adap3.update({'delayToTargetMean':0.2})
 
 pardict = {'subject':'adap011','experimenter':'santiago'}
