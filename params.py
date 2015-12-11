@@ -125,8 +125,8 @@ pardict.update(cuedMiceMode)
 cued006 = pardict.copy()
 
 # -- Adaptive categorization, psychometric and switching --
-adap4 = sidesDirectMode
-adap4.update({'delayToTargetMean':0.2})
+adap4 = increaseDelayMode
+#adap4.update({'delayToTargetMean':0.2})
 
 pardict = {'subject':'adap016','experimenter':'santiago'}
 pardict.update(adap4)
