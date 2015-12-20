@@ -108,7 +108,8 @@ pardict.update({'punishTimeEarly':0.2,'punishSoundAmplitude':0.03})
 pardict.update({'punishTimeError':4})
 adap002 = pardict.copy()
 '''
-adap004frequency = {'lowFreq':6200,'midFreq':10000,'highFreq':19200}
+#adap004frequency = {'lowFreq':6200,'midFreq':10000,'highFreq':19200}
+adap004frequency = {'lowFreq':6200,'midFreq':10000,'highFreq':15900}#updated 2015-12-19
 pardict = {'subject':'adap004','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
 pardict.update(adap004frequency)
