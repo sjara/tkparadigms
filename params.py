@@ -47,6 +47,30 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
                    'currentBlock':'mid_boundary'}
 
 
+# -- Amplitude modulation discrimination (amod) mice --
+amodMice = {'outcomeMode':'sides_direct'}
+
+pardict = {'subject':'amod001','experimenter':'nick'}
+pardict.update(amodMice)
+amod001 = pardict.copy()
+
+pardict = {'subject':'amod002','experimenter':'nick'}
+pardict.update(amodMice)
+amod002 = pardict.copy()
+
+pardict = {'subject':'amod003','experimenter':'nick'}
+pardict.update(amodMice)
+amod003 = pardict.copy()
+
+pardict = {'subject':'amod004','experimenter':'nick'}
+pardict.update(amodMice)
+amod004 = pardict.copy()
+
+pardict = {'subject':'amod005','experimenter':'nick'}
+pardict.update(amodMice)
+amod005 = pardict.copy()
+
+
 # -- Drd1::ChR2 mice. Frequency discrimination task --
 
 pardict = {'subject':'d1pi003','experimenter':'santiago'}
