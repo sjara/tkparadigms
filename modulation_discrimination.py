@@ -459,8 +459,8 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Cin':'delayPeriod'})
             self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
                               transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
-            self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                              transitions={'Tup':'waitForSidePoke','Cout':'earlyWithdrawal'},
+            self.sm.add_state(name='playStimulus', statetimer=LONGTIME,
+                              transitions={'Cout':'waitForSidePoke'},
                               outputsOn=stimOutput, serialOut=soundID,
                               outputsOff=trialStartOutput)
             self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
@@ -481,9 +481,9 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Tup':'keepWaitForSide'})
                 self.sm.add_state(name='choiceRight', statetimer=0,
                                   transitions={'Tup':'reward'})
-            self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
-                              transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=stimOutput,serialOut=self.punishSoundID)
+            #self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
+            #                  transitions={'Tup':'readyForNextTrial'},
+            #                  outputsOff=stimOutput,serialOut=self.punishSoundID)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
@@ -505,8 +505,8 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
             # Note that 'delayPeriod' may happen several times in a trial, so
             # trialStartOutput off here would only meaningful for the first time in the trial.
-            self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                              transitions={'Tup':'waitForSidePoke','Cout':'waitForSidePoke'},
+            self.sm.add_state(name='playStimulus', statetimer=LONGTIME,
+                              transitions={'Cout':'waitForSidePoke'},
                               outputsOn=stimOutput, serialOut=soundID,
                               outputsOff=trialStartOutput)
             # NOTE: The idea of outputsOff here (in other paradigms) was to indicate the end
