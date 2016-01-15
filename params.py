@@ -48,7 +48,7 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 
 
 # -- Amplitude modulation discrimination (amod) mice --
-amodMice = {'outcomeMode':'sides_direct'}
+amodMice = {'outcomeMode':'direct'}
 
 pardict = {'subject':'amod001','experimenter':'nick'}
 pardict.update(amodMice)
