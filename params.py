@@ -48,26 +48,27 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 
 
 # -- Amplitude modulation discrimination (amod) mice --
-amodMice = {'outcomeMode':'direct'}
+amodMice_kindergarden = {'outcomeMode':'direct'}
+amodMice_smart = {'outcomeMode':'on_next_correct'}
 
 pardict = {'subject':'amod001','experimenter':'nick'}
-pardict.update(amodMice)
+pardict.update(amodMice_smart)
 amod001 = pardict.copy()
 
 pardict = {'subject':'amod002','experimenter':'nick'}
-pardict.update(amodMice)
+pardict.update(amodMice_smart)
 amod002 = pardict.copy()
 
 pardict = {'subject':'amod003','experimenter':'nick'}
-pardict.update(amodMice)
+pardict.update(amodMice_smart)
 amod003 = pardict.copy()
 
 pardict = {'subject':'amod004','experimenter':'nick'}
-pardict.update(amodMice)
+pardict.update(amodMice_kindergarden)
 amod004 = pardict.copy()
 
 pardict = {'subject':'amod005','experimenter':'nick'}
-pardict.update(amodMice)
+pardict.update(amodMice_kindergarden)
 amod005 = pardict.copy()
 
 
