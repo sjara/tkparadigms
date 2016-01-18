@@ -69,7 +69,7 @@ pardict.update(amodMice_smart)
 amod004 = pardict.copy()
 
 pardict = {'subject':'amod005','experimenter':'nick'}
-pardict.update(amodMice_smart)
+pardict.update(amodMice_regularTask)
 amod005 = pardict.copy()
 
 
