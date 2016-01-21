@@ -48,9 +48,10 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 
 
 # -- Amplitude modulation discrimination (amod) mice --
-amodMice_kindergarden = {'outcomeMode':'direct'}
-amodMice_smart = {'outcomeMode':'on_next_correct'}
+# amodMice_kindergarden = {'outcomeMode':'direct'}
+# amodMice_smart = {'outcomeMode':'on_next_correct'}
 amodMice_regularTask = {'outcomeMode':'only_if_correct'}
+amodMice_regularTask.update({'antibiasMode':'repeat_mistake','punishTimeError':2})
 
 pardict = {'subject':'amod001','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
