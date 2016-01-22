@@ -51,7 +51,7 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 # amodMice_kindergarden = {'outcomeMode':'direct'}
 # amodMice_smart = {'outcomeMode':'on_next_correct'}
 amodMice_regularTask = {'outcomeMode':'only_if_correct'}
-amodMice_regularTask.update({'antibiasMode':'repeat_mistake','punishTimeError':2})
+amodMice_regularTask.update({'punishTimeError':2})
 
 pardict = {'subject':'amod001','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
