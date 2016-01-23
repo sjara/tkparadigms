@@ -59,18 +59,22 @@ amod001 = pardict.copy()
 
 pardict = {'subject':'amod002','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
+pardict.update({'antibiasMode':'repeat_mistake'})
 amod002 = pardict.copy()
 
 pardict = {'subject':'amod003','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
+pardict.update({'antibiasMode':'repeat_mistake'})
 amod003 = pardict.copy()
 
 pardict = {'subject':'amod004','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
+pardict.update({'antibiasMode':'repeat_mistake'})
 amod004 = pardict.copy()
 
 pardict = {'subject':'amod005','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
+pardict.update({'antibiasMode':'repeat_mistake'})
 amod005 = pardict.copy()
 
 
