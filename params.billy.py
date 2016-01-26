@@ -147,3 +147,30 @@ pardict.update(fixIntensity)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
 pardict.update({'punishTimeError':4})
 adap010 = pardict.copy()
+
+#######################################################################################################
+#######################################################################################################
+#FOR REWARD CHANGE MICE
+#######################################################################################################
+#######################################################################################################
+
+psyCurveChangeReward = {'punishTimeError':4,
+                     'delayToTargetMean':0.1,
+                     'currentBlock':'same_reward',
+                     'psycurveMode':'uniform',
+                     'automationMode':'same_left_right',
+                     'punishTimeEarly':0.5,
+                     'punishTimeError':2,
+                     'punishSoundAmplitude':0.05}
+
+
+pardict = {'subject':'adap015','experimenter':'lan'}
+pardict.update(psyCurveChangeReward)
+pardict.update({'trialsPerBlock':150})
+pardict.update({'lowFreq':6200,'highFreq':19200})
+adap015reward = pardict.copy()
+
+#######################################################################################################
+#######################################################################################################
+
+
