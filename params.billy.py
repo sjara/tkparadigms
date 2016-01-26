@@ -177,7 +177,6 @@ psyCurveChangeReward = {'punishTimeError':4,
                      'psycurveMode':'uniform',
                      'automationMode':'same_left_right',
                      'punishTimeEarly':0.5,
-                     'punishTimeError':2,
                      'punishSoundAmplitude':0.03}
 
 
