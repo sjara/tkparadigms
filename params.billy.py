@@ -147,3 +147,46 @@ pardict.update(fixIntensity)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
 pardict.update({'punishTimeError':4})
 adap010 = pardict.copy()
+
+adap3 = psyCurveMidBound
+adap3.update({'delayToTargetMean':0.2})
+
+pardict = {'subject':'adap015','experimenter':'santiago'}
+pardict.update(adap3)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
+adap015 = pardict.copy()
+
+pardict = {'subject':'adap013','experimenter':'santiago'}
+pardict.update(adap3)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
+adap013 = pardict.copy()
+
+#######################################################################################################
+#######################################################################################################
+#FOR REWARD CHANGE MICE
+#######################################################################################################
+#######################################################################################################
+
+psyCurveChangeReward = {'punishTimeError':4,
+                     'delayToTargetMean':0.1,
+                     'currentBlock':'same_reward',
+                     'psycurveMode':'uniform',
+                     'automationMode':'same_left_right',
+                     'punishTimeEarly':0.5,
+                     'punishSoundAmplitude':0.03}
+
+
+pardict = {'subject':'adap015','experimenter':'billy'}
+pardict.update(psyCurveChangeReward)
+pardict.update({'trialsPerBlock':200})
+pardict.update({'lowFreq':6200,'highFreq':19200})
+adap015reward = pardict.copy()
+
+#######################################################################################################
+#######################################################################################################
+
+
