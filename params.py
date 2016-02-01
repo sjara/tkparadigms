@@ -66,6 +66,7 @@ amod002 = pardict.copy()
 pardict = {'subject':'amod003','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
 # pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'psycurveMode':'uniform'})
 amod003 = pardict.copy()
 
 pardict = {'subject':'amod004','experimenter':'nick'}
@@ -75,6 +76,7 @@ amod004 = pardict.copy()
 
 pardict = {'subject':'amod005','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
+pardict.update({'psycurveMode':'uniform'})
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod005 = pardict.copy()
 
