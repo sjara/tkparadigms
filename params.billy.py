@@ -153,7 +153,8 @@ adap3.update({'delayToTargetMean':0.2})
 
 pardict = {'subject':'adap015','experimenter':'santiago'}
 pardict.update(adap3)
-pardict.update(frequencySet6to19)
+pardict.update({'lowFreq':6200,'highFreq':17000})
+pardict.update(fixIntensity)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
 adap015 = pardict.copy()
@@ -171,19 +172,19 @@ adap013 = pardict.copy()
 #######################################################################################################
 #######################################################################################################
 
+#'currentBlock':'more_right',
 psyCurveChangeReward = {'punishTimeError':4,
                      'delayToTargetMean':0.1,
-                     'currentBlock':'same_reward',
                      'psycurveMode':'uniform',
-                     'automationMode':'same_left_right',
+                     'automationMode':'left_right_left',
                      'punishTimeEarly':0.5,
-                     'punishSoundAmplitude':0.03}
+                     'punishSoundAmplitude':0.01}
 
 
 pardict = {'subject':'adap015','experimenter':'billy'}
 pardict.update(psyCurveChangeReward)
 pardict.update({'trialsPerBlock':200})
-pardict.update({'lowFreq':6200,'highFreq':19200})
+pardict.update({'lowFreq':6200,'highFreq':17000})
 adap015reward = pardict.copy()
 
 #######################################################################################################
