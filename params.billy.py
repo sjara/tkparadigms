@@ -175,7 +175,7 @@ adap013 = pardict.copy()
 #'currentBlock':'more_right',
 psyCurveChangeReward = {'punishTimeError':4,
                      'delayToTargetMean':0.1,
-                     'psycurveMode':'uniform',
+                     'psycurveMode':'off',
                      'automationMode':'left_right_left',
                      'punishTimeEarly':0.5,
                      'punishSoundAmplitude':0.01}
