@@ -174,11 +174,16 @@ adap013 = pardict.copy()
 
 #'currentBlock':'more_right',
 psyCurveChangeReward = {'punishTimeError':4,
-                     'delayToTargetMean':0.1,
+                     'delayToTargetMean':0.2,
                      'psycurveMode':'off',
                      'automationMode':'left_right_left',
                      'punishTimeEarly':0.5,
-                     'punishSoundAmplitude':0.01}
+                     'punishSoundAmplitude':0.01,
+                     'targetIntensityMode' = 'fixed',
+                     'baseWaterValveL' = 0.015,
+                     'baseWaterValveR' = 0.015,
+                     'factorWaterValveL' = 4,
+                     'factorWaterValveR' = 4}
 
 
 pardict = {'subject':'adap015','experimenter':'billy'}
