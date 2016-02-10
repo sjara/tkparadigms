@@ -43,7 +43,7 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 # ======== Parameters for each animal =========
 
 # -- D1:Chr2 adaptive categorization, psychometric and switching --
-d1pi2 = directMode
+d1pi2 = increaseDelayMode
 
 pardict = {'subject':'d1pi008','experimenter':'santiago'}
 pardict.update(d1pi2)
@@ -82,7 +82,7 @@ d1pi012 = pardict.copy()
 
 
 # -- Adaptive categorization, psychometric and switching --
-adap5 = directMode
+adap5 = increaseDelayMode
 
 pardict = {'subject':'adap021','experimenter':'santiago'}
 pardict.update(adap5)
