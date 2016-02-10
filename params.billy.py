@@ -179,11 +179,11 @@ psyCurveChangeReward = {'punishTimeError':4,
                      'automationMode':'left_right_left',
                      'punishTimeEarly':0.5,
                      'punishSoundAmplitude':0.01,
-                     'targetIntensityMode' = 'fixed',
-                     'baseWaterValveL' = 0.015,
-                     'baseWaterValveR' = 0.015,
-                     'factorWaterValveL' = 4,
-                     'factorWaterValveR' = 4}
+                     'targetIntensityMode':'fixed',
+                     'baseWaterValveL':0.015,
+                     'baseWaterValveR':0.015,
+                     'factorWaterValveL':4,
+                     'factorWaterValveR':4}
 
 
 pardict = {'subject':'adap015','experimenter':'billy'}
