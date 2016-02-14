@@ -55,7 +55,7 @@ tuningCurve = {'stimDur':0.1,
                'minInt':50,
                'maxInt':50,
                'numInt':1,
-               'subject':'adap011',
+               'subject':'adap012',
                'experimenter' : 'lan'}
 
 
@@ -73,22 +73,6 @@ psyCurveChangeReward = {'punishTimeError':4,
                      'punishTimeEarly':0.5,
                      'punishTimeError':2,
                      'punishSoundAmplitude':0.05}
-
-pardict = {'subject':'adap005','experimenter':'lan'}
-pardict.update(psyCurveChangeReward)
-pardict.update({'trialsPerBlock':150})
-pardict.update({'lowFreq':6200,'highFreq':19200})
-pardict.update({'targetMaxIntensity':50,'targetIntensityMode':'fixed'})
-pardict.update({'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.03})
-pardict.update({'punishSoundAmplitude':0.02})
-adap005 = pardict.copy()
-
-pardict = {'subject':'adap008','experimenter':'santiago'}
-pardict.update(psyCurveChangeReward)
-pardict.update({'trialsPerBlock':150})
-pardict.update({'lowFreq':5000,'highFreq':24000})
-adap008 = pardict.copy()
-
 
 
 basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary',
@@ -119,8 +103,21 @@ pardict.update({'automationMode':'left_right_left'})
 pardict.update({'currentBlock':'more_left'})
 pardict.update({'trialsPerBlock':200})
 pardict.update({'lowFreq':6200,'highFreq':19200,'psycurveMode':'off'})
-pardict.update({'punishSoundAmplitude':0.05})
+pardict.update({'punishSoundAmplitude':0.02})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'targetMaxIntensity':50,'targetIntensityMode':'fixed'})
 pardict.update({'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.03})
 d1pi003 = pardict.copy()
+
+
+pardict = {'subject':'adap012','experimenter':'lan'}
+pardict.update(psyCurveChangeReward)
+pardict.update({'automationMode':'left_right_left'})
+pardict.update({'currentBlock':'more_left'})
+pardict.update({'trialsPerBlock':200})
+pardict.update({'lowFreq':6200,'highFreq':19200,'psycurveMode':'off'})
+pardict.update({'punishSoundAmplitude':0.02})
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'targetMaxIntensity':50,'targetIntensityMode':'fixed'})
+pardict.update({'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.03})
+adap012 = pardict.copy()
