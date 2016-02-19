@@ -199,6 +199,12 @@ pardict.update({'trialsPerBlock':200})
 pardict.update({'lowFreq':6200,'highFreq':17000})
 adap013reward = pardict.copy()
 
+pardict = {'subject':'adap017','experimenter':'billy'}
+pardict.update(psyCurveChangeReward)
+pardict.update({'trialsPerBlock':200})
+pardict.update({'lowFreq':6200,'highFreq':17000})
+adap017reward = pardict.copy()
+
 #######################################################################################################
 #######################################################################################################
 
