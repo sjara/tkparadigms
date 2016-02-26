@@ -48,21 +48,21 @@ d1pi2 = basicDiscriminationMode
 pardict = {'subject':'d1pi008','experimenter':'santiago'}
 pardict.update(d1pi2)
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 d1pi008 = pardict.copy()
 
 pardict = {'subject':'d1pi009','experimenter':'santiago'}
 pardict.update(d1pi2)
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 d1pi009 = pardict.copy()
 
 pardict = {'subject':'d1pi010','experimenter':'santiago'}
 pardict.update(d1pi2)
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 d1pi010 = pardict.copy()
 
