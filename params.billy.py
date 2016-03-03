@@ -184,10 +184,10 @@ adap017 = pardict.copy()
 #'currentBlock':'more_right',
 psyCurveChangeReward = {'punishTimeError':4,
                      'delayToTargetMean':0.2,
-                     'psycurveMode':'off',
-                     'automationMode':'left_right_left',
+                     'psycurveMode':'uniform',#'off',
+                     'automationMode':'same_right_left',#'left_right_left',
                      'punishTimeEarly':0.5,
-                     'punishSoundAmplitude':0.01,
+                     'punishSoundAmplitude':0.03,#0.01,
                      'targetIntensityMode':'fixed',
                      'baseWaterValveL':0.015,
                      'baseWaterValveR':0.015,
@@ -197,19 +197,19 @@ psyCurveChangeReward = {'punishTimeError':4,
 
 pardict = {'subject':'adap015','experimenter':'billy'}
 pardict.update(psyCurveChangeReward)
-pardict.update({'trialsPerBlock':150})
+pardict.update({'trialsPerBlock':200})#150})
 pardict.update({'lowFreq':6200,'highFreq':17000})
 adap015reward = pardict.copy()
 
 pardict = {'subject':'adap013','experimenter':'billy'}
 pardict.update(psyCurveChangeReward)
-pardict.update({'trialsPerBlock':150})
+pardict.update({'trialsPerBlock':200})#150})
 pardict.update({'lowFreq':6200,'highFreq':17000})
 adap013reward = pardict.copy()
 
 pardict = {'subject':'adap017','experimenter':'billy'}
 pardict.update(psyCurveChangeReward)
-pardict.update({'trialsPerBlock':150})
+pardict.update({'trialsPerBlock':200})#150})
 pardict.update({'lowFreq':6200,'highFreq':19200})
 adap017reward = pardict.copy()
 
