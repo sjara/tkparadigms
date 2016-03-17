@@ -67,14 +67,14 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 d1pi010 = pardict.copy()
 
 pardict = {'subject':'d1pi011','experimenter':'santiago'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 d1pi011 = pardict.copy()
 
 pardict = {'subject':'d1pi012','experimenter':'santiago'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
