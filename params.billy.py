@@ -213,6 +213,15 @@ pardict.update({'trialsPerBlock':150})
 pardict.update({'lowFreq':6200,'highFreq':19200})
 adap017reward = pardict.copy()
 
+pardict = {'subject':'adap020','experimenter':'santiago'}
+pardict.update(switchBlocksMode)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+#pardict.update(fixIntensity)
+pardict.update({'punishTimeError':4})
+adap020 = pardict.copy()
+
 #######################################################################################################
 #######################################################################################################
 
