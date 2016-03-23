@@ -13,7 +13,7 @@ Create a modulation frequency discrimination 2AFC paradigm.
 import numpy as np
 from taskontrol.settings import rigsettings
 from taskontrol.core import paramgui
-from PySide import QtGui 
+from PySide import QtGui
 from taskontrol.core import arraycontainer
 from taskontrol.core import utils
 
@@ -49,7 +49,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['factorWaterValveR'] = paramgui.NumericParam('Factor right',value=1,
                                                                units='s',group='Water delivery')
         waterDelivery = self.params.layout_group('Water delivery')
-        
+
         self.params['outcomeMode'] = paramgui.MenuParam('Outcome mode',
                                                         ['sides_direct','direct','on_next_correct',
                                                          'only_if_correct','simulated'],
@@ -99,14 +99,21 @@ class Paradigm(templates.Paradigm2AFC):
         automationParams = self.params.layout_group('Automation')
 
         # 5000, 7000, 9800 (until 2014-03-19)
-        self.params['highFreq'] = paramgui.NumericParam('High freq',value=32,
+        self.params['highSoundFreq'] = paramgui.NumericParam('High sound freq',value=16000,
                                                         units='Hz',group='Sound parameters')
-        self.params['lowFreq'] = paramgui.NumericParam('Low freq',value=8,
+        self.params['lowSoundFreq'] = paramgui.NumericParam('Low sound freq',value=5000,
+                                                        units='Hz',group='Sound parameters')
+        self.params['highModFreq'] = paramgui.NumericParam('High mod freq',value=32,
+                                                        units='Hz',group='Sound parameters')
+        self.params['lowModFreq'] = paramgui.NumericParam('Low mod freq',value=8,
                                                         units='Hz',group='Sound parameters')
         self.params['targetFrequency'] = paramgui.NumericParam('Target freq',value=0,decimals=0,
                                                         units='Hz',enabled=False,group='Sound parameters')
         self.params['targetIntensityMode'] = paramgui.MenuParam('Intensity mode',
                                                                ['fixed','randMinus20'],
+                                                               value=0,group='Sound parameters')
+        self.params['soundType'] = paramgui.MenuParam('Sound type',
+                                                               ['amp_mod','chords', 'mixed'],
                                                                value=0,group='Sound parameters')
         # This intensity corresponds to the intensity of each component of the chord
         self.params['targetMaxIntensity'] = paramgui.NumericParam('Max intensity',value=50,
@@ -129,7 +136,7 @@ class Paradigm(templates.Paradigm2AFC):
         reportParams = self.params.layout_group('Report')
 
 
-        # 
+        #
         self.params['experimenter'].set_value('santiago')
         self.params['subject'].set_value('test')
 
@@ -142,7 +149,7 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol2 = QtGui.QVBoxLayout()
         layoutCol3 = QtGui.QVBoxLayout()
         layoutCol4 = QtGui.QVBoxLayout()
-        
+
         layoutMain.addLayout(layoutTop)
         #layoutMain.addStretch()
         layoutMain.addSpacing(0)
@@ -159,7 +166,7 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.sessionInfo)
         layoutCol1.addWidget(self.dispatcherView)
-        
+
         layoutCol2.addWidget(self.manualControl)
         layoutCol2.addStretch()
         layoutCol2.addWidget(waterDelivery)
@@ -233,12 +240,12 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Prepare first trial --
         #self.prepare_next_trial(0)
-       
+
     def prepare_punish_sound(self):
         punishSoundAmplitude = self.params['punishSoundAmplitude'].get_value()
         sNoise = {'type':'noise', 'duration':0.5, 'amplitude':punishSoundAmplitude}
         self.soundClient.set_sound(self.punishSoundID,sNoise)
-        
+
     def prepare_target_sound(self,targetFrequency):
         if self.params['targetIntensityMode'].get_string() == 'randMinus20':
             possibleIntensities = self.params['targetMaxIntensity'].get_value()+\
@@ -247,18 +254,26 @@ class Paradigm(templates.Paradigm2AFC):
         else:
             targetIntensity = self.params['targetMaxIntensity'].get_value()
         self.params['targetIntensity'].set_value(targetIntensity)
-                
+
         spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
 
         # FIXME: currently I am averaging calibration from both speakers (not good)
         #targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
-        freqToEstimateAmp = 10000
-        targetAmp = spkCal.find_amplitude(freqToEstimateAmp,targetIntensity).mean()
-        self.params['targetAmplitude'].set_value(targetAmp)
+        if self.params['soundType'].get_string() == 'amp_mod':
+            freqToEstimateAmp = 10000
+            targetAmp = spkCal.find_amplitude(freqToEstimateAmp,targetIntensity).mean()
+            self.params['targetAmplitude'].set_value(targetAmp)
 
-        stimDur = self.params['targetDuration'].get_value()
-        s1 = {'type':'AM', 'modFrequency':targetFrequency, 'duration':stimDur,
-              'amplitude':targetAmp}
+            stimDur = self.params['targetDuration'].get_value()
+            s1 = {'type':'AM', 'modFrequency':targetFrequency, 'duration':stimDur,
+                'amplitude':targetAmp}
+        elif self.params['soundType'].get_string() == 'chords':
+            targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
+            self.params['targetAmplitude'].set_value(targetAmp)
+
+            stimDur = self.params['targetDuration'].get_value()
+            s1 = {'type':'chord', 'frequency':targetFrequency, 'duration':stimDur,
+                'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
         self.soundClient.set_sound(1,s1)
 
 
@@ -293,7 +308,7 @@ class Paradigm(templates.Paradigm2AFC):
                         newBlock = dictToUse[self.params['currentBlock'].get_string()]
                         self.params['currentBlock'].set_string(newBlock)
                     elif self.params['automationMode'].get_string()=='left_right_left':
-                        dictToUse = dictLeftRightLeft 
+                        dictToUse = dictLeftRightLeft
                         newBlock = dictToUse[self.params['currentBlock'].get_string()]
                         self.params['currentBlock'].set_string(newBlock)
 
@@ -317,8 +332,12 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['timeWaterValveR'].set_value(factorR*self.params['baseWaterValveR'].get_value())
 
         # -- Prepare sound --
-        highFreq = self.params['highFreq'].get_value()
-        lowFreq = self.params['lowFreq'].get_value()
+        if self.params['soundType'].get_string() == 'amp_mod':
+            highFreq = self.params['highModFreq'].get_value()
+            lowFreq = self.params['lowModFreq'].get_value()
+        elif self.params['soundType'].get_string() == 'chords':
+            highFreq = self.params['highSoundFreq'].get_value()
+            lowFreq = self.params['lowSoundFreq'].get_value()
         currentBlock = self.params['currentBlock'].get_string()
         psycurveMode = self.params['psycurveMode'].get_string()
         if psycurveMode=='off':
@@ -331,7 +350,7 @@ class Paradigm(templates.Paradigm2AFC):
             nFreqs = self.params['psycurveNfreq'].get_value()
             freqsAll = np.logspace(np.log10(lowFreq),np.log10(highFreq),nFreqs)
             freqBoundary = np.sqrt(lowFreq*highFreq)
-            # -- NOTE: current implementation does not present points at the psych boundary -- 
+            # -- NOTE: current implementation does not present points at the psych boundary --
             leftFreqInds = np.flatnonzero(freqsAll<freqBoundary)
             rightFreqInds = np.flatnonzero(freqsAll>freqBoundary)
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
@@ -680,5 +699,3 @@ class Paradigm(templates.Paradigm2AFC):
 
 if __name__ == '__main__':
     (app,paradigm) = paramgui.create_app(Paradigm)
-
-
