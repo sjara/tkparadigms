@@ -134,14 +134,14 @@ amod001 = pardict.copy()
 pardict = {'subject':'amod002','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
 pardict.update({'psycurveMode':'uniform'})
-pardict.update({'soundType':'chords'})
+# pardict.update({'soundType':'chords'})
 amod002 = pardict.copy()
 
 pardict = {'subject':'amod003','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
 # pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'psycurveMode':'uniform'})
-pardict.update({'soundType':'chords'})
+# pardict.update({'soundType':'chords'})
 amod003 = pardict.copy()
 
 pardict = {'subject':'amod004','experimenter':'nick'}
