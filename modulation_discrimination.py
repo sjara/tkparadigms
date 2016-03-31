@@ -112,9 +112,12 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['targetIntensityMode'] = paramgui.MenuParam('Intensity mode',
                                                                ['fixed','randMinus20'],
                                                                value=0,group='Sound parameters')
+        self.params['soundTypeMode'] = paramgui.MenuParam('Sound mode',
+                                                          ['amp_mod','chords', 'mixed'],
+                                                          value=0,group='Sound parameters')
         self.params['soundType'] = paramgui.MenuParam('Sound type',
-                                                               ['amp_mod','chords', 'mixed'],
-                                                               value=0,group='Sound parameters')
+                                                      ['amp_mod','chords'],
+                                                      value=0,group='Sound parameters')
         # This intensity corresponds to the intensity of each component of the chord
         self.params['targetMaxIntensity'] = paramgui.NumericParam('Max intensity',value=50,
                                                         units='dB-SPL',group='Sound parameters')
@@ -256,21 +259,19 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['targetIntensity'].set_value(targetIntensity)
 
         spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
-
         # FIXME: currently I am averaging calibration from both speakers (not good)
         #targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
+
         if self.params['soundType'].get_string() == 'amp_mod':
             freqToEstimateAmp = 10000
             targetAmp = spkCal.find_amplitude(freqToEstimateAmp,targetIntensity).mean()
             self.params['targetAmplitude'].set_value(targetAmp)
-
             stimDur = self.params['targetDuration'].get_value()
             s1 = {'type':'AM', 'modFrequency':targetFrequency, 'duration':stimDur,
                 'amplitude':targetAmp}
         elif self.params['soundType'].get_string() == 'chords':
             targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
             self.params['targetAmplitude'].set_value(targetAmp)
-
             stimDur = self.params['targetDuration'].get_value()
             s1 = {'type':'chord', 'frequency':targetFrequency, 'duration':stimDur,
                 'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
@@ -330,6 +331,18 @@ class Paradigm(templates.Paradigm2AFC):
             factorR = self.params['factorWaterValveR'].get_value()
         self.params['timeWaterValveL'].set_value(factorL*self.params['baseWaterValveL'].get_value())
         self.params['timeWaterValveR'].set_value(factorR*self.params['baseWaterValveR'].get_value())
+
+        # -- Set the sound type --
+        if self.params['soundTypeMode'].get_string() == 'amp_mod':
+            self.params['soundType'].set_string('amp_mod')
+        elif self.params['soundTypeMode'].get_string() == 'chords':
+            self.params['soundType'].set_string('chords')
+        elif self.params['soundTypeMode'].get_string() == 'mixed':
+            #Switching the sound type every other trial
+            if nextTrial%2:
+                self.params['soundType'].set_string('chords')
+            else:
+                self.params['soundType'].set_string('amp_mod')
 
         # -- Prepare sound --
         if self.params['soundType'].get_string() == 'amp_mod':
