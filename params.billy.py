@@ -192,7 +192,8 @@ psyCurveChangeReward = {'punishTimeError':4,
                      'baseWaterValveL':0.015,
                      'baseWaterValveR':0.015,
                      'factorWaterValveL':4,
-                     'factorWaterValveR':4}
+                     'factorWaterValveR':4,
+                     'currentBlock':'more_left'}
 
 
 pardict = {'subject':'adap015','experimenter':'billy'}
@@ -204,7 +205,7 @@ adap015reward = pardict.copy()
 pardict = {'subject':'adap013','experimenter':'billy'}
 pardict.update(psyCurveChangeReward)
 pardict.update({'trialsPerBlock':150})
-pardict.update({'lowFreq':9000,'highFreq':12000})
+pardict.update({'lowFreq':8000,'highFreq':14000})
 adap013reward = pardict.copy()
 
 pardict = {'subject':'adap017','experimenter':'billy'}
