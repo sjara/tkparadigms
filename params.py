@@ -124,27 +124,27 @@ newAdap_smart = {'outcomeMode':'on_next_correct'}
 
 pardict = {'subject':'adap026','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(newAdap_smart)
+pardict.update(increaseDelayMode)
 adap026 = pardict.copy()
 
 pardict = {'subject':'adap027','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(newAdap_smart)
+pardict.update(increaseDelayMode)
 adap027 = pardict.copy()
 
 pardict = {'subject':'adap028','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(newAdap_smart)
+pardict.update(increaseDelayMode)
 adap028 = pardict.copy()
 
 pardict = {'subject':'adap029','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(newAdap_smart)
+pardict.update(increaseDelayMode)
 adap029 = pardict.copy()
 
 pardict = {'subject':'adap030','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(newAdap_smart)
+pardict.update(increaseDelayMode)
 adap030 = pardict.copy()
 
 
