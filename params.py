@@ -120,30 +120,31 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap025 = pardict.copy()
 
 
+newAdap_smart = {'outcomeMode':'on_next_correct'}
 
 pardict = {'subject':'adap026','experimenter':'santiago'}
-pardict.update(directMode)
 pardict.update(frequencySet6to19)
+pardict.update(newAdap_smart)
 adap026 = pardict.copy()
 
 pardict = {'subject':'adap027','experimenter':'santiago'}
-pardict.update(directMode)
 pardict.update(frequencySet6to19)
+pardict.update(newAdap_smart)
 adap027 = pardict.copy()
 
 pardict = {'subject':'adap028','experimenter':'santiago'}
-pardict.update(directMode)
 pardict.update(frequencySet6to19)
+pardict.update(newAdap_smart)
 adap028 = pardict.copy()
 
 pardict = {'subject':'adap029','experimenter':'santiago'}
-pardict.update(directMode)
 pardict.update(frequencySet6to19)
+pardict.update(newAdap_smart)
 adap029 = pardict.copy()
 
 pardict = {'subject':'adap030','experimenter':'santiago'}
-pardict.update(directMode)
 pardict.update(frequencySet6to19)
+pardict.update(newAdap_smart)
 adap030 = pardict.copy()
 
 
