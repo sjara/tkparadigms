@@ -156,36 +156,27 @@ adap030 = pardict.copy()
 amodMice_regularTask = {'outcomeMode':'only_if_correct'}
 amodMice_regularTask.update({'punishTimeError':2})
 
-pardict = {'subject':'amod001','experimenter':'nick'}
-pardict.update(amodMice_regularTask)
-pardict.update({'psycurveMode':'uniform'})
-amod001 = pardict.copy()
 
 pardict = {'subject':'amod002','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
 pardict.update({'psycurveMode':'uniform'})
-pardict.update({'soundTypeMode':'mixed'})
+pardict.update({'soundTypeMode':'mixed_chords'})
 amod002 = pardict.copy()
 
 pardict = {'subject':'amod003','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
 # pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'psycurveMode':'uniform'})
-pardict.update({'soundTypeMode':'mixed'})
+pardict.update({'soundTypeMode':'mixed_chords'})
 amod003 = pardict.copy()
 
 pardict = {'subject':'amod004','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
 # pardict.update({'psycurveMode':'uniform','highModFreq':64})
 pardict.update({'highModFreq':64})
-pardict.update({'soundTypeMode':'mixed'})
+pardict.update({'soundTypeMode':'mixed_chords'})
 amod004 = pardict.copy()
 
-pardict = {'subject':'amod005','experimenter':'nick'}
-pardict.update(amodMice_regularTask)
-pardict.update({'psycurveMode':'uniform'})
-# pardict.update({'antibiasMode':'repeat_mistake'})
-amod005 = pardict.copy()
 
 
 # -- Drd1::ChR2 mice. Frequency discrimination task --
