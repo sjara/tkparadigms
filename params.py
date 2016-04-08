@@ -124,27 +124,27 @@ newAdap_smart = {'outcomeMode':'on_next_correct'}
 
 pardict = {'subject':'adap026','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(increaseDelayMode)
+pardict.update(basicDiscriminationMode)
 adap026 = pardict.copy()
 
 pardict = {'subject':'adap027','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(increaseDelayMode)
+pardict.update(basicDiscriminationMode)
 adap027 = pardict.copy()
 
 pardict = {'subject':'adap028','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(increaseDelayMode)
+pardict.update(basicDiscriminationMode)
 adap028 = pardict.copy()
 
 pardict = {'subject':'adap029','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(increaseDelayMode)
+pardict.update(basicDiscriminationMode)
 adap029 = pardict.copy()
 
 pardict = {'subject':'adap030','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-pardict.update(increaseDelayMode)
+pardict.update(basicDiscriminationMode)
 adap030 = pardict.copy()
 
 
@@ -176,8 +176,6 @@ pardict.update(amodMice_regularTask)
 pardict.update({'highModFreq':64})
 pardict.update({'soundTypeMode':'mixed_chords'})
 amod004 = pardict.copy()
-
-
 
 # -- Drd1::ChR2 mice. Frequency discrimination task --
 
