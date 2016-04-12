@@ -42,6 +42,37 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 
 # ======== Parameters for each animal =========
 
+# -- New adap animals
+pardict = {'subject':'adap026','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(basicDiscriminationMode)
+adap026 = pardict.copy()
+
+pardict = {'subject':'adap027','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(basicDiscriminationMode)
+adap027 = pardict.copy()
+
+pardict = {'subject':'adap028','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(basicDiscriminationMode)
+adap028 = pardict.copy()
+
+pardict = {'subject':'adap029','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(basicDiscriminationMode)
+adap029 = pardict.copy()
+
+pardict = {'subject':'adap030','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(basicDiscriminationMode)
+adap030 = pardict.copy()
+
 # -- D1:Chr2 adaptive categorization, psychometric and switching --
 d1pi2 = basicDiscriminationMode
 
@@ -82,7 +113,7 @@ d1pi012 = pardict.copy()
 
 
 # -- Adaptive categorization, psychometric and switching --
-adap5 = psyCurveMidBound
+adap5 = switchDailyMode
 
 pardict = {'subject':'adap021','experimenter':'santiago'}
 pardict.update(adap5)
@@ -120,35 +151,6 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap025 = pardict.copy()
 
 
-pardict = {'subject':'adap026','experimenter':'santiago'}
-pardict.update(frequencySet6to19)
-# pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(basicDiscriminationMode)
-adap026 = pardict.copy()
-
-pardict = {'subject':'adap027','experimenter':'santiago'}
-pardict.update(frequencySet6to19)
-# pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(basicDiscriminationMode)
-adap027 = pardict.copy()
-
-pardict = {'subject':'adap028','experimenter':'santiago'}
-pardict.update(frequencySet6to19)
-# pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(basicDiscriminationMode)
-adap028 = pardict.copy()
-
-pardict = {'subject':'adap029','experimenter':'santiago'}
-pardict.update(frequencySet6to19)
-# pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(basicDiscriminationMode)
-adap029 = pardict.copy()
-
-pardict = {'subject':'adap030','experimenter':'santiago'}
-pardict.update(frequencySet6to19)
-# pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(basicDiscriminationMode)
-adap030 = pardict.copy()
 
 
 
