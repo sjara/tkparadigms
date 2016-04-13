@@ -45,31 +45,31 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 # -- New adap animals
 pardict = {'subject':'adap026','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(basicDiscriminationMode)
 adap026 = pardict.copy()
 
 pardict = {'subject':'adap027','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(basicDiscriminationMode)
 adap027 = pardict.copy()
 
 pardict = {'subject':'adap028','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(basicDiscriminationMode)
 adap028 = pardict.copy()
 
 pardict = {'subject':'adap029','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(basicDiscriminationMode)
 adap029 = pardict.copy()
 
 pardict = {'subject':'adap030','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(basicDiscriminationMode)
 adap030 = pardict.copy()
 
@@ -176,7 +176,7 @@ pardict.update({'soundTypeMode':'mixed_chords'})
 amod003 = pardict.copy()
 
 pardict = {'subject':'amod004','experimenter':'nick'}
-pardict.update(amodMice_regularTask)
+pardict.update(amodMice_regularTask
 pardict.update({'psycurveMode':'uniform','highModFreq':64})
 # pardict.update({'highModFreq':64})
 pardict.update({'soundTypeMode':'mixed_tones'})
