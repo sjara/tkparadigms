@@ -179,7 +179,7 @@ pardict = {'subject':'amod004','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
 pardict.update({'psycurveMode':'uniform','highModFreq':64})
 # pardict.update({'highModFreq':64})
-pardict.update({'soundTypeMode':'mixed_chords'})
+pardict.update({'soundTypeMode':'mixed_tones'})
 amod004 = pardict.copy()
 
 # -- Drd1::ChR2 mice. Frequency discrimination task --
