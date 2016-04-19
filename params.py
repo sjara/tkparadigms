@@ -116,14 +116,14 @@ d1pi012 = pardict.copy()
 adap5 = switchDailyMode
 
 pardict = {'subject':'adap021','experimenter':'santiago'}
-pardict.update(adap5)
+pardict.update(switchBlocksMode)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap021 = pardict.copy()
 
 pardict = {'subject':'adap022','experimenter':'santiago'}
-pardict.update(adap5)
+pardict.update(switchBlocksMode)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
@@ -141,6 +141,7 @@ pardict.update(adap5)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+pardict.update({'delayToTargetMean':0.1})
 adap024 = pardict.copy()
 
 pardict = {'subject':'adap025','experimenter':'santiago'}
@@ -148,6 +149,7 @@ pardict.update(adap5)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+pardict.update({'delayToTargetMean':0.1})
 adap025 = pardict.copy()
 
 
