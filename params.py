@@ -130,7 +130,7 @@ pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap022 = pardict.copy()
 
 pardict = {'subject':'adap023','experimenter':'santiago'}
-pardict.update(adap5)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
