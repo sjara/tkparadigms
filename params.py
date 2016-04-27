@@ -109,6 +109,7 @@ pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+pardict.update({'delayToTargetMean':0.1})
 d1pi012 = pardict.copy()
 
 
