@@ -40,6 +40,23 @@ cuedSidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'del
 cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                    'currentBlock':'mid_boundary'}
 
+# ======== Reward change task ========
+
+psyCurveChangeReward = {'punishTimeError':4,
+                     'delayToTargetMean':0.15,
+                     'currentBlock':'same_reward',
+                     'psycurveMode':'uniform',
+                     'automationMode':'same_left_right',
+                     'punishTimeEarly':0.5,
+                     'punishTimeError':2,
+                     'punishSoundAmplitude':0.05,
+                     'trialsPerBlock':200,
+                     'baseWaterValveL':0.015,
+                     'baseWaterValveR':0.015,
+                     'factorWaterValveL':4,
+                     'factorWaterValveR':4}
+
+
 # ======== Parameters for each animal =========
 
 # -- New adap animals
@@ -74,43 +91,55 @@ pardict.update(basicDiscriminationMode)
 adap030 = pardict.copy()
 
 # -- D1:Chr2 adaptive categorization, psychometric and switching --
+# D1:Chr2 on reward change discrimination psychometric curve
 #d1pi2 = basicDiscriminationMode
 
+
 pardict = {'subject':'d1pi008','experimenter':'santiago'}
-pardict.update(psyCurveMidBound)
-pardict.update(frequencySet6to19)
+#pardict.update(psyCurveMidBound)
+#pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+#pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+pardict.update(psyCurveChangeReward)
+pardict.update({'lowFreq':6200,'highFreq':19200})
 d1pi008 = pardict.copy()
 
 pardict = {'subject':'d1pi009','experimenter':'santiago'}
-pardict.update(psyCurveMidBound)
-pardict.update(frequencySet6to19)
+#pardict.update(psyCurveMidBound)
+#pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+#pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+pardict.update(psyCurveChangeReward)
+pardict.update({'lowFreq':6200,'highFreq':19200})
 d1pi009 = pardict.copy()
 
 pardict = {'subject':'d1pi010','experimenter':'santiago'}
-pardict.update(basicDiscriminationMode)
-pardict.update(frequencySet6to19)
+#pardict.update(basicDiscriminationMode)
+#pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+#pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+pardict.update(psyCurveChangeReward)
+pardict.update({'lowFreq':6200,'highFreq':19200})
 d1pi010 = pardict.copy()
 
 pardict = {'subject':'d1pi011','experimenter':'santiago'}
-pardict.update(psyCurveMidBound)
+#pardict.update(psyCurveMidBound)
 #pardict.update(frequencySet6to19)
-pardict.update(frequencySet3to16)
+#pardict.update(frequencySet3to16)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+#pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+pardict.update(psyCurveChangeReward)
+pardict.update({'lowFreq':3000,'highFreq':16000})
 d1pi011 = pardict.copy()
 
 pardict = {'subject':'d1pi012','experimenter':'santiago'}
-pardict.update(psyCurveMidBound)
-pardict.update(frequencySet6to19)
+#pardict.update(psyCurveMidBound)
+#pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
-pardict.update({'delayToTargetMean':0.1})
+#pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+#pardict.update({'delayToTargetMean':0.1})
+pardict.update(psyCurveChangeReward)
+pardict.update({'lowFreq':6200,'highFreq':19200})
 d1pi012 = pardict.copy()
 
 
