@@ -113,10 +113,10 @@ class Paradigm(templates.Paradigm2AFC):
                                                                ['fixed','randMinus20'],
                                                                value=0,group='Sound parameters')
         self.params['soundTypeMode'] = paramgui.MenuParam('Sound mode',
-                                                          ['amp_mod','chords', 'mixed'],
+                                                          ['amp_mod','tones', 'chords', 'mixed_tones', 'mixed_chords'],
                                                           value=0,group='Sound parameters')
         self.params['soundType'] = paramgui.MenuParam('Sound type',
-                                                      ['amp_mod','chords'],
+                                                      ['amp_mod','tones', 'chords'],
                                                       value=0,group='Sound parameters')
         # This intensity corresponds to the intensity of each component of the chord
         self.params['targetMaxIntensity'] = paramgui.NumericParam('Max intensity',value=50,
@@ -269,6 +269,11 @@ class Paradigm(templates.Paradigm2AFC):
             stimDur = self.params['targetDuration'].get_value()
             s1 = {'type':'AM', 'modFrequency':targetFrequency, 'duration':stimDur,
                 'amplitude':targetAmp}
+        elif self.params['soundType'].get_string() == 'tones':
+            targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
+            self.params['targetAmplitude'].set_value(targetAmp)
+            stimDur = self.params['targetDuration'].get_value()
+            s1 = {'type':'tone', 'frequency':targetFrequency, 'duration':stimDur, 'amplitude':targetAmp}
         elif self.params['soundType'].get_string() == 'chords':
             targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
             self.params['targetAmplitude'].set_value(targetAmp)
@@ -335,9 +340,17 @@ class Paradigm(templates.Paradigm2AFC):
         # -- Set the sound type --
         if self.params['soundTypeMode'].get_string() == 'amp_mod':
             self.params['soundType'].set_string('amp_mod')
+        elif self.params['soundTypeMode'].get_string() == 'tones':
+            self.params['soundType'].set_string('tones')
         elif self.params['soundTypeMode'].get_string() == 'chords':
             self.params['soundType'].set_string('chords')
-        elif self.params['soundTypeMode'].get_string() == 'mixed':
+        elif self.params['soundTypeMode'].get_string() == 'mixed_tones':
+            #Switching the sound type every other trial
+            if nextTrial%2:
+                self.params['soundType'].set_string('tones')
+            else:
+                self.params['soundType'].set_string('amp_mod')
+        elif self.params['soundTypeMode'].get_string() == 'mixed_chords':
             #Switching the sound type every other trial
             if nextTrial%2:
                 self.params['soundType'].set_string('chords')
@@ -348,6 +361,9 @@ class Paradigm(templates.Paradigm2AFC):
         if self.params['soundType'].get_string() == 'amp_mod':
             highFreq = self.params['highModFreq'].get_value()
             lowFreq = self.params['lowModFreq'].get_value()
+        elif self.params['soundType'].get_string() == 'tones':
+            highFreq = self.params['highSoundFreq'].get_value()
+            lowFreq = self.params['lowSoundFreq'].get_value()
         elif self.params['soundType'].get_string() == 'chords':
             highFreq = self.params['highSoundFreq'].get_value()
             lowFreq = self.params['lowSoundFreq'].get_value()
