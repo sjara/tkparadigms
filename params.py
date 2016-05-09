@@ -158,7 +158,7 @@ adap025 = pardict.copy()
 
 
 # -- Amplitude modulation discrimination (amod) mice --
-# amodMice_kindergarden = {'outcomeMode':'direct'}
+amodMice_modulationSidesDirect = {'outcomeMode':'sides_direct', 'soundTypeMode':'amp_mod'}
 # amodMice_smart = {'outcomeMode':'on_next_correct'}
 amodMice_regularTask = {'outcomeMode':'only_if_correct'}
 amodMice_regularTask.update({'punishTimeError':2})
@@ -184,6 +184,31 @@ pardict.update({'lowSoundFreq':5000,'highSoundFreq':12000})
 # pardict.update({'highModFreq':64})
 pardict.update({'soundTypeMode':'mixed_tones'})
 amod004 = pardict.copy()
+
+## -- New Amod mice --
+## Starting on direct mode with amp mod only
+
+pardict = {'subject':'amod006','experimenter':'nick'}
+pardict.update(amodMice_modulationSidesDirect)
+amod006 = pardict.copy()
+
+pardict = {'subject':'amod007','experimenter':'nick'}
+pardict.update(amodMice_modulationSidesDirect)
+amod007 = pardict.copy()
+
+pardict = {'subject':'amod008','experimenter':'nick'}
+pardict.update(amodMice_modulationSidesDirect)
+amod008 = pardict.copy()
+
+pardict = {'subject':'amod009','experimenter':'nick'}
+pardict.update(amodMice_modulationSidesDirect)
+amod009 = pardict.copy()
+
+pardict = {'subject':'amod010','experimenter':'nick'}
+pardict.update(amodMice_modulationSidesDirect)
+amod010 = pardict.copy()
+
+
 
 # -- Drd1::ChR2 mice. Frequency discrimination task --
 
