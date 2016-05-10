@@ -208,12 +208,18 @@ pardict.update({'psycurveMode':'uniform'})
 pardict.update({'soundTypeMode':'mixed_chords'})
 amod003 = pardict.copy()
 
+# pardict = {'subject':'amod004','experimenter':'nick'}
+# pardict.update(amodMice_regularTask)
+# pardict.update({'psycurveMode':'uniform','highModFreq':64})
+# pardict.update({'lowSoundFreq':5000,'highSoundFreq':12000})
+# # pardict.update({'highModFreq':64})
+# pardict.update({'soundTypeMode':'mixed_tones'})
+# amod004 = pardict.copy()
+
 pardict = {'subject':'amod004','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
-pardict.update({'psycurveMode':'uniform','highModFreq':64})
-pardict.update({'lowSoundFreq':5000,'highSoundFreq':12000})
-# pardict.update({'highModFreq':64})
-pardict.update({'soundTypeMode':'mixed_tones'})
+pardict.update({'psycurveMode':'uniform'})
+pardict.update({'soundTypeMode':'mixed_chords'})
 amod004 = pardict.copy()
 
 ## -- New Amod mice --
