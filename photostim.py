@@ -50,11 +50,17 @@ class PhotoStim(QtGui.QMainWindow):
                                                             units='s',group='Stimulation times')
         self.params['timeDelayPostRight'] = paramgui.NumericParam('Delay post right',value=4,
                                                             units='s',group='Stimulation times')
-        self.params['timeStimBoth'] = paramgui.NumericParam('Time stim both',value=1,
+        self.params['timeStimBoth'] = paramgui.NumericParam('Time stim both',value=2,
                                                             units='s',group='Stimulation times')
-        self.params['timeDelayPostBoth'] = paramgui.NumericParam('Delay post both',value=4,
+        self.params['timeDelayPostBoth'] = paramgui.NumericParam('Delay post both',value=6,
                                                             units='s',group='Stimulation times')
+
+        self.params['stimMode'] = paramgui.MenuParam('Stim Mode',
+                                                     ['Unilateral','Bilateral', 'Mixed'],
+                                                     value=2,group='Stimulation times')
+
         stimTimes = self.params.layout_group('Stimulation times')
+
 
         # -- Create dispatcher --
         self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,interval=0.1)
@@ -131,24 +137,67 @@ class PhotoStim(QtGui.QMainWindow):
         #valveTimeR = self.params['timeWaterValveR'].get_value()
         #valveTimeR = self.params['timeWaterValveR'].get_value()
 
-        self.sm.add_state(name='startTrial', statetimer=0,
-                          transitions={'Tup':'stimLeft'})
-        self.sm.add_state(name='stimLeft',
-                          statetimer=self.params['timeStimLeft'].get_value(),
-                          transitions={'Tup':'delayPostLeft'},
-                          outputsOn={'leftLED'})
-        self.sm.add_state(name='delayPostLeft',
-                          statetimer=self.params['timeDelayPostLeft'].get_value(),
-                          transitions={'Tup':'stimRight'},
-                          outputsOff={'leftLED'})
-        self.sm.add_state(name='stimRight',
-                          statetimer=self.params['timeStimRight'].get_value(),
-                          transitions={'Tup':'delayPostRight'},
-                          outputsOn={'rightLED'})
-        self.sm.add_state(name='delayPostRight',
-                          statetimer=self.params['timeDelayPostRight'].get_value(),
-                          transitions={'Tup':'readyForNextTrial'},
-                          outputsOff={'rightLED'})
+        stimMode = self.params['stimMode'].get_value()
+        #print stimMode
+
+        if stimMode==0:
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'stimLeft'})
+            self.sm.add_state(name='stimLeft',
+                              statetimer=self.params['timeStimLeft'].get_value(),
+                              transitions={'Tup':'delayPostLeft'},
+                              outputsOn={'leftLED','stim1'})
+            self.sm.add_state(name='delayPostLeft',
+                              statetimer=self.params['timeDelayPostLeft'].get_value(),
+                              transitions={'Tup':'stimRight'},
+                              outputsOff={'leftLED','stim1'})
+            self.sm.add_state(name='stimRight',
+                              statetimer=self.params['timeStimRight'].get_value(),
+                              transitions={'Tup':'delayPostRight'},
+                              outputsOn={'rightLED','stim2'})
+            self.sm.add_state(name='delayPostRight',
+                              statetimer=self.params['timeDelayPostRight'].get_value(),
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff={'rightLED','stim2'})
+        elif stimMode==1:
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'stimBilateral'})
+            self.sm.add_state(name='stimBilateral',
+                              statetimer=self.params['timeStimBoth'].get_value(),
+                              transitions={'Tup':'delayPostBoth'},
+                              outputsOn={'leftLED','rightLED','stim1','stim2'})
+            self.sm.add_state(name='delayPostBoth',
+                              statetimer=self.params['timeDelayPostBoth'].get_value(),
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff={'leftLED','rightLED','stim1','stim2'})
+        elif stimMode==2:
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'stimLeft'})
+            self.sm.add_state(name='stimLeft',
+                              statetimer=self.params['timeStimLeft'].get_value(),
+                              transitions={'Tup':'delayPostLeft'},
+                              outputsOn={'leftLED','stim1'})
+            self.sm.add_state(name='delayPostLeft',
+                              statetimer=self.params['timeDelayPostLeft'].get_value(),
+                              transitions={'Tup':'stimRight'},
+                              outputsOff={'leftLED','stim1'})
+            self.sm.add_state(name='stimRight',
+                              statetimer=self.params['timeStimRight'].get_value(),
+                              transitions={'Tup':'delayPostRight'},
+                              outputsOn={'rightLED','stim2'})
+            self.sm.add_state(name='delayPostRight',
+                              statetimer=self.params['timeDelayPostRight'].get_value(),
+                              transitions={'Tup':'stimBilateral'},
+                              outputsOff={'rightLED','stim2'})
+            self.sm.add_state(name='stimBilateral',
+                              statetimer=self.params['timeStimBoth'].get_value(),
+                              transitions={'Tup':'delayPostBoth'},
+                              outputsOn={'leftLED','rightLED','stim1','stim2'})
+            self.sm.add_state(name='delayPostBoth',
+                              statetimer=self.params['timeDelayPostBoth'].get_value(),
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff={'leftLED','rightLED','stim1','stim2'})
+
 
         #print self.sm ### DEBUG
         self.dispatcherModel.set_state_matrix(self.sm)
