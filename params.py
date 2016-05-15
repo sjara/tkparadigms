@@ -192,8 +192,11 @@ adap025 = pardict.copy()
 amodMice_modulationSidesDirect = {'outcomeMode':'sides_direct', 'soundTypeMode':'amp_mod'}
 amodMice_modulationDirect = {'outcomeMode':'direct', 'soundTypeMode':'amp_mod'}
 # amodMice_smart = {'outcomeMode':'on_next_correct'}
-amodMice_regularTask = {'outcomeMode':'only_if_correct'}
-amodMice_regularTask.update({'punishTimeError':2})
+
+amodMice_modulationOnNextCorrect = {'outcomeMode':'on_next_correct', 'soundTypeMode':'amp_mod'}
+
+# amodMice_regularTask = {'outcomeMode':'only_if_correct'}
+# amodMice_regularTask.update({'punishTimeError':2})
 
 
 pardict = {'subject':'amod002','experimenter':'nick'}
@@ -227,23 +230,23 @@ amod004 = pardict.copy()
 ## Starting on direct mode with amp mod only
 
 pardict = {'subject':'amod006','experimenter':'nick'}
-pardict.update(amodMice_modulationDirect)
+pardict.update(amodMice_modulationOnNextCorrect)
 amod006 = pardict.copy()
 
 pardict = {'subject':'amod007','experimenter':'nick'}
-pardict.update(amodMice_modulationDirect)
+pardict.update(amodMice_modulationOnNextCorrect)
 amod007 = pardict.copy()
 
 pardict = {'subject':'amod008','experimenter':'nick'}
-pardict.update(amodMice_modulationDirect)
+pardict.update(amodMice_modulationOnNextCorrect)
 amod008 = pardict.copy()
 
 pardict = {'subject':'amod009','experimenter':'nick'}
-pardict.update(amodMice_modulationDirect)
+pardict.update(amodMice_modulationOnNextCorrect)
 amod009 = pardict.copy()
 
 pardict = {'subject':'amod010','experimenter':'nick'}
-pardict.update(amodMice_modulationDirect)
+pardict.update(amodMice_modulationOnNextCorrect)
 amod010 = pardict.copy()
 
 
