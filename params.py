@@ -195,8 +195,8 @@ amodMice_modulationDirect = {'outcomeMode':'direct', 'soundTypeMode':'amp_mod'}
 
 amodMice_modulationOnNextCorrect = {'outcomeMode':'on_next_correct', 'soundTypeMode':'amp_mod'}
 
-# amodMice_regularTask = {'outcomeMode':'only_if_correct'}
-# amodMice_regularTask.update({'punishTimeError':2})
+amodMice_regularTask = {'outcomeMode':'only_if_correct'}
+amodMice_regularTask.update({'punishTimeError':2})
 
 
 pardict = {'subject':'amod002','experimenter':'nick'}
