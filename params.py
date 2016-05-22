@@ -237,6 +237,7 @@ amod004 = pardict.copy()
 
 pardict = {'subject':'amod006','experimenter':'nick'}
 pardict.update(amodMice_modulationOnlyIfCorrect)
+pardict.update({'antibiasMode':'repeat_mistake'})
 amod006 = pardict.copy()
 
 pardict = {'subject':'amod007','experimenter':'nick'}
@@ -253,6 +254,7 @@ amod009 = pardict.copy()
 
 pardict = {'subject':'amod010','experimenter':'nick'}
 pardict.update(amodMice_modulationOnlyIfCorrect)
+pardict.update({'antibiasMode':'repeat_mistake'})
 amod010 = pardict.copy()
 
 
