@@ -103,7 +103,7 @@ d1pi1 = directMode
 pardict = {'subject':'d1pi014','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi2)
+pardict.update(d1pi1)
 d1pi014 = pardict.copy()
 
 pardict = {'subject':'d1pi015','experimenter':'santiago'}
