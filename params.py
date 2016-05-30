@@ -100,6 +100,24 @@ adap030 = pardict.copy()
 d1pi2 = sidesDirectMode
 d1pi1 = directMode
 
+pardict = {'subject':'d1pi008','experimenter':'lan'}
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(psyCurveMidBound)
+d1pi008 = pardict.copy()
+
+pardict = {'subject':'d1pi011','experimenter':'lan'}
+pardict.update(frequencySet4to13)
+pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(psyCurveMidBound)
+d1pi011 = pardict.copy()
+
+pardict = {'subject':'d1pi013','experimenter':'lan'}
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(d1pi2)
+d1pi013 = pardict.copy()
+
 pardict = {'subject':'d1pi014','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
@@ -124,14 +142,14 @@ pardict.update(frequencySet6to19)
 pardict.update(d1pi2)
 d1pi017 = pardict.copy()
 
-pardict = {'subject':'d1pi008','experimenter':'santiago'}
+#pardict = {'subject':'d1pi008','experimenter':'santiago'}
 #pardict.update(psyCurveMidBound)
 #pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 #pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
-pardict.update(psyCurveChangeReward)
-pardict.update({'lowFreq':6200,'highFreq':19200})
-d1pi008 = pardict.copy()
+#pardict.update(psyCurveChangeReward)
+#pardict.update({'lowFreq':6200,'highFreq':19200})
+#d1pi008 = pardict.copy()
 
 pardict = {'subject':'d1pi009','experimenter':'santiago'}
 #pardict.update(psyCurveMidBound)
@@ -151,15 +169,15 @@ pardict.update(psyCurveChangeReward)
 pardict.update({'lowFreq':6200,'highFreq':19200})
 d1pi010 = pardict.copy()
 
-pardict = {'subject':'d1pi011','experimenter':'santiago'}
+#pardict = {'subject':'d1pi011','experimenter':'santiago'}
 #pardict.update(psyCurveMidBound)
 #pardict.update(frequencySet6to19)
 #pardict.update(frequencySet3to16)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 #pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
-pardict.update(psyCurveChangeReward)
-pardict.update({'lowFreq':3000,'highFreq':16000})
-d1pi011 = pardict.copy()
+#pardict.update(psyCurveChangeReward)
+#pardict.update({'lowFreq':3000,'highFreq':16000})
+#d1pi011 = pardict.copy()
 
 pardict = {'subject':'d1pi012','experimenter':'santiago'}
 #pardict.update(psyCurveMidBound)
