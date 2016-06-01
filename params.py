@@ -97,7 +97,7 @@ adap030 = pardict.copy()
 
 # -- D1:Chr2 adaptive categorization, psychometric and switching --
 # D1:Chr2 on reward change discrimination psychometric curve
-d1pi2 = sidesDirectMode
+d1pi2 = increaseDelayMode
 d1pi1 = directMode
 
 pardict = {'subject':'d1pi008','experimenter':'lan'}
@@ -131,13 +131,13 @@ d1pi014 = pardict.copy()
 pardict = {'subject':'d1pi015','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi1)
+pardict.update(d1pi2)
 d1pi015 = pardict.copy()
 
 pardict = {'subject':'d1pi016','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi1)
+pardict.update(d1pi2)
 d1pi016 = pardict.copy()
 
 pardict = {'subject':'d1pi017','experimenter':'santiago'}
