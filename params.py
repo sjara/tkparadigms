@@ -98,7 +98,7 @@ adap030 = pardict.copy()
 # -- D1:Chr2 adaptive categorization, psychometric and switching --
 # D1:Chr2 on reward change discrimination psychometric curve
 d1pi2 = increaseDelayMode
-d1pi1 = directMode
+d1pi1 = basicDiscriminationMode
 
 pardict = {'subject':'d1pi008','experimenter':'lan'}
 pardict.update(frequencySet6to19)
@@ -120,7 +120,7 @@ d1pi011 = pardict.copy()
 pardict = {'subject':'d1pi013','experimenter':'lan'}
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi2)
+pardict.update(d1pi1)
 d1pi013 = pardict.copy()
 
 pardict = {'subject':'d1pi014','experimenter':'santiago'}
@@ -132,19 +132,19 @@ d1pi014 = pardict.copy()
 pardict = {'subject':'d1pi015','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi2)
+pardict.update(d1pi1)
 d1pi015 = pardict.copy()
 
 pardict = {'subject':'d1pi016','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi2)
+pardict.update(d1pi1)
 d1pi016 = pardict.copy()
 
 pardict = {'subject':'d1pi017','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi1)
+pardict.update(d1pi2)
 d1pi017 = pardict.copy()
 
 #pardict = {'subject':'d1pi008','experimenter':'santiago'}
