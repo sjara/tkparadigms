@@ -110,7 +110,7 @@ pardict = {'subject':'d1pi011','experimenter':'lan'}
 pardict.update(frequencySet4to13)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(psyCurveMidBound)
-pardict.update({'psycurveMode':'off'})
+pardict.update({'psycurveMode':'uniform'})
 pardict.update({'delayToTargetMean':0.1,'delayToTargetHalfRange':0.02,})
 pardict.update({'targetDuration':0.08})
 pardict.update({'targetMaxIntensity':53})
@@ -125,19 +125,19 @@ d1pi013 = pardict.copy()
 
 pardict = {'subject':'d1pi014','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(d1pi1)
 d1pi014 = pardict.copy()
 
 pardict = {'subject':'d1pi015','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(d1pi1)
 d1pi015 = pardict.copy()
 
 pardict = {'subject':'d1pi016','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(d1pi1)
 d1pi016 = pardict.copy()
 
