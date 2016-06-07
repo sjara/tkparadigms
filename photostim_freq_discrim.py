@@ -134,6 +134,20 @@ class Paradigm(templates.Paradigm2AFC):
                                                          group='Report')
         reportParams = self.params.layout_group('Report')
 
+        # Photostim params
+        #########FIXME: laserFrontOverhang cannot be longer delayToTarget
+        self.params['laserFrontOverhang'] = paramgui.NumericParam('Laser onset to sound onset',value=0.05,
+                                                            units='s',group='Stimulation times')
+        self.params['laserBackOverhang'] = paramgui.NumericParam('Sound offset to laser offset',value=0.2,
+                                                            units='s',group='Stimulation times')
+        #can only do one stim right now
+        '''
+        self.params['stimMode'] = paramgui.MenuParam('Stim Mode',
+                                                     ['Unilateral','Bilateral', 'Mixed'],
+                                                     value=2,group='Stimulation times')
+        '''
+        photostimParams = self.params.layout_group('Stimulation times')
+
 
         # 
         self.params['experimenter'].set_value('santiago')
@@ -171,6 +185,8 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol2.addWidget(waterDelivery)
         layoutCol2.addStretch()
         layoutCol2.addWidget(choiceParams)
+        layoutCol2.addStretch()
+        layoutCol2.addWidget(photostimParams) #Added photostimParams to col2
         layoutCol2.addStretch()
 
         layoutCol3.addWidget(timingParams)
@@ -404,6 +420,12 @@ class Paradigm(templates.Paradigm2AFC):
             stimOutput = ['outBit0'] # Sync signal for stimulus
         else:
             stimOutput = []
+        #######FIXME: have not implemented bilateral photo stim
+        if rigsettings.OUTPUTS.has_key('stim1'):
+            laserOutput = ['stim1'] # Using stim1 to turn laser on
+        else:
+            laserOutput = []
+
         if nextCorrectChoice==self.results.labels['rewardSide']['left']:
             rewardDuration = self.params['timeWaterValveL'].get_value()
             ledOutput = 'leftLED'
@@ -528,25 +550,38 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'readyForNextTrial'})
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
+##############################################################################
+
+########################## Working on State Matrix#############################
+
 
         elif outcomeMode=='only_if_correct':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
                               outputsOn=trialStartOutput)
             self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
-                              transitions={'Cin':'delayPeriod'})
-            self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
-                              transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
+                              transitions={'Cin':'delayPreLaser'},
+                              outputsOff=laserOutput)
+            self.sm.add_state(name='delayPreLaser', statetimer=(delayToTarget-laserFrontOverhang),
+                              transitions={'Tup':'delayPosLaser','Cout':'waitForCenterPoke'})
+            self.sm.add_state(name='delayPosLaser', statetimer=laserFrontOverhang,
+                              transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'}, 
+                              outputsOn=laserOutput)
+            
             # Note that 'delayPeriod' may happen several times in a trial, so
             # trialStartOutput off here would only meaningful for the first time in the trial.
             self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                              transitions={'Tup':'waitForSidePoke','Cout':'earlyWithdrawal'},
+                              transitions={'Tup':'laserOff','Cout':'earlyWithdrawal'},
                               outputsOn=stimOutput, serialOut=soundID,
                               outputsOff=trialStartOutput)
+            ###serialOut does not need to be turned off??
+            self.sm.add_state(name='laserPosSound', statetimer=laserBackOverhang,
+                              trasitions={'Tup':'waitForSidePoke'},
+                              outputsOff=stimOutput)
             self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                            'Tup':'noChoice'},
-                              outputsOff=stimOutput)
+                              outputsOff=laserOutput)
             if correctSidePort=='Lin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'reward'})
@@ -559,7 +594,8 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Tup':'reward'})
             self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=stimOutput,serialOut=self.punishSoundID)
+                              outputsOff=(stimOutput,laserOutput),
+                              serialOut=self.punishSoundID)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
