@@ -550,19 +550,23 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'readyForNextTrial'})
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
+          
 ##############################################################################
 
 ########################## Working on State Matrix#############################
 
 
         elif outcomeMode=='only_if_correct':
+            laserFrontOverhang = self.params['laserFrontOverhang'].get_value()
+            laserBackOverhang = self.params['laserBackOverhang'].get_value()
+
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
                               outputsOn=trialStartOutput)
             self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
                               transitions={'Cin':'delayPreLaser'},
                               outputsOff=laserOutput)
-            self.sm.add_state(name='delayPreLaser', statetimer=(delayToTarget-laserFrontOverhang),
+            self.sm.add_state(name='delayPreLaser', statetimer=delayToTarget-laserFrontOverhang,
                               transitions={'Tup':'delayPosLaser','Cout':'waitForCenterPoke'})
             self.sm.add_state(name='delayPosLaser', statetimer=laserFrontOverhang,
                               transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'}, 
@@ -571,12 +575,11 @@ class Paradigm(templates.Paradigm2AFC):
             # Note that 'delayPeriod' may happen several times in a trial, so
             # trialStartOutput off here would only meaningful for the first time in the trial.
             self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                              transitions={'Tup':'laserOff','Cout':'earlyWithdrawal'},
+                              transitions={'Tup':'laserPosSound','Cout':'earlyWithdrawal'},
                               outputsOn=stimOutput, serialOut=soundID,
                               outputsOff=trialStartOutput)
-            ###serialOut does not need to be turned off??
             self.sm.add_state(name='laserPosSound', statetimer=laserBackOverhang,
-                              trasitions={'Tup':'waitForSidePoke'},
+                              transitions={'Tup':'waitForSidePoke'},
                               outputsOff=stimOutput)
             self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
@@ -594,7 +597,7 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Tup':'reward'})
             self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=(stimOutput,laserOutput),
+                              outputsOff=stimOutput+laserOutput,
                               serialOut=self.punishSoundID)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
@@ -609,7 +612,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         else:
             raise TypeError('outcomeMode={0} has not been implemented'.format(outcomeMode))
-        ###print self.sm ### DEBUG
+        print self.sm ### DEBUG
         self.dispatcherModel.set_state_matrix(self.sm)
 
 
@@ -645,9 +648,10 @@ class Paradigm(templates.Paradigm2AFC):
             self.results['timeTarget'][trialIndex] = eventsThisTrial[targetEventInd,0]
 
             # -- Find center poke-in time --
+            ##### Replaced the state 'delayPeriod' with 'delayPreLaser' and 'delayPosLaser'
             if outcomeModeString in ['on_next_correct','only_if_correct']:
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
-                          self.sm.statesNameToIndex['delayPeriod'],
+                          self.sm.statesNameToIndex['delayPreLaser'],
                           self.sm.statesNameToIndex['playStimulus']]
             elif outcomeModeString in ['simulated','sides_direct','direct']:
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
