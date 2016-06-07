@@ -16,6 +16,7 @@ from taskontrol.plugins import performancedynamicsplot
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
 import time
+import numpy as np
 
 LONGTIME = 100
 
@@ -136,11 +137,17 @@ class Paradigm(templates.Paradigm2AFC):
 
         # Photostim params
         #########FIXME: laserFrontOverhang cannot be longer delayToTarget
-        self.params['laserFrontOverhang'] = paramgui.NumericParam('Laser onset to sound onset',value=0.05,
+        self.params['laserFrontOverhang'] = paramgui.NumericParam('Laser on to sound on',value=0.05,
                                                             units='s',group='Stimulation times')
-        self.params['laserBackOverhang'] = paramgui.NumericParam('Sound offset to laser offset',value=0.2,
+        self.params['laserBackOverhang'] = paramgui.NumericParam('Sound off to laser off',value=0.05,
                                                             units='s',group='Stimulation times')
-        #can only do one stim right now
+        ## Percent trials to present either left or right laser stimulation (if set at 50% then left/right laser stim will each be presented in 25% of trials)
+        self.params['percentLaserTrials'] = paramgui.NumericParam('percent laser trials',value=0.5,
+                                                            units='%',group='Stimulation times')
+        self.params['trialType'] = paramgui.MenuParam('Trial Type', 
+                                                      ['no_laser','laser_left','laser_right'],
+                                                      value=0,group='Stimulation times')
+        
         '''
         self.params['stimMode'] = paramgui.MenuParam('Stim Mode',
                                                      ['Unilateral','Bilateral', 'Mixed'],
@@ -223,7 +230,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.results['timeCenterIn'] = np.empty(maxNtrials,dtype=float)
         self.results['timeCenterOut'] = np.empty(maxNtrials,dtype=float)
         self.results['timeSideIn'] = np.empty(maxNtrials,dtype=float)
-
+        
 
         # -- Define first block --
         '''
@@ -420,11 +427,27 @@ class Paradigm(templates.Paradigm2AFC):
             stimOutput = ['outBit0'] # Sync signal for stimulus
         else:
             stimOutput = []
-        #######FIXME: have not implemented bilateral photo stim
-        if rigsettings.OUTPUTS.has_key('stim1'):
-            laserOutput = ['stim1'] # Using stim1 to turn laser on
+        
+        percentLaserTrials = self.params['percentLaserTrials'].get_value()
+        laserTrial = np.random.choice([False,True],size=1,p=[1-percentLaserTrials,percentLaserTrials])
+        if laserTrial:
+            laserFrontOverhang = self.params['laserFrontOverhang'].get_value()
+            laserBackOverhang = self.params['laserBackOverhang'].get_value()
+            if rigsettings.OUTPUTS.has_key('stim1') and rigsettings.OUTPUTS.has_key('stim2'):
+                laserOutput = list(np.random.choice(['stim1','stim2'],size=1))  
+            else:
+                laserOutput = []
         else:
-            laserOutput = []
+            laserFrontOverhang = 0
+            laserBackOverhang = 0
+            laserOutput=[]
+        if laserOutput==['stim1']:
+            trialType='laser_left'
+        elif laserOutput==['stim2']:
+            trialType='laser_right'
+        else:
+            trialType='no_laser'
+        self.params['trialType'].set_string(trialType)
 
         if nextCorrectChoice==self.results.labels['rewardSide']['left']:
             rewardDuration = self.params['timeWaterValveL'].get_value()
@@ -554,12 +577,8 @@ class Paradigm(templates.Paradigm2AFC):
 ##############################################################################
 
 ########################## Working on State Matrix#############################
-
-
+####TO DO: set percent laser trial as param
         elif outcomeMode=='only_if_correct':
-            laserFrontOverhang = self.params['laserFrontOverhang'].get_value()
-            laserBackOverhang = self.params['laserBackOverhang'].get_value()
-
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
                               outputsOn=trialStartOutput)
@@ -622,7 +641,7 @@ class Paradigm(templates.Paradigm2AFC):
         outcomeModeString = self.params['outcomeMode'].get_items()[outcomeModeID]
 
         eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
-        #print eventsThisTrial
+        print eventsThisTrial
         statesThisTrial = eventsThisTrial[:,2]
 
         # -- Find beginning of trial --
@@ -649,9 +668,13 @@ class Paradigm(templates.Paradigm2AFC):
 
             # -- Find center poke-in time --
             ##### Replaced the state 'delayPeriod' with 'delayPreLaser' and 'delayPosLaser'
-            if outcomeModeString in ['on_next_correct','only_if_correct']:
+            if outcomeModeString in ['only_if_correct']:
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
                           self.sm.statesNameToIndex['delayPreLaser'],
+                          self.sm.statesNameToIndex['playStimulus']]
+            elif outcomeModeString in ['on_next_correct']:
+                seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
+                          self.sm.statesNameToIndex['delayPeriod'],
                           self.sm.statesNameToIndex['playStimulus']]
             elif outcomeModeString in ['simulated','sides_direct','direct']:
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
