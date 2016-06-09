@@ -196,8 +196,8 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol2.addStretch()
         layoutCol2.addWidget(waterDelivery)
         layoutCol2.addStretch()
-        layoutCol2.addWidget(choiceParams)
-        layoutCol2.addStretch()
+        #layoutCol2.addWidget(choiceParams)
+        #layoutCol2.addStretch()
         layoutCol2.addWidget(photostimParams) #Added photostimParams to col2
         layoutCol2.addStretch()
 
@@ -206,6 +206,8 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol3.addWidget(switchingParams)
         layoutCol3.addStretch()
         layoutCol3.addWidget(psychometricParams)
+        layoutCol3.addStretch()
+        layoutCol3.addWidget(choiceParams)
         layoutCol3.addStretch()
 
         layoutCol4.addWidget(automationParams)
@@ -457,18 +459,21 @@ class Paradigm(templates.Paradigm2AFC):
             laserOutput=[]
             trialType='no_laser'
         self.params['trialType'].set_string(trialType)
+
         #set stimulation frequency
+############## FIXME: This part is not working#############################
         stimFreq = self.params['stimFreq'].get_string()
-        if rigsettings.OUTPUTS.has_key('trainmode1') and rigsettings.OUTPUTS.has_key('trianmode2'):
+        if rigsettings.OUTPUTS.has_key('trainmode1') and rigsettings.OUTPUTS.has_key('trainmode2'):
             if stimFreq=='continuous':     
                 laserOutput+=['trainmode1','trainmode2']
             elif stimFreq=='5':
                 laserOutput+=['trainmode1']
             elif stimFreq=='20':
                 laserOutput+=['trainmode2']
+            #print laserOutput
         else:
             print 'Warning: Rig output for laser train modes(frequencies) is not set up, delivering continuous stimulation by default.'
-
+############################################################################
         if nextCorrectChoice==self.results.labels['rewardSide']['left']:
             rewardDuration = self.params['timeWaterValveL'].get_value()
             ledOutput = 'leftLED'
