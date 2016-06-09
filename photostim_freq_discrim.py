@@ -142,12 +142,17 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['laserBackOverhang'] = paramgui.NumericParam('Sound off to laser off',value=0.05,
                                                             units='s',group='Stimulation times')
         ## Percent trials to present either left or right laser stimulation (if set at 50% then left/right laser stim will each be presented in 25% of trials)
-        self.params['percentLaserTrials'] = paramgui.NumericParam('percent laser trials',value=0.5,
+        self.params['percentLaserTrialLeft'] = paramgui.NumericParam('percent laser_left trials',value=0.2,
+                                                            units='%',group='Stimulation times')
+        self.params['percentLaserTrialRight'] = paramgui.NumericParam('percent laser_right trials',value=0.2,
                                                             units='%',group='Stimulation times')
         self.params['trialType'] = paramgui.MenuParam('Trial Type', 
                                                       ['no_laser','laser_left','laser_right'],
                                                       value=0,group='Stimulation times')
-        
+        self.params['stimFreq'] = paramgui.MenuParam('Stim Freq', 
+                                                      ['continuous','20','5'],
+                                                      value=0,group='Stimulation times')
+
         '''
         self.params['stimMode'] = paramgui.MenuParam('Stim Mode',
                                                      ['Unilateral','Bilateral', 'Mixed'],
@@ -428,26 +433,41 @@ class Paradigm(templates.Paradigm2AFC):
         else:
             stimOutput = []
         
-        percentLaserTrials = self.params['percentLaserTrials'].get_value()
-        laserTrial = np.random.choice([False,True],size=1,p=[1-percentLaserTrials,percentLaserTrials])
-        if laserTrial:
+        #set laser trial type and laser output
+        percentLaserTrialLeft = self.params['percentLaserTrialLeft'].get_value()
+        percentLaserTrialRight = self.params['percentLaserTrialRight'].get_value()
+        percentLaserTrials = percentLaserTrialLeft+percentLaserTrialRight
+        laserTrialType = np.random.choice([0,1,2],size=1,p=[1-percentLaserTrials,percentLaserTrialLeft,percentLaserTrialRight]) #result is an one-element numpy array
+        if laserTrialType[0]:
             laserFrontOverhang = self.params['laserFrontOverhang'].get_value()
             laserBackOverhang = self.params['laserBackOverhang'].get_value()
             if rigsettings.OUTPUTS.has_key('stim1') and rigsettings.OUTPUTS.has_key('stim2'):
-                laserOutput = list(np.random.choice(['stim1','stim2'],size=1))  
+                if laserTrialType[0]==1:
+                    laserOutput = ['stim1'] #left laser 
+                    trialType='laser_left'
+                elif laserTrialType[0]==2:
+                    laserOutput = ['stim2'] #right laser
+                    trialType='laser_right'
             else:
                 laserOutput = []
+                trialType='no_laser'
         else:
             laserFrontOverhang = 0
             laserBackOverhang = 0
             laserOutput=[]
-        if laserOutput==['stim1']:
-            trialType='laser_left'
-        elif laserOutput==['stim2']:
-            trialType='laser_right'
-        else:
             trialType='no_laser'
         self.params['trialType'].set_string(trialType)
+        #set stimulation frequency
+        stimFreq = self.params['stimFreq'].get_string()
+        if rigsettings.OUTPUTS.has_key('trainmode1') and rigsettings.OUTPUTS.has_key('trianmode2'):
+            if stimFreq=='continuous':     
+                laserOutput+=['trainmode1','trainmode2']
+            elif stimFreq=='5':
+                laserOutput+=['trainmode1']
+            elif stimFreq=='20':
+                laserOutput+=['trainmode2']
+        else:
+            print 'Warning: Rig output for laser train modes(frequencies) is not set up, delivering continuous stimulation by default.'
 
         if nextCorrectChoice==self.results.labels['rewardSide']['left']:
             rewardDuration = self.params['timeWaterValveL'].get_value()
@@ -574,10 +594,7 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
           
-##############################################################################
 
-########################## Working on State Matrix#############################
-####TO DO: set percent laser trial as param
         elif outcomeMode=='only_if_correct':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
@@ -631,7 +648,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         else:
             raise TypeError('outcomeMode={0} has not been implemented'.format(outcomeMode))
-        print self.sm ### DEBUG
+        #print self.sm ### DEBUG
         self.dispatcherModel.set_state_matrix(self.sm)
 
 
@@ -641,7 +658,7 @@ class Paradigm(templates.Paradigm2AFC):
         outcomeModeString = self.params['outcomeMode'].get_items()[outcomeModeID]
 
         eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
-        print eventsThisTrial
+        #print eventsThisTrial
         statesThisTrial = eventsThisTrial[:,2]
 
         # -- Find beginning of trial --
