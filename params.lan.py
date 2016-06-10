@@ -83,41 +83,22 @@ frequencySet3to16 = {'lowFreq':3000,'midFreq':7000,'highFreq':16000}
 frequencySet4to13 = {'lowFreq':3800,'midFreq':7000,'highFreq':12600}
 
 
-pardict = {'subject':'adap011','experimenter':'lan'}
-pardict.update(psyCurveChangeReward)
-pardict.update({'automationMode':'left_right_left'})
-pardict.update({'currentBlock':'more_left'})
-pardict.update({'trialsPerBlock':200})
-#pardict.update(basicDiscriminationMode)
-#pardict.update(frequencySet6to19)
-pardict.update({'lowFreq':8100,'highFreq':26000,'psycurveMode':'off'})
-pardict.update({'punishSoundAmplitude':0.02})
-#pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update({'targetMaxIntensity':50,'targetIntensityMode':'fixed'})
-pardict.update({'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.03})
-adap011 = pardict.copy()
-
-pardict = {'subject':'d1pi003','experimenter':'lan'}
-pardict.update(psyCurveChangeReward)
-pardict.update({'automationMode':'left_right_left'})
-pardict.update({'currentBlock':'more_left'})
-pardict.update({'trialsPerBlock':200})
-pardict.update({'lowFreq':6200,'highFreq':19200,'psycurveMode':'off'})
-pardict.update({'punishSoundAmplitude':0.02})
-#pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update({'targetMaxIntensity':50,'targetIntensityMode':'fixed'})
-pardict.update({'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.03})
-d1pi003 = pardict.copy()
 
 
-pardict = {'subject':'adap012','experimenter':'lan'}
-pardict.update(psyCurveChangeReward)
-pardict.update({'automationMode':'left_right_left'})
-pardict.update({'currentBlock':'more_left'})
-pardict.update({'trialsPerBlock':200})
-pardict.update({'lowFreq':6200,'highFreq':19200,'psycurveMode':'off'})
-pardict.update({'punishSoundAmplitude':0.02})
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict = {'subject':'d1pi011','experimenter':'lan'}
+pardict.update({'lowFreq':5400,'highFreq':12600,'psycurveMode':'uniform','psycurveNfreq':6})
+pardict.update({'percentLaserTrialLeft':0.2,'percentLaserTriaRight':0.2, 'stimFreq':'continuous'})
+pardict.update({'punishSoundAmplitude':0.015})
+pardict.update({'targetMaxIntensity':53,'targetIntensityMode':'fixed'})
+pardict.update({'delayToTargetMean':0.1, 'delayToTargetHalfRange':0.02})
+d1pi011 = pardict.copy()
+
+
+
+pardict = {'subject':'d1pi008','experimenter':'lan'}
+pardict.update({'lowFreq':7300,'highFreq':16300,'psycurveMode':'uniform','psycurveNfreq':6})
+pardict.update({'percentLaserTrialLeft':0.2,'percentLaserTriaRight':0.2, 'stimFreq':'continuous'})
+pardict.update({'punishSoundAmplitude':0.015})
 pardict.update({'targetMaxIntensity':50,'targetIntensityMode':'fixed'})
-pardict.update({'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.03})
-adap012 = pardict.copy()
+pardict.update({'delayToTargetMean':0.11, 'delayToTargetHalfRange':0.02})
+d1pi008 = pardict.copy()

@@ -98,7 +98,7 @@ adap030 = pardict.copy()
 # -- D1:Chr2 adaptive categorization, psychometric and switching --
 # D1:Chr2 on reward change discrimination psychometric curve
 d1pi2 = increaseDelayMode
-d1pi1 = directMode
+d1pi1 = basicDiscriminationMode
 
 pardict = {'subject':'d1pi008','experimenter':'lan'}
 pardict.update(frequencySet6to19)
@@ -110,7 +110,7 @@ pardict = {'subject':'d1pi011','experimenter':'lan'}
 pardict.update(frequencySet4to13)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(psyCurveMidBound)
-pardict.update({'psycurveMode':'off'})
+pardict.update({'psycurveMode':'uniform'})
 pardict.update({'delayToTargetMean':0.1,'delayToTargetHalfRange':0.02,})
 pardict.update({'targetDuration':0.08})
 pardict.update({'targetMaxIntensity':53})
@@ -120,30 +120,30 @@ d1pi011 = pardict.copy()
 pardict = {'subject':'d1pi013','experimenter':'lan'}
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi2)
+pardict.update(d1pi1)
 d1pi013 = pardict.copy()
 
 pardict = {'subject':'d1pi014','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi2)
+pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(d1pi1)
 d1pi014 = pardict.copy()
 
 pardict = {'subject':'d1pi015','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi2)
+pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(d1pi1)
 d1pi015 = pardict.copy()
 
 pardict = {'subject':'d1pi016','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi2)
+pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(d1pi1)
 d1pi016 = pardict.copy()
 
 pardict = {'subject':'d1pi017','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(d1pi1)
 d1pi017 = pardict.copy()
 
