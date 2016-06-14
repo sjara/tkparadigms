@@ -252,6 +252,17 @@ amodMice_mixed_tones = {'outcomeMode':'only_if_correct', 'soundTypeMode':'mixed_
 amodMice_regularTask = {'outcomeMode':'only_if_correct'}
 amodMice_regularTask.update({'punishTimeError':2})
 
+### new improved amod parameters ###
+amodSidesDirect = {'outcomeMode':'sides_direct', 'soundTypeMode':'amp_mod'}
+amodDirect = {'outcomeMode':'direct', 'soundTypeMode':'amp_mod'}
+amodNextCorrectAM = {'outcomeMode':'on_next_correct', 'soundTypeMode':'amp_mod'}
+amodIfCorrectAM = {'outcomeMode':'only_if_correct', 'soundTypeMode':'amp_mod'}
+amodPsycurveAM = {'outcomeMode':'only_if_correct', 'soundTypeMode':'amp_mod', 'psycurveMode':'uniform'}
+amodIfCorrectTones = {'outcomeMode':'only_if_correct', 'soundTypeMode':'tones'}
+amodPsycurveTones = {'outcomeMode':'only_if_correct', 'soundTypeMode':'tones', 'psycurveMode':'uniform'}
+amodPsycurveMixed = {'outcomeMode':'only_if_correct', 'soundTypeMode':'mixed_tones', 'psycurveMode':'uniform'}
+
+
 
 pardict = {'subject':'amod002','experimenter':'nick'}
 pardict.update(amodMice_regularTask)
@@ -284,29 +295,29 @@ amod004 = pardict.copy()
 ## Starting on direct mode with amp mod only
 
 pardict = {'subject':'amod006','experimenter':'nick'}
-pardict.update(amodMice_mixed_tones)
+pardict.update(amodIfCorrectAM)
 pardict.update({'targetIntensityMode':'randMinus20'})
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod006 = pardict.copy()
 
 pardict = {'subject':'amod007','experimenter':'nick'}
-pardict.update(amodMice_mixed_tones)
+pardict.update(amodIfCorrectAM)
 pardict.update({'targetIntensityMode':'randMinus20'})
 amod007 = pardict.copy()
 
 pardict = {'subject':'amod008','experimenter':'nick'}
-pardict.update(amodMice_mixed_tones)
+pardict.update(amodIfCorrectAM)
 pardict.update({'targetIntensityMode':'randMinus20'})
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod008 = pardict.copy()
 
 pardict = {'subject':'amod009','experimenter':'nick'}
-pardict.update(amodMice_mixed_tones)
+pardict.update(amodIfCorrectAM)
 pardict.update({'targetIntensityMode':'randMinus20'})
 amod009 = pardict.copy()
 
 pardict = {'subject':'amod010','experimenter':'nick'}
-pardict.update(amodMice_mixed_tones)
+pardict.update(amodIfCorrectAM)
 pardict.update({'targetIntensityMode':'randMinus20'})
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod010 = pardict.copy()
