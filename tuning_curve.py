@@ -52,9 +52,9 @@ class Paradigm(QtGui.QMainWindow):
         # -- Add parameters --
         self.params = paramgui.Container()
         self.params['experimenter'] = paramgui.StringParam('Experimenter',
-                                                            value='nick',
+                                                            value='',
                                                             group='Parameters')
-        self.params['subject'] = paramgui.StringParam('Subject',value='test030',
+        self.params['subject'] = paramgui.StringParam('Subject',value='',
                                                        group='Parameters')
         self.params['minFreq'] = paramgui.NumericParam('Min Frequency (Hz)',
                                                         value=2000,
@@ -293,7 +293,7 @@ class Paradigm(QtGui.QMainWindow):
         self.saveData.to_file([self.params, self.dispatcherModel,
                                self.sm],
                               self.dispatcherModel.currentTrial,
-                              experimenter=self.params['experimenter'].get_value(),
+                              experimenter='',
                               subject=self.params['subject'].get_value(),
                               paradigm=self.name)
 
