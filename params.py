@@ -319,7 +319,7 @@ amod009 = pardict.copy()
 pardict = {'subject':'amod010','experimenter':'nick'}
 pardict.update(amodIfCorrectAM)
 pardict.update({'targetIntensityMode':'randMinus20'})
-# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 amod010 = pardict.copy()
 
 
