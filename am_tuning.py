@@ -383,7 +383,7 @@ class Paradigm(QtGui.QMainWindow):
         self.saveData.to_file([self.params, self.dispatcherModel,
                                self.sm],
                               self.dispatcherModel.currentTrial,
-                              experimenter=self.params['experimenter'].get_value(),
+                              experimenter='',
                               subject=self.params['subject'].get_value(),
                               paradigm=self.name)
 
