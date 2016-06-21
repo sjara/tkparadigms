@@ -41,7 +41,7 @@ class Paradigm(templates.Paradigm2AFC):
         
         self.params['outcomeMode'] = paramgui.MenuParam('Outcome mode',
                                                         ['sides_direct','direct','on_next_correct',
-                                                         'only_if_correct','simulated'],
+                                                         'only_if_correct','simulated', 'if_correct_leave_on'],
                                                          value=3,group='Choice parameters')
         self.params['antibiasMode'] = paramgui.MenuParam('Anti-bias mode',
                                                         ['off','repeat_mistake'],
@@ -404,6 +404,48 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'readyForNextTrial'})
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
+        elif outcomeMode=='if_correct_leave_on':
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'waitForCenterPoke'},
+                              outputsOn=trialStartOutput)
+            self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
+                              transitions={'Cin':'delayPeriod'})
+            self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
+                              transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
+            self.sm.add_state(name='playStimulus', statetimer=targetDuration,
+                              transitions={'Tup':'waitForSidePoke'},
+                              outputsOn=stimOutput,
+                              outputsOff=trialStartOutput)
+            self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
+                              transitions={'Lin':'choiceLeft','Rin':'choiceRight',
+                                           'Tup':'noChoice'})
+            if correctSidePort=='Lin':
+                self.sm.add_state(name='choiceLeft', statetimer=0,
+                                  transitions={'Tup':'reward'})
+                self.sm.add_state(name='choiceRight', statetimer=0,
+                                  transitions={'Tup':'punish'})
+            elif correctSidePort=='Rin':
+                self.sm.add_state(name='choiceLeft', statetimer=0,
+                                  transitions={'Tup':'punish'})
+                self.sm.add_state(name='choiceRight', statetimer=0,
+                                  transitions={'Tup':'reward'})
+            # 'earlywithdrawal' should never be reached in this mode
+            self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='reward', statetimer=rewardDuration,
+                              transitions={'Tup':'stopReward'},
+                              outputsOn=[rewardOutput],
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='stopReward', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=[rewardOutput]+stimOutput)
+            self.sm.add_state(name='punish', statetimer=punishTimeError,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='noChoice', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=stimOutput)
 
         else:
             raise TypeError('outcomeMode={0} has not been implemented'.format(outcomeMode))
@@ -443,7 +485,7 @@ class Paradigm(templates.Paradigm2AFC):
             self.results['timeTarget'][trialIndex] = eventsThisTrial[targetEventInd,0]
 
             # -- Find center poke-in time --
-            if outcomeModeString in ['on_next_correct','only_if_correct']:
+            if outcomeModeString in ['on_next_correct','only_if_correct', 'if_correct_leave_on']:
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
                           self.sm.statesNameToIndex['delayPeriod'],
                           self.sm.statesNameToIndex['playStimulus']]
@@ -497,7 +539,8 @@ class Paradigm(templates.Paradigm2AFC):
                 self.params['nValid'].add(1)
                 self.params['nRewarded'].add(1)
                 self.results['valid'][trialIndex] = 1
-            if outcomeModeString=='on_next_correct' or outcomeModeString=='only_if_correct':
+            # if outcomeModeString=='on_next_correct' or outcomeModeString=='only_if_correct':
+            if outcomeModeString in ['on_next_correct', 'only_if_correct', 'if_correct_leave_on']:
                 if self.sm.statesNameToIndex['choiceLeft'] in eventsThisTrial[:,2]:
                     self.results['choice'][trialIndex] = self.results.labels['choice']['left']
                 elif self.sm.statesNameToIndex['choiceRight'] in eventsThisTrial[:,2]:
@@ -522,7 +565,7 @@ class Paradigm(templates.Paradigm2AFC):
                         self.results['outcome'][trialIndex] = \
                             self.results.labels['outcome']['error']
             	# -- Check if it was a valid trial --
-            	if self.sm.statesNameToIndex['waitForSidePoke'] in eventsThisTrial[:,2]:
+            	if self.sm.statesNameToIndex['playStimulus'] in eventsThisTrial[:,2]:
                 	self.params['nValid'].add(1)
                         self.results['valid'][trialIndex] = 1
 
