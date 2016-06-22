@@ -297,30 +297,35 @@ amod004 = pardict.copy()
 
 pardict = {'subject':'amod006','experimenter':'nick'}
 pardict.update(amodIfCorrectAM)
-pardict.update({'targetIntensityMode':'randMinus20'})
+# pardict.update({'targetIntensityMode':'randMinus20'})
 # pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'psycurveMode':'uniform'})
 amod006 = pardict.copy()
 
 pardict = {'subject':'amod007','experimenter':'nick'}
 pardict.update(amodIfCorrectAM)
-pardict.update({'targetIntensityMode':'randMinus20'})
+# pardict.update({'targetIntensityMode':'randMinus20'})
+pardict.update({'psycurveMode':'uniform'})
 amod007 = pardict.copy()
 
 pardict = {'subject':'amod008','experimenter':'nick'}
 pardict.update(amodIfCorrectAM)
-pardict.update({'targetIntensityMode':'randMinus20'})
+# pardict.update({'targetIntensityMode':'randMinus20'})
 # pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'psycurveMode':'uniform'})
 amod008 = pardict.copy()
 
 pardict = {'subject':'amod009','experimenter':'nick'}
 pardict.update(amodIfCorrectAM)
-pardict.update({'targetIntensityMode':'randMinus20'})
+# pardict.update({'targetIntensityMode':'randMinus20'})
+pardict.update({'psycurveMode':'uniform'})
 amod009 = pardict.copy()
 
 pardict = {'subject':'amod010','experimenter':'nick'}
 pardict.update(amodIfCorrectAM)
-pardict.update({'targetIntensityMode':'randMinus20'})
-pardict.update({'antibiasMode':'repeat_mistake'})
+# pardict.update({'targetIntensityMode':'randMinus20'})
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'psycurveMode':'uniform'})
 amod010 = pardict.copy()
 
 
