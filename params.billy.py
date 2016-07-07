@@ -234,11 +234,11 @@ adap020 = pardict.copy()
 pardict = {'subject':'adap024','experimenter':'santiago'}
 pardict.update(switchBlocksMode)
 pardict.update(frequencySet6to19)
-pardict.update({'currentBlock':'high_boundary'})
-pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
-#pardict.update(fixIntensity)
+pardict.update({'currentBlock':'low_boundary'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
+pardict.update(fixIntensity)
 pardict.update({'punishTimeError':4})
-pardict.update({'trialsPerBlock':300})
+pardict.update({'trialsPerBlock':200})
 adap024 = pardict.copy()
 
 #pardict = {'subject':'adap021','experimenter':'santiago'}
