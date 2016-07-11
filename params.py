@@ -59,7 +59,69 @@ psyCurveChangeReward = {'punishTimeError':4,
 
 # ======== Parameters for each animal =========
 
-# -- New adap animals
+
+pardict = {'subject':'adap040','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(sidesDirectMode)
+adap040 = pardict.copy()
+
+pardict = {'subject':'adap039','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(sidesDirectMode)
+adap039 = pardict.copy()
+
+pardict = {'subject':'adap038','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(sidesDirectMode)
+adap038 = pardict.copy()
+
+pardict = {'subject':'adap037','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(sidesDirectMode)
+adap037 = pardict.copy()
+
+pardict = {'subject':'adap036','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(sidesDirectMode)
+adap036 = pardict.copy()
+
+pardict = {'subject':'adap035','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(sidesDirectMode)
+adap035 = pardict.copy()
+
+pardict = {'subject':'adap034','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(sidesDirectMode)
+adap034 = pardict.copy()
+
+pardict = {'subject':'adap033','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(sidesDirectMode)
+adap033 = pardict.copy()
+
+pardict = {'subject':'adap032','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(sidesDirectMode)
+adap032 = pardict.copy()
+
+pardict = {'subject':'adap031','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(sidesDirectMode)
+adap031 = pardict.copy()
+
+
+# -- adap026-030 --
 pardict = {'subject':'adap026','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
