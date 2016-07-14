@@ -147,3 +147,114 @@ pardict.update(fixIntensity)
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
 pardict.update({'punishTimeError':4})
 adap010 = pardict.copy()
+
+adap3 = psyCurveMidBound
+adap3.update({'delayToTargetMean':0.2})
+
+pardict = {'subject':'adap015','experimenter':'santiago'}
+pardict.update(adap3)
+pardict.update({'lowFreq':6200,'highFreq':17000})
+pardict.update(fixIntensity)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
+adap015 = pardict.copy()
+
+pardict = {'subject':'adap013','experimenter':'santiago'}
+pardict.update(adap3)
+pardict.update({'lowFreq':9000,'highFreq':12000})
+pardict.update(fixIntensity)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
+adap013 = pardict.copy()
+
+pardict = {'subject':'adap017','experimenter':'santiago'}
+pardict.update(adap3)
+pardict.update({'lowFreq':7000,'highFreq':17000})
+pardict.update(fixIntensity)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
+adap017 = pardict.copy()
+
+#######################################################################################################
+#######################################################################################################
+#FOR REWARD CHANGE MICE
+#######################################################################################################
+#######################################################################################################
+
+#'currentBlock':'more_right',
+psyCurveChangeReward = {'punishTimeError':4,
+                     'delayToTargetMean':0.2,
+                     'psycurveMode':'off',
+                     'automationMode':'left_right_left',
+                     'punishTimeEarly':0.5,
+                     'punishSoundAmplitude':0.01,
+                     'targetIntensityMode':'fixed',
+                     'baseWaterValveL':0.015,
+                     'baseWaterValveR':0.015,
+                     'factorWaterValveL':4,
+                     'factorWaterValveR':4,
+                     'currentBlock':'more_left'}
+
+
+pardict = {'subject':'adap015','experimenter':'billy'}
+pardict.update(psyCurveChangeReward)
+pardict.update({'trialsPerBlock':150})
+pardict.update({'lowFreq':6200,'highFreq':17000})
+adap015reward = pardict.copy()
+
+pardict = {'subject':'adap013','experimenter':'billy'}
+pardict.update(psyCurveChangeReward)
+pardict.update({'trialsPerBlock':150})
+pardict.update({'lowFreq':8000,'highFreq':14000})
+adap013reward = pardict.copy()
+
+pardict = {'subject':'adap017','experimenter':'billy'}
+pardict.update(psyCurveChangeReward)
+pardict.update({'trialsPerBlock':150})
+pardict.update({'lowFreq':7000,'highFreq':17000})
+adap017reward = pardict.copy()
+
+
+
+#######################################################################################################
+#######################################################################################################
+
+
+pardict = {'subject':'adap020','experimenter':'santiago'}
+pardict.update(switchBlocksMode)
+#pardict.update(frequencySet6to19)
+pardict.update({'lowFreq':6200,'midFreq':12000,'highFreq':19200})
+pardict.update({'currentBlock':'low_boundary'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
+pardict.update(fixIntensity)
+pardict.update({'punishTimeError':4})
+pardict.update({'trialsPerBlock':250})
+adap020 = pardict.copy()
+
+pardict = {'subject':'adap024','experimenter':'santiago'}
+pardict.update(switchBlocksMode)
+pardict.update(frequencySet6to19)
+pardict.update({'currentBlock':'low_boundary'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
+pardict.update(fixIntensity)
+pardict.update({'punishTimeError':4})
+pardict.update({'trialsPerBlock':200})
+adap024 = pardict.copy()
+
+#pardict = {'subject':'adap021','experimenter':'santiago'}
+#pardict.update(switchBlocksMode)
+#pardict.update(frequencySet6to19)
+##pardict.update({'currentBlock':'high_boundary'})
+#pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
+##pardict.update(fixIntensity)
+#pardict.update({'punishTimeError':4})
+#pardict.update({'trialsPerBlock':400})
+#adap021 = pardict.copy()
+
+pardict = {'subject':'adap021','experimenter':'santiago'}
+pardict.update(adap3)
+pardict.update({'lowFreq':6200,'highFreq':19200})
+#pardict.update(fixIntensity)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.03})
+adap021 = pardict.copy()

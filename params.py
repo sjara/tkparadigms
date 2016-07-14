@@ -22,13 +22,9 @@ directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfR
 increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                      'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.05,
                      'punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
-#'antibiasMode':'repeat_mistake'
 
 basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary',
                            'punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
-
-#onNextCorrectMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
-#                   'currentBlock':'mid_boundary', 'targetDuration':0.1,'targetMaxIntensity':80,'lowFreq':4000,'highFreq':13000}
 
 psyCurveMidBound = {'trialsPerBlock':2000,'punishTimeError':4,'delayToTargetMean':0.2,
                     'currentBlock':'mid_boundary','psycurveMode':'uniform'}
@@ -37,8 +33,6 @@ switchDailyMode = {'trialsPerBlock':2000,'punishTimeError':4,'delayToTargetMean'
 
 switchBlocksMode = {'punishTimeError':4, 'delayToTargetMean':0.2}
 
-#pardict.update({'antibiasMode':'repeat_mistake'})
-#pardict.update(basicDiscriminationMode)
 
 # ======== Cued discrimination task ========
 cuedSidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
@@ -46,29 +40,357 @@ cuedSidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'del
 cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                    'currentBlock':'mid_boundary'}
 
+# ======== Reward change task ========
+
+psyCurveChangeReward = {'punishTimeError':4,
+                     'delayToTargetMean':0.15,
+                     'currentBlock':'same_reward',
+                     'psycurveMode':'uniform',
+                     'automationMode':'same_right_left',
+                     'punishTimeEarly':0.5,
+                     'punishTimeError':2,
+                     'punishSoundAmplitude':0.05,
+                     'trialsPerBlock':200,
+                     'baseWaterValveL':0.015,
+                     'baseWaterValveR':0.015,
+                     'factorWaterValveL':4,
+                     'factorWaterValveR':4}
+
+
+# ======== Parameters for each animal =========
+
+adap03xMode = directMode
+
+pardict = {'subject':'adap040','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap03xMode)
+adap040 = pardict.copy()
+
+pardict = {'subject':'adap039','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap03xMode)
+adap039 = pardict.copy()
+
+pardict = {'subject':'adap038','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap03xMode)
+adap038 = pardict.copy()
+
+pardict = {'subject':'adap037','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap03xMode)
+adap037 = pardict.copy()
+
+pardict = {'subject':'adap036','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap03xMode)
+adap036 = pardict.copy()
+
+pardict = {'subject':'adap035','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap03xMode)
+adap035 = pardict.copy()
+
+pardict = {'subject':'adap034','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap03xMode)
+adap034 = pardict.copy()
+
+pardict = {'subject':'adap033','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap03xMode)
+adap033 = pardict.copy()
+
+pardict = {'subject':'adap032','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap03xMode)
+adap032 = pardict.copy()
+
+pardict = {'subject':'adap031','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap03xMode)
+adap031 = pardict.copy()
+
+
+# -- adap026-030 --
+pardict = {'subject':'adap026','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+# pardict.update(basicDiscriminationMode)
+adap026 = pardict.copy()
+
+pardict = {'subject':'adap027','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+# pardict.update(basicDiscriminationMode)
+adap027 = pardict.copy()
+
+pardict = {'subject':'adap028','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+# pardict.update(basicDiscriminationMode)
+adap028 = pardict.copy()
+
+pardict = {'subject':'adap029','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+# pardict.update(basicDiscriminationMode)
+adap029 = pardict.copy()
+
+pardict = {'subject':'adap030','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+# pardict.update(basicDiscriminationMode)
+adap030 = pardict.copy()
+
+# -- D1:Chr2 adaptive categorization, psychometric and switching --
+# D1:Chr2 on reward change discrimination psychometric curve
+d1pi2 = increaseDelayMode
+d1pi1 = basicDiscriminationMode
+d1pi1.update({'punishTimeError':2})
+
+pardict = {'subject':'d1pi008','experimenter':'lan'}
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(psyCurveMidBound)
+d1pi008 = pardict.copy()
+
+pardict = {'subject':'d1pi011','experimenter':'lan'}
+pardict.update(frequencySet4to13)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(psyCurveMidBound)
+pardict.update({'psycurveMode':'uniform'})
+pardict.update({'delayToTargetMean':0.1,'delayToTargetHalfRange':0.02,})
+pardict.update({'targetDuration':0.08})
+pardict.update({'targetMaxIntensity':53})
+pardict.update({'targetIntensityMode':'fixed'})
+d1pi011 = pardict.copy()
+
+pardict = {'subject':'d1pi013','experimenter':'lan'}
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(d1pi1)
+d1pi013 = pardict.copy()
+
+pardict = {'subject':'d1pi014','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(d1pi1)
+d1pi014 = pardict.copy()
+
+pardict = {'subject':'d1pi015','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(d1pi1)
+d1pi015 = pardict.copy()
+
+pardict = {'subject':'d1pi016','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(d1pi1)
+d1pi016 = pardict.copy()
+
+pardict = {'subject':'d1pi017','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(d1pi1)
+d1pi017 = pardict.copy()
+
+#pardict = {'subject':'d1pi008','experimenter':'santiago'}
+#pardict.update(psyCurveMidBound)
+#pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+#pardict.update(psyCurveChangeReward)
+#pardict.update({'lowFreq':6200,'highFreq':19200})
+#d1pi008 = pardict.copy()
+
+pardict = {'subject':'d1pi009','experimenter':'santiago'}
+#pardict.update(psyCurveMidBound)
+#pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+pardict.update(psyCurveChangeReward)
+pardict.update({'lowFreq':6200,'highFreq':19200})
+d1pi009 = pardict.copy()
+
+pardict = {'subject':'d1pi010','experimenter':'santiago'}
+#pardict.update(basicDiscriminationMode)
+#pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+pardict.update(psyCurveChangeReward)
+pardict.update({'lowFreq':6200,'highFreq':19200})
+d1pi010 = pardict.copy()
+
+#pardict = {'subject':'d1pi011','experimenter':'santiago'}
+#pardict.update(psyCurveMidBound)
+#pardict.update(frequencySet6to19)
+#pardict.update(frequencySet3to16)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+#pardict.update(psyCurveChangeReward)
+#pardict.update({'lowFreq':3000,'highFreq':16000})
+#d1pi011 = pardict.copy()
+
+pardict = {'subject':'d1pi012','experimenter':'santiago'}
+#pardict.update(psyCurveMidBound)
+#pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+#pardict.update({'delayToTargetMean':0.1})
+pardict.update(psyCurveChangeReward)
+pardict.update({'lowFreq':6200,'highFreq':19200})
+d1pi012 = pardict.copy()
+
+
+# -- Adaptive categorization, psychometric and switching --
+adap5 = switchDailyMode
+
+pardict = {'subject':'adap021','experimenter':'santiago'}
+pardict.update(switchBlocksMode)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap021 = pardict.copy()
+
+pardict = {'subject':'adap022','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap022 = pardict.copy()
+
+pardict = {'subject':'adap023','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+adap023 = pardict.copy()
+
+pardict = {'subject':'adap024','experimenter':'santiago'}
+pardict.update(switchBlocksMode)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+pardict.update({'delayToTargetMean':0.1})
+adap024 = pardict.copy()
+
+pardict = {'subject':'adap025','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+pardict.update({'delayToTargetMean':0.1})
+adap025 = pardict.copy()
+
+
+
+
+
 
 # -- Amplitude modulation discrimination (amod) mice --
-amodMice = {'outcomeMode':'sides_direct'}
+amodMice_modulationSidesDirect = {'outcomeMode':'sides_direct', 'soundTypeMode':'amp_mod'}
+amodMice_modulationDirect = {'outcomeMode':'direct', 'soundTypeMode':'amp_mod'}
+# amodMice_smart = {'outcomeMode':'on_next_correct'}
 
-pardict = {'subject':'amod001','experimenter':'nick'}
-pardict.update(amodMice)
-amod001 = pardict.copy()
+amodMice_modulationOnNextCorrect = {'outcomeMode':'on_next_correct', 'soundTypeMode':'amp_mod'}
+amodMice_modulationOnlyIfCorrect = {'outcomeMode':'only_if_correct', 'soundTypeMode':'amp_mod'}
+amodMice_mixed_tones = {'outcomeMode':'only_if_correct', 'soundTypeMode':'mixed_tones'}
+
+amodMice_regularTask = {'outcomeMode':'only_if_correct'}
+amodMice_regularTask.update({'punishTimeError':2})
+
+### new improved amod parameters ###
+amodSidesDirect = {'outcomeMode':'sides_direct', 'soundTypeMode':'amp_mod'}
+amodDirect = {'outcomeMode':'direct', 'soundTypeMode':'amp_mod'}
+amodNextCorrectAM = {'outcomeMode':'on_next_correct', 'soundTypeMode':'amp_mod'}
+amodIfCorrectAM = {'outcomeMode':'only_if_correct', 'soundTypeMode':'amp_mod'}
+amodPsycurveAM = {'outcomeMode':'only_if_correct', 'soundTypeMode':'amp_mod', 'psycurveMode':'uniform'}
+amodIfCorrectTones = {'outcomeMode':'only_if_correct', 'soundTypeMode':'tones'}
+amodPsycurveTones = {'outcomeMode':'only_if_correct', 'soundTypeMode':'tones', 'psycurveMode':'uniform'}
+amodPsycurveMixed = {'outcomeMode':'only_if_correct', 'soundTypeMode':'mixed_tones', 'psycurveMode':'uniform'}
+
+
 
 pardict = {'subject':'amod002','experimenter':'nick'}
-pardict.update(amodMice)
+pardict.update(amodMice_regularTask)
+pardict.update({'psycurveMode':'uniform'})
+pardict.update({'soundTypeMode':'mixed_chords'})
 amod002 = pardict.copy()
 
 pardict = {'subject':'amod003','experimenter':'nick'}
-pardict.update(amodMice)
+pardict.update(amodMice_regularTask)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'psycurveMode':'uniform'})
+pardict.update({'soundTypeMode':'mixed_chords'})
 amod003 = pardict.copy()
 
+# pardict = {'subject':'amod004','experimenter':'nick'}
+# pardict.update(amodMice_regularTask)
+# pardict.update({'psycurveMode':'uniform','highModFreq':64})
+# pardict.update({'lowSoundFreq':5000,'highSoundFreq':12000})
+# # pardict.update({'highModFreq':64})
+# pardict.update({'soundTypeMode':'mixed_tones'})
+# amod004 = pardict.copy()
+
 pardict = {'subject':'amod004','experimenter':'nick'}
-pardict.update(amodMice)
+pardict.update(amodMice_regularTask)
+pardict.update({'psycurveMode':'uniform'})
+pardict.update({'soundTypeMode':'mixed_chords'})
 amod004 = pardict.copy()
 
-pardict = {'subject':'amod005','experimenter':'nick'}
-pardict.update(amodMice)
-amod005 = pardict.copy()
+## -- New Amod mice --
+## Starting on direct mode with amp mod only
+
+pardict = {'subject':'amod006','experimenter':'nick'}
+pardict.update(amodIfCorrectAM)
+# pardict.update({'targetIntensityMode':'randMinus20'})
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'psycurveMode':'uniform'})
+amod006 = pardict.copy()
+
+pardict = {'subject':'amod007','experimenter':'nick'}
+pardict.update(amodIfCorrectAM)
+# pardict.update({'targetIntensityMode':'randMinus20'})
+pardict.update({'psycurveMode':'uniform'})
+amod007 = pardict.copy()
+
+pardict = {'subject':'amod008','experimenter':'nick'}
+pardict.update(amodIfCorrectAM)
+# pardict.update({'targetIntensityMode':'randMinus20'})
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'psycurveMode':'uniform'})
+amod008 = pardict.copy()
+
+pardict = {'subject':'amod009','experimenter':'nick'}
+pardict.update(amodIfCorrectAM)
+# pardict.update({'targetIntensityMode':'randMinus20'})
+pardict.update({'psycurveMode':'uniform'})
+amod009 = pardict.copy()
+
+pardict = {'subject':'amod010','experimenter':'nick'}
+pardict.update(amodIfCorrectAM)
+# pardict.update({'targetIntensityMode':'randMinus20'})
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'psycurveMode':'uniform'})
+amod010 = pardict.copy()
+
 
 
 # -- Drd1::ChR2 mice. Frequency discrimination task --
@@ -153,37 +475,40 @@ adap4 = basicDiscriminationMode
 #adap4.update({'delayToTargetMean':0.2})
 
 pardict = {'subject':'adap016','experimenter':'santiago'}
-pardict.update(adap4)
+#pardict.update(switchBlocksMode)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap016 = pardict.copy()
 
 pardict = {'subject':'adap017','experimenter':'santiago'}
-pardict.update(adap4)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap017 = pardict.copy()
 
 pardict = {'subject':'adap018','experimenter':'santiago'}
-pardict.update(adap4)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap018 = pardict.copy()
 
 pardict = {'subject':'adap019','experimenter':'santiago'}
-pardict.update(adap4)
+#pardict.update(switchBlocksMode)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap019 = pardict.copy()
 
 pardict = {'subject':'adap020','experimenter':'santiago'}
-pardict.update(adap4)
+pardict.update(switchBlocksMode)
+#pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
 adap020 = pardict.copy()
 

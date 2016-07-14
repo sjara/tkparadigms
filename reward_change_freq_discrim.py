@@ -322,7 +322,7 @@ class Paradigm(templates.Paradigm2AFC):
             ###print '{0} {1} {2}'.format(nValid,trialsPerBlock,np.mod(nValid,trialsPerBlock)) ### DEBUG
 
             dictSameLeftRight = {'same_reward':'more_left', 'more_left':'more_right', 'more_right':'same_reward'}
-            dictSameRightLeft = {'same_reward':'more_right', 'more_left':'same_reward', 'more_left':'more_right'}
+            dictSameRightLeft = {'same_reward':'more_right', 'more_right':'more_left', 'more_left':'same_reward'}
             dictLeftRightLeft = {'more_left':'more_right', 'more_right':'more_left','same_reward':'same_reward'}
             if (nValid>0) and not (np.mod(nValid,trialsPerBlock)):
                 if self.results['valid'][nextTrial-1]:

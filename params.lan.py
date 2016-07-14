@@ -52,10 +52,10 @@ tuningCurve = {'stimDur':0.1,
                'stimType' : 'Chord',
                'minFreq':2000,
                'maxFreq':40000,
-               'minInt':60,
-               'maxInt':60,
+               'minInt':50,
+               'maxInt':50,
                'numInt':1,
-               'subject':'adap011',
+               'subject':'adap012',
                'experimenter' : 'lan'}
 
 
@@ -74,19 +74,6 @@ psyCurveChangeReward = {'punishTimeError':4,
                      'punishTimeError':2,
                      'punishSoundAmplitude':0.05}
 
-pardict = {'subject':'adap005','experimenter':'lan'}
-pardict.update(psyCurveChangeReward)
-pardict.update({'trialsPerBlock':150})
-pardict.update({'lowFreq':6200,'highFreq':19200})
-adap005 = pardict.copy()
-
-pardict = {'subject':'adap008','experimenter':'santiago'}
-pardict.update(psyCurveChangeReward)
-pardict.update({'trialsPerBlock':150})
-pardict.update({'lowFreq':5000,'highFreq':24000})
-adap008 = pardict.copy()
-
-
 
 basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary',
                            'punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
@@ -96,16 +83,22 @@ frequencySet3to16 = {'lowFreq':3000,'midFreq':7000,'highFreq':16000}
 frequencySet4to13 = {'lowFreq':3800,'midFreq':7000,'highFreq':12600}
 
 
-pardict = {'subject':'adap011','experimenter':'lan'}
-pardict.update(psyCurveChangeReward)
-pardict.update({'automationMode':'left_right_left'})
-pardict.update({'currentBlock':'more_left'})
-pardict.update({'trialsPerBlock':150})
-#pardict.update(basicDiscriminationMode)
-#pardict.update(frequencySet6to19)
-pardict.update({'lowFreq':8100,'highFreq':26000,'psycurveMode':'off'})
-pardict.update({'punishSoundAmplitude':0.02})
-#pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update({'targetMaxIntensity':70,'targetIntensityMode':'fixed'})
-pardict.update({'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.03})
-adap011 = pardict.copy()
+
+
+pardict = {'subject':'d1pi011','experimenter':'lan'}
+pardict.update({'lowFreq':5400,'highFreq':12600,'psycurveMode':'uniform','psycurveNfreq':6})
+pardict.update({'percentLaserTrialLeft':0.2,'percentLaserTriaRight':0.2, 'stimFreq':'continuous'})
+pardict.update({'punishSoundAmplitude':0.015})
+pardict.update({'targetMaxIntensity':53,'targetIntensityMode':'fixed'})
+pardict.update({'delayToTargetMean':0.1, 'delayToTargetHalfRange':0.02})
+d1pi011 = pardict.copy()
+
+
+
+pardict = {'subject':'d1pi008','experimenter':'lan'}
+pardict.update({'lowFreq':7300,'highFreq':16300,'psycurveMode':'uniform','psycurveNfreq':6})
+pardict.update({'percentLaserTrialLeft':0.2,'percentLaserTriaRight':0.2, 'stimFreq':'continuous'})
+pardict.update({'punishSoundAmplitude':0.015})
+pardict.update({'targetMaxIntensity':50,'targetIntensityMode':'fixed'})
+pardict.update({'delayToTargetMean':0.11, 'delayToTargetHalfRange':0.02})
+d1pi008 = pardict.copy()
