@@ -161,7 +161,7 @@ adap030 = pardict.copy()
 # -- D1:Chr2 adaptive categorization, psychometric and switching --
 # D1:Chr2 on reward change discrimination psychometric curve
 d1pi2 = increaseDelayMode
-d1pi1 = basicDiscriminationMode
+d1pi1 = psyCurveMidBound #basicDiscriminationMode
 d1pi1.update({'punishTimeError':2})
 
 pardict = {'subject':'d1pi008','experimenter':'lan'}
