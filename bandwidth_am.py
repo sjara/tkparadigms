@@ -91,7 +91,7 @@ class Paradigm(QtGui.QMainWindow):
                                                        value=0.6,
                                                        group='Parameters')
         self.params['numAmps'] = paramgui.NumericParam('Number of Amplitudes',
-                                                       value=3,
+                                                       value=2,
                                                        group='Parameters')
 
         self.params['stimDur'] = paramgui.NumericParam('Stimulus Duration (s)',
@@ -116,8 +116,9 @@ class Paradigm(QtGui.QMainWindow):
                                                          ['Ordered','Random'],
                                                          value=1,group='Parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
-                                                         ['band_AM', 'Laser', 'LaserTrain'],
-                                                         value=0,group='Parameters')
+                                                         ['band', 'band_AM', 'Laser', 'LaserTrain'],
+                                                         value=1,group='Parameters')
+	# -- Added extremes as separate option in case we want to add other stim types (unmodulated white noise) --
 	self.params['extremes'] = paramgui.MenuParam('Add extremes?',
                                                          ['yes', 'no'],
                                                          value=0,group='Parameters')
@@ -277,22 +278,21 @@ class Paradigm(QtGui.QMainWindow):
         # -- Prepare the sound using randomly chosen parameters from parameter lists --
 
         stimDur = self.params['stimDur'].get_value()
-	charFreq = self.params['charFreq'].get_value()
-	modRate = self.params['modRate'].get_value()
+        charFreq = self.params['charFreq'].get_value()
+        modRate = self.params['modRate'].get_value()
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
         stimType = self.params['stimType'].get_string()
 
         if stimType == 'band_AM':
-	    if self.trialParams[0] == 0:
-		sound = {'type':'tone_AM', 'duration':stimDur, 'amplitude':self.trialParams[1], 			 'frequency':charFreq, 'modRate':modRate}
-	    elif np.isinf(self.trialParams[0]):
-		sound = {'type':'AM', 'modRate':modRate, 'duration':stimDur, 
-			 'amplitude':self.trialParams[1]}
-	    else:
-            	sound = {'type':'band_AM', 'duration':stimDur,
-                     	'amplitude':self.trialParams[1], 'frequency':charFreq, 'modRate':modRate, 			        'octaves':self.trialParams[0]}
-
+            if self.trialParams[0] == 0:
+                sound = {'type':'tone_AM', 'duration':stimDur, 'amplitude':self.trialParams[1]/16, 'frequency':charFreq, 'modRate':modRate}
+            elif np.isinf(self.trialParams[0]):
+                sound = {'type':'AM', 'modRate':modRate, 'duration':stimDur, 'amplitude':self.trialParams[1]}
+            else:
+                sound = {'type':'band_AM', 'duration':stimDur, 'amplitude':self.trialParams[1], 'frequency':charFreq, 'modRate':modRate, 'octaves':self.trialParams[0]}
+        elif stimType == 'band':
+            sound = {'type':'band', 'duration':stimDur, 'amplitude':self.trialParams[1], 'frequency':charFreq, 'octaves':self.trialParams[0]}
         if (stimType == 'Laser') or (stimType == 'LaserTrain'):
             stimOutput = stimSync+laserSync
             serialOutput = 0
@@ -302,7 +302,7 @@ class Paradigm(QtGui.QMainWindow):
             self.soundClient.set_sound(1,sound)
 
         self.params['currentBand'].set_value(self.trialParams[0])
-	self.params['currentAmp'].set_value(self.trialParams[1])
+        self.params['currentAmp'].set_value(self.trialParams[1])
 
         # -- Prepare the state transition matrix --
         soa = 0.2
