@@ -158,6 +158,12 @@ pardict.update(frequencySet6to19)
 # pardict.update(basicDiscriminationMode)
 adap030 = pardict.copy()
 
+#adap021
+pardict = {'subject':'adap021','experimenter':'santiago'}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+adap021 = pardict.copy()
+
 # -- D1:Chr2 adaptive categorization, psychometric and switching --
 # D1:Chr2 on reward change discrimination psychometric curve
 d1pi2 = increaseDelayMode
