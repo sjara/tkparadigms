@@ -59,7 +59,7 @@ psyCurveChangeReward = {'punishTimeError':4,
 
 # ======== Parameters for each animal =========
 
-adap03xMode = directMode
+adap03xMode = increaseDelayMode
 
 pardict = {'subject':'adap040','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
