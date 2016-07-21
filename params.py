@@ -268,12 +268,12 @@ d1pi012 = pardict.copy()
 # -- Adaptive categorization, psychometric and switching --
 adap5 = switchDailyMode
 
-pardict = {'subject':'adap021','experimenter':'santiago'}
-pardict.update(switchBlocksMode)
-pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
-adap021 = pardict.copy()
+# pardict = {'subject':'adap021','experimenter':'santiago'}
+# pardict.update(switchBlocksMode)
+# pardict.update(frequencySet6to19)
+# #pardict.update({'antibiasMode':'repeat_mistake'})
+# pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.05})
+# adap021 = pardict.copy()
 
 pardict = {'subject':'adap022','experimenter':'santiago'}
 pardict.update(psyCurveMidBound)
