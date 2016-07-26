@@ -59,7 +59,7 @@ psyCurveChangeReward = {'punishTimeError':4,
 
 # ======== Parameters for each animal =========
 
-adap03xMode = increaseDelayMode
+adap03xMode = basicDiscriminationMode #increaseDelayMode
 adap03xMode.update({'punishSoundAmplitude': 0})
 
 pardict = {'subject':'adap040','experimenter':'santiago'}
