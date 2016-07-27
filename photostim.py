@@ -145,7 +145,7 @@ class PhotoStim(QtGui.QMainWindow):
         if experiment==0:
             ###Define laser outputs during Ephys recording###
             leftLaserOutput = ['outBit2','stim1'] 
-            rightLaserOutput = ['outBit2','outBit2','stim2']
+            rightLaserOutput = ['outBit2','outBit3','stim2']
         elif experiment==1:
             ###Define laser outputs during behavior monitoring (videotaping for photostim-induced movement)###
             leftLaserOutput = ['leftLED','stim1'] 
