@@ -1,10 +1,7 @@
 '''
-Create a paradigm for calibrating the amount of water delivered.
+Paradigm for delivering up to two individual laser stimulations (one for each hemisphere). Can do unilateral stimulation of either left or right hemi, or do simultaneous bilateral stimulation. 
 
-TO DO:
-- Add laser outputs
-- Do both at the same time (include a menu selector)
-
+Santiago Jaramillo and Lan Guo, May 2016 
 '''
 
 import sys
@@ -42,22 +39,26 @@ class PhotoStim(QtGui.QMainWindow):
         # -- Add parameters --
         self.params = paramgui.Container()
 
-        self.params['timeStimLeft'] = paramgui.NumericParam('Time stim left',value=1,
+        self.params['timeStimLeft'] = paramgui.NumericParam('Time stim left',value=0.1,
                                                             units='s',group='Stimulation times')
-        self.params['timeDelayPostLeft'] = paramgui.NumericParam('Delay post left',value=4,
+        self.params['timeDelayPostLeft'] = paramgui.NumericParam('Delay post left',value=1.5,
                                                             units='s',group='Stimulation times')
-        self.params['timeStimRight'] = paramgui.NumericParam('Time stim right',value=1,
+        self.params['timeStimRight'] = paramgui.NumericParam('Time stim right',value=0.1,
                                                             units='s',group='Stimulation times')
-        self.params['timeDelayPostRight'] = paramgui.NumericParam('Delay post right',value=4,
+        self.params['timeDelayPostRight'] = paramgui.NumericParam('Delay post right',value=1.5,
                                                             units='s',group='Stimulation times')
-        self.params['timeStimBoth'] = paramgui.NumericParam('Time stim both',value=2,
+        self.params['timeStimBoth'] = paramgui.NumericParam('Time stim both',value=0.1,
                                                             units='s',group='Stimulation times')
-        self.params['timeDelayPostBoth'] = paramgui.NumericParam('Delay post both',value=6,
+        self.params['timeDelayPostBoth'] = paramgui.NumericParam('Delay post both',value=2,
                                                             units='s',group='Stimulation times')
 
         self.params['stimMode'] = paramgui.MenuParam('Stim Mode',
-                                                     ['Unilateral','Bilateral', 'Mixed'],
-                                                     value=2,group='Stimulation times')
+                                                     ['Left','Right','Bilateral'],
+                                                     value=0,group='Stimulation times')
+        
+        self.params['experiment'] = paramgui.MenuParam('Experiment',
+                                                     ['EphysRecording','BehaviorMonitoring'],
+                                                     value=0,group='Stimulation times')
 
         stimTimes = self.params.layout_group('Stimulation times')
 
@@ -139,6 +140,16 @@ class PhotoStim(QtGui.QMainWindow):
 
         stimMode = self.params['stimMode'].get_value()
         #print stimMode
+        experiment = self.params['experiment'].get_value()
+        
+        if experiment==0:
+            ###Define laser outputs during Ephys recording###
+            leftLaserOutput = ['outBit2','stim1'] 
+            rightLaserOutput = ['outBit2','outBit2','stim2']
+        elif experiment==1:
+            ###Define laser outputs during behavior monitoring (videotaping for photostim-induced movement)###
+            leftLaserOutput = ['leftLED','stim1'] 
+            rightLaserOutput = ['rightLED','stim2']
 
         if stimMode==0:
             self.sm.add_state(name='startTrial', statetimer=0,
@@ -146,60 +157,38 @@ class PhotoStim(QtGui.QMainWindow):
             self.sm.add_state(name='stimLeft',
                               statetimer=self.params['timeStimLeft'].get_value(),
                               transitions={'Tup':'delayPostLeft'},
-                              outputsOn={'leftLED','stim1'})
+                              outputsOn=leftLaserOutput)
             self.sm.add_state(name='delayPostLeft',
                               statetimer=self.params['timeDelayPostLeft'].get_value(),
-                              transitions={'Tup':'stimRight'},
-                              outputsOff={'leftLED','stim1'})
+                              transitions={'Tup':'stimLeft'},
+                              outputsOff=leftLaserOutput)
+            
+        elif stimMode==1:
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'stimRight'})
             self.sm.add_state(name='stimRight',
                               statetimer=self.params['timeStimRight'].get_value(),
                               transitions={'Tup':'delayPostRight'},
-                              outputsOn={'rightLED','stim2'})
+                              outputsOn=rightLaserOutput)
             self.sm.add_state(name='delayPostRight',
                               statetimer=self.params['timeDelayPostRight'].get_value(),
-                              transitions={'Tup':'readyForNextTrial'},
-                              outputsOff={'rightLED','stim2'})
-        elif stimMode==1:
+                              transitions={'Tup':'stimRight'},
+                              outputsOff=rightLaserOutput)
+
+        elif stimMode==2:
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'stimBilateral'})
             self.sm.add_state(name='stimBilateral',
                               statetimer=self.params['timeStimBoth'].get_value(),
                               transitions={'Tup':'delayPostBoth'},
-                              outputsOn={'leftLED','rightLED','stim1','stim2'})
+                              outputsOn=leftLaserOutput+rightLaserOutput)
             self.sm.add_state(name='delayPostBoth',
                               statetimer=self.params['timeDelayPostBoth'].get_value(),
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff={'leftLED','rightLED','stim1','stim2'})
-        elif stimMode==2:
-            self.sm.add_state(name='startTrial', statetimer=0,
-                              transitions={'Tup':'stimLeft'})
-            self.sm.add_state(name='stimLeft',
-                              statetimer=self.params['timeStimLeft'].get_value(),
-                              transitions={'Tup':'delayPostLeft'},
-                              outputsOn={'leftLED','stim1'})
-            self.sm.add_state(name='delayPostLeft',
-                              statetimer=self.params['timeDelayPostLeft'].get_value(),
-                              transitions={'Tup':'stimRight'},
-                              outputsOff={'leftLED','stim1'})
-            self.sm.add_state(name='stimRight',
-                              statetimer=self.params['timeStimRight'].get_value(),
-                              transitions={'Tup':'delayPostRight'},
-                              outputsOn={'rightLED','stim2'})
-            self.sm.add_state(name='delayPostRight',
-                              statetimer=self.params['timeDelayPostRight'].get_value(),
-                              transitions={'Tup':'stimBilateral'},
-                              outputsOff={'rightLED','stim2'})
-            self.sm.add_state(name='stimBilateral',
-                              statetimer=self.params['timeStimBoth'].get_value(),
-                              transitions={'Tup':'delayPostBoth'},
-                              outputsOn={'leftLED','rightLED','stim1','stim2'})
-            self.sm.add_state(name='delayPostBoth',
-                              statetimer=self.params['timeDelayPostBoth'].get_value(),
-                              transitions={'Tup':'readyForNextTrial'},
-                              outputsOff={'leftLED','rightLED','stim1','stim2'})
+                              outputsOff=leftLaserOutput+rightLaserOutput)
+       
 
-
-        #print self.sm ### DEBUG
+        print self.sm ### DEBUG
         self.dispatcherModel.set_state_matrix(self.sm)
         self.dispatcherModel.ready_to_start_trial()
 
