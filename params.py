@@ -61,7 +61,7 @@ psyCurveChangeReward = {'punishTimeError':4,
 
 adap03xMode = basicDiscriminationMode #increaseDelayMode
 adap03xMode.update({'punishSoundAmplitude': 0})
-adap03xMode.update({'antibiasMode':'repeat_mistake'})
+#adap03xMode.update({'antibiasMode':'repeat_mistake'})
 
 pardict = {'subject':'adap040','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
