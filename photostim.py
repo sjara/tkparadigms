@@ -132,7 +132,7 @@ class PhotoStim(QtGui.QMainWindow):
         pass
 
     def prepare_next_trial(self, nextTrial):
-        print '============ Prearing trial {0} ==========='.format(self.dispatcherModel.currentTrial)
+        print '============ Preparing trial {0} ==========='.format(self.dispatcherModel.currentTrial)
         self.sm.reset_transitions()
 
         #valveTimeR = self.params['timeWaterValveR'].get_value()
@@ -160,7 +160,7 @@ class PhotoStim(QtGui.QMainWindow):
                               outputsOn=leftLaserOutput)
             self.sm.add_state(name='delayPostLeft',
                               statetimer=self.params['timeDelayPostLeft'].get_value(),
-                              transitions={'Tup':'stimLeft'},
+                              transitions={'Tup':'readyForNextTrial'},
                               outputsOff=leftLaserOutput)
             
         elif stimMode==1:
@@ -172,7 +172,7 @@ class PhotoStim(QtGui.QMainWindow):
                               outputsOn=rightLaserOutput)
             self.sm.add_state(name='delayPostRight',
                               statetimer=self.params['timeDelayPostRight'].get_value(),
-                              transitions={'Tup':'stimRight'},
+                              transitions={'Tup':'readyForNextTrial'},
                               outputsOff=rightLaserOutput)
 
         elif stimMode==2:
