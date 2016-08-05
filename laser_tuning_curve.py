@@ -129,10 +129,15 @@ class Paradigm(QtGui.QMainWindow):
                                                                  value=0,
                                                                  enabled=False,
                                                                  group='Parameters')
-        self.params['currentAmp'] = paramgui.NumericParam('Current Amplitude',value=0,
+        self.params['currentAmpL'] = paramgui.NumericParam('Current Amplitude - L',value=0,
                                                            enabled=False,
                                                            group='Parameters',
                                                            decimals=4)
+        self.params['currentAmpR'] = paramgui.NumericParam('Current Amplitude - R',value=0,
+                                                           enabled=False,
+                                                           group='Parameters',
+                                                           decimals=4)
+        
         '''
         self.params['laserDuration'] = paramgui.NumericParam('Laser duration',value=0.01,
                                                              group='Parameters',
@@ -282,9 +287,13 @@ class Paradigm(QtGui.QMainWindow):
         # -- Prepare the sound using randomly chosen parameters from parameter lists --
 
         stimDur = self.params['stimDur'].get_value()
-        targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
-                                               self.trialParams[1])[1]  
+        ### We were using only the channel's right channel's calibrated values for targetAmp up to 2016-08-04. Then changed to using both channels' calibrated values. ###
+        #targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
+                                               #self.trialParams[1])[1]  
                                                #Only calibrated right speaker
+        targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
+                                               self.trialParams[1])
+                                               #Now returning a list instead of a single val
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
         stimType = self.params['stimType'].get_string()
@@ -310,7 +319,9 @@ class Paradigm(QtGui.QMainWindow):
 
         self.params['currentFreq'].set_value(self.trialParams[0])
         self.params['currentIntensity'].set_value(self.trialParams[1])
-        self.params['currentAmp'].set_value(targetAmp)
+        #self.params['currentAmp'].set_value(targetAmp) #This used to be just the right channel's value before 2016-08-04.
+        self.params['currentAmpL'].set_value(targetAmp[0])
+        self.params['currentAmpR'].set_value(targetAmp[1])
 
         # -- Prepare the state transition matrix --
         soa = 0.2
