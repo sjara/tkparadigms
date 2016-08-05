@@ -331,7 +331,7 @@ class Paradigm(QtGui.QMainWindow):
         # -- Prepare the state transition matrix --
         soa = 0.2
         if stimType == 'LaserTrain':
-            self.sm.add_state(name='startTrial', statetimer = 0.5 * isi,
+            self.sm.add_state(name='startTrial', statetimer = 0,
                               transitions={'Tup':'output1On'})
             self.sm.add_state(name='output1On', statetimer=stimDur,
                               transitions={'Tup':'output1Off'},
@@ -365,17 +365,17 @@ class Paradigm(QtGui.QMainWindow):
                               transitions={'Tup':'output5Off'},
                               outputsOn=stimOutput,
                               serialOut=serialOutput)
-            self.sm.add_state(name='output5Off', statetimer = 0.5 * isi,
+            self.sm.add_state(name='output5Off', statetimer = isi,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=stimOutput)
         else:
-            self.sm.add_state(name='startTrial', statetimer = 0.5 * isi,
+            self.sm.add_state(name='startTrial', statetimer = 0,
                               transitions={'Tup':'output1On'})
             self.sm.add_state(name='output1On', statetimer=stimDur,
                               transitions={'Tup':'output1Off'},
                               outputsOn=stimOutput,
                               serialOut=serialOutput)
-            self.sm.add_state(name='output1Off', statetimer = 0.5 * isi,
+            self.sm.add_state(name='output1Off', statetimer = isi,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=stimOutput)
 
