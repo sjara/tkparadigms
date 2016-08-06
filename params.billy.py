@@ -231,14 +231,22 @@ pardict.update({'punishTimeError':4})
 pardict.update({'trialsPerBlock':250})
 adap020 = pardict.copy()
 
+#pardict = {'subject':'adap024','experimenter':'santiago'}
+#pardict.update(switchBlocksMode)
+#pardict.update(frequencySet6to19)
+#pardict.update({'currentBlock':'low_boundary'})
+#pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
+#pardict.update(fixIntensity)
+#pardict.update({'punishTimeError':4})
+#pardict.update({'trialsPerBlock':200})
+#adap024 = pardict.copy()
+
 pardict = {'subject':'adap024','experimenter':'santiago'}
-pardict.update(switchBlocksMode)
-pardict.update(frequencySet6to19)
-pardict.update({'currentBlock':'low_boundary'})
-pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
+pardict.update(adap3)
+pardict.update({'lowFreq':7000,'highFreq':17000})
 pardict.update(fixIntensity)
-pardict.update({'punishTimeError':4})
-pardict.update({'trialsPerBlock':200})
+#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
 adap024 = pardict.copy()
 
 #pardict = {'subject':'adap021','experimenter':'santiago'}
