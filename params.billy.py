@@ -243,7 +243,7 @@ adap020 = pardict.copy()
 
 pardict = {'subject':'adap024','experimenter':'santiago'}
 pardict.update(adap3)
-pardict.update({'lowFreq':7000,'highFreq':17000})
+pardict.update({'lowFreq':8000,'highFreq':15000})
 pardict.update(fixIntensity)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'punishTimeEarly':0.5,'punishSoundAmplitude':0.01})
