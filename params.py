@@ -59,7 +59,8 @@ psyCurveChangeReward = {'punishTimeError':4,
 
 # ======== Parameters for each animal =========
 
-adap03xMode = basicDiscriminationMode #increaseDelayMode
+#adap03xMode = basicDiscriminationMode #increaseDelayMode
+adap03xMode = psyCurveMidBound   #basicDiscriminationMode #increaseDelayMode
 adap03xMode.update({'punishSoundAmplitude': 0})
 #adap03xMode.update({'antibiasMode':'repeat_mistake'})
 
