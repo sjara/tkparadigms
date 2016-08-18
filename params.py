@@ -373,26 +373,23 @@ amod004 = pardict.copy()
 ## Starting on direct mode with amp mod only
 
 pardict = {'subject':'amod006','experimenter':'nick'}
-pardict.update(amodIfCorrectMixed)
-# pardict.update({'targetIntensityMode':'randMinus20'})
-# pardict.update({'antibiasMode':'repeat_mistake'})
-# pardict.update({'psycurveMode':'uniform'})
+pardict.update(amodPsycurveMixed)
 amod006 = pardict.copy()
 
 pardict = {'subject':'amod007','experimenter':'nick'}
-pardict.update(amodIfCorrectMixed)
+pardict.update(amodPsycurveMixed)
 amod007 = pardict.copy()
 
 pardict = {'subject':'amod008','experimenter':'nick'}
-pardict.update(amodIfCorrectMixed)
+pardict.update(amodPsycurveMixed)
 amod008 = pardict.copy()
 
 pardict = {'subject':'amod009','experimenter':'nick'}
-pardict.update(amodIfCorrectMixed)
+pardict.update(amodPsycurveMixed)
 amod009 = pardict.copy()
 
 pardict = {'subject':'amod010','experimenter':'nick'}
-pardict.update(amodIfCorrectMixed)
+pardict.update(amodPsycurveMixed)
 amod010 = pardict.copy()
 
 
