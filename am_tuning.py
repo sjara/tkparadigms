@@ -118,7 +118,7 @@ class Paradigm(QtGui.QMainWindow):
                                                          ['Ordered','Random'],
                                                          value=1,group='Parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
-                                                         ['Sine','Chord', 'Noise', 'AM', 'Laser', 'LaserTrain'],
+                                                         ['Sine','Chord', 'Noise', 'AM', 'Laser', 'LaserTrain', 'Light'],
                                                          value=2,group='Parameters')
         self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
                                                             value=0, units='Hz',
@@ -317,6 +317,9 @@ class Paradigm(QtGui.QMainWindow):
 
         if (stimType == 'Laser') or (stimType == 'LaserTrain'):
             stimOutput = stimSync+laserSync
+            serialOutput = 0
+        elif stimType=='Light':
+            stimOutput = stimSync + ['leftLED', 'centerLED', 'rightLED']
             serialOutput = 0
         else:
             stimOutput = stimSync
