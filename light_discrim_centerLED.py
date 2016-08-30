@@ -257,7 +257,7 @@ class Paradigm(templates.Paradigm2AFC):
             #soundID = 2
         else:
             raise ValueError('Value of nextCorrectChoice is not appropriate')
-        stimOutput.append(ledOutput)
+        stimOutput.extend(ledOutput)
 
         randNum = (2*np.random.random(1)[0]-1) # In range [-1,1)
         delayToTarget = self.params['delayToTargetMean'].get_value() + \
