@@ -375,21 +375,31 @@ amod004 = pardict.copy()
 
 pardict = {'subject':'amod006','experimenter':'nick'}
 pardict.update(amodPsycurveMixed)
+pardict.update({'lowSoundFreq':7000,'highSoundFreq':12000})
+pardict.update({'lowModFreq': 4, 'highModFreq':64})
 amod006 = pardict.copy()
 
 pardict = {'subject':'amod007','experimenter':'nick'}
+pardict.update({'lowSoundFreq':7000,'highSoundFreq':12000})
+pardict.update({'lowModFreq': 4, 'highModFreq':64})
 pardict.update(amodPsycurveMixed)
 amod007 = pardict.copy()
 
 pardict = {'subject':'amod008','experimenter':'nick'}
+pardict.update({'lowSoundFreq':7000,'highSoundFreq':12000})
+pardict.update({'lowModFreq': 4, 'highModFreq':64})
 pardict.update(amodPsycurveMixed)
 amod008 = pardict.copy()
 
 pardict = {'subject':'amod009','experimenter':'nick'}
+pardict.update({'lowSoundFreq':7000,'highSoundFreq':12000})
+pardict.update({'lowModFreq': 4, 'highModFreq':64})
 pardict.update(amodPsycurveMixed)
 amod009 = pardict.copy()
 
 pardict = {'subject':'amod010','experimenter':'nick'}
+pardict.update({'lowSoundFreq':7000,'highSoundFreq':12000})
+pardict.update({'lowModFreq': 4, 'highModFreq':64})
 pardict.update(amodPsycurveMixed)
 amod010 = pardict.copy()
 
