@@ -51,13 +51,27 @@ tuningCurve = {'stimDur':0.1,
                'noiseAmp':0.05,
                'stimType' : 'Chord',
                'minFreq':2000,
-               'maxFreq':40000,
+               'maxFreq':30000,
                'minInt':40,
                'maxInt':50,
                'numInt':2,
+               'numTones':12,
                'subject':'d1pi016',
                'experimenter' : 'lan'}
 
+tuningCurveLite = {'stimDur':0.1,
+               'isiMean':0.8,
+               'isiHalfRange': 0.1,
+               'noiseAmp':0.05,
+               'stimType' : 'Chord',
+               'minFreq':7000,
+               'maxFreq':22000,
+               'minInt':50,
+               'maxInt':50,
+               'numInt':1,
+               'numTones':6,
+               'subject':'d1pi016',
+               'experimenter' : 'lan'}
 
 tuningAM = {'subject':'adap011', 'experimenter':'lan', 
             'minFreq':4, 'maxFreq':128, 'numTones':11, 
@@ -105,17 +119,17 @@ d1pi008 = pardict.copy()
 
 
 pardict = {'subject':'d1pi016','experimenter':'lan'}
-pardict.update({'lowFreq':8000,'highFreq':22000,'psycurveMode':'uniform','psycurveNfreq':6})
-pardict.update({'percentLaserTrialLeft':0.2,'percentLaserTrialRight':0.2, 'stimFreq':'continuous'})
-pardict.update({'punishSoundAmplitude':0.01,'punishTimeError':2})
+pardict.update({'lowFreq':7000,'highFreq':22000,'psycurveMode':'uniform','psycurveNfreq':6})
+pardict.update({'percentLaserTrialLeft':0,'percentLaserTrialRight':0, 'stimFreq':'continuous'})
+pardict.update({'punishSoundAmplitude':0.015,'punishTimeError':2})
 pardict.update({'targetMaxIntensity':50,'targetIntensityMode':'fixed'})
-pardict.update({'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.05})
+pardict.update({'delayToTargetMean':0.10, 'delayToTargetHalfRange':0.02})
 d1pi016 = pardict.copy()
 
 pardict = {'subject':'d1pi015','experimenter':'lan'}
 pardict.update({'lowFreq':6200,'highFreq':19200,'psycurveMode':'uniform','psycurveNfreq':6})
 pardict.update({'percentLaserTrialLeft':0,'percentLaserTrialRight':0, 'stimFreq':'continuous'})
-pardict.update({'punishSoundAmplitude':0.01,'punishTimeError':2})
+pardict.update({'punishSoundAmplitude':0.015,'punishTimeError':2})
 pardict.update({'targetMaxIntensity':50,'targetIntensityMode':'fixed'})
-pardict.update({'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05})
+pardict.update({'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.05})
 d1pi015 = pardict.copy()
