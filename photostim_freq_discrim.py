@@ -440,14 +440,14 @@ class Paradigm(templates.Paradigm2AFC):
         percentLaserTrialRight = self.params['percentLaserTrialRight'].get_value()
         percentLaserTrials = percentLaserTrialLeft+percentLaserTrialRight
         laserTrialType = np.random.choice([0,1,2],size=1,p=[1-percentLaserTrials,percentLaserTrialLeft,percentLaserTrialRight]) #result is an one-element numpy array
-        if laserTrialType[0]:
+        if laserTrialType[0]: #laserTrialType is an array, the first element is the actual value of laserTrialType
             laserFrontOverhang = self.params['laserFrontOverhang'].get_value()
             laserBackOverhang = self.params['laserBackOverhang'].get_value()
             if rigsettings.OUTPUTS.has_key('stim1') and rigsettings.OUTPUTS.has_key('stim2'):
-                if laserTrialType[0]==1:
+                if laserTrialType[0]==1:  #left laser on
                     laserOutput = ['stim1'] #left laser 
                     trialType='laser_left'
-                elif laserTrialType[0]==2:
+                elif laserTrialType[0]==2: #right laser on
                     laserOutput = ['stim2'] #right laser
                     trialType='laser_right'
             else:
@@ -599,33 +599,112 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
           
-
+        # Laser stim only works in 'only_if_correct' mode!
         elif outcomeMode=='only_if_correct':
-            self.sm.add_state(name='startTrial', statetimer=0,
-                              transitions={'Tup':'waitForCenterPoke'},
-                              outputsOn=trialStartOutput)
-            self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
-                              transitions={'Cin':'delayPreLaser'},
-                              outputsOff=laserOutput)
-            self.sm.add_state(name='delayPreLaser', statetimer=delayToTarget-laserFrontOverhang,
-                              transitions={'Tup':'delayPosLaser','Cout':'waitForCenterPoke'})
-            self.sm.add_state(name='delayPosLaser', statetimer=laserFrontOverhang,
-                              transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'}, 
-                              outputsOn=laserOutput)
+            if (laserFrontOverhang >= 0) & (laserBackOverhang >= 0):
+                self.sm.add_state(name='startTrial', statetimer=0,
+                                  transitions={'Tup':'waitForCenterPoke'},
+                                  outputsOn=trialStartOutput)
+                self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
+                                  transitions={'Cin':'delayPreLaser'},
+                                  outputsOff=laserOutput)
+                self.sm.add_state(name='delayPreLaser', statetimer=delayToTarget-laserFrontOverhang,
+                                  transitions={'Tup':'delayPosLaser','Cout':'waitForCenterPoke'})
+                self.sm.add_state(name='delayPosLaser', statetimer=laserFrontOverhang,
+                                  transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'}, 
+                                  outputsOn=laserOutput)
+
+                # Note that 'delayPeriod' may happen several times in a trial, so
+                # trialStartOutput off here would only meaningful for the first time in the trial.
+                self.sm.add_state(name='playStimulus', statetimer=targetDuration,
+                                  transitions={'Tup':'laserPosSound','Cout':'earlyWithdrawal'},
+                                  outputsOn=stimOutput, serialOut=soundID,
+                                  outputsOff=trialStartOutput)
+                self.sm.add_state(name='laserPosSound', statetimer=laserBackOverhang,
+                                  transitions={'Tup':'waitForSidePoke'},
+                                  outputsOff=stimOutput)
+                self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
+                                  transitions={'Lin':'choiceLeft','Rin':'choiceRight',
+                                               'Tup':'noChoice'},
+                                  outputsOff=laserOutput)
+
+            elif (laserFrontOverhang < 0) & (laserBackOverhang >= 0):
+                self.sm.add_state(name='startTrial', statetimer=0,
+                                  transitions={'Tup':'waitForCenterPoke'},
+                                  outputsOn=trialStartOutput)
+                self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
+                                  transitions={'Cin':'delayPeriod'})
+                self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
+                                  transitions={'Tup':'soundPreLaser','Cout':'waitForCenterPoke'})
+                self.sm.add_state(name='soundPreLaser', statetimer=(-1*laserFrontOverhang),
+                                  transitions={'Tup':'laserDuringSound','Cout':'earlyWithdrawal'},
+                                  outputsOn=stimOutput, serialOut=soundID,
+                                  outputsOff=trialStartOutput)
+                
+                self.sm.add_state(name='laserDuringSound', statetimer=delayToTarget+laserFrontOverhang,
+                                  transitions={'Tup':'laserPosSound','Cout':'earlyWithdrawal'},
+                                  outputsOn=laserOutput)
+                
+                self.sm.add_state(name='laserPosSound', statetimer=laserBackOverhang,
+                                  transitions={'Tup':'waitForSidePoke'},
+                                  outputsOff=stimOutput)
+                self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
+                                  transitions={'Lin':'choiceLeft','Rin':'choiceRight',
+                                               'Tup':'noChoice'},
+                                  outputsOff=laserOutput)
+
+            elif (laserFrontOverhang >= 0) & (laserBackOverhang < 0):
+                self.sm.add_state(name='startTrial', statetimer=0,
+                                  transitions={'Tup':'waitForCenterPoke'},
+                                  outputsOn=trialStartOutput)
+                self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
+                                  transitions={'Cin':'delayPreLaser'},
+                                  outputsOff=laserOutput)
+                self.sm.add_state(name='delayPreLaser', statetimer=delayToTarget-laserFrontOverhang,
+                                  transitions={'Tup':'delayPosLaser','Cout':'waitForCenterPoke'})
+                self.sm.add_state(name='delayPosLaser', statetimer=laserFrontOverhang,
+                                  transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'}, 
+                                  outputsOn=laserOutput)
+
+                self.sm.add_state(name='playStimulus', statetimer=targetDuration,
+                                  transitions={'Tup':'soundPosLaser','Cout':'earlyWithdrawal'},
+                                  outputsOn=stimOutput, serialOut=soundID,
+                                  outputsOff=trialStartOutput)
+
+                self.sm.add_state(name='soundPosLaser', statetimer=(-1*laserBackOverhang),
+                                  transitions={'Tup':'waitForSidePoke'},
+                                  outputsOff=laserOutput)
+
+                self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
+                                  transitions={'Lin':'choiceLeft','Rin':'choiceRight',
+                                               'Tup':'noChoice'},
+                                  outputsOff=stimOutput)
             
-            # Note that 'delayPeriod' may happen several times in a trial, so
-            # trialStartOutput off here would only meaningful for the first time in the trial.
-            self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                              transitions={'Tup':'laserPosSound','Cout':'earlyWithdrawal'},
-                              outputsOn=stimOutput, serialOut=soundID,
-                              outputsOff=trialStartOutput)
-            self.sm.add_state(name='laserPosSound', statetimer=laserBackOverhang,
-                              transitions={'Tup':'waitForSidePoke'},
-                              outputsOff=stimOutput)
-            self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
-                              transitions={'Lin':'choiceLeft','Rin':'choiceRight',
-                                           'Tup':'noChoice'},
-                              outputsOff=laserOutput)
+            elif (laserFrontOverhang < 0) & (laserBackOverhang < 0):
+                self.sm.add_state(name='startTrial', statetimer=0,
+                                  transitions={'Tup':'waitForCenterPoke'},
+                                  outputsOn=trialStartOutput)
+                self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
+                                  transitions={'Cin':'delayPeriod'})
+                self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
+                                  transitions={'Tup':'soundPreLaser','Cout':'waitForCenterPoke'})
+                self.sm.add_state(name='soundPreLaser', statetimer=(-1*laserFrontOverhang),
+                                  transitions={'Tup':'laserDuringSound','Cout':'earlyWithdrawal'},
+                                  outputsOn=stimOutput, serialOut=soundID,
+                                  outputsOff=trialStartOutput)
+                
+                self.sm.add_state(name='laserDuringSound', statetimer=delayToTarget+laserFrontOverhang+laserBackOverhang,
+                                  transitions={'Tup':'soundPosLaser','Cout':'earlyWithdrawal'},
+                                  outputsOn=laserOutput)
+                
+                self.sm.add_state(name='soundPosLaser', statetimer=(-1*laserBackOverhang),
+                                  transitions={'Tup':'waitForSidePoke'},
+                                  outputsOff=laserOutput)
+
+                self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
+                                  transitions={'Lin':'choiceLeft','Rin':'choiceRight',
+                                               'Tup':'noChoice'},
+                                  outputsOff=stimOutput) 
             if correctSidePort=='Lin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'reward'})
@@ -653,7 +732,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         else:
             raise TypeError('outcomeMode={0} has not been implemented'.format(outcomeMode))
-        #print self.sm ### DEBUG
+        print self.sm ### DEBUG
         self.dispatcherModel.set_state_matrix(self.sm)
 
 
