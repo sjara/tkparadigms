@@ -633,8 +633,9 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Tup':'waitForCenterPoke'},
                                   outputsOn=trialStartOutput)
                 self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
-                                  transitions={'Cin':'delayPeriod'})
-                self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
+                                  transitions={'Cin':'delayPreLaser'})
+                ###naming of this state is not ideal, it should be 'delayPeriod', this is a hack so that calculate_results works.
+                self.sm.add_state(name='delayPreLaser', statetimer=delayToTarget,
                                   transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
                 self.sm.add_state(name='playStimulus', statetimer=(-1*laserFrontOverhang),
                                   transitions={'Tup':'laserDuringSound','Cout':'earlyWithdrawal'},
@@ -685,8 +686,9 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Tup':'waitForCenterPoke'},
                                   outputsOn=trialStartOutput)
                 self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
-                                  transitions={'Cin':'delayPeriod'})
-                self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
+                                  transitions={'Cin':'delayPreLaser'})
+                ###naming of this state is not ideal, it should be 'delayPeriod', this is a hack so that calculate_results works
+                self.sm.add_state(name='delayPreLaser', statetimer=delayToTarget,
                                   transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
                 self.sm.add_state(name='playStimulus', statetimer=(-1*laserFrontOverhang),
                                   transitions={'Tup':'laserDuringSound','Cout':'earlyWithdrawal'},
