@@ -635,8 +635,8 @@ class Paradigm(templates.Paradigm2AFC):
                 self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
                                   transitions={'Cin':'delayPeriod'})
                 self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
-                                  transitions={'Tup':'soundPreLaser','Cout':'waitForCenterPoke'})
-                self.sm.add_state(name='soundPreLaser', statetimer=(-1*laserFrontOverhang),
+                                  transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
+                self.sm.add_state(name='playStimulus', statetimer=(-1*laserFrontOverhang),
                                   transitions={'Tup':'laserDuringSound','Cout':'earlyWithdrawal'},
                                   outputsOn=stimOutput, serialOut=soundID,
                                   outputsOff=trialStartOutput)
@@ -687,8 +687,8 @@ class Paradigm(templates.Paradigm2AFC):
                 self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
                                   transitions={'Cin':'delayPeriod'})
                 self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
-                                  transitions={'Tup':'soundPreLaser','Cout':'waitForCenterPoke'})
-                self.sm.add_state(name='soundPreLaser', statetimer=(-1*laserFrontOverhang),
+                                  transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
+                self.sm.add_state(name='playStimulus', statetimer=(-1*laserFrontOverhang),
                                   transitions={'Tup':'laserDuringSound','Cout':'earlyWithdrawal'},
                                   outputsOn=stimOutput, serialOut=soundID,
                                   outputsOff=trialStartOutput)
