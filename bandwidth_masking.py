@@ -23,6 +23,7 @@ from taskontrol.plugins import performancedynamicsplot
 
 from jaratest.anna import test001_tone_am_client as soundclient
 from taskontrol.plugins import speakercalibration
+from jaratest.nick.tests import test059_noise_calibration as noisecalibration
 import time
 
 LONGTIME = 100
@@ -237,24 +238,26 @@ class Paradigm(templates.Paradigm2AFC):
         sNoise = {'type':'noise', 'duration':0.5, 'amplitude':punishSoundAmplitude}
         self.soundClient.set_sound(self.punishSoundID,sNoise)
 
-    def prepare_target_sound(self, band, noiseAmp, toneInt):
+    def prepare_target_sound(self, band, noiseInt, toneInt):
         spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
         # FIXME: currently I am averaging calibration from both speakers (not good)
         #targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
         stimDur = self.params['targetDuration'].get_value()
         modRate = self.params['modRate'].get_value()
         # just for testing until we add to speaker calibration!
-        noiseCal = {30:0.1, 40:0.2}
+        noiseCal = noisecalibration.Calibration(rigsettings.NOISE_CALIBRATION)
         toneFreq = self.params['toneFreq'].get_value()
+        noiseAmp = noiseCal.find_amplitude(1, noiseInt)
+        print noiseAmp
         if toneInt==0:
             if np.isinf(band):
-                s1 = {'type':'AM', 'modRate': modRate, 'duration':stimDur, 'amplitude': noiseCal[noiseAmp]}
+                s1 = {'type':'AM', 'modRate': modRate, 'duration':stimDur, 'amplitude': noiseAmp}
             else:
-                s1 = {'type':'band_AM', 'modRate': modRate, 'frequency': toneFreq, 'octaves': band, 'duration': stimDur, 'amplitude': noiseCal[noiseAmp]}
+                s1 = {'type':'band_AM', 'modRate': modRate, 'frequency': toneFreq, 'octaves': band, 'duration': stimDur, 'amplitude': noiseAmp}
         else:
             toneAmp = spkCal.find_amplitude(toneFreq, noiseAmp+toneInt).mean() 
             s1 = {'type':'tone_band_am', 'frequency': toneFreq, 'octaves': band, 'modRate': modRate, 
-                  'duration':stimDur, 'amplitude': noiseCal[noiseAmp], 'toneAmp': toneAmp}
+                  'duration':stimDur, 'amplitude': noiseAmp, 'toneAmp': toneAmp}
         self.soundClient.set_sound(1,s1)
 
 
@@ -293,19 +296,13 @@ class Paradigm(templates.Paradigm2AFC):
                 currentToneInt = 0
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
                 currentToneInt = self.params['maxToneInt'].get_value()
-        elif threshMode=='uniform':
-            nFreqs = self.params['psycurveNfreq'].get_value()
-            freqsAll = np.logspace(np.log10(lowFreq),np.log10(highFreq),nFreqs)
-            freqBoundary = np.sqrt(lowFreq*highFreq)
-            # -- NOTE: current implementation does not present points at the psych boundary --
-            leftFreqInds = np.flatnonzero(freqsAll<freqBoundary)
-            rightFreqInds = np.flatnonzero(freqsAll>freqBoundary)
+        elif threshMode=='uniform': 
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
-                randindex = np.random.randint(len(freqsAll[leftFreqInds]))
-                targetFrequency = freqsAll[leftFreqInds][randindex]
+                currentToneInt = 0
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
-                randindex = np.random.randint(len(freqsAll[rightFreqInds]))
-                targetFrequency = freqsAll[rightFreqInds][randindex]
+                toneStep = self.params['toneStep'].get_value()
+                allToneInts = np.arange(self.params['minToneInt'].get_value(), self.params['maxToneInt'].get_value()+toneStep, toneStep)
+                currentToneInt = np.random.choice(allToneInts)
         if self.params['bandMode'].get_string()=='white_only':
             currentBand = np.inf
         else:
@@ -534,7 +531,7 @@ class Paradigm(templates.Paradigm2AFC):
         outcomeModeString = self.params['outcomeMode'].get_items()[outcomeModeID]
 
         eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
-        print eventsThisTrial
+        #print eventsThisTrial
         statesThisTrial = eventsThisTrial[:,2]
 
         # -- Find beginning of trial --
