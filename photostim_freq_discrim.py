@@ -439,25 +439,24 @@ class Paradigm(templates.Paradigm2AFC):
         percentLaserTrialLeft = self.params['percentLaserTrialLeft'].get_value()
         percentLaserTrialRight = self.params['percentLaserTrialRight'].get_value()
         percentLaserTrials = percentLaserTrialLeft+percentLaserTrialRight
-        laserTrialType = np.random.choice([0,1,2],size=1,p=[1-percentLaserTrials,percentLaserTrialLeft,percentLaserTrialRight]) #result is an one-element numpy array
-        if laserTrialType[0]: #laserTrialType is an array, the first element is the actual value of laserTrialType
-            laserFrontOverhang = self.params['laserFrontOverhang'].get_value()
-            laserBackOverhang = self.params['laserBackOverhang'].get_value()
-            if rigsettings.OUTPUTS.has_key('stim1') and rigsettings.OUTPUTS.has_key('stim2'):
-                if laserTrialType[0]==1:  #left laser on
-                    laserOutput = ['stim1'] #left laser 
-                    trialType='laser_left'
-                elif laserTrialType[0]==2: #right laser on
-                    laserOutput = ['stim2'] #right laser
-                    trialType='laser_right'
-            else:
+        laserTrialType = np.random.choice([0,1,2],size=1,p=[1-percentLaserTrials,percentLaserTrialLeft,percentLaserTrialRight])[0] #extract the first element of the resulting one-element numpy array
+        #if laserTrialType: 
+        laserFrontOverhang = self.params['laserFrontOverhang'].get_value()
+        laserBackOverhang = self.params['laserBackOverhang'].get_value()
+        if rigsettings.OUTPUTS.has_key('stim1') and rigsettings.OUTPUTS.has_key('stim2'):
+            if laserTrialType==1:  #left laser on
+                laserOutput = ['stim1'] #left laser 
+                trialType='laser_left'
+            elif laserTrialType==2: #right laser on
+                laserOutput = ['stim2'] #right laser
+                trialType='laser_right'
+            elif laserTrialType==0: #no laser trial
                 laserOutput = []
                 trialType='no_laser'
-        else:
-            laserFrontOverhang = 0
-            laserBackOverhang = 0
-            laserOutput=[]
+        else: #In case rig output is not set up to present laser
+            laserOutput = []
             trialType='no_laser'
+        
         self.params['trialType'].set_string(trialType)
 
         #set stimulation frequency
@@ -622,7 +621,7 @@ class Paradigm(templates.Paradigm2AFC):
                                   outputsOff=trialStartOutput)
                 self.sm.add_state(name='laserPosSound', statetimer=laserBackOverhang,
                                   transitions={'Tup':'waitForSidePoke'},
-                                  outputsOff=stimOutput)
+                                  outputsOff=stimOutput) #The assumption here is that the mouse doesn't get to side port before Tup!
                 self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                                   transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                                'Tup':'noChoice'},
@@ -647,8 +646,9 @@ class Paradigm(templates.Paradigm2AFC):
                                   outputsOn=laserOutput)
                 
                 self.sm.add_state(name='laserPosSound', statetimer=laserBackOverhang,
-                                  transitions={'Tup':'waitForSidePoke'},
-                                  outputsOff=stimOutput)
+                                  transitions={'Tup':'waitForSidePoke'}, 
+                                  outputsOff=stimOutput) #The assumption here is that the mouse doesn't get to side port before Tup!
+
                 self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                                   transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                                'Tup':'noChoice'},
@@ -673,7 +673,7 @@ class Paradigm(templates.Paradigm2AFC):
                                   outputsOff=trialStartOutput)
 
                 self.sm.add_state(name='soundPosLaser', statetimer=(-1*laserBackOverhang),
-                                  transitions={'Tup':'waitForSidePoke'},
+                                  transitions={'Tup':'waitForSidePoke','Cout':'earlyWithdrawal'},
                                   outputsOff=laserOutput)
 
                 self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
@@ -700,7 +700,7 @@ class Paradigm(templates.Paradigm2AFC):
                                   outputsOn=laserOutput)
                 
                 self.sm.add_state(name='soundPosLaser', statetimer=(-1*laserBackOverhang),
-                                  transitions={'Tup':'waitForSidePoke'},
+                                  transitions={'Tup':'waitForSidePoke','Cout':'earlyWithdrawal'},
                                   outputsOff=laserOutput)
 
                 self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
