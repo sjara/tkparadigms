@@ -241,14 +241,11 @@ class Paradigm(templates.Paradigm2AFC):
     def prepare_target_sound(self, band, noiseInt, toneInt):
         spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
         # FIXME: currently I am averaging calibration from both speakers (not good)
-        #targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
         stimDur = self.params['targetDuration'].get_value()
         modRate = self.params['modRate'].get_value()
-        # just for testing until we add to speaker calibration!
         noiseCal = noisecalibration.Calibration(rigsettings.NOISE_CALIBRATION)
         toneFreq = self.params['toneFreq'].get_value()
-        noiseAmp = noiseCal.find_amplitude(1, noiseInt)
-        print noiseAmp
+        noiseAmp = noiseCal.find_amplitude(1, noiseInt).mean()
         if toneInt==0:
             if np.isinf(band):
                 s1 = {'type':'AM', 'modRate': modRate, 'duration':stimDur, 'amplitude': noiseAmp}
