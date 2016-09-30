@@ -667,7 +667,7 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'}, 
                                   outputsOn=laserOutput)
 
-                self.sm.add_state(name='playStimulus', statetimer=targetDuration,
+                self.sm.add_state(name='playStimulus', statetimer=targetDuration+laserBackOverhang,
                                   transitions={'Tup':'soundPosLaser','Cout':'earlyWithdrawal'},
                                   outputsOn=stimOutput, serialOut=soundID,
                                   outputsOff=trialStartOutput)
