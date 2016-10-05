@@ -641,7 +641,7 @@ class Paradigm(templates.Paradigm2AFC):
                                   outputsOn=stimOutput, serialOut=soundID,
                                   outputsOff=trialStartOutput)
                 
-                self.sm.add_state(name='laserDuringSound', statetimer=delayToTarget+laserFrontOverhang,
+                self.sm.add_state(name='laserDuringSound', statetimer=targetDuration+laserFrontOverhang,
                                   transitions={'Tup':'laserPosSound','Cout':'earlyWithdrawal'},
                                   outputsOn=laserOutput)
                 
