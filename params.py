@@ -828,3 +828,36 @@ test050.update({'subject':'test050','experimenter':'santiago'})
 test085 = basicDiscriminationMode.copy()
 test085.update({'subject':'test085','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
 '''
+
+# -- tone detection task --
+pardict = {'subject': 'band006', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+band006 = pardict.copy()
+
+pardict = {'subject': 'band007', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+band007 = pardict.copy()
+
+pardict = {'subject': 'band008', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+band008 = pardict.copy()
+
+pardict = {'subject': 'band009', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+band009 = pardict.copy()
+
+pardict = {'subject': 'band010', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+band010 = pardict.copy()
+
+pardict = {'subject': 'band011', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+band011 = pardict.copy()
+
+pardict = {'subject': 'band012', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+band012 = pardict.copy()
+
+pardict = {'subject': 'band013', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+band013 = pardict.copy()
