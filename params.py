@@ -59,6 +59,49 @@ psyCurveChangeReward = {'punishTimeError':4,
 
 # ======== Parameters for each animal =========
 
+# -- tone detection task --
+band0xx = {'lowFreq':5000,'midFreq':7000,'highFreq':8000}
+
+pardict = {'subject': 'band006', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+pardict.update(band0xx)
+band006 = pardict.copy()
+
+pardict = {'subject': 'band007', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+pardict.update(band0xx)
+band007 = pardict.copy()
+
+pardict = {'subject': 'band008', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+pardict.update(band0xx)
+band008 = pardict.copy()
+
+pardict = {'subject': 'band009', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+pardict.update(band0xx)
+band009 = pardict.copy()
+
+pardict = {'subject': 'band010', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+pardict.update(band0xx)
+band010 = pardict.copy()
+
+pardict = {'subject': 'band011', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+pardict.update(band0xx)
+band011 = pardict.copy()
+
+pardict = {'subject': 'band012', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+pardict.update(band0xx)
+band012 = pardict.copy()
+
+pardict = {'subject': 'band013', 'experimenter': 'anna'}
+pardict.update(sidesDirectMode)
+pardict.update(band0xx)
+band013 = pardict.copy()
+
 #adap03xMode = basicDiscriminationMode #increaseDelayMode
 adap03xMode = psyCurveMidBound   #basicDiscriminationMode #increaseDelayMode
 adap03xMode.update({'punishSoundAmplitude': 0})
@@ -829,35 +872,3 @@ test085 = basicDiscriminationMode.copy()
 test085.update({'subject':'test085','experimenter':'santiago', 'lowFreq':5000,'midFreq':11000,'highFreq':24000})
 '''
 
-# -- tone detection task --
-pardict = {'subject': 'band006', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-band006 = pardict.copy()
-
-pardict = {'subject': 'band007', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-band007 = pardict.copy()
-
-pardict = {'subject': 'band008', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-band008 = pardict.copy()
-
-pardict = {'subject': 'band009', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-band009 = pardict.copy()
-
-pardict = {'subject': 'band010', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-band010 = pardict.copy()
-
-pardict = {'subject': 'band011', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-band011 = pardict.copy()
-
-pardict = {'subject': 'band012', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-band012 = pardict.copy()
-
-pardict = {'subject': 'band013', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-band013 = pardict.copy()
