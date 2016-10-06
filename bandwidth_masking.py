@@ -21,9 +21,9 @@ from taskontrol.plugins import templates
 reload(templates)
 from taskontrol.plugins import performancedynamicsplot
 
-from jaratest.anna import test001_tone_am_client as soundclient
+from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
-from jaratest.nick.tests import test059_noise_calibration as noisecalibration
+from taskontrol.plugins import speakernoisecalibration as noisecalibration
 import time
 
 LONGTIME = 100
@@ -247,7 +247,7 @@ class Paradigm(templates.Paradigm2AFC):
         toneFreq = self.params['toneFreq'].get_value()
         noiseAmp = noiseCal.find_amplitude(1, noiseInt).mean()
         if np.isinf(band):
-            s1 = {'type':'AM', 'modRate': modRate, 'duration':stimDur, 'amplitude': noiseAmp}
+            s1 = {'type':'AM', 'modFrequency': modRate, 'duration':stimDur, 'amplitude': noiseAmp}
         else:
             s1 = {'type':'band_AM', 'modRate': modRate, 'frequency': toneFreq, 'octaves': band, 'duration': stimDur, 'amplitude': noiseAmp}
         toneAmp = spkCal.find_amplitude(toneFreq, noiseInt+toneInt).mean() if toneInt>0 else 0
