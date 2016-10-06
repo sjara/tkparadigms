@@ -60,46 +60,39 @@ psyCurveChangeReward = {'punishTimeError':4,
 # ======== Parameters for each animal =========
 
 # -- tone detection task --
-band0xx = {'lowFreq':5000,'midFreq':7000,'highFreq':8000}
+bandDirectMode = {'outcomeMode':'direct', 'threshMode': 'max_only', 'maxToneInt': 20, 'bandMode': 'white_only',
+                  'noiseMode':'uniform', 'minNoiseAmp':20, 'maxNoiseAmp':40, 'numAmps':3}
 
 pardict = {'subject': 'band006', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-pardict.update(band0xx)
+pardict.update(bandDirectMode)
 band006 = pardict.copy()
 
 pardict = {'subject': 'band007', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-pardict.update(band0xx)
+pardict.update(bandDirectMode)
 band007 = pardict.copy()
 
 pardict = {'subject': 'band008', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-pardict.update(band0xx)
+pardict.update(bandDirectMode)
 band008 = pardict.copy()
 
 pardict = {'subject': 'band009', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-pardict.update(band0xx)
+pardict.update(bandDirectMode)
 band009 = pardict.copy()
 
 pardict = {'subject': 'band010', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-pardict.update(band0xx)
+pardict.update(bandDirectMode)
 band010 = pardict.copy()
 
 pardict = {'subject': 'band011', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-pardict.update(band0xx)
+pardict.update(bandDirectMode)
 band011 = pardict.copy()
 
 pardict = {'subject': 'band012', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-pardict.update(band0xx)
+pardict.update(bandDirectMode)
 band012 = pardict.copy()
 
 pardict = {'subject': 'band013', 'experimenter': 'anna'}
-pardict.update(sidesDirectMode)
-pardict.update(band0xx)
+pardict.update(bandDirectMode)
 band013 = pardict.copy()
 
 #adap03xMode = basicDiscriminationMode #increaseDelayMode
