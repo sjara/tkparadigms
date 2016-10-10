@@ -445,8 +445,8 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'playToneStimulus'},
                               outputsOn=stimOutput,serialOut=noiseID,
                               outputsOff=trialStartOutput)
-            self.sm.add_state(name='playToneStimulus', statetimer=targetDuration,
-                              transitions={'Tup':'waitForSidePoke'},serialOut=toneID)
+            self.sm.add_state(name='playToneStimulus', statetimer=LONGTIME,
+                              transitions={'Cout':'waitForSidePoke'},serialOut=toneID)
             self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                            'Tup':'noChoice'},
