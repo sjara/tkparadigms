@@ -60,39 +60,53 @@ psyCurveChangeReward = {'punishTimeError':4,
 # ======== Parameters for each animal =========
 
 # -- tone detection task --
-bandDirectMode = {'outcomeMode':'direct', 'threshMode': 'max_only', 'maxToneInt': 20, 'bandMode': 'white_only',
-                  'noiseMode':'uniform', 'minNoiseAmp':20, 'maxNoiseAmp':40, 'numAmps':3}
+bandDirectMode = {'outcomeMode':'direct', 'threshMode': 'max_only', 'maxToneInt': 20, 'bandMode': 'white_only'}
+
+bandNextCorrectEasyMode = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'white_only' }
+
+bandNextCorrectIntMode = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'uniform',
+                          'minBand':1.0, 'maxBand':4.0, 'numBands':3, 'includeWhite':'yes' }
+
+threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':20, 'maxNoiseAmp':40, 'numAmps':3}
 
 pardict = {'subject': 'band006', 'experimenter': 'anna'}
-pardict.update(bandDirectMode)
+pardict.update(bandNextCorrectEasyMode)
+pardict.update(threeNoiseThreshMode)
 band006 = pardict.copy()
 
 pardict = {'subject': 'band007', 'experimenter': 'anna'}
-pardict.update(bandDirectMode)
+pardict.update(bandNextCorrectEasyMode)
+pardict.update(threeNoiseThreshMode)
 band007 = pardict.copy()
 
 pardict = {'subject': 'band008', 'experimenter': 'anna'}
-pardict.update(bandDirectMode)
+pardict.update(bandNextCorrectEasyMode)
+pardict.update(threeNoiseThreshMode)
 band008 = pardict.copy()
 
 pardict = {'subject': 'band009', 'experimenter': 'anna'}
-pardict.update(bandDirectMode)
+pardict.update(bandNextCorrectEasyMode)
+pardict.update(threeNoiseThreshMode)
 band009 = pardict.copy()
 
 pardict = {'subject': 'band010', 'experimenter': 'anna'}
-pardict.update(bandDirectMode)
+pardict.update(bandNextCorrectEasyMode)
+pardict.update(threeNoiseThreshMode)
 band010 = pardict.copy()
 
 pardict = {'subject': 'band011', 'experimenter': 'anna'}
 pardict.update(bandDirectMode)
+pardict.update(threeNoiseThreshMode)
 band011 = pardict.copy()
 
 pardict = {'subject': 'band012', 'experimenter': 'anna'}
 pardict.update(bandDirectMode)
+pardict.update(threeNoiseThreshMode)
 band012 = pardict.copy()
 
 pardict = {'subject': 'band013', 'experimenter': 'anna'}
-pardict.update(bandDirectMode)
+pardict.update(bandNextCorrectEasyMode)
+pardict.update(threeNoiseThreshMode)
 band013 = pardict.copy()
 
 #adap03xMode = basicDiscriminationMode #increaseDelayMode
