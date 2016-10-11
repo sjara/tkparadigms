@@ -445,8 +445,8 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'playToneStimulus'},
                               outputsOn=stimOutput,serialOut=noiseID,
                               outputsOff=trialStartOutput)
-            self.sm.add_state(name='playToneStimulus', statetimer=LONGTIME,
-                              transitions={'Cout':'waitForSidePoke'},serialOut=toneID)
+            self.sm.add_state(name='playToneStimulus', statetimer=targetDuration,
+                              transitions={'Cout':'waitForSidePoke', 'Tup':'waitForSidePoke'},serialOut=toneID)
             self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                            'Tup':'noChoice'},
@@ -493,8 +493,8 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'playToneStimulus'},
                               outputsOn=stimOutput, serialOut=noiseID,
                               outputsOff=trialStartOutput)
-            self.sm.add_state(name='playToneStimulus', statetimer=LONGTIME,
-                              transitions={'Cout':'waitForSidePoke'}, serialOut=toneID)
+            self.sm.add_state(name='playToneStimulus', statetimer=targetDuration,
+                              transitions={'Cout':'waitForSidePoke', 'Tup':'waitForSidePoke'}, serialOut=toneID)
             # NOTE: The idea of outputsOff here (in other paradigms) was to indicate the end
             #       of the stimulus. But in this paradigm the stimulus will continue to play.
             self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
