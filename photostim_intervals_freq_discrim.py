@@ -130,8 +130,8 @@ class Paradigm(templates.Paradigm2AFC):
                                                       ['0','1','3'],
                                                       value=1, group='Stimulation times')
         # -- Percent trials each laser type. Remaining trials will be no laser.
-        self.params['percentTrialsEachLaserMode'] = paramgui.NumericParam('Percent trials each type',value=1,
-                                                            units='%',group='Stimulation times')
+        self.params['fractionTrialsEachLaserMode'] = paramgui.NumericParam('Fraction trials each type',value=0.25,
+                                                            units='',group='Stimulation times')
         '''
         self.params['stimFreq'] = paramgui.MenuParam('Stim Freq', 
                                                       ['continuous','20','5'],
@@ -434,12 +434,12 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Define the type of trial to present --
         nOnsetsToUse = int(self.params['nOnsetsToUse'].get_string())
-        percentTrialsEachLaserMode = self.params['percentTrialsEachLaserMode'].get_value()
-        percentTrialsLaser = np.tile(percentTrialsEachLaserMode,nOnsetsToUse)
-        percentNoLaser = 1-np.sum(percentTrialsLaser)
-        percentTrials = np.append(percentNoLaser,percentTrialsLaser)
-        #np.random.choice(['no_laser','laser_onset1','laser_onset2','laser_onset3'],p=percentTrials)
-        trialTypeInd = np.random.choice(nOnsetsToUse+1, size=1, p=percentTrials)[0]
+        fractionTrialsEachLaserMode = self.params['fractionTrialsEachLaserMode'].get_value()
+        fractionTrialsLaser = np.tile(fractionTrialsEachLaserMode,nOnsetsToUse)
+        fractionNoLaser = 1-np.sum(fractionTrialsLaser)
+        fractionTrials = np.append(fractionNoLaser,fractionTrialsLaser)
+        #np.random.choice(['no_laser','laser_onset1','laser_onset2','laser_onset3'],p=fractionTrials)
+        trialTypeInd = np.random.choice(nOnsetsToUse+1, size=1, p=fractionTrials)[0]
         self.params['trialType'].set_value(trialTypeInd)
         if trialTypeInd>0:
             laserOutput = ['stim1']

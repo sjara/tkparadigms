@@ -10,11 +10,11 @@ psyCurvePhotoInactivation = {'trialsPerBlock':2000,'punishTimeError':4,'delayToT
                              'percentLaserTrialLeft':0.3, 'percentLaserTrialRight':0, }
 
 #Params for paradigm 'photostim_interval_freq_discrim.py' that Santiago wrote for presenting laser at three different times
-psyCurvePhotoInactivation_interval = {'delayToTargetHalfRange':0.5,'punishTimeError':4,
+psyCurvePhotoInactivation_interval = {'delayToTargetHalfRange':0.05,'punishTimeError':4,
 					'psycurveMode':'uniform','laserDuration':0.1,
 					'laserOnsetFromSoundOnset1':-0.1,'laserOnsetFromSoundOnset2':0,
 					'laserOnsetFromSoundOnset3':0.1,'nOnsetsToUse':'3',
-					'percentTrialsEachLaserMode':0.25}
+					'fractionTrialsEachLaserMode':0.25}
 
 pardict = {'subject':'adap038','experimenter':'tai'}
 pardict.update(frequencySet6to19)
