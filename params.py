@@ -263,9 +263,13 @@ pardict.update(d1pi1)
 d1pi013 = pardict.copy()
 
 pardict = {'subject':'d1pi014','experimenter':'santiago'}
-pardict.update(frequencySet6to19)
+#pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi1)
+#pardict.update(d1pi1)
+pardict.update({'lowFreq':7300,'highFreq':16300,'psycurveMode':'uniform','psycurveNfreq':6,'currentBlock':'mid_boundary'})
+pardict.update({'targetMaxIntensity':52,'targetIntensityMode':'fixed'})
+pardict.update({'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.05})
+pardict.update({'punishSoundAmplitude':0.015,'punishTimeError':2})
 d1pi014 = pardict.copy()
 
 pardict = {'subject':'d1pi015','experimenter':'santiago'}
