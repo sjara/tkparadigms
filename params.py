@@ -72,7 +72,7 @@ bandNextCorrectHardMode = {'outcomeMode':'on_next_correct', 'threshMode':'max_on
 
 bandOnlyCorrectEasyMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'white_only' }
 
-threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':20, 'maxNoiseAmp':40, 'numAmps':3}
+threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':30, 'maxNoiseAmp':40, 'numAmps':3}
 
 pardict = {'subject': 'band006', 'experimenter': 'anna'}
 pardict.update(bandOnlyCorrectEasyMode)
