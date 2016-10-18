@@ -633,8 +633,11 @@ class Paradigm(templates.Paradigm2AFC):
                                   outputsOn=trialStartOutput)
                 self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
                                   transitions={'Cin':'delayPreLaser'})
-                ###naming of this state is not ideal, it should be 'delayPeriod', this is a hack so that calculate_results works.
+                ### Naming of this state is not ideal, it should be 'delayPeriod', this is a hack so that calculate_results works.
                 self.sm.add_state(name='delayPreLaser', statetimer=delayToTarget,
+                                  transitions={'Tup':'delayPosLaser','Cout':'waitForCenterPoke'})
+                ### Added this state so that all the different conditions have the same seqCin for calculate_results()
+                self.sm.add_state(name='delayPosLaser', statetimer=0,
                                   transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
                 self.sm.add_state(name='playStimulus', statetimer=(-1*laserFrontOverhang),
                                   transitions={'Tup':'laserDuringSound','Cout':'earlyWithdrawal'},
@@ -689,6 +692,8 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Cin':'delayPreLaser'})
                 ###naming of this state is not ideal, it should be 'delayPeriod', this is a hack so that calculate_results works
                 self.sm.add_state(name='delayPreLaser', statetimer=delayToTarget,
+                                  transitions={'Tup':'delayPosLaser','Cout':'waitForCenterPoke'})
+                self.sm.add_state(name='delayPosLaser', statetimer=0,
                                   transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
                 self.sm.add_state(name='playStimulus', statetimer=(-1*laserFrontOverhang),
                                   transitions={'Tup':'laserDuringSound','Cout':'earlyWithdrawal'},
@@ -774,6 +779,7 @@ class Paradigm(templates.Paradigm2AFC):
             if outcomeModeString in ['only_if_correct']:
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
                           self.sm.statesNameToIndex['delayPreLaser'],
+                          self.sm.statesNameToIndex['delayPosLaser'],
                           self.sm.statesNameToIndex['playStimulus']]
             elif outcomeModeString in ['on_next_correct']:
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
