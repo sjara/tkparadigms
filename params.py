@@ -70,7 +70,7 @@ bandNextCorrectIntMode = {'outcomeMode':'on_next_correct', 'threshMode':'max_onl
 bandNextCorrectHardMode = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'uniform',
                           'minBand':0.25, 'maxBand':4.0, 'numBands':5, 'includeWhite':'yes' }
 
-bandOnlyCorrectEasyMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'white_only' }
+bandOnlyCorrectEasyMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'white_only', 'delayToTargetMean':0.15 }
 
 threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':30, 'maxNoiseAmp':40, 'numAmps':3}
 
