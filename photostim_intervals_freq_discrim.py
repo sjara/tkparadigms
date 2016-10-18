@@ -127,8 +127,8 @@ class Paradigm(templates.Paradigm2AFC):
         #self.params['laserOnsetFromCenterOut'] = paramgui.NumericParam('Laser onset 3 (from Cout)',value=0,
         #                                                     units='s',group='Stimulation times')
         self.params['nOnsetsToUse'] = paramgui.MenuParam('Onsets to use', 
-                                                      ['0','1','3'],
-                                                      value=1, group='Stimulation times')
+                                                         ['0','1','2','3'],
+                                                         value=1, group='Stimulation times')
         # -- Percent trials each laser type. Remaining trials will be no laser.
         self.params['fractionTrialsEachLaserMode'] = paramgui.NumericParam('Fraction trials each type',value=0.25,
                                                             units='',group='Stimulation times')
