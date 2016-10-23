@@ -72,6 +72,10 @@ bandNextCorrectHardMode = {'outcomeMode':'on_next_correct', 'threshMode':'max_on
 
 bandOnlyCorrectEasyMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'white_only', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
 
+bandOnlyCorrectIntMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'uniform',
+                          'minBand':2.0, 'maxBand':4.0, 'numBands':2, 'includeWhite':'yes',
+                          'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
+
 threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':30, 'maxNoiseAmp':40, 'numAmps':3}
 
 pardict = {'subject': 'band006', 'experimenter': 'anna'}
@@ -91,12 +95,12 @@ pardict.update(threeNoiseThreshMode)
 band008 = pardict.copy()
 
 pardict = {'subject': 'band009', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectEasyMode)
+pardict.update(bandOnlyCorrectIntMode)
 pardict.update(threeNoiseThreshMode)
 band009 = pardict.copy()
 
 pardict = {'subject': 'band010', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectEasyMode)
+pardict.update(bandOnlyCorrectIntMode)
 pardict.update(threeNoiseThreshMode)
 band010 = pardict.copy()
 
