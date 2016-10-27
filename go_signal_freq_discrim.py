@@ -458,6 +458,20 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['laserOnset'].set_value(laserOnset)
         laserOffset = laserOnset+laserDuration          # Laser offset w.r.t sound onset
 
+        if self.params['goSignalMode'].get_string()=='on-off':
+            firstSignalTransitionOn = ['centerLED']
+            firstSignalTransitionOff = []
+            secondSignalTransitionOn = []
+            secondSignalTransitionOff = ['centerLED']
+        elif self.params['goSignalMode'].get_string()=='off-on':
+            firstSignalTransitionOn = []
+            firstSignalTransitionOff = ['centerLED']
+            secondSignalTransitionOn = ['centerLED']
+            secondSignalTransitionOff = []
+        else:
+            print 'This mode is not implemented'
+            raise
+        
         # -- Set state matrix --
         outcomeMode = self.params['outcomeMode'].get_string()
         if outcomeMode=='simulated':
@@ -484,11 +498,13 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOn=trialStartOutput)
             self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
                               transitions={'Cin':'playStimulus',correctSidePort:'playStimulus'},
-                              outputsOn=['centerLED'])
+                              outputsOn=firstSignalTransitionOn,
+                              outputsOff=firstSignalTransitionOff)
             self.sm.add_state(name='playStimulus', statetimer=targetDuration,
                               transitions={'Tup':'reward'},
-                              outputsOn=stimOutput,serialOut=soundID,
-                              outputsOff=trialStartOutput+['centerLED'])
+                              serialOut=soundID,
+                              outputsOn=stimOutput+secondSignalTransitionOn,
+                              outputsOff=trialStartOutput+secondSignalTransitionOff)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput],
