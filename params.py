@@ -93,7 +93,7 @@ pardict.update(threeNoiseThreshMode)
 band007 = pardict.copy()
 
 pardict = {'subject': 'band008', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectEasyMode)
+pardict.update(bandOnlyCorrectIntMode)
 pardict.update(threeNoiseThreshMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band008 = pardict.copy()
@@ -109,19 +109,19 @@ pardict.update(threeNoiseThreshMode)
 band010 = pardict.copy()
 
 pardict = {'subject': 'band011', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectIntMode)
+pardict.update(bandOnlyCorrectHardMode)
 pardict.update(threeNoiseThreshMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band011 = pardict.copy()
 
 pardict = {'subject': 'band012', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectEasyMode)
+pardict.update(bandOnlyCorrectIntMode)
 pardict.update(threeNoiseThreshMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band012 = pardict.copy()
 
 pardict = {'subject': 'band013', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectIntMode)
+pardict.update(bandOnlyCorrectHardMode)
 pardict.update(threeNoiseThreshMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band013 = pardict.copy()
