@@ -76,7 +76,7 @@ class Paradigm(templates.Paradigm2AFC):
 
 
         self.params['automationMode'] = paramgui.MenuParam('Automation Mode',
-                                                           ['off','increase_delay'],
+                                                           ['off','increase_delay_go'],
                                                            value=0,group='Automation')
         self.params['goSignalMode'] = paramgui.MenuParam('Go signal mode',
                                                         ['on-off','off-on'],
@@ -1023,9 +1023,9 @@ class Paradigm(templates.Paradigm2AFC):
     def execute_automation(self):
         automationMode = self.params['automationMode'].get_string()
         nValid = self.params['nValid'].get_value()
-        if automationMode=='increase_delay':
+        if automationMode=='increase_delay_go':
             if nValid>0 and not nValid%10:
-                self.params['delayToTargetMean'].add(0.010)
+                self.params['delayToGoSignal'].add(0.010)
 
     def closeEvent(self, event):
         '''
