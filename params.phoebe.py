@@ -17,7 +17,7 @@ basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary'
                            'punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
 
 
-pardict = {'subject': 'gosi001', 'experimenter': 'phoebe'}
+pardict = {'subject': 'gosi001', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'on-off'})
 pardict.update(increaseDelayGoMode)
