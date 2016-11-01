@@ -85,7 +85,7 @@ gosi011 = pardict.copy()
 
 pardict = {'subject': 'gosi012', 'experimenter': 'phoebe'}
 pardict.update(frequencySet6to19)
-pardict.update({'goSignalMode':'on-off'})
+pardict.update({'goSignalMode':'off-on'})
 pardict.update(increaseDelayGoMode)
 gosi012 = pardict.copy()
 
