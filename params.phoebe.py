@@ -47,6 +47,12 @@ pardict.update({'goSignalMode':'off-on'})
 pardict.update(increaseDelayGoMode)
 gosi005 = pardict.copy()
 
+pardict = {'subject': 'gosi006', 'experimenter': 'phoebe'}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'off-on'})
+pardict.update(increaseDelayGoMode)
+gosi006 = pardict.copy()
+
 pardict = {'subject': 'gosi007', 'experimenter': 'phoebe'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'off-on'})
