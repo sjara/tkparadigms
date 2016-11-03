@@ -10,8 +10,8 @@ test000 = {'targetDuration':0.2, 'targetIntensityMode':'fixed',
 frequencySet6to19 = {'lowFreq':6200, 'highFreq':19200}
 ### 'punishTimeEarly':0.5,'punishSoundAmplitude':0.05
 
-increaseDelayGoMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0,
-                       'automationMode':'increase_delay_go', 'targetDuration':0.05, 'delayToGoSignal':0}
+increaseDelayGoMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0.05, 'delayToTargetHalfRange':0.02,
+                       'automationMode':'increase_delay_go', 'targetDuration':0.1, 'delayToGoSignal':0}
 
 basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary',
                            'punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
