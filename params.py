@@ -79,7 +79,7 @@ bandOnlyCorrectIntMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_onl
 bandOnlyCorrectHardMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'uniform',
                           'minBand':0.25, 'maxBand':4.0, 'numBands':5, 'includeWhite':'yes',
                           'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
-bandPreSNR = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':60, 'bandMode':'max_only',
+bandPreSNR = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'max_only',
                           'maxBand':1.0, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
 
 threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':30, 'maxNoiseAmp':40, 'numAmps':3}
