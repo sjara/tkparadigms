@@ -87,15 +87,15 @@ class Paradigm(templates.Paradigm2AFC):
                                                          ['max_only','uniform'],
                                                          value=0,group='Threshold detection parameters')
         # -- tone intensity refers to difference between tone and masking noise --
-        self.params['minToneInt'] = paramgui.NumericParam('Minimum tone intensity',value=2, decimals=0,
+        self.params['minSNR'] = paramgui.NumericParam('Minimum signal to noise',value=2, decimals=0,
                                                         units='dB',group='Threshold detection parameters')
-        self.params['maxToneInt'] = paramgui.NumericParam('Maximum tone intensity',value=20,decimals=0,
+        self.params['maxSNR'] = paramgui.NumericParam('Maximum signal to noise',value=20,decimals=0,
                                                         units='dB',group='Threshold detection parameters')
-        self.params['toneStep'] = paramgui.NumericParam('Tone Step', value=2, decimals=0, units='dB', group='Threshold detection parameters')
+        self.params['stepSNR'] = paramgui.NumericParam('Change in SNR', value=2, decimals=0, units='dB', group='Threshold detection parameters')
         threshParams = self.params.layout_group('Threshold detection parameters')
 
 
-        self.params['bandMode'] = paramgui.MenuParam('Bandwidth Mode', ['white_only', 'uniform'], value=0, group='Bandwidth parameters')
+        self.params['bandMode'] = paramgui.MenuParam('Bandwidth Mode', ['white_only', 'max_only', 'uniform'], value=0, group='Bandwidth parameters')
         self.params['minBand'] = paramgui.NumericParam('Minimum bandwidth',value=0.25,decimals=2,
                                                         units='octaves',group='Bandwidth parameters')
         self.params['maxBand'] = paramgui.NumericParam('Maximum bandwidth',value=4.0,decimals=2,
@@ -128,8 +128,8 @@ class Paradigm(templates.Paradigm2AFC):
                                                         units='octaves', enabled=False, group='Current Trial')
         self.params['currentNoiseAmp'] = paramgui.NumericParam('Trial noise power',value=0.0,decimals=0,
                                                         units='dB', enabled=False, group='Current Trial')
-        self.params['currentToneInt'] = paramgui.NumericParam('Trial tone intensity',value=0.0,decimals=0,
-                                                        units='octaves', enabled=False, group='Current Trial')
+        self.params['currentSNR'] = paramgui.NumericParam('Trial SNR',value=0.0,decimals=0,
+                                                        units='dB', enabled=False, group='Current Trial')
         trialParams = self.params.layout_group('Current Trial')
 
         self.params['nValid'] = paramgui.NumericParam('N valid',value=0,
@@ -250,7 +250,8 @@ class Paradigm(templates.Paradigm2AFC):
             s1 = {'type':'AM', 'modFrequency': modRate, 'duration':stimDur, 'amplitude': noiseAmp}
         else:
             s1 = {'type':'band_AM', 'modRate': modRate, 'frequency': toneFreq, 'octaves': band, 'duration': stimDur, 'amplitude': noiseAmp}
-        toneAmp = spkCal.find_amplitude(toneFreq, noiseInt+toneInt).mean() if toneInt>0 else 0
+        toneAmp = spkCal.find_amplitude(toneFreq, noiseInt+toneInt).mean()
+        print toneAmp
         s2 = {'type':'tone', 'frequency': toneFreq, 'duration':stimDur, 'amplitude': toneAmp}
         self.soundClient.set_sound(1,s1)
         self.soundClient.set_sound(2,s2)
@@ -288,18 +289,20 @@ class Paradigm(templates.Paradigm2AFC):
         threshMode = self.params['threshMode'].get_string()
         if threshMode=='max_only':
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
-                currentToneInt = 0
+                currentToneInt = -np.inf
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
-                currentToneInt = self.params['maxToneInt'].get_value()
+                currentToneInt = self.params['maxSNR'].get_value()
         elif threshMode=='uniform': 
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
-                currentToneInt = 0
+                currentToneInt = -np.inf
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
-                toneStep = self.params['toneStep'].get_value()
-                allToneInts = np.arange(self.params['minToneInt'].get_value(), self.params['maxToneInt'].get_value()+toneStep, toneStep)
+                toneStep = self.params['stepSNR'].get_value()
+                allToneInts = np.arange(self.params['minSNR'].get_value(), self.params['maxSNR'].get_value()+toneStep, toneStep)
                 currentToneInt = np.random.choice(allToneInts)
         if self.params['bandMode'].get_string()=='white_only':
             currentBand = np.inf
+        elif self.params['bandMode'].get_string()=='max_only':
+            currentBand = self.params['maxBand'].get_value()
         else:
             numBands = self.params['numBands'].get_value()
             minBand = self.params['minBand'].get_value()
@@ -315,7 +318,7 @@ class Paradigm(templates.Paradigm2AFC):
             currentNoiseAmp = np.random.choice(allNoiseAmps)
         self.params['currentBand'].set_value(currentBand)
         self.params['currentNoiseAmp'].set_value(currentNoiseAmp)
-        self.params['currentToneInt'].set_value(currentToneInt)
+        self.params['currentSNR'].set_value(currentToneInt)
         self.prepare_target_sound(currentBand, currentNoiseAmp, currentToneInt)
         self.prepare_punish_sound()
 
