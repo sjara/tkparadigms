@@ -12,8 +12,8 @@ frequencySet6to19 = {'lowFreq':6200, 'highFreq':19200}
 
 shortDelayToTarget = {'delayToTargetMean':0.05, 'delayToTargetHalfRange':0.02}
 
-increaseDelayGoMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0.1, 'delayToTargetHalfRange':0.05,
-                       'automationMode':'increase_delay_go', 'targetDuration':0.1, 'delayToGoSignal':0}
+increaseDelayGoMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0.1, 'delayToTargetHalfRange':0.05, 'automationMode':'off',
+                        'targetDuration':0.1, 'delayToGoSignal':0.2}
 
 basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary',
                            'punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
@@ -101,14 +101,12 @@ pardict = {'subject': 'gosi014', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'on-off'})
 pardict.update(increaseDelayGoMode)
-pardict.update(shortDelayToTarget)
 gosi014 = pardict.copy()
 
 pardict = {'subject': 'gosi015', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'on-off'})
 pardict.update(increaseDelayGoMode)
-pardict.update(shortDelayToTarget)
 gosi015 = pardict.copy()
 
 

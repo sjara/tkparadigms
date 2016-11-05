@@ -676,7 +676,7 @@ class Paradigm(templates.Paradigm2AFC):
                                       transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                                    'Tup':'noChoice'},
                                       outputsOff=laserOutput)
-                else:
+                elif (laserOnset>targetDuration):
                     #  SOUND:  ........|XXXXXXX|........
                     #  LASER:  ...................oooo..
                     self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
@@ -688,12 +688,16 @@ class Paradigm(templates.Paradigm2AFC):
                     self.sm.add_state(name='waitForSidePreLaser', statetimer=laserOnset-targetDuration,
                                       transitions={'Tup':'waitForSideDuringLaser'})
                     self.sm.add_state(name='waitForSideDuringLaser', statetimer=laserDuration,
-                                      transitions={'Tup':'waitForSidePoke'})
+                                      transitions={'Tup':'waitForSidePoke'},
+                                      outputsOn=laserOutput)
                     self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                                       transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                                    'Tup':'noChoice'},
                                       outputsOff=laserOutput)
-                    
+                else:
+                    print 'This condition has not been implemented'
+                    raise
+                
             if correctSidePort=='Lin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'reward'})
