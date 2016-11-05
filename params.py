@@ -60,68 +60,71 @@ psyCurveChangeReward = {'punishTimeError':4,
 # ======== Parameters for each animal =========
 
 # -- tone detection task --
-bandDirectMode = {'outcomeMode':'direct', 'threshMode': 'max_only', 'maxToneInt': 20, 'bandMode': 'white_only'}
+bandDirectMode = {'outcomeMode':'direct', 'threshMode': 'max_only', 'maxSNR': 20, 'bandMode': 'white_only'}
 
-bandNextCorrectNoDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'white_only' }
+bandNextCorrectNoDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only' }
 
-bandNextCorrectIntDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'white_only',
+bandNextCorrectIntDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only',
                           'delayToTargetMean':0.1, 'delayToTargetHalfRange':0.05 }
 
-bandNextCorrectFinDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'white_only',
+bandNextCorrectFinDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only',
                           'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
 
-bandOnlyCorrectEasyMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'white_only', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
+bandOnlyCorrectEasyMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
 
-bandOnlyCorrectIntMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'uniform',
+bandOnlyCorrectIntMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'uniform',
                           'minBand':2.0, 'maxBand':4.0, 'numBands':2, 'includeWhite':'yes',
                           'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
 
-bandOnlyCorrectHardMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxToneInt':20, 'bandMode':'uniform',
+bandOnlyCorrectHardMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'uniform',
                           'minBand':0.25, 'maxBand':4.0, 'numBands':5, 'includeWhite':'yes',
                           'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
+bandPreSNR = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'max_only',
+                          'maxBand':1.0, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
 
 threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':30, 'maxNoiseAmp':40, 'numAmps':3}
+oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
 
 pardict = {'subject': 'band006', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandPreSNR)
 pardict.update(threeNoiseThreshMode)
 band006 = pardict.copy()
 
 pardict = {'subject': 'band007', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandPreSNR)
 pardict.update(threeNoiseThreshMode)
 band007 = pardict.copy()
 
 pardict = {'subject': 'band008', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandPreSNR)
 pardict.update(threeNoiseThreshMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band008 = pardict.copy()
 
 pardict = {'subject': 'band009', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandPreSNR)
 pardict.update(threeNoiseThreshMode)
 band009 = pardict.copy()
 
 pardict = {'subject': 'band010', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandPreSNR)
 pardict.update(threeNoiseThreshMode)
 band010 = pardict.copy()
 
 pardict = {'subject': 'band011', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandPreSNR)
 pardict.update(threeNoiseThreshMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band011 = pardict.copy()
 
 pardict = {'subject': 'band012', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandPreSNR)
 pardict.update(threeNoiseThreshMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band012 = pardict.copy()
 
 pardict = {'subject': 'band013', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandPreSNR)
 pardict.update(threeNoiseThreshMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band013 = pardict.copy()
