@@ -15,8 +15,8 @@ shortDelayToTarget = {'delayToTargetMean':0.05, 'delayToTargetHalfRange':0.02}
 increaseDelayGoMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0.1, 'delayToTargetHalfRange':0.05, 'automationMode':'off',
                         'targetDuration':0.1, 'delayToGoSignal':0.2}
 
-basicDiscriminationMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'audtomationMode':'off', 'currentBlock':'mid_boundary',
-                           ###punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
+basicDiscriminationMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'audtomationMode':'off', 'currentBlock':'mid_boundary'}
+                           ###punishTimeEarly':0.5,'punishSoundAmplitude':0.05
 
 
 pardict = {'subject': 'gosi001', 'experimenter': 'phoebe', 'trainer': 'pp'}
