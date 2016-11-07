@@ -14,3 +14,10 @@ tuningAM2 = {'subject':'test089', 'experimenter':'billy',
             'stimType':'AM', 'stimDur':0.5,
             'isiMin':0.5, 'isiMax':2, 'noiseAmp':0.1}
 
+test000 = {'subject':'test000',
+           'delayToTargetHalfRange':0,
+           'lowFreq':1000, 'highFreq':2000, 'targetIntensityMode':'fixed',
+           'delayToTargetMean':0.5,
+           'laserOnsetFromSoundOnset1':1.5,
+           'laserDuration':0.5,
+           'targetDuration':0.5}
