@@ -64,7 +64,7 @@ gosi007 = pardict.copy()
 pardict = {'subject': 'gosi008', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'off-on'})
-pardict.update(increaseDelayGoMode)
+pardict.update(basicDiscriminationMode)
 gosi008 = pardict.copy()
 
 pardict = {'subject': 'gosi009', 'experimenter': 'phoebe', 'trainer': 'pp'}
@@ -88,7 +88,7 @@ gosi011 = pardict.copy()
 pardict = {'subject': 'gosi012', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'off-on'})
-pardict.update(increaseDelayGoMode)
+pardict.update(basicDiscriminationMode)
 gosi012 = pardict.copy()
 
 pardict = {'subject': 'gosi013', 'experimenter': 'phoebe', 'trainer': 'pp'}
