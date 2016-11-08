@@ -26,6 +26,3 @@ pardict = {'subject':'amod014','experimenter':'nick'}
 pardict.update(currentState)
 amod014 = pardict.copy()
 
-pardict = {'subject':'amod015','experimenter':'nick'}
-pardict.update(currentState)
-amod015 = pardict.copy()
