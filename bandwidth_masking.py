@@ -251,7 +251,6 @@ class Paradigm(templates.Paradigm2AFC):
         else:
             s1 = {'type':'band_AM', 'modRate': modRate, 'frequency': toneFreq, 'octaves': band, 'duration': stimDur, 'amplitude': noiseAmp}
         toneAmp = spkCal.find_amplitude(toneFreq, noiseInt+toneInt).mean()
-        print toneAmp
         s2 = {'type':'tone', 'frequency': toneFreq, 'duration':stimDur, 'amplitude': toneAmp}
         self.soundClient.set_sound(1,s1)
         self.soundClient.set_sound(2,s2)
