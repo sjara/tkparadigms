@@ -237,25 +237,25 @@ adap030 = pardict.copy()
 # -- D1:Chr2 adaptive categorization, psychometric and switching --
 # D1:Chr2 on reward change discrimination psychometric curve
 d1pi1 = basicDiscriminationMode
-d1pi2 = psyCurveMidBound #basicDiscriminationMode
+d1pi2 = psyCurveMidBound 
 d1pi1.update({'punishTimeError':2})
 
 pardict = {'subject':'d1pi018','experimenter':'lan'}
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi1)
+pardict.update(d1pi2)
 d1pi018 = pardict.copy()
 
 pardict = {'subject':'d1pi019','experimenter':'lan'}
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi1)
+pardict.update(d1pi2)
 d1pi019 = pardict.copy()
 
 pardict = {'subject':'d1pi020','experimenter':'lan'}
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(d1pi1)
+pardict.update(d1pi2)
 d1pi020 = pardict.copy()
 
 pardict = {'subject':'d1pi008','experimenter':'lan'}
