@@ -87,11 +87,11 @@ class Paradigm(templates.Paradigm2AFC):
                                                          ['max_only','uniform'],
                                                          value=0,group='Threshold detection parameters')
         # -- tone intensity refers to difference between tone and masking noise --
-        self.params['minSNR'] = paramgui.NumericParam('Minimum signal to noise',value=2, decimals=0,
+        self.params['minSNR'] = paramgui.NumericParam('Minimum signal to noise',value=2, decimals=1,
                                                         units='dB',group='Threshold detection parameters')
         self.params['maxSNR'] = paramgui.NumericParam('Maximum signal to noise',value=20,decimals=0,
                                                         units='dB',group='Threshold detection parameters')
-        self.params['stepSNR'] = paramgui.NumericParam('Change in SNR', value=2, decimals=0, units='dB', group='Threshold detection parameters')
+        self.params['numSNRs'] = paramgui.NumericParam('Number of SNRs', value=2, decimals=0, units='dB', group='Threshold detection parameters')
         threshParams = self.params.layout_group('Threshold detection parameters')
 
 
@@ -128,7 +128,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                         units='octaves', enabled=False, group='Current Trial')
         self.params['currentNoiseAmp'] = paramgui.NumericParam('Trial noise power',value=0.0,decimals=0,
                                                         units='dB', enabled=False, group='Current Trial')
-        self.params['currentSNR'] = paramgui.NumericParam('Trial SNR',value=0.0,decimals=0,
+        self.params['currentSNR'] = paramgui.NumericParam('Trial SNR',value=0.0,decimals=1,
                                                         units='dB', enabled=False, group='Current Trial')
         trialParams = self.params.layout_group('Current Trial')
 
@@ -296,9 +296,11 @@ class Paradigm(templates.Paradigm2AFC):
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
                 currentToneInt = -np.inf
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
-                toneStep = self.params['stepSNR'].get_value()
-                allToneInts = np.arange(self.params['minSNR'].get_value(), self.params['maxSNR'].get_value()+toneStep, toneStep)
-                currentToneInt = np.random.choice(allToneInts)
+                numSNRs = self.params['numSNRs'].get_value()
+                minSNR = self.params['minSNR'].get_value()
+                maxSNR = self.params['maxSNR'].get_value()
+                allSNRs = np.logspace(np.log2(minSNR), np.log2(maxSNR), numSNRs, base=2.0)
+                currentToneInt = np.random.choice(allSNRs)
         if self.params['bandMode'].get_string()=='white_only':
             currentBand = np.inf
         elif self.params['bandMode'].get_string()=='max_only':
