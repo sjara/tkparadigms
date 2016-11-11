@@ -8,7 +8,7 @@ amodPsycurveTones = {'outcomeMode':'only_if_correct', 'soundTypeMode':'tones', '
 amodPsycurveMixed = {'outcomeMode':'only_if_correct', 'soundTypeMode':'mixed_tones', 'psycurveMode':'uniform'}
 
 #Current training state for the new batch of amod mice
-currentState = amodSidesDirect
+currentState = amodDirect
 
 pardict = {'subject':'amod011','experimenter':'nick'}
 pardict.update(currentState)
