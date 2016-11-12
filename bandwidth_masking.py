@@ -84,7 +84,7 @@ class Paradigm(templates.Paradigm2AFC):
         
         
         self.params['threshMode'] = paramgui.MenuParam('Threshold Mode',
-                                                         ['max_only','uniform'],
+                                                         ['max_only','linear','exponential'],
                                                          value=0,group='Threshold detection parameters')
         # -- tone intensity refers to difference between tone and masking noise --
         self.params['minSNR'] = paramgui.NumericParam('Minimum signal to noise',value=2, decimals=1,
@@ -291,7 +291,16 @@ class Paradigm(templates.Paradigm2AFC):
                 currentToneInt = -np.inf
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
                 currentToneInt = self.params['maxSNR'].get_value()
-        elif threshMode=='uniform': 
+        elif threshMode=='linear': 
+            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+                currentToneInt = -np.inf
+            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+                numSNRs = self.params['numSNRs'].get_value()
+                minSNR = self.params['minSNR'].get_value()
+                maxSNR = self.params['maxSNR'].get_value()
+                allSNRs = np.linspace(minSNR, maxSNR, numSNRs)
+                currentToneInt = np.random.choice(allSNRs)
+        elif threshMode=='exponential':
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
                 currentToneInt = -np.inf
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
