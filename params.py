@@ -81,7 +81,7 @@ bandOnlyCorrectHardMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_on
                           'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
 bandPreSNR = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'max_only',
                           'maxBand':1.0, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
-bandSNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':0, 'maxSNR':20, 'numSNRs':5, 'bandMode':'max_only',
+bandSNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':-5, 'maxSNR':15, 'numSNRs':5, 'bandMode':'max_only',
                           'maxBand':1.0, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
 
 threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':30, 'maxNoiseAmp':40, 'numAmps':3}
