@@ -8,21 +8,22 @@ amodPsycurveTones = {'outcomeMode':'only_if_correct', 'soundTypeMode':'tones', '
 amodPsycurveMixed = {'outcomeMode':'only_if_correct', 'soundTypeMode':'mixed_tones', 'psycurveMode':'uniform'}
 
 #Current training state for the new batch of amod mice
-currentState = amodNextCorrectAM
+currentState1 = amodNextCorrectAM
+currentState2 = amodIfCorrectAM
 
 pardict = {'subject':'amod011','experimenter':'nick'}
-pardict.update(currentState)
+pardict.update(currentState1)
 amod011 = pardict.copy()
 
 pardict = {'subject':'amod012','experimenter':'nick'}
-pardict.update(currentState)
+pardict.update(currentState1)
 amod012 = pardict.copy()
 
 pardict = {'subject':'amod013','experimenter':'nick'}
-pardict.update(currentState)
+pardict.update(currentState2)
 amod013 = pardict.copy()
 
 pardict = {'subject':'amod014','experimenter':'nick'}
-pardict.update(currentState)
+pardict.update(currentState2)
 amod014 = pardict.copy()
 
