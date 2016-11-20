@@ -60,7 +60,7 @@ gosi006 = pardict.copy()
 pardict = {'subject': 'gosi007', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'off-on'})
-pardict.update(increaseDelayGoMode)
+pardict.update(basicDiscriminationModeShortDelay)
 gosi007 = pardict.copy()
 
 pardict = {'subject': 'gosi008', 'experimenter': 'phoebe', 'trainer': 'pp'}
