@@ -12,7 +12,7 @@ currentState1 = amodNextCorrectAM
 currentState2 = amodIfCorrectAM
 
 pardict = {'subject':'amod011','experimenter':'nick'}
-pardict.update(currentState1)
+pardict.update(currentState2)
 amod011 = pardict.copy()
 
 pardict = {'subject':'amod012','experimenter':'nick'}
