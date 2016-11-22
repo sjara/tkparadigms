@@ -19,7 +19,7 @@ basicDiscriminationModeShortDelay = {'outcomeMode':'only_if_correct', 'delayToTa
 
 basicDiscriminationMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.2}
 
-psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.2, 'psyCurveMode':'uniform'}
+psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.2, 'psycurveMode':'uniform'}
                            ###punishTimeEarly':0.5,'punishSoundAmplitude':0.05
 
 
