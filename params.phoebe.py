@@ -58,7 +58,7 @@ gosi005 = pardict.copy()
 pardict = {'subject': 'gosi006', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'off-on'})
-pardict.update(psyCurveMode)
+pardict.update(learnDiscrimMode)
 gosi006 = pardict.copy()
 
 pardict = {'subject': 'gosi007', 'experimenter': 'phoebe', 'trainer': 'pp'}
@@ -94,7 +94,7 @@ gosi011 = pardict.copy()
 pardict = {'subject': 'gosi012', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'off-on'})
-pardict.update(psyCurveMode)
+pardict.update(learnDiscrimMode)
 gosi012 = pardict.copy()
 
 pardict = {'subject': 'gosi013', 'experimenter': 'phoebe', 'trainer': 'pp'}
