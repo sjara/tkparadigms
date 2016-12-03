@@ -122,8 +122,9 @@ pardict.update(oneNoiseThreshMode)
 band011 = pardict.copy()
 
 pardict = {'subject': 'band012', 'experimenter': 'anna'}
-pardict.update(bandSNR)
+pardict.update(bandEasySNR)
 pardict.update(oneNoiseThreshMode)
+pardict.update({'bandMode':'white_only'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band012 = pardict.copy()
 
