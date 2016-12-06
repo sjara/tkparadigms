@@ -21,7 +21,7 @@ basicDiscriminationMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':
 
 learnDiscrimMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.075, 'delayToGoSignal':0, 'punishSoundAmplitude':0}
 
-psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.4, 'psycurveMode':'uniform', 'punishSoundAmplitude':0}
+psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.3, 'psycurveMode':'uniform', 'punishSoundAmplitude':0}
                            ###punishTimeEarly':0.5,'punishSoundAmplitude':0.05
 
 
@@ -46,7 +46,7 @@ gosi003 = pardict.copy()
 pardict = {'subject': 'gosi004', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'on-off'})
-pardict.update(learnDiscrimMode)
+pardict.update(increaseDelayGoMode)
 gosi004 = pardict.copy()
 
 pardict = {'subject': 'gosi005', 'experimenter': 'phoebe', 'trainer': 'pp'}
