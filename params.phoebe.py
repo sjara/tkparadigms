@@ -21,7 +21,7 @@ basicDiscriminationMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':
 
 learnDiscrimMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.075, 'delayToGoSignal':0, 'punishSoundAmplitude':0}
 
-psycurveDebiasMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0, 'punishSoundAmplitude':0, 'antibiasMode':'repeatMistake'}
+psycurveDebiasMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0, 'punishSoundAmplitude':0}
 
 psyCurveModeShortDelay = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.01, 'psycurveMode':'uniform', 'punishSoundAmplitude':0}
 
