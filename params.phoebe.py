@@ -25,16 +25,16 @@ learnDiscrimMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, '
 
 psycurveDebiasMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0, 'punishSoundAmplitude':0}
 
-psyCurveModeShortDelay = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.01, 'psycurveMode':'uniform', 'punishSoundAmplitude':0}
+psyCurveModeShortDelay = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.02, 'psycurveMode':'uniform', 'punishSoundAmplitude':0}
 
-psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.3, 'psycurveMode':'uniform', 'punishSoundAmplitude':0}
+psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.2, 'psycurveMode':'uniform', 'punishSoundAmplitude':0}
                            ###punishTimeEarly':0.5,'punishSoundAmplitude':0.05
 
 
 pardict = {'subject': 'gosi001', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'on-off'})
-pardict.update(learnDiscrimMode)
+pardict.update(increaseDelayGoMode)
 gosi001 = pardict.copy()
 
 pardict = {'subject': 'gosi002', 'experimenter': 'phoebe', 'trainer': 'pp'}
@@ -76,7 +76,7 @@ gosi007 = pardict.copy()
 pardict = {'subject': 'gosi008', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'off-on'})
-pardict.update(learnDiscrimMode)
+pardict.update(increaseDelayGoMode)
 gosi008 = pardict.copy()
 
 pardict = {'subject': 'gosi009', 'experimenter': 'phoebe', 'trainer': 'pp'}
@@ -88,7 +88,7 @@ gosi009 = pardict.copy()
 pardict = {'subject': 'gosi010', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'off-on'})
-pardict.update(basicDiscriminationMode)
+pardict.update(psyCurveMode)
 gosi010 = pardict.copy()
 
 pardict = {'subject': 'gosi011', 'experimenter': 'phoebe', 'trainer': 'pp'}
@@ -106,7 +106,7 @@ gosi012 = pardict.copy()
 pardict = {'subject': 'gosi013', 'experimenter': 'phoebe', 'trainer': 'pp'}
 pardict.update(frequencySet6to19)
 pardict.update({'goSignalMode':'on-off'})
-pardict.update(learnDiscrimMode)
+pardict.update(increaseDelayGoMode)
 gosi013 = pardict.copy()
 
 pardict = {'subject': 'gosi014', 'experimenter': 'phoebe', 'trainer': 'pp'}
