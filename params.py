@@ -60,6 +60,8 @@ psyCurveChangeReward = {'punishTimeError':4,
 # ======== Parameters for each animal =========
 
 # -- tone detection task --
+bandSidesDirectMode = {'outcomeMode':'sides_direct', 'threshMode': 'max_only', 'maxSNR': 20, 'bandMode': 'white_only'}
+
 bandDirectMode = {'outcomeMode':'direct', 'threshMode': 'max_only', 'maxSNR': 20, 'bandMode': 'white_only'}
 
 bandNextCorrectNoDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only' }
@@ -118,11 +120,11 @@ band010 = pardict.copy()
 pardict = {'subject': 'band011', 'experimenter': 'anna'}
 pardict.update(bandSNR)
 pardict.update(oneNoiseThreshMode)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'minSNR':-10, 'maxSNR':10})
 band011 = pardict.copy()
 
 pardict = {'subject': 'band012', 'experimenter': 'anna'}
-pardict.update(bandEasySNR)
+pardict.update(bandSNR)
 pardict.update(oneNoiseThreshMode)
 pardict.update({'bandMode':'white_only'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
@@ -134,6 +136,24 @@ pardict.update(oneNoiseThreshMode)
 pardict.update({'bandMode':'white_only'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band013 = pardict.copy()
+
+pardict = {'subject': 'band017', 'experimenter': 'anna'}
+pardict.update(bandSidesDirectMode)
+band017 = pardict.copy()
+
+pardict = {'subject': 'band018', 'experimenter': 'anna'}
+pardict.update(bandSidesDirectMode)
+band018 = pardict.copy()
+
+pardict = {'subject': 'band019', 'experimenter': 'anna'}
+pardict.update(bandSidesDirectMode)
+band019 = pardict.copy()
+
+pardict = {'subject': 'band020', 'experimenter': 'anna'}
+pardict.update(bandSidesDirectMode)
+band020 = pardict.copy()
+
+# -- adaptive frequency discrimination --
 
 #adap03xMode = basicDiscriminationMode #increaseDelayMode
 adap03xMode = psyCurveMidBound   #basicDiscriminationMode #increaseDelayMode
