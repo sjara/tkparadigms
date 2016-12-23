@@ -138,19 +138,23 @@ pardict.update({'bandMode':'white_only'})
 band013 = pardict.copy()
 
 pardict = {'subject': 'band017', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
+pardict.update(threeNoiseThreshMode)
 band017 = pardict.copy()
 
 pardict = {'subject': 'band018', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
+pardict.update(threeNoiseThreshMode)
 band018 = pardict.copy()
 
 pardict = {'subject': 'band019', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
+pardict.update(threeNoiseThreshMode)
 band019 = pardict.copy()
 
 pardict = {'subject': 'band020', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
+pardict.update(threeNoiseThreshMode)
 band020 = pardict.copy()
 
 # -- adaptive frequency discrimination --
