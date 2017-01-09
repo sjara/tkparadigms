@@ -138,12 +138,12 @@ pardict.update({'bandMode':'white_only'})
 band013 = pardict.copy()
 
 pardict = {'subject': 'band017', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectIntMode)
+pardict.update(bandOnlyCorrectHardMode)
 pardict.update(threeNoiseThreshMode)
 band017 = pardict.copy()
 
 pardict = {'subject': 'band018', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandPreSNR)
 pardict.update(threeNoiseThreshMode)
 band018 = pardict.copy()
 
@@ -154,7 +154,7 @@ pardict.update(threeNoiseThreshMode)
 band019 = pardict.copy()
 
 pardict = {'subject': 'band020', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectIntMode)
+pardict.update(bandOnlyCorrectHardMode)
 pardict.update(threeNoiseThreshMode)
 band020 = pardict.copy()
 
