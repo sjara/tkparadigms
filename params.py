@@ -143,12 +143,12 @@ pardict.update(threeNoiseThreshMode)
 band017 = pardict.copy()
 
 pardict = {'subject': 'band018', 'experimenter': 'anna'}
-pardict.update(bandPreSNR)
+pardict.update(bandEasySNR)
 pardict.update(threeNoiseThreshMode)
 band018 = pardict.copy()
 
 pardict = {'subject': 'band019', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectEasyMode)
+pardict.update(bandOnlyCorrectIntMode)
 pardict.update(threeNoiseThreshMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band019 = pardict.copy()
