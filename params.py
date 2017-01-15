@@ -91,6 +91,121 @@ bandSNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':-5, 
 threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':30, 'maxNoiseAmp':40, 'numAmps':3}
 oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
 
+
+
+# -- Go-signal mice (and some moved to reward-change) --
+psyCurveGoSignal = {'outcomeMode':'only_if_correct', 'delayToTargetHalfRange':0.05, 'delayToTargetMean':0.1,
+                    'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0,
+                    'psycurveMode':'uniform', 'punishSoundAmplitude':0}
+
+
+pardict = {'subject': 'gosi001', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'on-off'})
+pardict.update(psyCurveGoSignal)
+gosi001 = pardict.copy()
+
+pardict = {'subject': 'gosi002', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'on-off'})
+pardict.update(psyCurveGoSignal)
+gosi002 = pardict.copy()
+
+pardict = {'subject': 'gosi003', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'on-off'})
+pardict.update(psyCurveGoSignal)
+gosi003 = pardict.copy()
+
+pardict = {'subject': 'gosi004', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'on-off'})
+pardict.update(psyCurveGoSignal)
+gosi004 = pardict.copy()
+
+pardict = {'subject': 'gosi005', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'off-on'})
+pardict.update(psyCurveGoSignal)
+gosi005 = pardict.copy()
+
+pardict = {'subject': 'gosi006', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'off-on'})
+pardict.update(psyCurveGoSignal)
+gosi006 = pardict.copy()
+
+pardict = {'subject': 'gosi007', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'off-on'})
+pardict.update(psyCurveGoSignal)
+gosi007 = pardict.copy()
+
+pardict = {'subject': 'gosi008', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'off-on'})
+pardict.update(psyCurveGoSignal)
+gosi008 = pardict.copy()
+
+pardict = {'subject': 'gosi009', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'off-on'})
+pardict.update(psyCurveGoSignal)
+gosi009 = pardict.copy()
+
+pardict = {'subject': 'gosi010', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'off-on'})
+pardict.update(psyCurveGoSignal)
+gosi010 = pardict.copy()
+
+pardict = {'subject': 'gosi011', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'off-on'})
+pardict.update(psyCurveGoSignal)
+gosi011 = pardict.copy()
+
+pardict = {'subject': 'gosi012', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'off-on'})
+pardict.update(psyCurveGoSignal)
+gosi012 = pardict.copy()
+
+pardict = {'subject': 'gosi013', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'on-off'})
+pardict.update(psyCurveGoSignal)
+gosi013 = pardict.copy()
+
+pardict = {'subject': 'gosi014', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'on-off'})
+pardict.update(psyCurveGoSignal)
+gosi014 = pardict.copy()
+
+pardict = {'subject': 'gosi015', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(frequencySet6to19)
+pardict.update({'goSignalMode':'on-off'})
+pardict.update(psyCurveGoSignal)
+gosi015 = pardict.copy()
+
+
+
+'''
+psyCurveChangeReward = {'punishTimeError':4,
+                     'delayToTargetMean':0.1,
+                     'currentBlock':'same_reward',
+                     'psycurveMode':'uniform',
+                     'automationMode':'same_left_right',
+                     'punishTimeEarly':0.5,
+                     'punishTimeError':2,
+                     'punishSoundAmplitude':0.05}
+'''
+
+
+
+# -- bandwidth mice --
+
 pardict = {'subject': 'band006', 'experimenter': 'anna'}
 pardict.update(bandSNR)
 pardict.update(oneNoiseThreshMode)
