@@ -235,7 +235,7 @@ band010 = pardict.copy()
 pardict = {'subject': 'band011', 'experimenter': 'anna'}
 pardict.update(bandSNR)
 pardict.update(oneNoiseThreshMode)
-pardict.update({'minSNR':-10, 'maxSNR':10})
+pardict.update({'minSNR':-15, 'maxSNR':10, 'numSNRs':6})
 band011 = pardict.copy()
 
 pardict = {'subject': 'band012', 'experimenter': 'anna'}
@@ -253,25 +253,25 @@ pardict.update({'bandMode':'white_only'})
 band013 = pardict.copy()
 
 pardict = {'subject': 'band017', 'experimenter': 'anna'}
-pardict.update(bandPreSNR)
-pardict.update(threeNoiseThreshMode)
-pardict.update({'maxBand':2.0})
+pardict.update(bandSNR)
+pardict.update(oneNoiseThreshMode)
 band017 = pardict.copy()
 
 pardict = {'subject': 'band018', 'experimenter': 'anna'}
-pardict.update(bandEasySNR)
+pardict.update(bandSNR)
 pardict.update(oneNoiseThreshMode)
 band018 = pardict.copy()
 
 pardict = {'subject': 'band019', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
-pardict.update(threeNoiseThreshMode)
+pardict.update(bandSNR)
+pardict.update(oneNoiseThreshMode)
+pardict.update({'maxBand':2.0})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band019 = pardict.copy()
 
 pardict = {'subject': 'band020', 'experimenter': 'anna'}
-pardict.update(bandPreSNR)
-pardict.update(threeNoiseThreshMode)
+pardict.update(bandSNR)
+pardict.update(oneNoiseThreshMode)
 pardict.update({'maxBand':2.0})
 band020 = pardict.copy()
 
