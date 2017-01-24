@@ -21,6 +21,7 @@ import itertools
 import random
 from taskontrol.plugins import soundclient
 import time
+from taskontrol.plugins import speakernoisecalibration as noisecalibration
 
 # class clearButton(QtGui.QPushButton):
 #    def __init__(self, parent=None):
@@ -59,6 +60,7 @@ class Paradigm(QtGui.QMainWindow):
 
         # -- Create the speaker calibration object
         self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
+        self.noiseCal = noisecalibration.Calibration(rigsettings.NOISE_CALIBRATION)
 
         # -- Create dispatcher --
         self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,
@@ -293,9 +295,13 @@ class Paradigm(QtGui.QMainWindow):
         # targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
         #                                        self.trialParams[1])[1]
         #                                        #Only calibrated right speaker
-        targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
-                                               self.trialParams[1])
-                                               #Now returning a list instead of a single val
+        if stimType in ['Noise', 'AM']:
+            noiseAmp = noiseCal.find_amplitude(1, noiseInt).mean()
+        else:
+            targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
+                                                   self.trialParams[1])
+            #Now returning a list instead of a single val
+
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
         stimType = self.params['stimType'].get_string()
@@ -307,13 +313,11 @@ class Paradigm(QtGui.QMainWindow):
             sound = {'type':'chord', 'frequency':self.trialParams[0], 'duration':stimDur,
                   'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
         elif stimType == 'Noise':
-            noiseAmp=self.params['noiseAmp'].get_value()
             sound = {'type':'noise', 'duration':stimDur,
-                     'amplitude':noiseAmp}
+                     'amplitude':targetAmp}
         elif stimType == 'AM':
-            noiseAmp=self.params['noiseAmp'].get_value()
             sound = {'type':'AM', 'duration':stimDur,
-                     'amplitude':noiseAmp,'modFrequency':self.trialParams[0]}
+                     'amplitude':targetAmp,'modFrequency':self.trialParams[0]}
 
         if (stimType == 'Laser') or (stimType == 'LaserTrain'):
             stimOutput = stimSync+laserSync
