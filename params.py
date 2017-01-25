@@ -135,9 +135,10 @@ pardict.update(frequencySet6to19)
 gosi005 = pardict.copy()
 
 pardict = {'subject': 'gosi006', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'off-on'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi006 = pardict.copy()
 
 pardict = {'subject': 'gosi007', 'experimenter': 'stacy', 'trainer': ''}
@@ -169,9 +170,10 @@ pardict.update(frequencySet6to19)
 gosi010 = pardict.copy()
 
 pardict = {'subject': 'gosi011', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'off-on'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi011 = pardict.copy()
 
 pardict = {'subject': 'gosi012', 'experimenter': 'stacy', 'trainer': ''}
