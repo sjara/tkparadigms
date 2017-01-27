@@ -100,93 +100,108 @@ psyCurveGoSignal = {'outcomeMode':'only_if_correct', 'delayToTargetHalfRange':0.
 # 'delayToGoSignal':0, 'psycurveMode':'uniform',
 
 pardict = {'subject': 'gosi001', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'on-off'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi001 = pardict.copy()
 
 pardict = {'subject': 'gosi002', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'on-off'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi002 = pardict.copy()
 
 pardict = {'subject': 'gosi003', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'on-off'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi003 = pardict.copy()
 
 pardict = {'subject': 'gosi004', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'on-off'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi004 = pardict.copy()
 
 pardict = {'subject': 'gosi005', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'off-on'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi005 = pardict.copy()
 
 pardict = {'subject': 'gosi006', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'off-on'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi006 = pardict.copy()
 
 pardict = {'subject': 'gosi007', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'off-on'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi007 = pardict.copy()
 
 pardict = {'subject': 'gosi008', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'off-on'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi008 = pardict.copy()
 
 pardict = {'subject': 'gosi009', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'off-on'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi009 = pardict.copy()
 
 pardict = {'subject': 'gosi010', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'off-on'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi010 = pardict.copy()
 
 pardict = {'subject': 'gosi011', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'off-on'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi011 = pardict.copy()
 
 pardict = {'subject': 'gosi012', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'off-on'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi012 = pardict.copy()
 
 pardict = {'subject': 'gosi013', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'on-off'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi013 = pardict.copy()
 
 pardict = {'subject': 'gosi014', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'on-off'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi014 = pardict.copy()
 
 pardict = {'subject': 'gosi015', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
 pardict.update(frequencySet6to19)
 #pardict.update({'goSignalMode':'on-off'})
-pardict.update(psyCurveGoSignal)
+#pardict.update(psyCurveGoSignal)
 gosi015 = pardict.copy()
 
 
