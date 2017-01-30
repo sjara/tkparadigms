@@ -289,6 +289,7 @@ pardict = {'subject': 'band020', 'experimenter': 'anna'}
 pardict.update(bandSNR)
 pardict.update(oneNoiseThreshMode)
 pardict.update({'maxBand':2.0})
+pardict.update({'minSNR':-10, 'maxSNR':10})
 band020 = pardict.copy()
 
 # -- adaptive frequency discrimination --
