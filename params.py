@@ -43,13 +43,13 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 # ======== Reward change task ========
 
 psyCurveChangeReward = {'punishTimeError':4,
-                     'delayToTargetMean':0.15,
+                     'delayToTargetMean':0.2,
                      'currentBlock':'same_reward',
                      'psycurveMode':'uniform',
                      'automationMode':'same_right_left',
                      'punishTimeEarly':0.5,
                      'punishTimeError':2,
-                     'punishSoundAmplitude':0.05,
+                     'punishSoundAmplitude':0,
                      'trialsPerBlock':200,
                      'baseWaterValveL':0.015,
                      'baseWaterValveR':0.015,
