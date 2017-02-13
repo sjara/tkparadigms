@@ -592,7 +592,7 @@ class Paradigm(templates.Paradigm2AFC):
                                       transitions={'Lin':'choiceLeft','Rin':'choiceRight', 'laserTimer':'laserOff',
                                                    'Tup':'noChoice'})
                 elif laserOnset <= 0:
-                    self.sm.add_state(name='delayPeriodBeforeLaser', statetimer=delayToTarget+laserOnset,
+                    self.sm.add_state(name='delayPeriod', statetimer=delayToTarget+laserOnset,
                                       transitions={'Tup':'laserOn','Cout':'waitForCenterPoke'})
                     if laserOnset+laserDuration <= 0:
                         # Can use just state transitions if entire laser duration is before sound, 
@@ -600,14 +600,14 @@ class Paradigm(templates.Paradigm2AFC):
                         self.sm.add_state(name='laserOn', statetimer=laserDuration, transitions={'Tup':'delayPeriodWithLaser'},
                                       outputsOn=laserOutput, trigger=['laserTimer'])
                         self.sm.add_state(name='delayPeriodWithLaser', statetimer=laserDuration,
-                                      transitions={'Tup':'delayPeriod','Cout':'waitForCenterPoke'})
-                        self.sm.add_state(name='delayPeriod', statetimer=-laserOnset-laserDuration,
+                                      transitions={'Tup':'delayPeriodAfterLaser','Cout':'waitForCenterPoke'})
+                        self.sm.add_state(name='delayPeriodAfterLaser', statetimer=-laserOnset-laserDuration,
                                       transitions={'Tup':'playNoiseStimulus','Cout':'waitForCenterPoke'},
                                       outputsOff=laserOutput)
                     else: 
-                        self.sm.add_state(name='laserOn', statetimer=0, transitions={'Tup':'delayPeriod'},
+                        self.sm.add_state(name='laserOn', statetimer=0, transitions={'Tup':'delayPeriodAfterLaser'},
                                       outputsOn=laserOutput, trigger=['laserTimer'])
-                        self.sm.add_state(name='delayPeriod', statetimer=-laserOnset,
+                        self.sm.add_state(name='delayPeriodAfterLaser', statetimer=-laserOnset,
                                       transitions={'Tup':'playNoiseStimulus','Cout':'waitForCenterPoke'})
                     self.sm.add_state(name='playNoiseStimulus', statetimer=0,
                                       transitions={'Tup':'playToneStimulus'},
