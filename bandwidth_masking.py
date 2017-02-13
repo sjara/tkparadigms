@@ -403,7 +403,7 @@ class Paradigm(templates.Paradigm2AFC):
         if nOnsetsToUse > 0:
             fractionTrialsLaser = self.params['fractionTrialsLaser'].get_value()
             fractionTrialsEachLaserOnset = np.tile(1.0*fractionTrialsLaser/nOnsetsToUse,nOnsetsToUse)
-            print fractionTrialsEachLaserOnset
+            #print fractionTrialsEachLaserOnset
             fractionNoLaser = 1-fractionTrialsLaser
             fractionTrials = np.append(fractionNoLaser,fractionTrialsEachLaserOnset)
             trialTypeInd = np.random.choice(nOnsetsToUse+1, size=1, p=fractionTrials)[0]
