@@ -43,13 +43,13 @@ cuedDirectMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetH
 # ======== Reward change task ========
 
 psyCurveChangeReward = {'punishTimeError':4,
-                     'delayToTargetMean':0.15,
+                     'delayToTargetMean':0.2,
                      'currentBlock':'same_reward',
                      'psycurveMode':'uniform',
                      'automationMode':'same_right_left',
                      'punishTimeEarly':0.5,
                      'punishTimeError':2,
-                     'punishSoundAmplitude':0.05,
+                     'punishSoundAmplitude':0,
                      'trialsPerBlock':200,
                      'baseWaterValveL':0.015,
                      'baseWaterValveR':0.015,
@@ -88,8 +88,141 @@ bandEasySNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':
 bandSNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':-5, 'maxSNR':15, 'numSNRs':5, 'bandMode':'max_only',
                           'maxBand':1.0, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
 
+bandBilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6}
+bandUnilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6, 'stimMode':'mixed_all', 'fractionTrialsLaser':0.45}
+bandOnsets = {'nOnsetsToUse':'3', 'laserDuration':0.2,'fractionTrialsLaser':0.45}
 threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':30, 'maxNoiseAmp':40, 'numAmps':3}
 oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
+
+
+
+# -- Go-signal mice (and some moved to reward-change) --
+psyCurveGoSignal = {'outcomeMode':'only_if_correct', 'delayToTargetHalfRange':0.05, 'delayToTargetMean':0.1,
+                    'currentBlock':'mid_boundary', 'targetDuration':0.1,
+                    'psycurveMode':'off', 'punishSoundAmplitude':0}
+# 'delayToGoSignal':0, 'psycurveMode':'uniform',
+
+pardict = {'subject': 'gosi001', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'on-off'})
+#pardict.update(psyCurveGoSignal)
+gosi001 = pardict.copy()
+
+pardict = {'subject': 'gosi002', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'on-off'})
+#pardict.update(psyCurveGoSignal)
+gosi002 = pardict.copy()
+
+pardict = {'subject': 'gosi003', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'on-off'})
+#pardict.update(psyCurveGoSignal)
+gosi003 = pardict.copy()
+
+pardict = {'subject': 'gosi004', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'on-off'})
+#pardict.update(psyCurveGoSignal)
+gosi004 = pardict.copy()
+
+pardict = {'subject': 'gosi005', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'off-on'})
+#pardict.update(psyCurveGoSignal)
+gosi005 = pardict.copy()
+
+pardict = {'subject': 'gosi006', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'off-on'})
+#pardict.update(psyCurveGoSignal)
+gosi006 = pardict.copy()
+
+pardict = {'subject': 'gosi007', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'off-on'})
+#pardict.update(psyCurveGoSignal)
+gosi007 = pardict.copy()
+
+pardict = {'subject': 'gosi008', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'off-on'})
+#pardict.update(psyCurveGoSignal)
+gosi008 = pardict.copy()
+
+pardict = {'subject': 'gosi009', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'off-on'})
+#pardict.update(psyCurveGoSignal)
+gosi009 = pardict.copy()
+
+pardict = {'subject': 'gosi010', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'off-on'})
+#pardict.update(psyCurveGoSignal)
+gosi010 = pardict.copy()
+
+pardict = {'subject': 'gosi011', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'off-on'})
+#pardict.update(psyCurveGoSignal)
+gosi011 = pardict.copy()
+
+pardict = {'subject': 'gosi012', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'off-on'})
+#pardict.update(psyCurveGoSignal)
+gosi012 = pardict.copy()
+
+pardict = {'subject': 'gosi013', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'on-off'})
+#pardict.update(psyCurveGoSignal)
+gosi013 = pardict.copy()
+
+pardict = {'subject': 'gosi014', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'on-off'})
+#pardict.update(psyCurveGoSignal)
+gosi014 = pardict.copy()
+
+pardict = {'subject': 'gosi015', 'experimenter': 'stacy', 'trainer': ''}
+pardict.update(psyCurveChangeReward)
+pardict.update(frequencySet6to19)
+#pardict.update({'goSignalMode':'on-off'})
+#pardict.update(psyCurveGoSignal)
+gosi015 = pardict.copy()
+
+
+
+'''
+psyCurveChangeReward = {'punishTimeError':4,
+                     'delayToTargetMean':0.1,
+                     'currentBlock':'same_reward',
+                     'psycurveMode':'uniform',
+                     'automationMode':'same_left_right',
+                     'punishTimeEarly':0.5,
+                     'punishTimeError':2,
+                     'punishSoundAmplitude':0.05}
+'''
+
+
+
+# -- bandwidth mice --
 
 pardict = {'subject': 'band006', 'experimenter': 'anna'}
 pardict.update(bandSNR)
@@ -120,13 +253,14 @@ band010 = pardict.copy()
 pardict = {'subject': 'band011', 'experimenter': 'anna'}
 pardict.update(bandSNR)
 pardict.update(oneNoiseThreshMode)
-pardict.update({'minSNR':-10, 'maxSNR':10})
+pardict.update({'minSNR':-15, 'maxSNR':10, 'numSNRs':6})
 band011 = pardict.copy()
 
 pardict = {'subject': 'band012', 'experimenter': 'anna'}
 pardict.update(bandSNR)
 pardict.update(oneNoiseThreshMode)
 pardict.update({'bandMode':'white_only'})
+pardict.update(bandOnsets)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band012 = pardict.copy()
 
@@ -138,23 +272,30 @@ pardict.update({'bandMode':'white_only'})
 band013 = pardict.copy()
 
 pardict = {'subject': 'band017', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectFinDel)
-pardict.update(threeNoiseThreshMode)
+pardict.update(bandSNR)
+pardict.update({'maxBand':2.0})
+pardict.update(oneNoiseThreshMode)
+pardict.update(bandBilateralLaser)
 band017 = pardict.copy()
 
 pardict = {'subject': 'band018', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectFinDel)
-pardict.update(threeNoiseThreshMode)
+pardict.update(bandSNR)
+pardict.update(oneNoiseThreshMode)
 band018 = pardict.copy()
 
 pardict = {'subject': 'band019', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectFinDel)
-pardict.update(threeNoiseThreshMode)
+pardict.update(bandSNR)
+pardict.update(oneNoiseThreshMode)
+pardict.update({'minSNR':-10, 'maxSNR':10})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 band019 = pardict.copy()
 
 pardict = {'subject': 'band020', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectFinDel)
-pardict.update(threeNoiseThreshMode)
+pardict.update(bandSNR)
+pardict.update(oneNoiseThreshMode)
+pardict.update({'maxBand':2.0})
+#pardict.update({'minSNR':-10, 'maxSNR':10})
+pardict.update(bandBilateralLaser)
 band020 = pardict.copy()
 
 # -- adaptive frequency discrimination --
@@ -163,6 +304,53 @@ band020 = pardict.copy()
 adap03xMode = psyCurveMidBound   #basicDiscriminationMode #increaseDelayMode
 adap03xMode.update({'punishSoundAmplitude': 0})
 #adap03xMode.update({'antibiasMode':'repeat_mistake'})
+adap04xModeLowLeft = sidesDirectMode.copy() #This mode is for low frequency going left
+adap04xModeLowLeft.update({'soundActionMode':'low_left'})
+adap04xModeLowRight = sidesDirectMode.copy() #This mode is for low frequency going right
+adap04xModeLowRight.update({'soundActionMode':'high_left'})
+
+pardict = {'subject':'adap041','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowLeft)
+adap041 = pardict.copy()
+
+pardict = {'subject':'adap042','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowLeft)
+adap042 = pardict.copy()
+
+pardict = {'subject':'adap043','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowLeft)
+adap043 = pardict.copy()
+
+pardict = {'subject':'adap044','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowRight)
+adap044 = pardict.copy()
+
+pardict = {'subject':'adap045','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowRight)
+adap045 = pardict.copy()
+
+pardict = {'subject':'adap046','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowRight)
+adap046 = pardict.copy()
+
+pardict = {'subject':'adap047','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowRight)
+adap047 = pardict.copy()
+
 
 pardict = {'subject':'adap040','experimenter':'santiago'}
 pardict.update(frequencySet6to19)

@@ -10,10 +10,10 @@ test000 = {'targetDuration':0.2, 'targetIntensityMode':'fixed',
 frequencySet6to19 = {'lowFreq':6200, 'highFreq':19200}
 ### 'punishTimeEarly':0.5,'punishSoundAmplitude':0.05
 
+#Used for animals who were not improving after several days on learnDiscrimMode. 
 noFailMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.06, 'delayToGoSignal':0, 'punishSoundAmplitude':0}
 
-shortDelayToTarget = {'delayToTargetMean':0.05, 'delayToTargetHalfRange':0.02}
-
+#Sequence for remedial training starts here and progresses from easiest to most difficult.
 learnDiscrimMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.075, 'delayToGoSignal':0, 'punishSoundAmplitude':0}
 
 increaseDelayGoMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0.0, 'automationMode':'increase_delay_go',
@@ -28,13 +28,14 @@ basicDiscriminationModeShortDelaytoTarget = {'outcomeMode':'only_if_correct', 'd
 
 basicDiscriminationMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.2, 'punishSoundAmplitude':0}
 
-psycurveDebiasMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.05, 'punishSoundAmplitude':0}
+#Optional mode used to remediate bias in animals that had been doing the psychometric task
+psycurveDebiasMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.02, 'delayToTargetHalfRange':0, 'automationMode':'off', 'antibiasMode':'repeat_mistake', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.05, 'punishSoundAmplitude':0}
 
 psyCurveModeShortDelay = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.1, 'delayToTargetHalfRange':0.05, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.2, 'psycurveMode':'uniform', 'punishSoundAmplitude':0}
 
 psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'automationMode':'off', 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'delayToGoSignal':0.6, 'psycurveMode':'uniform', 'punishSoundAmplitude':0}
 
-                           ###punishTimeEarly':0.5,'punishSoundAmplitude':0.05
+
 
 
 pardict = {'subject': 'gosi001', 'experimenter': 'phoebe', 'trainer': 'pp'}
