@@ -93,6 +93,9 @@ class Paradigm(templates.Paradigm2AFC):
         automationParams = self.params.layout_group('Automation')
 
         # 5000, 7000, 9800 (until 2014-03-19)
+        self.params['soundActionMode'] = paramgui.MenuParam('Sound-action mode',
+                                                           ['low_left','high_left'],
+                                                           value=0,group='Sound parameters')
         self.params['highFreq'] = paramgui.NumericParam('High freq',value=16000,
                                                         units='Hz',group='Sound parameters')
         self.params['midFreq'] = paramgui.NumericParam('Middle freq',value=7000,
@@ -350,6 +353,7 @@ class Paradigm(templates.Paradigm2AFC):
         lowFreq = self.params['lowFreq'].get_value()
         currentBlock = self.params['currentBlock'].get_string()
         psycurveMode = self.params['psycurveMode'].get_string()
+        soundActionMode = self.params['soundActionMode'].get_string()
         if psycurveMode=='off':
             if currentBlock=='mid_boundary':
                 freqsLH = [lowFreq,highFreq]
@@ -357,18 +361,28 @@ class Paradigm(templates.Paradigm2AFC):
                 freqsLH = [lowFreq,midFreq]
             elif currentBlock=='high_boundary':
                 freqsLH = [midFreq,highFreq]
-            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
-                targetFrequency = freqsLH[0]
-            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
-                targetFrequency = freqsLH[1]
+            if soundActionMode=='low_left':
+                if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+                    targetFrequency = freqsLH[0]
+                elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+                    targetFrequency = freqsLH[1]
+            elif soundActionMode=='high_left':
+                if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+                    targetFrequency = freqsLH[1]
+                elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+                    targetFrequency = freqsLH[0]
         elif psycurveMode=='uniform':
             if currentBlock=='mid_boundary':
                 nFreqs = self.params['psycurveNfreq'].get_value()
                 freqsAll = np.logspace(np.log10(lowFreq),np.log10(highFreq),nFreqs)
                 freqBoundary = np.sqrt(lowFreq*highFreq)
                 # -- NOTE: current implementation does not present points at the psych boundary -- 
-                leftFreqInds = np.flatnonzero(freqsAll<freqBoundary)
-                rightFreqInds = np.flatnonzero(freqsAll>freqBoundary)
+                if soundActionMode=='low_left':
+                    leftFreqInds = np.flatnonzero(freqsAll<freqBoundary)
+                    rightFreqInds = np.flatnonzero(freqsAll>freqBoundary)
+                elif soundActionMode=='high_left':
+                    leftFreqInds = np.flatnonzero(freqsAll>freqBoundary)
+                    rightFreqInds = np.flatnonzero(freqsAll<freqBoundary)
             else:
                 print 'WARNING! PsyCurve for this block type has not been implemented'
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
