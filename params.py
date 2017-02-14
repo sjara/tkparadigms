@@ -304,6 +304,53 @@ band020 = pardict.copy()
 adap03xMode = psyCurveMidBound   #basicDiscriminationMode #increaseDelayMode
 adap03xMode.update({'punishSoundAmplitude': 0})
 #adap03xMode.update({'antibiasMode':'repeat_mistake'})
+adap04xModeLowLeft = sidesDirectMode.copy() #This mode is for low frequency going left
+adap04xModeLowLeft.update({'soundActionMode':'low_left'})
+adap04xModeLowRight = sidesDirectMode.copy() #This mode is for low frequency going right
+adap04xModeLowRight.update({'soundActionMode':'high_left'})
+
+pardict = {'subject':'adap041','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowLeft)
+adap041 = pardict.copy()
+
+pardict = {'subject':'adap042','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowLeft)
+adap042 = pardict.copy()
+
+pardict = {'subject':'adap043','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowLeft)
+adap043 = pardict.copy()
+
+pardict = {'subject':'adap044','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowRight)
+adap044 = pardict.copy()
+
+pardict = {'subject':'adap045','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowRight)
+adap045 = pardict.copy()
+
+pardict = {'subject':'adap046','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowRight)
+adap046 = pardict.copy()
+
+pardict = {'subject':'adap047','experimenter':'santiago'}
+pardict.update(frequencySet6to19)
+# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(adap04xModeLowRight)
+adap047 = pardict.copy()
+
 
 pardict = {'subject':'adap040','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
