@@ -11,6 +11,7 @@ amodPsycurveMixed = {'outcomeMode':'only_if_correct', 'soundTypeMode':'mixed_ton
 pardict = {'subject':'amod011','experimenter':'nick'}
 # pardict.update(amodPsycurveAM)
 pardict.update(amodIfCorrectTones)
+pardict.update({'antibiasMode':'repeat_mistake'})
 amod011 = pardict.copy()
 
 pardict = {'subject':'amod012','experimenter':'nick'}
