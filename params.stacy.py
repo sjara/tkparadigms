@@ -11,7 +11,7 @@ noisebursts = {'stimDur':0.1,
                'subject':'gosi004',
                'experimenter' : 'stacy'}
 
-tuningCurve = {'stimDur':0.1,
+tuningCurve1 = {'stimDur':0.1,
                'isiMean':0.8,
                'isiHalfRange': 0.1,
                'noiseAmp':0.05,
@@ -25,7 +25,7 @@ tuningCurve = {'stimDur':0.1,
                'subject':'gosi004',
                'experimenter' : 'stacy'}
 
-tuningCurve = {'stimDur':0.1,
+tuningCurve2 = {'stimDur':0.1,
                'isiMean':0.8,
                'isiHalfRange': 0.1,
                'noiseAmp':0.05,
