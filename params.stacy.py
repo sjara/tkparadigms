@@ -8,7 +8,7 @@ noisebursts = {'stimDur':0.1,
                'minInt':40,
                'maxInt':70,
                'numInt':4,
-               #'subject':'gosi004',
+               'subject':'gosi004',
                'experimenter' : 'stacy'}
 
 tuningCurve = {'stimDur':0.1,
@@ -22,7 +22,21 @@ tuningCurve = {'stimDur':0.1,
                'maxInt':50,
                'numInt':1,
                'numTones':16,
-               #'subject':'gosi004',
+               'subject':'gosi004',
+               'experimenter' : 'stacy'}
+
+tuningCurve = {'stimDur':0.1,
+               'isiMean':0.8,
+               'isiHalfRange': 0.1,
+               'noiseAmp':0.05,
+               'stimType' : 'Chord',
+               'minFreq':2000,
+               'maxFreq':40000,
+               'minInt':50,
+               'maxInt':50,
+               'numInt':1,
+               'numTones':16,
+               'subject':'gosi008',
                'experimenter' : 'stacy'}
 
 psyCurveChangeReward = {'punishTimeError':4,
