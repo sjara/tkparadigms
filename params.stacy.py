@@ -8,7 +8,7 @@ noisebursts = {'stimDur':0.1,
                'minInt':40,
                'maxInt':70,
                'numInt':4,
-               'subject':'gosi004',
+               #'subject':'gosi004',
                'experimenter' : 'stacy'}
 
 tuningCurve = {'stimDur':0.1,
@@ -22,7 +22,7 @@ tuningCurve = {'stimDur':0.1,
                'maxInt':50,
                'numInt':1,
                'numTones':16,
-               'subject':'gosi004',
+               #'subject':'gosi004',
                'experimenter' : 'stacy'}
 
 psyCurveChangeReward = {'punishTimeError':4,
@@ -44,3 +44,8 @@ pardict = {'subject':'gosi004','experimenter':'stacy'}
 pardict.update({'lowFreq':6200,'highFreq':19200})
 pardict.update(psyCurveChangeReward)
 gosi004 = pardict.copy()
+
+pardict = {'subject':'gosi008','experimenter':'stacy'}
+pardict.update({'lowFreq':6200,'highFreq':19200})
+pardict.update(psyCurveChangeReward)
+gosi008 = pardict.copy()
