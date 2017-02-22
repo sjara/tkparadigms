@@ -12,12 +12,13 @@ from taskontrol.core import savedata
 from taskontrol.settings import rigsettings
 from taskontrol.core import statematrix
 from taskontrol.plugins import speakercalibration
+from taskontrol.plugins import speakernoisecalibration as noisecalibration
 from taskontrol.plugins import manualcontrol
 import numpy as np
 import itertools
 import random
-#from taskontrol.plugins import soundclient
-from jaratest.anna import test001_tone_am_client as soundclient
+from taskontrol.plugins import soundclient
+#from jaratest.anna import test001_tone_am_client as soundclient
 import time
 
 # class clearButton(QtGui.QPushButton):
@@ -55,8 +56,8 @@ class Paradigm(QtGui.QMainWindow):
         # -- Read settings --
         smServerType = rigsettings.STATE_MACHINE_TYPE
 
-        # -- Create the speaker calibration object
-        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
+        # -- Create the noise calibration object
+        self.noiseCal = noisecalibration.Calibration(rigsettings.NOISE_CALIBRATION)
 
         # -- Create dispatcher --
         self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,
@@ -78,17 +79,15 @@ class Paradigm(QtGui.QMainWindow):
         self.params['charFreq'] = paramgui.NumericParam('Characteristic Frequency (Hz)',
                                                         value=8000,
                                                         group='Session')
-
-	self.params['modRate'] = paramgui.NumericParam('Modulation rate',
+        self.params['modRate'] = paramgui.NumericParam('Modulation rate',
                                                        value=2.0,
                                                        group='Session')
-	sessionParams = self.params.layout_group('Session')
-
-	self.params['minAmp'] = paramgui.NumericParam('Min noise amplitude',
-                                                       value=0.2,
+        sessionParams = self.params.layout_group('Session')
+        self.params['minAmp'] = paramgui.NumericParam('Min noise amplitude (dB)',
+                                                       value=50,
                                                        group='Parameters')
-        self.params['maxAmp'] = paramgui.NumericParam('Max noise amplitude',
-                                                       value=0.6,
+        self.params['maxAmp'] = paramgui.NumericParam('Max noise amplitude (dB)',
+                                                       value=70,
                                                        group='Parameters')
         self.params['numAmps'] = paramgui.NumericParam('Number of Amplitudes',
                                                        value=2,
@@ -106,10 +105,10 @@ class Paradigm(QtGui.QMainWindow):
         self.params['minBand'] = paramgui.NumericParam('Minimum bandwidth (octaves)',
                                                        value=0.25,
                                                        group='Parameters')
-	self.params['maxBand'] = paramgui.NumericParam('Maximum bandwidth (octaves)',
+        self.params['maxBand'] = paramgui.NumericParam('Maximum bandwidth (octaves)',
                                                        value=2.0,
                                                        group='Parameters')
-	self.params['numBands'] = paramgui.NumericParam('Number of bandwiths',
+        self.params['numBands'] = paramgui.NumericParam('Number of bandwiths',
                                                        value=4,
                                                        group='Parameters')
         self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
@@ -118,16 +117,15 @@ class Paradigm(QtGui.QMainWindow):
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
                                                          ['band', 'band_AM', 'Laser', 'LaserTrain'],
                                                          value=1,group='Parameters')
-	# -- Added extremes as separate option in case we want to add other stim types (unmodulated white noise) --
-	self.params['extremes'] = paramgui.MenuParam('Add extremes?',
+        # -- Added extremes as separate option in case we want to add other stim types (unmodulated white noise) --
+        self.params['extremes'] = paramgui.MenuParam('Add extremes?',
                                                          ['yes', 'no'],
                                                          value=0,group='Parameters')
-
         self.params['currentAmp'] = paramgui.NumericParam('Current Amplitude',value=0,
                                                            enabled=False,
                                                            group='Parameters',
                                                            decimals=1)
-	self.params['currentBand'] = paramgui.NumericParam('Current Bandwidth',value=0,
+        self.params['currentBand'] = paramgui.NumericParam('Current Bandwidth',value=0,
                                                            enabled=False,
                                                            group='Parameters',
                                                            decimals=2)
@@ -202,16 +200,16 @@ class Paradigm(QtGui.QMainWindow):
 
         ## -- Get the parameters --
 
-	minBand = self.params['minBand'].get_value()
-	maxBand = self.params['maxBand'].get_value()
-	numBands = self.params['numBands'].get_value()
+        minBand = self.params['minBand'].get_value()
+        maxBand = self.params['maxBand'].get_value()
+        numBands = self.params['numBands'].get_value()
 
         bandList = self.logscale(minBand, maxBand, numBands)
-	if self.params['extremes'].get_string() == 'yes':
-	    extremes = np.array([0, np.inf])
-	    bandList = np.concatenate((bandList, extremes))
+        if self.params['extremes'].get_string() == 'yes':
+            extremes = np.array([0, np.inf])
+            bandList = np.concatenate((bandList, extremes))
 
-	minAmp = self.params['minAmp'].get_value()
+        minAmp = self.params['minAmp'].get_value()
         maxAmp = self.params['maxAmp'].get_value()
         numAmps = self.params['numAmps'].get_value()
 
@@ -219,7 +217,7 @@ class Paradigm(QtGui.QMainWindow):
 
         # -- Make a tuple list of all of the products of the three parameter lists
         #productList = list(itertools.product(toneList, ampList))
-	productList = list(itertools.product(bandList, ampList))
+        productList = list(itertools.product(bandList, ampList))
 
         # -- If in random presentation mode, shuffle the list of products
         randomMode = self.params['randomMode'].get_string()
@@ -280,19 +278,20 @@ class Paradigm(QtGui.QMainWindow):
         stimDur = self.params['stimDur'].get_value()
         charFreq = self.params['charFreq'].get_value()
         modRate = self.params['modRate'].get_value()
+        trialAmp = noiseCal.find_amplitude(1, self.trialParams[1]).mean()
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
         stimType = self.params['stimType'].get_string()
 
         if stimType == 'band_AM':
             if self.trialParams[0] == 0:
-                sound = {'type':'tone_AM', 'duration':stimDur, 'amplitude':self.trialParams[1]/16, 'frequency':charFreq, 'modRate':modRate}
+                sound = {'type':'tone_AM', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'modRate':modRate}
             elif np.isinf(self.trialParams[0]):
-                sound = {'type':'AM', 'modRate':modRate, 'duration':stimDur, 'amplitude':self.trialParams[1]}
+                sound = {'type':'AM', 'modRate':modRate, 'duration':stimDur, 'amplitude':trialAmp}
             else:
-                sound = {'type':'band_AM', 'duration':stimDur, 'amplitude':self.trialParams[1], 'frequency':charFreq, 'modRate':modRate, 'octaves':self.trialParams[0]}
+                sound = {'type':'band_AM', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'modRate':modRate, 'octaves':self.trialParams[0]}
         elif stimType == 'band':
-            sound = {'type':'band', 'duration':stimDur, 'amplitude':self.trialParams[1], 'frequency':charFreq, 'octaves':self.trialParams[0]}
+            sound = {'type':'band', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'octaves':self.trialParams[0]}
         if (stimType == 'Laser') or (stimType == 'LaserTrain'):
             stimOutput = stimSync+laserSync
             serialOutput = 0
