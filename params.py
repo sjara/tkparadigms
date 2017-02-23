@@ -281,12 +281,14 @@ band017 = pardict.copy()
 
 pardict = {'subject': 'band018', 'experimenter': 'anna'}
 pardict.update(bandSNR)
-pardict.update(oneNoiseThreshMode)
+pardict.update(threeNoiseThreshMode)
+pardict.update({'numAmps':2})
 band018 = pardict.copy()
 
 pardict = {'subject': 'band019', 'experimenter': 'anna'}
 pardict.update(bandSNR)
-pardict.update(oneNoiseThreshMode)
+pardict.update(threeNoiseThreshMode)
+pardict.update({'numAmps':2})
 pardict.update({'minSNR':-10, 'maxSNR':10})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band019 = pardict.copy()
