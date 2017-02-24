@@ -308,9 +308,9 @@ adap03xMode = psyCurveMidBound   #basicDiscriminationMode #increaseDelayMode
 adap03xMode.update({'punishSoundAmplitude': 0})
 #adap03xMode.update({'antibiasMode':'repeat_mistake'})
 adap04xModeLowLeft = increaseDelayMode.copy() #This mode is for low frequency going left
-adap04xModeLowLeft.update({'soundActionMode':'low_left'})
+adap04xModeLowLeft.update({'soundActionMode':'low_left', 'targetDuration':0.1})
 adap04xModeLowRight = increaseDelayMode.copy() #This mode is for low frequency going right
-adap04xModeLowRight.update({'soundActionMode':'high_left'})
+adap04xModeLowRight.update({'soundActionMode':'high_left', 'targetDuration':0.1})
 
 pardict = {'subject':'adap041','experimenter':'santiago'}
 pardict.update(frequencySet6to19)
