@@ -113,9 +113,9 @@ class Paradigm(QtGui.QMainWindow):
         self.params['isiHalfRange'] = paramgui.NumericParam('+/-',
                                                       value=1,
                                                       group='Parameters')
-        self.params['noiseAmp'] = paramgui.NumericParam('Amplitude in Noise-Mode',
-                                                       value=0.3,
-                                                       group='Parameters')
+        # self.params['noiseAmp'] = paramgui.NumericParam('Amplitude in Noise-Mode',
+        #                                                value=0.3,
+        #                                                group='Parameters')
         self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
                                                          ['Ordered','Random'],
                                                          value=1,group='Parameters')
@@ -216,7 +216,8 @@ class Paradigm(QtGui.QMainWindow):
         numFreqs = self.params['numTones'].get_value()
 
         # -- Create a list of frequencies --
-        toneList = self.logscale(minFreq, maxFreq, numFreqs)
+        # toneList = self.logscale(minFreq, maxFreq, numFreqs)
+        toneList = np.logspace(np.log10(minFreq), np.log10(maxFreq),num = numFreqs)
 
 
         minInt = self.params['minInt'].get_value()
@@ -290,13 +291,15 @@ class Paradigm(QtGui.QMainWindow):
 
         # -- Prepare the sound using randomly chosen parameters from parameter lists --
 
+        stimType = self.params['stimType'].get_string()
         stimDur = self.params['stimDur'].get_value()
+
         #We used this until 2016-08-04, then changed it to the thing below
         # targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
         #                                        self.trialParams[1])[1]
         #                                        #Only calibrated right speaker
         if stimType in ['Noise', 'AM']:
-            noiseAmp = noiseCal.find_amplitude(1, noiseInt).mean()
+            targetAmp = self.noiseCal.find_amplitude(0, self.trialParams[1])
         else:
             targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
                                                    self.trialParams[1])
@@ -304,7 +307,6 @@ class Paradigm(QtGui.QMainWindow):
 
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
-        stimType = self.params['stimType'].get_string()
 
         if stimType == 'Sine':
             sound = {'type':'tone', 'duration':stimDur,

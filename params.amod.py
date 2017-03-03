@@ -15,20 +15,20 @@ pardict.update({'antibiasMode':'repeat_mistake'})
 amod011 = pardict.copy()
 
 pardict = {'subject':'amod012','experimenter':'nick'}
-# pardict.update(amodPsycurveAM)
-pardict.update(amodIfCorrectTones)
+pardict.update(amodPsycurveTones)
+# pardict.update(amodIfCorrectTones)
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod012 = pardict.copy()
 
 pardict = {'subject':'amod013','experimenter':'nick'}
-# pardict.update(amodPsycurveAM)
-pardict.update(amodIfCorrectTones)
+pardict.update(amodPsycurveTones)
+# pardict.update(amodIfCorrectTones)
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod013 = pardict.copy()
 
 pardict = {'subject':'amod014','experimenter':'nick'}
-# pardict.update(amodPsycurveAM)
-pardict.update(amodIfCorrectTones)
+pardict.update(amodPsycurveTones)
+# pardict.update(amodIfCorrectTones)
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod014 = pardict.copy()
 
