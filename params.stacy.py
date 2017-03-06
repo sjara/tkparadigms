@@ -55,11 +55,11 @@ psyCurveChangeReward = {'punishTimeError':4,
 
 
 pardict = {'subject':'gosi004','experimenter':'stacy'}
-pardict.update({'lowFreq':6200,'highFreq':19200})
+pardict.update({'lowFreq':8100,'highFreq':19200,'targetIntensityMode':'fixed'})
 pardict.update(psyCurveChangeReward)
 gosi004 = pardict.copy()
 
 pardict = {'subject':'gosi008','experimenter':'stacy'}
-pardict.update({'lowFreq':6200,'highFreq':19200})
+pardict.update({'lowFreq':6200,'highFreq':19200,'targetIntensityMode':'fixed'})
 pardict.update(psyCurveChangeReward)
 gosi008 = pardict.copy()
