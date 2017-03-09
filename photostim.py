@@ -39,21 +39,21 @@ class PhotoStim(QtGui.QMainWindow):
         # -- Add parameters --
         self.params = paramgui.Container()
 
-        self.params['timeStimLeft'] = paramgui.NumericParam('Time stim left',value=0.1,
+        self.params['timeStimLeft'] = paramgui.NumericParam('Time stim left',value=1.5,
                                                             units='s',group='Stimulation times')
-        self.params['timeDelayPostLeft'] = paramgui.NumericParam('Delay post left',value=1.5,
+        self.params['timeDelayPostLeft'] = paramgui.NumericParam('Delay post left',value=4,
                                                             units='s',group='Stimulation times')
-        self.params['timeStimRight'] = paramgui.NumericParam('Time stim right',value=0.1,
+        self.params['timeStimRight'] = paramgui.NumericParam('Time stim right',value=1.5,
                                                             units='s',group='Stimulation times')
-        self.params['timeDelayPostRight'] = paramgui.NumericParam('Delay post right',value=1.5,
+        self.params['timeDelayPostRight'] = paramgui.NumericParam('Delay post right',value=4,
                                                             units='s',group='Stimulation times')
-        self.params['timeStimBoth'] = paramgui.NumericParam('Time stim both',value=0.1,
+        self.params['timeStimBoth'] = paramgui.NumericParam('Time stim both',value=1.5,
                                                             units='s',group='Stimulation times')
-        self.params['timeDelayPostBoth'] = paramgui.NumericParam('Delay post both',value=2,
+        self.params['timeDelayPostBoth'] = paramgui.NumericParam('Delay post both',value=6,
                                                             units='s',group='Stimulation times')
 
         self.params['stimMode'] = paramgui.MenuParam('Stim Mode',
-                                                     ['Left','Right','Bilateral'],
+                                                     ['Left','Right','Bilateral','Left-Right'],
                                                      value=0,group='Stimulation times')
         
         self.params['experiment'] = paramgui.MenuParam('Experiment',
@@ -187,6 +187,25 @@ class PhotoStim(QtGui.QMainWindow):
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=leftLaserOutput+rightLaserOutput)
        
+        elif stimMode==3:
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'stimLeft'})
+            self.sm.add_state(name='stimLeft',
+                              statetimer=self.params['timeStimLeft'].get_value(),
+                              transitions={'Tup':'delayPostLeft'},
+                              outputsOn=leftLaserOutput)
+            self.sm.add_state(name='delayPostLeft',
+                              statetimer=self.params['timeDelayPostLeft'].get_value(),
+                              transitions={'Tup':'stimRight'},
+                              outputsOff=leftLaserOutput)
+            self.sm.add_state(name='stimRight',
+                              statetimer=self.params['timeStimRight'].get_value(),
+                              transitions={'Tup':'delayPostRight'},
+                              outputsOn=rightLaserOutput)
+            self.sm.add_state(name='delayPostRight',
+                              statetimer=self.params['timeDelayPostRight'].get_value(),
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=rightLaserOutput)
 
         print self.sm ### DEBUG
         self.dispatcherModel.set_state_matrix(self.sm)
