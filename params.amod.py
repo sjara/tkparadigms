@@ -11,25 +11,25 @@ amodPsycurveMixed = {'outcomeMode':'only_if_correct', 'soundTypeMode':'mixed_ton
 
 pardict = {'subject':'amod011','experimenter':'nick'}
 # pardict.update(amodPsycurveAM)
-pardict.update(amodIfCorrectTones)
+pardict.update(amodIfCorrectMixed)
 pardict.update({'punishTimeError':4})
 amod011 = pardict.copy()
 
 pardict = {'subject':'amod012','experimenter':'nick'}
-# pardict.update(amodPsycurveMixed)
-pardict.update(amodIfCorrectMixed)
+pardict.update(amodPsycurveMixed)
+# pardict.update(amodIfCorrectMixed)
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod012 = pardict.copy()
 
 pardict = {'subject':'amod013','experimenter':'nick'}
-# pardict.update(amodPsycurveMixed)
-pardict.update(amodIfCorrectMixed)
+pardict.update(amodPsycurveMixed)
+# pardict.update(amodIfCorrectMixed)
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod013 = pardict.copy()
 
 pardict = {'subject':'amod014','experimenter':'nick'}
-# pardict.update(amodPsycurveMixed)
-pardict.update(amodIfCorrectMixed)
+pardict.update(amodPsycurveMixed)
+# pardict.update(amodIfCorrectMixed)
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod014 = pardict.copy()
 
