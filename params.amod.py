@@ -10,8 +10,8 @@ amodPsycurveMixed = {'outcomeMode':'only_if_correct', 'soundTypeMode':'mixed_ton
 
 
 pardict = {'subject':'amod011','experimenter':'nick'}
-# pardict.update(amodPsycurveAM)
-pardict.update(amodIfCorrectMixed)
+pardict.update(amodPsycurveAM)
+# pardict.update(amodIfCorrectMixed)
 pardict.update({'punishTimeError':4})
 amod011 = pardict.copy()
 
