@@ -96,9 +96,9 @@ oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
 
 
 # -- Frequency discrimination (some LowLeft, some LowRight) --
-adap05xModeLowLeft = sidesDirectMode.copy() #This mode is for low frequency going left
+adap05xModeLowLeft = directMode.copy() #This mode is for low frequency going left
 adap05xModeLowLeft.update({'soundActionMode':'low_left', 'punishSoundAmplitude':0})
-adap05xModeLowRight = sidesDirectMode.copy() #This mode is for low frequency going right
+adap05xModeLowRight = directMode.copy() #This mode is for low frequency going right
 adap05xModeLowRight.update({'soundActionMode':'high_left', 'punishSoundAmplitude':0})
 
 pardict = {'subject':'adap048','experimenter':'lan'}
