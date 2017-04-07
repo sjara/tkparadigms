@@ -35,7 +35,7 @@ if rigsettings.OUTPUTS.has_key('outBit0'):
 else:
     stimSync = []
 if rigsettings.OUTPUTS.has_key('outBit2'):
-    laserSync = ['outBit2','stim1'] # Sync signal for laser
+    laserSync = ['outBit2','stim2'] # Sync signal for laser
 else:
     laserSync = ['centerLED'] # Use center LED during emulation
 
@@ -115,23 +115,34 @@ class Paradigm(QtGui.QMainWindow):
                                                          ['Ordered','Random'],
                                                          value=1,group='Parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
-                                                         ['band', 'band_AM', 'Laser', 'LaserTrain'],
-                                                         value=1,group='Parameters')
+                                                         ['laser_sound', 'band', 'band_AM', 'laser_band_AM'],
+                                                         value=2,group='Parameters')
         # -- Added extremes as separate option in case we want to add other stim types (unmodulated white noise) --
         self.params['extremes'] = paramgui.MenuParam('Add extremes?',
                                                          ['yes', 'no'],
                                                          value=0,group='Parameters')
+        self.params['laserFrontOverhang'] = paramgui.NumericParam('Laser Front Overhang',value=0,
+                                                           group='Parameters',
+                                                           decimals=1)
+        self.params['laserBackOverhang'] = paramgui.NumericParam('Laser Back Overhang',value=0,
+                                                           group='Parameters',
+                                                           decimals=1)
         self.params['currentAmp'] = paramgui.NumericParam('Current Amplitude',value=0,
                                                            enabled=False,
-                                                           group='Parameters',
+                                                           group='Current Trial',
                                                            decimals=1)
         self.params['currentBand'] = paramgui.NumericParam('Current Bandwidth',value=0,
                                                            enabled=False,
-                                                           group='Parameters',
+                                                           group='Current Trial',
                                                            decimals=2)
+        self.params['laserTrial'] = paramgui.NumericParam('Laser Trial?',value=0,
+                                                           enabled=False,
+                                                           group='Current Trial',
+                                                           decimals=0)
 
 
         timingParams = self.params.layout_group('Parameters')
+        trialParams = self.params.layout_group('Current Trial')
 
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
@@ -167,6 +178,7 @@ class Paradigm(QtGui.QMainWindow):
 
         layoutCol2.addWidget(sessionParams)  #Add the parameter GUI to column 2
         layoutCol2.addWidget(timingParams)  #Add the parameter GUI to column 2
+        layoutCol2.addWidget(trialParams)
 
         self.centralWidget.setLayout(layoutMain) #Assign the layouts to the main window
         self.setCentralWidget(self.centralWidget)
@@ -216,15 +228,16 @@ class Paradigm(QtGui.QMainWindow):
         ampList = np.linspace(minAmp, maxAmp, num=numAmps)
 
         # -- Make a tuple list of all of the products of the three parameter lists
-        #productList = list(itertools.product(toneList, ampList))
-        productList = list(itertools.product(bandList, ampList))
-
+        if self.params['stimType'].get_string() == 'laser_band_AM':
+            lasList = [0,1]
+            productList = list(itertools.product(bandList, ampList, lasList))
+        else:
+            productList = list(itertools.product(bandList, ampList))
+            
         # -- If in random presentation mode, shuffle the list of products
         randomMode = self.params['randomMode'].get_string()
         if randomMode == 'Random':
             random.shuffle(productList)
-        else:
-            pass
 
         # -- Set the sound parameter list to the product list
 
@@ -278,79 +291,67 @@ class Paradigm(QtGui.QMainWindow):
         stimDur = self.params['stimDur'].get_value()
         charFreq = self.params['charFreq'].get_value()
         modRate = self.params['modRate'].get_value()
-        trialAmp = noiseCal.find_amplitude(1, self.trialParams[1]).mean()
+        trialAmp = self.noiseCal.find_amplitude(1, self.trialParams[1]).mean()
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
         stimType = self.params['stimType'].get_string()
 
-        if stimType == 'band_AM':
+        if (stimType == 'band_AM') or (stimType == 'laser_band_AM'):
             if self.trialParams[0] == 0:
                 sound = {'type':'tone_AM', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'modRate':modRate}
             elif np.isinf(self.trialParams[0]):
-                sound = {'type':'AM', 'modRate':modRate, 'duration':stimDur, 'amplitude':trialAmp}
+                sound = {'type':'AM', 'modFrequency':modRate, 'duration':stimDur, 'amplitude':trialAmp}
             else:
                 sound = {'type':'band_AM', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'modRate':modRate, 'octaves':self.trialParams[0]}
         elif stimType == 'band':
             sound = {'type':'band', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'octaves':self.trialParams[0]}
-        if (stimType == 'Laser') or (stimType == 'LaserTrain'):
-            stimOutput = stimSync+laserSync
-            serialOutput = 0
-        else:
-            stimOutput = stimSync
-            serialOutput = 1
-            self.soundClient.set_sound(1,sound)
+        elif stimType == 'laser_sound':
+            sound = {'type':'noise', 'duration':stimDur, 'amplitude':trialAmp}
+        stimOutput = stimSync
+        serialOutput = 1
+        self.soundClient.set_sound(1,sound)
+        if stimType == 'laser_sound':
+            laserOutput=laserSync
+        elif stimType == 'laser_band_AM':
+            if self.trialParams[2] == 1:
+                laserOutput=laserSync
+                self.params['laserTrial'].set_value(1)
+            else:
+                laserOutput=[]
+                self.params['laserTrial'].set_value(0)
 
         self.params['currentBand'].set_value(self.trialParams[0])
         self.params['currentAmp'].set_value(self.trialParams[1])
+        
+        laserFrontOverhang = self.params['laserFrontOverhang'].get_value()
+        laserBackOverhang = self.params['laserBackOverhang'].get_value()
 
         # -- Prepare the state transition matrix --
-        soa = 0.2
-        if stimType == 'LaserTrain':
-            self.sm.add_state(name='startTrial', statetimer = 0.5 * isi,
-                              transitions={'Tup':'output1On'})
-            self.sm.add_state(name='output1On', statetimer=stimDur,
-                              transitions={'Tup':'output1Off'},
-                              outputsOn=stimOutput,
-                              serialOut=serialOutput)
-            self.sm.add_state(name='output1Off', statetimer = soa-stimDur,
-                              transitions={'Tup':'output2On'},
-                              outputsOff=stimOutput)
-            self.sm.add_state(name='output2On', statetimer=stimDur,
-                              transitions={'Tup':'output2Off'},
-                              outputsOn=stimOutput,
-                              serialOut=serialOutput)
-            self.sm.add_state(name='output2Off', statetimer = soa-stimDur,
-                              transitions={'Tup':'output3On'},
-                              outputsOff=stimOutput)
-            self.sm.add_state(name='output3On', statetimer=stimDur,
-                              transitions={'Tup':'output3Off'},
-                              outputsOn=stimOutput,
-                              serialOut=serialOutput)
-            self.sm.add_state(name='output3Off', statetimer = soa-stimDur,
-                              transitions={'Tup':'output4On'},
-                              outputsOff=stimOutput)
-            self.sm.add_state(name='output4On', statetimer=stimDur,
-                              transitions={'Tup':'output4Off'},
-                              outputsOn=stimOutput,
-                              serialOut=serialOutput)
-            self.sm.add_state(name='output4Off', statetimer = soa-stimDur,
-                              transitions={'Tup':'output5On'},
-                              outputsOff=stimOutput)
-            self.sm.add_state(name='output5On', statetimer=stimDur,
-                              transitions={'Tup':'output5Off'},
-                              outputsOn=stimOutput,
-                              serialOut=serialOutput)
-            self.sm.add_state(name='output5Off', statetimer = 0.5 * isi,
-                              transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=stimOutput)
+
+        if (stimType == 'laser_band_AM') or (stimType == 'laser_sound'):
+            self.sm.add_state(name='startTrial', statetimer = 0.5 * isi,  
+                          transitions={'Tup':'laserFrontOverhang'})
+            self.sm.add_state(name='laserFrontOverhang', statetimer=laserFrontOverhang, 
+                          transitions={'Tup':'soundOn'},
+                          outputsOn=laserOutput)
+            self.sm.add_state(name='soundOn', statetimer = stimDur,
+                          transitions={'Tup':'laserBackOverhang'},
+                          outputsOn=stimOutput,
+                          serialOut=serialOutput)
+            self.sm.add_state(name='laserBackOverhang', statetimer = laserBackOverhang,
+                          transitions={'Tup':'iti'},
+                          outputsOff=stimOutput)
+            self.sm.add_state(name='iti', statetimer = 0.5 * isi,
+                          transitions={'Tup':'readyForNextTrial'},
+                          outputsOff=laserOutput) 
         else:
             self.sm.add_state(name='startTrial', statetimer = 0.5 * isi,
-                              transitions={'Tup':'output1On'})
-            self.sm.add_state(name='output1On', statetimer=stimDur,
-                              transitions={'Tup':'output1Off'},
+                              transitions={'Tup':'soundOn'})
+            self.sm.add_state(name='soundOn', statetimer=stimDur,
+                              transitions={'Tup':'soundOff'},
                               outputsOn=stimOutput,
                               serialOut=serialOutput)
-            self.sm.add_state(name='output1Off', statetimer = 0.5 * isi,
+            self.sm.add_state(name='soundOff', statetimer = 0.5 * isi,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=stimOutput)
 
