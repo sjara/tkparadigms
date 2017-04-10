@@ -19,9 +19,11 @@ sidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayTo
                    'currentBlock':'mid_boundary'}
 directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                    'currentBlock':'mid_boundary'}
-increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+increaseDelayModePunish = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                      'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.05,
                      'punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
+increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+                     'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.05}
 
 basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary',
                            'punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
@@ -96,9 +98,9 @@ oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
 
 
 # -- Frequency discrimination (some LowLeft, some LowRight) --
-adap05xModeLowLeft = directMode.copy() #This mode is for low frequency going left
+adap05xModeLowLeft = increaseDelayMode.copy() #This mode is for low frequency going left
 adap05xModeLowLeft.update({'soundActionMode':'low_left', 'punishSoundAmplitude':0})
-adap05xModeLowRight = directMode.copy() #This mode is for low frequency going right
+adap05xModeLowRight = increaseDelayMode.copy() #This mode is for low frequency going right
 adap05xModeLowRight.update({'soundActionMode':'high_left', 'punishSoundAmplitude':0})
 
 pardict = {'subject':'adap048','experimenter':'lan'}
