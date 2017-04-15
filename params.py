@@ -101,9 +101,11 @@ oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
 adap05xModeLowLeft = basicDiscriminationMode.copy() #This mode is for low frequency going left
 adap05xModeLowLeft.update({'soundActionMode':'low_left', 'punishTimeEarly':0, 'punishSoundAmplitude':0})
 adap05xModeLowLeft.update({'delayToTargetMean':0.1})
+adap05xModeLowLeft.update({'antibiasMode':'repeat_mistake'})
 adap05xModeLowRight = basicDiscriminationMode.copy() #This mode is for low frequency going right
 adap05xModeLowRight.update({'soundActionMode':'high_left', 'punishTimeEarly':0, 'punishSoundAmplitude':0})
 adap05xModeLowRight.update({'delayToTargetMean':0.1})
+adap05xModeLowRight.update({'antibiasMode':'repeat_mistake'})
 
 pardict = {'subject':'adap048','experimenter':'lan'}
 pardict.update(frequencySet6to19)
