@@ -83,3 +83,7 @@ pardict.update({'lowFreq':6200,'highFreq':19200,'targetIntensityMode':'fixed'})
 pardict.update(psyCurveChangeReward)
 gosi001 = pardict.copy()
 
+pardict = {'subject':'gosi010','experimenter':'stacy'}
+pardict.update({'lowFreq':6200,'highFreq':19200,'targetIntensityMode':'fixed'})
+pardict.update(psyCurveChangeReward)
+gosi010 = pardict.copy()
