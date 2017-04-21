@@ -39,6 +39,20 @@ tuningCurve2 = {'stimDur':0.1,
                'subject':'gosi008',
                'experimenter' : 'stacy'}
 
+tuningCurve3 = {'stimDur':0.1,
+               'isiMean':0.8,
+               'isiHalfRange': 0.1,
+               'noiseAmp':0.05,
+               'stimType' : 'Chord',
+               'minFreq':2000,
+               'maxFreq':40000,
+               'minInt':50,
+               'maxInt':50,
+               'numInt':1,
+               'numTones':16,
+               'subject':'gosi001',
+               'experimenter' : 'stacy'}
+
 psyCurveChangeReward = {'punishTimeError':4,
                      'delayToTargetMean':0.2,
                      'currentBlock':'more_left',
@@ -63,3 +77,13 @@ pardict = {'subject':'gosi008','experimenter':'stacy'}
 pardict.update({'lowFreq':6200,'highFreq':19200,'targetIntensityMode':'fixed'})
 pardict.update(psyCurveChangeReward)
 gosi008 = pardict.copy()
+
+pardict = {'subject':'gosi001','experimenter':'stacy'}
+pardict.update({'lowFreq':6200,'highFreq':19200,'targetIntensityMode':'fixed'})
+pardict.update(psyCurveChangeReward)
+gosi001 = pardict.copy()
+
+pardict = {'subject':'gosi010','experimenter':'stacy'}
+pardict.update({'lowFreq':6200,'highFreq':19200,'targetIntensityMode':'fixed'})
+pardict.update(psyCurveChangeReward)
+gosi010 = pardict.copy()
