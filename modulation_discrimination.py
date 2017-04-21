@@ -259,8 +259,8 @@ class Paradigm(templates.Paradigm2AFC):
         # -- Specify state matrix with extratimer --
 
 
-        if rigsettings.OUTPUTS.has_key('outBit2'):
-            self.laserPin = ['outBit2']
+        if rigsettings.OUTPUTS.has_key('stim1') and rigsettings.OUTPUTS.has_key('stim2'):
+            self.laserPin = ['stim1', 'stim2']
         else:
             self.laserPin = ['centerLED'] # Use center LED during emulation
 
