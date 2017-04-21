@@ -9,29 +9,29 @@ increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'de
                      'punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
 
 basicDiscriminationMode = {'delayToTargetMean':0.2,'currentBlock':'mid_boundary',
-                           'punishTimeEarly':0.5,'punishSoundAmplitude':0.05}
+                           'punishTimeEarly':0,'punishSoundAmplitude':0.0}
 
 psyCurveMidBound = {'trialsPerBlock':2000,'punishTimeError':4,'delayToTargetMean':0.2,
                     'currentBlock':'mid_boundary','psycurveMode':'uniform'}
 
 frequencySet6to19 = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
 
-pardict = {'subject': 'apad058', 'experimenter': 'alex', 'trainer': ''}
-pardict.update(sidesDirectMode)
+pardict = {'subject': 'adap058', 'experimenter': 'alex', 'trainer': ''}
+pardict.update(directMode)
 pardict.update(frequencySet6to19)
 adap058 = pardict.copy()
 
 pardict = {'subject': 'adap059', 'experimenter': 'alex', 'trainer': ''}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 pardict.update(frequencySet6to19)
 adap059 = pardict.copy()
 
 pardict = {'subject': 'adap060', 'experimenter': 'alex', 'trainer': ''}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 pardict.update(frequencySet6to19)
 adap060 = pardict.copy()
 
 pardict = {'subject': 'adap061', 'experimenter': 'alex', 'trainer': ''}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 pardict.update(frequencySet6to19)
 adap061 = pardict.copy()
