@@ -17,12 +17,12 @@ psyCurveMidBound = {'trialsPerBlock':2000,'punishTimeError':4,'delayToTargetMean
 frequencySet6to19 = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
 
 pardict = {'subject': 'adap058', 'experimenter': 'alex', 'trainer': ''}
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
 pardict.update(frequencySet6to19)
 adap058 = pardict.copy()
 
 pardict = {'subject': 'adap059', 'experimenter': 'alex', 'trainer': ''}
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
 pardict.update(frequencySet6to19)
 adap059 = pardict.copy()
 
@@ -32,6 +32,6 @@ pardict.update(frequencySet6to19)
 adap060 = pardict.copy()
 
 pardict = {'subject': 'adap061', 'experimenter': 'alex', 'trainer': ''}
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
 pardict.update(frequencySet6to19)
 adap061 = pardict.copy()
