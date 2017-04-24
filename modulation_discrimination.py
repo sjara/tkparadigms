@@ -579,7 +579,7 @@ class Paradigm(templates.Paradigm2AFC):
         elif outcomeMode=='only_if_correct':
 
             #TODO: If laser trial, set laseroutput
-            laserMode = self.params['laserMode'].get_value()
+            laserMode = self.params['laserMode'].get_string()
             if laserMode == 'none':
                 laserOutput=[]
             else:
