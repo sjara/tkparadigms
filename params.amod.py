@@ -7,22 +7,28 @@ amodIfCorrectTones = {'outcomeMode':'only_if_correct', 'soundTypeMode':'tones'}
 amodPsycurveTones = {'outcomeMode':'only_if_correct', 'soundTypeMode':'tones', 'psycurveMode':'uniform'}
 amodIfCorrectMixed = {'outcomeMode':'only_if_correct', 'soundTypeMode':'mixed_tones'}
 amodPsycurveMixed = {'outcomeMode':'only_if_correct', 'soundTypeMode':'mixed_tones', 'psycurveMode':'uniform'}
-
+amodPsycurveChords = {'outcomeMode':'only_if_correct', 'soundTypeMode':'chords', 
+                  'psycurveMode':'uniform', 'psycurveNfreq':8, 'highSoundFreq':19200, 
+                  'lowSoundFreq':6200}
+amodLaserPsycurveChords = {'outcomeMode':'only_if_correct', 'soundTypeMode':'chords', 
+                  'psycurveMode':'uniform', 'psycurveNfreq':6, 'laserMode':'random', 
+                  'laserProbability':0.2, 'laserDuration':0.6, 'highSoundFreq':19200, 
+                  'lowSoundFreq':6200}
 
 pardict = {'subject':'amod011','experimenter':'nick'}
-pardict.update(amodPsycurveMixed)
+pardict.update(amodPsycurveChords)
 # pardict.update(amodIfCorrectMixed)
 pardict.update({'punishTimeError':4})
 amod011 = pardict.copy()
 
 pardict = {'subject':'amod012','experimenter':'nick'}
-pardict.update(amodPsycurveMixed)
+pardict.update(amodLaserPsycurveChords)
 # pardict.update(amodIfCorrectMixed)
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod012 = pardict.copy()
 
 pardict = {'subject':'amod013','experimenter':'nick'}
-pardict.update(amodPsycurveMixed)
+pardict.update(amodLaserPsycurveChords)
 # pardict.update(amodIfCorrectMixed)
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod013 = pardict.copy()
