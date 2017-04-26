@@ -100,34 +100,34 @@ oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
 # -- Frequency discrimination (some LowLeft, some LowRight) --
 adap05xModeLowLeft = basicDiscriminationMode.copy() #This mode is for low frequency going left
 adap05xModeLowLeft.update({'soundActionMode':'low_left', 'punishTimeEarly':0, 'punishSoundAmplitude':0})
-adap05xModeLowLeft.update({'delayToTargetMean':0.1})
+adap05xModeLowLeft.update({'delayToTargetMean':0.15})
 #adap05xModeLowLeft.update({'antibiasMode':'repeat_mistake'})
 adap05xModeLowRight = basicDiscriminationMode.copy() #This mode is for low frequency going right
 adap05xModeLowRight.update({'soundActionMode':'high_left', 'punishTimeEarly':0, 'punishSoundAmplitude':0})
-adap05xModeLowRight.update({'delayToTargetMean':0.1})
+adap05xModeLowRight.update({'delayToTargetMean':0.15})
 #adap05xModeLowRight.update({'antibiasMode':'repeat_mistake'})
 
 pardict = {'subject':'adap048','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowLeft)
 adap048 = pardict.copy()
 
 pardict = {'subject':'adap049','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowRight)
 adap049 = pardict.copy()
 
 pardict = {'subject':'adap050','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowLeft)
 adap050 = pardict.copy()
 
 pardict = {'subject':'adap051','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowRight)
 adap051 = pardict.copy()
 
@@ -145,19 +145,19 @@ adap053 = pardict.copy()
 
 pardict = {'subject':'adap054','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowLeft)
 adap054 = pardict.copy()
 
 pardict = {'subject':'adap055','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowRight)
 adap055 = pardict.copy()
 
 pardict = {'subject':'adap056','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowLeft)
 adap056 = pardict.copy()
 
