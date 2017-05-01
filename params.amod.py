@@ -24,7 +24,6 @@ frequencySet6to19 = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
 pardict = {'subject':'amod011','experimenter':'nick'}
 pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
-pardict.update({'delayToTargetMean':0.1})
 # pardict.update(amodIfCorrectMixed)
 amod011 = pardict.copy()
 
