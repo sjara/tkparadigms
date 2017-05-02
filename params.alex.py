@@ -37,4 +37,5 @@ adap060 = pardict.copy()
 pardict = {'subject': 'adap061', 'experimenter': 'alex', 'trainer': ''}
 pardict.update(increaseDelayMode)
 pardict.update(frequencySet6to19)
+pardict.update({'targetDuration':0.1})
 adap061 = pardict.copy()
