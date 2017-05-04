@@ -19,6 +19,7 @@ frequencySet6to19 = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
 pardict = {'subject': 'adap058', 'experimenter': 'alex', 'trainer': ''}
 pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
+pardict.update({'antibiasMode':'repeat_mistake'})
 adap058 = pardict.copy()
 
 pardict = {'subject': 'adap059', 'experimenter': 'alex', 'trainer': ''}
