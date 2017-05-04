@@ -115,13 +115,13 @@ adap048 = pardict.copy()
 
 pardict = {'subject':'adap049','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowRight)
 adap049 = pardict.copy()
 
 pardict = {'subject':'adap050','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowLeft)
 adap050 = pardict.copy()
 
@@ -133,7 +133,7 @@ adap051 = pardict.copy()
 
 pardict = {'subject':'adap052','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowLeft)
 adap052 = pardict.copy()
 
@@ -145,13 +145,13 @@ adap053 = pardict.copy()
 
 pardict = {'subject':'adap054','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowLeft)
 adap054 = pardict.copy()
 
 pardict = {'subject':'adap055','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowRight)
 adap055 = pardict.copy()
 
@@ -163,7 +163,7 @@ adap056 = pardict.copy()
 
 pardict = {'subject':'adap057','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update(adap05xModeLowRight)
 adap057 = pardict.copy()
 
