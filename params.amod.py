@@ -21,6 +21,9 @@ psyCurveMidBound = {'trialsPerBlock':2000,'punishTimeError':4,'delayToTargetMean
                     'currentBlock':'mid_boundary','psycurveMode':'uniform'}
 frequencySet6to19 = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
 
+#laser params addition to psyCurveMidBound for use with photostim_intervals_freq_discrim.py
+laserPsycurve = {'laserDuration':0.6, 'laserOnsetFromSoundOnset1':0, 'fractionTrialsEachLaserMode':0.2}
+
 pardict = {'subject':'amod011','experimenter':'nick'}
 pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
@@ -30,6 +33,7 @@ amod011 = pardict.copy()
 pardict = {'subject':'amod012','experimenter':'nick'}
 pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
+pardict.update(laserPsycurve)
 # pardict.update(amodIfCorrectMixed)
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod012 = pardict.copy()
