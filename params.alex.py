@@ -23,19 +23,16 @@ pardict.update({'antibiasMode':'repeat_mistake'})
 adap058 = pardict.copy()
 
 pardict = {'subject': 'adap059', 'experimenter': 'alex', 'trainer': ''}
-pardict.update(increaseDelayMode)
+pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
-pardict.update({'targetDuration':0.1})
 adap059 = pardict.copy()
 
 pardict = {'subject': 'adap060', 'experimenter': 'alex', 'trainer': ''}
-pardict.update(increaseDelayMode)
+pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
-pardict.update({'targetDuration':0.1})
 adap060 = pardict.copy()
 
 pardict = {'subject': 'adap061', 'experimenter': 'alex', 'trainer': ''}
-pardict.update(increaseDelayMode)
+pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
-pardict.update({'targetDuration':0.1})
 adap061 = pardict.copy()
