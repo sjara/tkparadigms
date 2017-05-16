@@ -33,7 +33,7 @@ pardict.update(frequencySet6to19)
 adap060 = pardict.copy()
 
 pardict = {'subject': 'adap061', 'experimenter': 'alex', 'trainer': ''}
-pardict.update(basicDiscriminationMode)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 adap061 = pardict.copy()
