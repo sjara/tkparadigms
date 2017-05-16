@@ -107,64 +107,98 @@ adap05xModeLowRight.update({'soundActionMode':'high_left', 'punishTimeEarly':0, 
 adap05xModeLowRight.update({'delayToTargetMean':0.15})
 #adap05xModeLowRight.update({'antibiasMode':'repeat_mistake'})
 
+
+adap05xMode = {'delayToTargetMean':0.15, 'punishTimeEarly':0, 'punishSoundAmplitude':0}
+
+
 pardict = {'subject':'adap048','experimenter':'lan'}
+pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
-#pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(adap05xModeLowLeft)
+pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update(adap05xModeLowLeft)
+pardict.update(adap05xMode)
+pardict.update({'soundActionMode':'low_left'})
 adap048 = pardict.copy()
 
 pardict = {'subject':'adap049','experimenter':'lan'}
+pardict.update(basicDiscriminationMode)
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(adap05xModeLowRight)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update(adap05xModeLowRight)
+pardict.update(adap05xMode)
+pardict.update({'soundActionMode':'high_left'})
 adap049 = pardict.copy()
 
 pardict = {'subject':'adap050','experimenter':'lan'}
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(adap05xModeLowLeft)
+#pardict.update(adap05xModeLowLeft)
+pardict.update(adap05xMode)
+pardict.update({'soundActionMode':'low_left'})
 adap050 = pardict.copy()
 
 pardict = {'subject':'adap051','experimenter':'lan'}
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(adap05xModeLowRight)
+#pardict.update(adap05xModeLowRight)
+pardict.update(adap05xMode)
+pardict.update({'soundActionMode':'high_left'})
 adap051 = pardict.copy()
 
 pardict = {'subject':'adap052','experimenter':'lan'}
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(adap05xModeLowLeft)
+#pardict.update(adap05xModeLowLeft)
+pardict.update(adap05xMode)
+pardict.update({'soundActionMode':'low_left'})
 adap052 = pardict.copy()
 
 pardict = {'subject':'adap053','experimenter':'lan'}
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(adap05xModeLowRight)
+#pardict.update(adap05xModeLowRight)
+pardict.update(adap05xMode)
+pardict.update({'soundActionMode':'high_left'})
 adap053 = pardict.copy()
 
 pardict = {'subject':'adap054','experimenter':'lan'}
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(adap05xModeLowLeft)
+#pardict.update(adap05xModeLowLeft)
+pardict.update(adap05xMode)
+pardict.update({'soundActionMode':'low_left'})
 adap054 = pardict.copy()
 
 pardict = {'subject':'adap055','experimenter':'lan'}
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(adap05xModeLowRight)
+#pardict.update(adap05xModeLowRight)
+pardict.update(adap05xMode)
+pardict.update({'soundActionMode':'high_left'})
 adap055 = pardict.copy()
 
 pardict = {'subject':'adap056','experimenter':'lan'}
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(adap05xModeLowLeft)
+#pardict.update(adap05xModeLowLeft)
+pardict.update(adap05xMode)
+pardict.update({'soundActionMode':'low_left'})
 adap056 = pardict.copy()
 
 pardict = {'subject':'adap057','experimenter':'lan'}
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(adap05xModeLowRight)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update(adap05xModeLowRight)
+pardict.update(adap05xMode)
+pardict.update({'soundActionMode':'high_left'})
 adap057 = pardict.copy()
 
 
