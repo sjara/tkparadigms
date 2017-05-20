@@ -22,7 +22,7 @@ pardict.update(frequencySet6to19)
 adap058 = pardict.copy()
 
 pardict = {'subject': 'adap059', 'experimenter': 'alex', 'trainer': ''}
-pardict.update(basicDiscriminationMode)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 adap059 = pardict.copy()
 
