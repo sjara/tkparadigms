@@ -33,7 +33,7 @@ amod011 = pardict.copy()
 pardict = {'subject':'amod012','experimenter':'nick'}
 pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
-#pardict.update(laserPsycurve)
+pardict.update(laserPsycurve)
 # pardict.update(amodIfCorrectMixed)
 # pardict.update({'antibiasMode':'repeat_mistake'})
 amod012 = pardict.copy()
