@@ -431,8 +431,10 @@ adap04xModeLowRight.update({'soundActionMode':'high_left', 'punishSoundAmplitude
 
 pardict = {'subject':'adap041','experimenter':'lan'}
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
-pardict.update(adap04xModeLowLeft)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update(adap04xModeLowLeft)
+pardict.update(psyCurveMidBound)
+pardict.update({'soundActionMode':'low_left', 'punishSoundAmplitude':0})
 adap041 = pardict.copy()
 
 pardict = {'subject':'adap042','experimenter':'lan'}
