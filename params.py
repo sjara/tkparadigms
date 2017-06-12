@@ -112,9 +112,10 @@ adap05xMode = {'delayToTargetMean':0.15, 'punishTimeEarly':0, 'punishSoundAmplit
 
 
 pardict = {'subject':'adap048','experimenter':'lan'}
-pardict.update(basicDiscriminationMode)
+#pardict.update(basicDiscriminationMode)
+pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 #pardict.update(adap05xModeLowLeft)
 pardict.update(adap05xMode)
 pardict.update({'soundActionMode':'low_left'})
