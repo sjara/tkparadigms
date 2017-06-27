@@ -202,6 +202,28 @@ pardict.update(adap05xMode)
 pardict.update({'soundActionMode':'high_left'})
 adap057 = pardict.copy()
 
+pardict = {'subject': 'adap058', 'experimenter': 'alex', 'trainer': ''}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+adap058 = pardict.copy()
+
+pardict = {'subject': 'adap059', 'experimenter': 'alex', 'trainer': ''}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap059 = pardict.copy()
+
+pardict = {'subject': 'adap060', 'experimenter': 'alex', 'trainer': ''}
+pardict.update(basicDiscriminationMode)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap060 = pardict.copy()
+
+pardict = {'subject': 'adap061', 'experimenter': 'alex', 'trainer': ''}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap061 = pardict.copy()
 
 
 
