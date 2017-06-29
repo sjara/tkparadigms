@@ -53,6 +53,6 @@ pardict.update(frequencySet6to19)
 #pardict.update(amodPsycurveMixed)
 #pardict.update({'laserMode':'random', 'laserProbability':0.2, 'laserDuration':0.6})
 # pardict.update(amodIfCorrectMixed)
-# pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 amod014 = pardict.copy()
 
