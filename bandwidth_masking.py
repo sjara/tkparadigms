@@ -436,7 +436,7 @@ class Paradigm(templates.Paradigm2AFC):
             laserOutput = []
             self.params['laserSide'].set_string('none')
             
-        possibleLaserOnsets = [np.nan,
+        possibleLaserOnsets = [np.inf,
                                self.params['laserOnsetFromSoundOnset1'].get_value(),
                                self.params['laserOnsetFromSoundOnset2'].get_value(),
                                self.params['laserOnsetFromSoundOnset3'].get_value()]
@@ -517,15 +517,15 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOn=stimOutput,serialOut=noiseID,
                               outputsOff=trialStartOutput)
             self.sm.add_state(name='playToneStimulus', statetimer=targetDuration,
-                              transitions={'Cout':'waitForSidePoke', 'Tup':'waitForSidePoke'},serialOut=toneID)
+                              transitions={'Cout':'soundOff', 'Tup':'soundOff'},serialOut=toneID)
+            self.sm.add_state(name='soundOff', statetimer=0, transitions={'Tup':'waitForSidePoke'},
+                              outputsOff=stimOutput)
             self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
-                                           'Tup':'noChoice'},
-                              outputsOff=stimOutput)
+                                           'Tup':'noChoice'})
             self.sm.add_state(name='keepWaitForSide', statetimer=rewardAvailability,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
-                                           'Tup':'noChoice'},
-                              outputsOff=stimOutput)
+                                           'Tup':'noChoice'})
             if correctSidePort=='Lin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'reward'})
