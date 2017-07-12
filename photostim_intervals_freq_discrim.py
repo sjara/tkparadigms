@@ -442,7 +442,7 @@ class Paradigm(templates.Paradigm2AFC):
         trialTypeInd = np.random.choice(nOnsetsToUse+1, size=1, p=fractionTrials)[0]
         self.params['trialType'].set_value(trialTypeInd)
         if trialTypeInd>0:
-            laserOutput = ['stim1']
+            laserOutput = ['stim1', 'stim2']
         else:
             laserOutput = []
             
