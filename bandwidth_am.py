@@ -17,8 +17,8 @@ from taskontrol.plugins import manualcontrol
 import numpy as np
 import itertools
 import random
-from taskontrol.plugins import soundclient
-#from jaratest.anna import test001_tone_am_client as soundclient
+#from taskontrol.plugins import soundclient
+from jaratest.anna.tests import test003_tone_am_client as soundclient
 import time
 
 # class clearButton(QtGui.QPushButton):
@@ -115,7 +115,7 @@ class Paradigm(QtGui.QMainWindow):
                                                          ['Ordered','Random'],
                                                          value=1,group='Parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
-                                                         ['laser_sound', 'band', 'band_AM', 'laser_band_AM'],
+                                                         ['laser_sound', 'band', 'band_AM', 'band_harmonics_AM', 'laser_band_AM'],
                                                          value=2,group='Parameters')
         # -- Added extremes as separate option in case we want to add other stim types (unmodulated white noise) --
         self.params['extremes'] = paramgui.MenuParam('Add extremes?',
@@ -135,7 +135,7 @@ class Paradigm(QtGui.QMainWindow):
                                                            enabled=False,
                                                            group='Current Trial',
                                                            decimals=2)
-        self.params['laserTrial'] = paramgui.NumericParam('Laser Trial?',value=0,
+        self.params['laserTrial'] = paramgui.NumericParam('Laser/harmonics Trial?',value=0,
                                                            enabled=False,
                                                            group='Current Trial',
                                                            decimals=0)
@@ -219,7 +219,8 @@ class Paradigm(QtGui.QMainWindow):
         bandList = self.logscale(minBand, maxBand, numBands)
         if self.params['extremes'].get_string() == 'yes':
             extremes = np.array([0, np.inf])
-            bandList = np.concatenate((bandList, extremes))
+            if self.params['stimType'].get_string() != 'band_harmonics_AM':
+                bandList = np.concatenate((bandList, extremes))
 
         minAmp = self.params['minAmp'].get_value()
         maxAmp = self.params['maxAmp'].get_value()
@@ -231,6 +232,11 @@ class Paradigm(QtGui.QMainWindow):
         if self.params['stimType'].get_string() == 'laser_band_AM':
             lasList = [0,1]
             productList = list(itertools.product(bandList, ampList, lasList))
+        elif self.params['stimType'].get_string() == 'band_harmonics_AM':
+            harmList = [0,1]
+            bandList = np.concatenate((bandList, np.zeros(1)))
+            fullList = list(itertools.product(bandList, ampList, harmList))
+            productList = [i for i in fullList if not(i[0]==0 and i[2]==0)] #remove duplicate pure tone trials
         else:
             productList = list(itertools.product(bandList, ampList))
             
@@ -292,19 +298,25 @@ class Paradigm(QtGui.QMainWindow):
         charFreq = self.params['charFreq'].get_value()
         modRate = self.params['modRate'].get_value()
         trialAmp = self.noiseCal.find_amplitude(1, self.trialParams[1]).mean()
+        trialBand = self.trialParams[0]
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
         stimType = self.params['stimType'].get_string()
 
         if (stimType == 'band_AM') or (stimType == 'laser_band_AM'):
             if self.trialParams[0] == 0:
-                sound = {'type':'tone_AM', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'modRate':modRate}
+                sound = {'type':'tone_AM', 'duration':stimDur, 'amplitude':trialAmp/16.0, 'frequency':charFreq, 'modRate':modRate, 'ntones':1, 'factor':1}
             elif np.isinf(self.trialParams[0]):
                 sound = {'type':'AM', 'modFrequency':modRate, 'duration':stimDur, 'amplitude':trialAmp}
             else:
-                sound = {'type':'band_AM', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'modRate':modRate, 'octaves':self.trialParams[0]}
+                sound = {'type':'band_AM', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'modRate':modRate, 'octaves':trialBand}
+        elif stimType == 'band_harmonics_AM':
+            if self.trialParams[2] == 1:
+                sound = {'type':'tone_AM', 'duration':stimDur, 'amplitude':trialAmp/16.0, 'frequency':charFreq, 'modRate':modRate, 'ntones':int(trialBand)+1, 'factor':2**(int(trialBand)/2)}
+            else:
+                sound = {'type':'band_AM', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'modRate':modRate, 'octaves':trialBand}
         elif stimType == 'band':
-            sound = {'type':'band', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'octaves':self.trialParams[0]}
+            sound = {'type':'band', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'octaves':trialBand}
         elif stimType == 'laser_sound':
             sound = {'type':'noise', 'duration':stimDur, 'amplitude':trialAmp}
         stimOutput = stimSync
@@ -312,12 +324,14 @@ class Paradigm(QtGui.QMainWindow):
         self.soundClient.set_sound(1,sound)
         if stimType == 'laser_sound':
             laserOutput=laserSync
-        elif stimType == 'laser_band_AM':
+        elif (stimType == 'laser_band_AM') or (stimType == 'band_harmonics_AM'):
             if self.trialParams[2] == 1:
-                laserOutput=laserSync
+                if stimType == 'laser_band_AM':
+                    laserOutput=laserSync
                 self.params['laserTrial'].set_value(1)
             else:
-                laserOutput=[]
+                if stimType == 'laser_band_AM':
+                    laserOutput=[]
                 self.params['laserTrial'].set_value(0)
 
         self.params['currentBand'].set_value(self.trialParams[0])
