@@ -48,6 +48,9 @@ class Paradigm(templates.Paradigm2AFC):
                                                         ['sides_direct','direct','on_next_correct',
                                                          'only_if_correct','simulated'],
                                                          value=3,group='Choice parameters')
+        self.params['allowEarlyWithdrawal'] = paramgui.MenuParam('Allow early withdraw',
+                                                        ['off','on'],
+                                                        value=0,group='Choice parameters')
         self.params['antibiasMode'] = paramgui.MenuParam('Anti-bias mode',
                                                         ['off','repeat_mistake'],
                                                         value=0,group='Choice parameters')
@@ -450,7 +453,8 @@ class Paradigm(templates.Paradigm2AFC):
         rewardAvailability = self.params['rewardAvailability'].get_value()
         punishTimeError = self.params['punishTimeError'].get_value()
         punishTimeEarly = self.params['punishTimeEarly'].get_value()
-
+        allowEarlyWithdrawal = self.params['allowEarlyWithdrawal'].get_string()
+        
         # -- Set state matrix --
         outcomeMode = self.params['outcomeMode'].get_string()
         if outcomeMode=='simulated':
@@ -513,10 +517,16 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Cin':'delayPeriod'})
             self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
                               transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
-            self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                              transitions={'Tup':'waitForSidePoke','Cout':'earlyWithdrawal'},
-                              outputsOn=stimOutput, serialOut=soundID,
-                              outputsOff=trialStartOutput)
+            if allowEarlyWithdrawal=='on':
+                self.sm.add_state(name='playStimulus', statetimer=targetDuration,
+                                  transitions={'Tup':'waitForSidePoke','Cout':'waitForSidePoke'},
+                                  outputsOn=stimOutput, serialOut=soundID,
+                                  outputsOff=trialStartOutput)
+            else:
+                self.sm.add_state(name='playStimulus', statetimer=targetDuration,
+                                  transitions={'Tup':'waitForSidePoke','Cout':'earlyWithdrawal'},
+                                  outputsOn=stimOutput, serialOut=soundID,
+                                  outputsOff=trialStartOutput)
             self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                            'Tup':'noChoice'},
@@ -559,10 +569,16 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
             # Note that 'delayPeriod' may happen several times in a trial, so
             # trialStartOutput off here would only meaningful for the first time in the trial.
-            self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                              transitions={'Tup':'waitForSidePoke','Cout':'earlyWithdrawal'},
-                              outputsOn=stimOutput, serialOut=soundID,
-                              outputsOff=trialStartOutput)
+            if allowEarlyWithdrawal=='on':
+                self.sm.add_state(name='playStimulus', statetimer=targetDuration,
+                                  transitions={'Tup':'waitForSidePoke','Cout':'waitForSidePoke'},
+                                  outputsOn=stimOutput, serialOut=soundID,
+                                  outputsOff=trialStartOutput)
+            else:
+                self.sm.add_state(name='playStimulus', statetimer=targetDuration,
+                                  transitions={'Tup':'waitForSidePoke','Cout':'earlyWithdrawal'},
+                                  outputsOn=stimOutput, serialOut=soundID,
+                                  outputsOff=trialStartOutput)
             self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                            'Tup':'noChoice'},
