@@ -84,10 +84,10 @@ class Paradigm(QtGui.QMainWindow):
                                                        group='Session')
         sessionParams = self.params.layout_group('Session')
         self.params['minAmp'] = paramgui.NumericParam('Min noise amplitude (dB)',
-                                                       value=50,
+                                                       value=40,
                                                        group='Parameters')
         self.params['maxAmp'] = paramgui.NumericParam('Max noise amplitude (dB)',
-                                                       value=70,
+                                                       value=60,
                                                        group='Parameters')
         self.params['numAmps'] = paramgui.NumericParam('Number of Amplitudes',
                                                        value=2,
@@ -135,10 +135,13 @@ class Paradigm(QtGui.QMainWindow):
                                                            enabled=False,
                                                            group='Current Trial',
                                                            decimals=2)
-        self.params['laserTrial'] = paramgui.NumericParam('Laser/harmonics Trial?',value=0,
+        self.params['laserTrial'] = paramgui.NumericParam('Laser Trial?',value=0,
                                                            enabled=False,
                                                            group='Current Trial',
                                                            decimals=0)
+        self.params['harmTrialType'] = paramgui.MenuParam('Harmonics type',['none','ordered','random'],
+                                                           value=0,enabled=False,
+                                                           group='Current Trial')
 
 
         timingParams = self.params.layout_group('Parameters')
@@ -322,16 +325,19 @@ class Paradigm(QtGui.QMainWindow):
         stimOutput = stimSync
         serialOutput = 1
         self.soundClient.set_sound(1,sound)
+        if stimType == 'band_harmonics_AM':
+            if self.trialParams[2] == 1:
+                self.params['harmTrialType'].set_value(1)
+            else:
+                self.params['harmTrialType'].set_value(0)
         if stimType == 'laser_sound':
             laserOutput=laserSync
-        elif (stimType == 'laser_band_AM') or (stimType == 'band_harmonics_AM'):
+        elif stimType == 'laser_band_AM':
             if self.trialParams[2] == 1:
-                if stimType == 'laser_band_AM':
-                    laserOutput=laserSync
+                laserOutput=laserSync
                 self.params['laserTrial'].set_value(1)
             else:
-                if stimType == 'laser_band_AM':
-                    laserOutput=[]
+                laserOutput=[]
                 self.params['laserTrial'].set_value(0)
 
         self.params['currentBand'].set_value(self.trialParams[0])
