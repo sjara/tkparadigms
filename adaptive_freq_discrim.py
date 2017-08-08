@@ -125,8 +125,11 @@ class Paradigm(templates.Paradigm2AFC):
         '''                                                        
         self.params['targetAmplitude'] = paramgui.NumericParam('Target amplitude',value=0.0,units='[0-1]',
                                                         enabled=False,decimals=4,group='Sound parameters')
+        self.params['punishSoundIntensity'] = paramgui.NumericParam('Punish intensity',value=40,
+                                                              units='dB-SPL',enabled=True,
+                                                              group='Sound parameters')
         self.params['punishSoundAmplitude'] = paramgui.NumericParam('Punish amplitude',value=0.01,
-                                                              units='[0-1]',enabled=True,
+                                                              units='[0-1]',enabled=False,
                                                               group='Sound parameters')
         
         '''
@@ -233,6 +236,10 @@ class Paradigm(templates.Paradigm2AFC):
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
 
+        # -- Load speaker calibration --
+        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
+        #self.spkNoiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_NOISE_CALIBRATION)
+        
         # -- Connect to sound server and define sounds --
         print 'Conecting to soundserver...'
         print '***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****' ### DEBUG
@@ -262,7 +269,10 @@ class Paradigm(templates.Paradigm2AFC):
         #self.prepare_next_trial(0)
        
     def prepare_punish_sound(self):
-        punishSoundAmplitude = self.params['punishSoundAmplitude'].get_value()
+        punishSoundIntensity = self.params['punishSoundIntensity'].get_value()
+        #punishSoundAmplitude = self.spkNoiseCal.find_amplitude(1,punishSoundIntensity).mean()
+        punishSoundAmplitude = 0.001
+        self.params['punishSoundAmplitude'].set_value(punishSoundAmplitude)
         sNoise = {'type':'noise', 'duration':0.5, 'amplitude':punishSoundAmplitude}
         self.soundClient.set_sound(self.punishSoundID,sNoise)
         
@@ -275,10 +285,9 @@ class Paradigm(templates.Paradigm2AFC):
             targetIntensity = self.params['targetMaxIntensity'].get_value()
         self.params['targetIntensity'].set_value(targetIntensity)
                 
-        spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
 
         # FIXME: currently I am averaging calibration from both speakers (not good)
-        targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
+        targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
         self.params['targetAmplitude'].set_value(targetAmp)
 
         stimDur = self.params['targetDuration'].get_value()
