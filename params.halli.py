@@ -12,9 +12,12 @@ directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfR
 increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                      'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.1,
                      'allowEarlyWithdrawal':'on','punishTimeEarly':0, 'punishSoundAmplitude':0}
-basicDiscriminationMode = {'delayToTargetMean':0.2, 'currentBlock':'mid_boundary',
+requireCorrectMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
+                      'currentBlock':'mid_boundary', 'targetDuration':0.1,
+                      'allowEarlyWithdrawal':'on','punishTimeEarly':0, 'punishSoundAmplitude':0}
+basicDiscriminationMode = {'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'currentBlock':'mid_boundary',
                            'punishTimeEarly':0, 'punishSoundAmplitude':0}
-basicDiscriminationMode = {'delayToTargetMean':0.2, 'currentBlock':'mid_boundary',
+psyCurveMode = {'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'currentBlock':'mid_boundary',
                            'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'uniform'}
 
 # ======== Parameters for each animal =========
