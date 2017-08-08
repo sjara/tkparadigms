@@ -238,7 +238,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Load speaker calibration --
         self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
-        #self.spkNoiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_NOISE_CALIBRATION)
+        self.spkNoiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_NOISE_CALIBRATION)
         
         # -- Connect to sound server and define sounds --
         print 'Conecting to soundserver...'
@@ -262,6 +262,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.punishSoundID = 127
         self.soundClient.set_sound(self.punishSoundID,sNoise)
         '''
+        self.targetSoundID = 1
         self.punishSoundID = 127
         self.soundClient.start()
 
@@ -270,8 +271,7 @@ class Paradigm(templates.Paradigm2AFC):
        
     def prepare_punish_sound(self):
         punishSoundIntensity = self.params['punishSoundIntensity'].get_value()
-        #punishSoundAmplitude = self.spkNoiseCal.find_amplitude(1,punishSoundIntensity).mean()
-        punishSoundAmplitude = 0.001
+        punishSoundAmplitude = self.spkNoiseCal.find_amplitude(1,punishSoundIntensity).mean()
         self.params['punishSoundAmplitude'].set_value(punishSoundAmplitude)
         sNoise = {'type':'noise', 'duration':0.5, 'amplitude':punishSoundAmplitude}
         self.soundClient.set_sound(self.punishSoundID,sNoise)
@@ -293,7 +293,7 @@ class Paradigm(templates.Paradigm2AFC):
         stimDur = self.params['targetDuration'].get_value()
         s1 = {'type':'chord', 'frequency':targetFrequency, 'duration':stimDur,
               'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
-        self.soundClient.set_sound(1,s1)
+        self.soundClient.set_sound(self.targetSoundID,s1)
 
         '''
         #amplitudeFactor = [0.25,0.5,1]
