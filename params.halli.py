@@ -24,13 +24,13 @@ psyCurveMode = {'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'current
 
 pardict = {'subject':'adap062','experimenter':'halli'}
 pardict.update(frequencySet6to19)
-pardict.update(increaseDelayMode)
+pardict.update(requireCorrectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 adap062 = pardict.copy()
 
 pardict = {'subject':'adap063','experimenter':'halli'}
 pardict.update(frequencySet6to19)
-pardict.update(increaseDelayMode)
+pardict.update(requireCorrectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 adap063 = pardict.copy()
 
