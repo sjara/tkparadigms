@@ -271,7 +271,7 @@ class Paradigm(templates.Paradigm2AFC):
        
     def prepare_punish_sound(self):
         punishSoundIntensity = self.params['punishSoundIntensity'].get_value()
-        punishSoundAmplitude = self.spkNoiseCal.find_amplitude(1,punishSoundIntensity).mean()
+        punishSoundAmplitude = self.spkNoiseCal.find_amplitude(punishSoundIntensity).mean()
         self.params['punishSoundAmplitude'].set_value(punishSoundAmplitude)
         sNoise = {'type':'noise', 'duration':0.5, 'amplitude':punishSoundAmplitude}
         self.soundClient.set_sound(self.punishSoundID,sNoise)
