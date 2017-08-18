@@ -15,8 +15,9 @@ increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'de
 requireCorrectMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
                       'currentBlock':'mid_boundary', 'targetDuration':0.1,
                       'allowEarlyWithdrawal':'on','punishTimeEarly':0, 'punishSoundAmplitude':0}
-basicDiscriminationMode = {'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'currentBlock':'mid_boundary',
-                           'punishTimeEarly':0, 'punishSoundAmplitude':0}
+basicDiscriminationMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
+                           'currentBlock':'mid_boundary', 'targetDuration':0.1, 'allowEarlyWithdrawal':'off',
+                           'punishTimeEarly':0.5, 'punishSoundAmplitude':50}
 psyCurveMode = {'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'currentBlock':'mid_boundary',
                            'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'uniform'}
 
@@ -66,7 +67,7 @@ adap068 = pardict.copy()
 
 pardict = {'subject':'adap069','experimenter':'halli'}
 pardict.update(frequencySet6to19)
-pardict.update(requireCorrectMode)
+pardict.update(basicDiscriminationMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 adap069 = pardict.copy()
 
