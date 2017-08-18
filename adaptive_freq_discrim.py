@@ -554,9 +554,14 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Tup':'keepWaitForSide'})
                 self.sm.add_state(name='choiceRight', statetimer=0,
                                   transitions={'Tup':'reward'})
-            self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
-                              transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=stimOutput,serialOut=self.punishSoundID)
+            if allowEarlyWithdrawal=='on':
+                self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=stimOutput)
+            else:
+                self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=stimOutput,serialOut=self.punishSoundID)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
