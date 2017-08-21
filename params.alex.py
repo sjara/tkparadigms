@@ -38,3 +38,15 @@ pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 adap061 = pardict.copy()
+
+
+# ephys params
+subject = 'dapa003'
+
+tuningCurve = {'stimDur':0.1,
+           'minInt':50,
+           'maxInt':70,
+	       'numInt':2,
+           'stimType' : 'Chord',
+           'subject':subject,
+           'experimenter' : 'alex'}
