@@ -50,3 +50,14 @@ tuningCurve = {'stimDur':0.1,
            'stimType' : 'Chord',
            'subject':subject,
            'experimenter' : 'alex'}
+
+noisetest = {'stimDur':0.1, 
+             'isiMin':0.5,
+             'isiMax':1,
+             'randomMode':'Ordered',
+             'soundMode':'Noise',
+             'minInt':70,
+             'maxInt':70,
+             'numInt':1,
+             'experimenter' : 'alex',
+             'subject':subject}
