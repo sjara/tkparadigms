@@ -18,8 +18,9 @@ requireCorrectMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 
 basicDiscriminationMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
                            'currentBlock':'mid_boundary', 'targetDuration':0.1, 'allowEarlyWithdrawal':'off',
                            'punishTimeEarly':0.5, 'punishSoundAmplitude':50}
-psyCurveMode = {'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'currentBlock':'mid_boundary',
-                           'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'uniform'}
+psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
+                'currentBlock':'mid_boundary', 'targetDuration':0.1, 'allowEarlyWithdrawal':'off',
+                'punishTimeEarly':0.5, 'punishSoundAmplitude':50, 'psycurveMode':'uniform'}
 
 # ======== Parameters for each animal =========
 
@@ -67,7 +68,7 @@ adap068 = pardict.copy()
 
 pardict = {'subject':'adap069','experimenter':'halli'}
 pardict.update(frequencySet6to19)
-pardict.update(basicDiscriminationMode)
+pardict.update(psyCurveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 adap069 = pardict.copy()
 
