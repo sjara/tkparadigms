@@ -41,19 +41,21 @@ adap061 = pardict.copy()
 
 
 # ephys params
-subject = 'dapa003'
+subject = 'dapa005'
 
 tuningCurve = {'stimDur':0.1,
            'minInt':50,
            'maxInt':70,
 	       'numInt':2,
+	       'isiMean':0.8,
+	       'isiHalfRange':0.1,
            'stimType' : 'Chord',
            'subject':subject,
            'experimenter' : 'alex'}
 
 noisetest = {'stimDur':0.1, 
-             'isiMin':0.5,
-             'isiMax':1,
+             'isiMean':0.9,
+             'isiHalfRange':0.01,
              'randomMode':'Ordered',
              'soundMode':'Noise',
              'minInt':70,
