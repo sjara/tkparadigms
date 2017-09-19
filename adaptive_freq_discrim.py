@@ -237,9 +237,11 @@ class Paradigm(templates.Paradigm2AFC):
         self.params.from_file(paramfile,paramdictname)
 
         # -- Load speaker calibration --
-        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
-        self.spkNoiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_NOISE_CALIBRATION)
-        
+        #self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
+        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
+        #self.spkNoiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_NOISE_CALIBRATION)
+        self.spkNoiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
+
         # -- Connect to sound server and define sounds --
         print 'Conecting to soundserver...'
         print '***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****' ### DEBUG

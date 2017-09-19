@@ -293,7 +293,8 @@ class Paradigm(templates.Paradigm2AFC):
             targetIntensity = self.params['targetMaxIntensity'].get_value()
         self.params['targetIntensity'].set_value(targetIntensity)
                 
-        spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
+        #spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
+        spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
 
         # FIXME: currently I am averaging calibration from both speakers (not good)
         targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()

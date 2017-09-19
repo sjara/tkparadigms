@@ -58,8 +58,8 @@ class Paradigm(QtGui.QMainWindow):
         smServerType = rigsettings.STATE_MACHINE_TYPE
 
         # -- Create the speaker calibration object
-        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
-
+        #self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
+        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
         # -- Create dispatcher --
         self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,
                                                      interval=0.1)
