@@ -285,24 +285,25 @@ class Paradigm(templates.Paradigm2AFC):
             targetIntensity = self.params['targetMaxIntensity'].get_value()
         self.params['targetIntensity'].set_value(targetIntensity)
 
-        spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
+        spkCalNoise = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
+        spkCalSine = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_SINE)
+        spkCalChords = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORDS)
         # FIXME: currently I am averaging calibration from both speakers (not good)
         #targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
 
         if self.params['soundType'].get_string() == 'amp_mod':
-            freqToEstimateAmp = 10000
-            targetAmp = spkCal.find_amplitude(freqToEstimateAmp,targetIntensity).mean()
+            targetAmp = spkCalNoise.find_amplitude(targetIntensity)
             self.params['targetAmplitude'].set_value(targetAmp)
             stimDur = self.params['targetDuration'].get_value()
             s1 = {'type':'AM', 'modFrequency':targetFrequency, 'duration':stimDur,
                 'amplitude':targetAmp}
         elif self.params['soundType'].get_string() == 'tones':
-            targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
+            targetAmp = spkCalSine.find_amplitude(targetFrequency,targetIntensity)
             self.params['targetAmplitude'].set_value(targetAmp)
             stimDur = self.params['targetDuration'].get_value()
             s1 = {'type':'tone', 'frequency':targetFrequency, 'duration':stimDur, 'amplitude':targetAmp}
         elif self.params['soundType'].get_string() == 'chords':
-            targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
+            targetAmp = spkCalChords.find_amplitude(targetFrequency,targetIntensity)
             self.params['targetAmplitude'].set_value(targetAmp)
             stimDur = self.params['targetDuration'].get_value()
             s1 = {'type':'chord', 'frequency':targetFrequency, 'duration':stimDur,

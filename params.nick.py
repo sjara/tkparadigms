@@ -1,4 +1,4 @@
-subject = 'pinp024'
+subject = 'pinp022'
 
 noiseburst = {'stimDur':0.1,
                'isiMean':0.9,

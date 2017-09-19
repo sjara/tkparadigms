@@ -49,7 +49,7 @@ tuningCurve = {'stimDur':0.1,
 	       'numInt':2,
 	       'isiMean':0.8,
 	       'isiHalfRange':0.1,
-           'stimType' : 'Chord',
+           'stimType' : 'Sine',
            'subject':subject,
            'experimenter' : 'alex'}
 
