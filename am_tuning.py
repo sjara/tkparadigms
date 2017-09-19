@@ -21,7 +21,6 @@ import itertools
 import random
 from taskontrol.plugins import soundclient
 import time
-from taskontrol.plugins import speakernoisecalibration as noisecalibration
 
 # class clearButton(QtGui.QPushButton):
 #    def __init__(self, parent=None):
@@ -59,8 +58,8 @@ class Paradigm(QtGui.QMainWindow):
         smServerType = rigsettings.STATE_MACHINE_TYPE
 
         # -- Create the speaker calibration object
-        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
-        self.noiseCal = noisecalibration.Calibration(rigsettings.NOISE_CALIBRATION)
+        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_SINE)
+        self.noiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
 
         # -- Create dispatcher --
         self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,
@@ -299,7 +298,7 @@ class Paradigm(QtGui.QMainWindow):
         #                                        self.trialParams[1])[1]
         #                                        #Only calibrated right speaker
         if stimType in ['Noise', 'AM']:
-            targetAmp = self.noiseCal.find_amplitude(0, self.trialParams[1])
+            targetAmp = self.noiseCal.find_amplitude(self.trialParams[1])
         else:
             targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
                                                    self.trialParams[1])
