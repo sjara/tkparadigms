@@ -108,7 +108,8 @@ class RigTest(QtGui.QMainWindow):
         pass
 
     def prepare_sounds(self):
-        spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
+        #spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
+        spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
         soundFrequency = 1000
         soundIntensity = self.params['soundIntensity'].get_value()
         soundAmplitude = spkCal.find_amplitude(soundFrequency,soundIntensity)
