@@ -53,13 +53,16 @@ tuningCurve = {'stimDur':0.1,
            'subject':subject,
            'experimenter' : 'alex'}
 
-laserTuningCurve = {'stimDur:0.1',
+laserTuningCurve = {'stimDur':0.1,
                     'minInt':50,
                     'maxInt':70,
                     'numInt':2,
                     'isiMean':0.8,
                     'isiHalfRange':0.1,
                     'stimType':'SineLaser',
+                    'laserProbability':0.5,
+                    'laserDuration':0.1,
+                    'laserOnset':0,
                     'subject':subject,
                     'experimenter':'alex'}
 
