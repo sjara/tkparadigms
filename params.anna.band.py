@@ -1,4 +1,4 @@
-subject = 'band034'
+subject = 'band037'
 
 noisebursts = {'stimDur':0.1,
                'isiMean':0.9,
@@ -38,9 +38,9 @@ noiseAmps = {'stimDur':0.5,
 tuningCurve = {'stimDur':0.1,
            'isiMean':0.8,
            'isiHalfRange':0.1,
-           'minInt':40,
-           'maxInt':60,
-	       'numInt':3,
+           'minInt':35,
+           'maxInt':55,
+	       'numInt':2,
            'stimType' : 'Sine',
            'subject':subject,
            'experimenter' : 'anna'}
