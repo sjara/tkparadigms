@@ -17,8 +17,7 @@ from taskontrol.plugins import manualcontrol
 import numpy as np
 import itertools
 import random
-#from taskontrol.plugins import soundclient
-from jaratest.anna.tests import test003_tone_am_client as soundclient
+from taskontrol.plugins import soundclient
 import time
 
 # class clearButton(QtGui.QPushButton):
@@ -300,7 +299,7 @@ class Paradigm(QtGui.QMainWindow):
         stimDur = self.params['stimDur'].get_value()
         charFreq = self.params['charFreq'].get_value()
         modRate = self.params['modRate'].get_value()
-        trialAmp = self.noiseCal.find_amplitude(1, self.trialParams[1]).mean()
+        trialAmp = self.noiseCal.find_amplitude(0, self.trialParams[0])
         trialBand = self.trialParams[0]
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
