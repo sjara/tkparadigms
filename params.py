@@ -136,10 +136,11 @@ adap049 = pardict.copy()
 pardict = {'subject':'adap050','experimenter':'lan'}
 pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 #pardict.update(adap05xModeLowLeft)
 pardict.update(adap05xMode)
 pardict.update({'soundActionMode':'low_left'})
+#pardict.update({'delayToTargetMean':0.05, 'automationMode':'increase_delay', 'allowEarlyWithdrawal':'on'})
 adap050 = pardict.copy()
 
 pardict = {'subject':'adap051','experimenter':'lan'}
@@ -154,7 +155,7 @@ adap051 = pardict.copy()
 pardict = {'subject':'adap052','experimenter':'lan'}
 pardict.update(psyCurveMidBound)
 pardict.update(frequencySet6to19)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 #pardict.update(adap05xModeLowLeft)
 pardict.update(adap05xMode)
 pardict.update({'soundActionMode':'low_left'})
@@ -176,6 +177,7 @@ pardict.update(frequencySet6to19)
 #pardict.update(adap05xModeLowLeft)
 pardict.update(adap05xMode)
 pardict.update({'soundActionMode':'low_left'})
+#pardict.update({'delayToTargetMean':0.05, 'automationMode':'increase_delay', 'allowEarlyWithdrawal':'on'})
 adap054 = pardict.copy()
 
 pardict = {'subject':'adap055','experimenter':'lan'}

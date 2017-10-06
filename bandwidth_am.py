@@ -12,7 +12,6 @@ from taskontrol.core import savedata
 from taskontrol.settings import rigsettings
 from taskontrol.core import statematrix
 from taskontrol.plugins import speakercalibration
-from taskontrol.plugins import speakernoisecalibration as noisecalibration
 from taskontrol.plugins import manualcontrol
 import numpy as np
 import itertools
@@ -56,7 +55,7 @@ class Paradigm(QtGui.QMainWindow):
         smServerType = rigsettings.STATE_MACHINE_TYPE
 
         # -- Create the noise calibration object
-        self.noiseCal = noisecalibration.Calibration(rigsettings.NOISE_CALIBRATION)
+        self.noiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
 
         # -- Create dispatcher --
         self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,
@@ -299,7 +298,7 @@ class Paradigm(QtGui.QMainWindow):
         stimDur = self.params['stimDur'].get_value()
         charFreq = self.params['charFreq'].get_value()
         modRate = self.params['modRate'].get_value()
-        trialAmp = self.noiseCal.find_amplitude(0, self.trialParams[0])
+        trialAmp = self.noiseCal.find_amplitude(self.trialParams[1])[0]
         trialBand = self.trialParams[0]
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
