@@ -50,7 +50,7 @@ adap065 = pardict.copy()
 
 pardict = {'subject':'adap066','experimenter':'halli'}
 pardict.update(frequencySet6to19)
-pardict.update(basicDiscriminationMode)
+pardict.update(psyCurveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 adap066 = pardict.copy()
 
@@ -83,3 +83,63 @@ pardict.update(frequencySet6to19)
 pardict.update(psyCurveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 adap071 = pardict.copy()
+
+pardict = {'subject':'adap072','experimenter':'halli'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap072 = pardict.copy()
+
+pardict = {'subject':'adap073','experimenter':'halli'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap073 = pardict.copy()
+
+pardict = {'subject':'adap074','experimenter':'halli'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap074 = pardict.copy()
+
+pardict = {'subject':'adap075','experimenter':'halli'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap075 = pardict.copy()
+
+pardict = {'subject':'adap076','experimenter':'halli'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap076 = pardict.copy()
+
+pardict = {'subject':'adap077','experimenter':'halli'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap077 = pardict.copy()
+
+pardict = {'subject':'adap078','experimenter':'halli'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap078 = pardict.copy()
+
+pardict = {'subject':'adap079','experimenter':'halli'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap079 = pardict.copy()
+
+pardict = {'subject':'adap080','experimenter':'halli'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap080 = pardict.copy()
+
+pardict = {'subject':'adap081','experimenter':'halli'}
+pardict.update(frequencySet6to19)
+pardict.update(sidesDirectMode)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap081 = pardict.copy()
