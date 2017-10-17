@@ -4,7 +4,7 @@ Define parameters for different subjects
 
 frequencySet6to19 = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
 
-# ======== Adaptive frequency discrimination task ========
+# ======== Rules 1: Adaptive frequency discrimination task ========
 sidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                    'currentBlock':'mid_boundary'}
 directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
@@ -21,6 +21,25 @@ basicDiscriminationMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':
 psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
                 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'allowEarlyWithdrawal':'off',
                 'punishTimeEarly':0.5, 'punishSoundAmplitude':50, 'psycurveMode':'uniform'}
+
+# ======== Rules 2: Adaptive frequency discrimination task ========
+sidesDirectModeR2 = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+                   'currentBlock':'mid_boundary'}
+directModeR2 = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+                   'currentBlock':'mid_boundary'}
+requireCorrectModeR2 = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
+                      'currentBlock':'mid_boundary', 'targetDuration':0.1,
+                      'allowEarlyWithdrawal':'on','punishTimeEarly':0, 'punishSoundAmplitude':0}
+increaseDelayModeR2 = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+                     'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.1,
+                     'allowEarlyWithdrawal':'on','punishTimeEarly':0, 'punishSoundAmplitude':0}
+basicDiscriminationModeR2 = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
+                           'currentBlock':'mid_boundary', 'targetDuration':0.1, 'allowEarlyWithdrawal':'off',
+                           'punishTimeEarly':0.5, 'punishSoundAmplitude':50}
+psyCurveModeR2 = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
+                'currentBlock':'mid_boundary', 'targetDuration':0.1, 'allowEarlyWithdrawal':'off',
+                'punishTimeEarly':0.5, 'punishSoundAmplitude':50, 'psycurveMode':'uniform'}
+
 
 # ======== Parameters for each animal =========
 
