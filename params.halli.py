@@ -4,7 +4,7 @@ Define parameters for different subjects
 
 frequencySet6to19 = {'lowFreq':6200,'midFreq':11000,'highFreq':19200}
 
-# ======== Rules 1: Adaptive frequency discrimination task ========
+# ======== Method 1: Adaptive frequency discrimination task ========
 sidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                    'currentBlock':'mid_boundary'}
 directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
@@ -22,23 +22,42 @@ psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delay
                 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'allowEarlyWithdrawal':'off',
                 'punishTimeEarly':0.5, 'punishSoundAmplitude':50, 'psycurveMode':'uniform'}
 
-# ======== Rules 2: Adaptive frequency discrimination task ========
-sidesDirectModeR2 = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+# ======== Method 2: Adaptive frequency discrimination task ========
+M2sidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                    'currentBlock':'mid_boundary'}
-directModeR2 = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+M2directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                    'currentBlock':'mid_boundary'}
-requireCorrectModeR2 = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
+M2requireCorrectMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.075, 'delayToTargetHalfRange':0.025,
                       'currentBlock':'mid_boundary', 'targetDuration':0.1,
                       'allowEarlyWithdrawal':'on','punishTimeEarly':0, 'punishSoundAmplitude':0}
-increaseDelayModeR2 = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+M2increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0.05, 'delayToTargetHalfRange':0,
                      'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.1,
                      'allowEarlyWithdrawal':'on','punishTimeEarly':0, 'punishSoundAmplitude':0}
-basicDiscriminationModeR2 = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
+M2basicDiscriminationMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
                            'currentBlock':'mid_boundary', 'targetDuration':0.1, 'allowEarlyWithdrawal':'off',
                            'punishTimeEarly':0.5, 'punishSoundAmplitude':50}
-psyCurveModeR2 = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
+M2psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
                 'currentBlock':'mid_boundary', 'targetDuration':0.1, 'allowEarlyWithdrawal':'off',
                 'punishTimeEarly':0.5, 'punishSoundAmplitude':50, 'psycurveMode':'uniform'}
+
+# ======== Method 3: Adaptive frequency discrimination task ========
+M3sidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+                   'currentBlock':'mid_boundary'}
+M3directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+                   'currentBlock':'mid_boundary'}
+M3increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
+                     'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.1,
+                     'allowEarlyWithdrawal':'on','punishTimeEarly':0, 'punishSoundAmplitude':0}
+M3requireCorrectMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
+                      'currentBlock':'mid_boundary', 'targetDuration':0.1,
+                      'allowEarlyWithdrawal':'on','punishTimeEarly':0, 'punishSoundAmplitude':0}
+M3basicDiscriminationMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
+                           'currentBlock':'mid_boundary', 'targetDuration':0.1, 'allowEarlyWithdrawal':'off',
+                           'punishTimeEarly':0.5, 'punishSoundAmplitude':50}
+M3psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
+                'currentBlock':'mid_boundary', 'targetDuration':0.1, 'allowEarlyWithdrawal':'off',
+                'punishTimeEarly':0.5, 'punishSoundAmplitude':50, 'psycurveMode':'uniform'}
+
 
 
 # ======== Parameters for each animal =========
