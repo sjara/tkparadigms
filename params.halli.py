@@ -30,7 +30,7 @@ M2directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHal
 M2requireCorrectMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.075, 'delayToTargetHalfRange':0.025,
                       'currentBlock':'mid_boundary', 'targetDuration':0.1,
                       'allowEarlyWithdrawal':'on','punishTimeEarly':0, 'punishSoundAmplitude':0}
-M2increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0.05, 'delayToTargetHalfRange':0,
+M2increaseDelayMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.05, 'delayToTargetHalfRange':0,
                      'currentBlock':'mid_boundary', 'automationMode':'increase_delay', 'targetDuration':0.1,
                      'allowEarlyWithdrawal':'on','punishTimeEarly':0, 'punishSoundAmplitude':0}
 M2basicDiscriminationMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
