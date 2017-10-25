@@ -167,7 +167,7 @@ adap078 = pardict.copy()
 pardict = {'subject':'adap079','experimenter':'halli'}
 pardict.update(frequencySet6to19)
 pardict.update(M3requireCorrectMode)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 adap079 = pardict.copy()
 
 pardict = {'subject':'adap080','experimenter':'halli'}
