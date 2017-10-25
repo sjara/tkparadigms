@@ -41,7 +41,7 @@ adap061 = pardict.copy()
 
 
 # ephys params
-subject = 'dapa006'
+subject = 'dapa007'
 
 tuningCurve = {'stimDur':0.1,
            'minInt':50,
