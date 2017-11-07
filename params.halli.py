@@ -130,7 +130,7 @@ adap072 = pardict.copy()
 
 pardict = {'subject':'adap073','experimenter':'halli'}
 pardict.update(frequencySet6to19)
-pardict.update(M2requireCorrectMode)
+pardict.update(M2increaseDelayMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 adap073 = pardict.copy()
 
@@ -155,7 +155,7 @@ adap076 = pardict.copy()
 pardict = {'subject':'adap077','experimenter':'halli'}
 pardict.update(frequencySet6to19)
 pardict.update(M3requireCorrectMode)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 adap077 = pardict.copy()
 
 pardict = {'subject':'adap078','experimenter':'halli'}
@@ -179,5 +179,5 @@ adap080 = pardict.copy()
 pardict = {'subject':'adap081','experimenter':'halli'}
 pardict.update(frequencySet6to19)
 pardict.update(M3requireCorrectMode)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 adap081 = pardict.copy()
