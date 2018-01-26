@@ -56,6 +56,9 @@ class Paradigm(templates.Paradigm2AFC):
                                                         ['sides_direct','direct','on_next_correct',
                                                          'only_if_correct','simulated'],
                                                          value=3,group='Choice parameters')
+        self.params['soundMode'] = paramgui.MenuParam('Sound presentation mode',
+                                                        ['full_duration', 'off_on_withdrawal'],
+                                                         value=0,group='Choice parameters')
         self.params['antibiasMode'] = paramgui.MenuParam('Anti-bias mode',
                                                         ['off','repeat_mistake'],
                                                         value=0,group='Choice parameters')
@@ -424,6 +427,7 @@ class Paradigm(templates.Paradigm2AFC):
             self.params['laserSide'].set_string('none')
 
         # -- Set state matrix --
+        soundMode = self.params['soundMode'].get_string()
         outcomeMode = self.params['outcomeMode'].get_string()
         laserMode = self.params['laserSide'].get_string()
         if outcomeMode=='simulated':
@@ -476,11 +480,18 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOn=stimOutput,serialOut=noiseID,
                               outputsOff=trialStartOutput)
             self.sm.add_state(name='playToneStimulus', statetimer=targetDuration,
-                              transitions={'Tup':'reward'}, serialOut=toneID)
+                                  transitions={'Cout':'stopStimulus','Tup':'stopStimulus'}, serialOut=toneID)
+            if soundMode == 'full_duration':
+                self.sm.add_state(name='stopStimulus', statetimer=0,
+                                  transitions={'Tup':'waitForSidePoke'}, 
+                                  outputsOff=stimOutput)
+            elif soundMode == 'off_on_withdrawal':
+                self.sm.add_state(name='stopStimulus', statetimer=0,
+                                  transitions={'Tup':'waitForSidePoke'}, 
+                                  outputsOff=stimOutput, serialOut=soundclient.STOP_ALL_SOUNDS)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
-                              outputsOn=[rewardOutput],
-                              outputsOff=stimOutput)
+                              outputsOn=[rewardOutput])
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'ready_next_trial'},
                               outputsOff=[rewardOutput])
@@ -497,9 +508,15 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOn=stimOutput,serialOut=noiseID,
                               outputsOff=trialStartOutput)
             self.sm.add_state(name='playToneStimulus', statetimer=targetDuration,
-                              transitions={'Cout':'soundOff', 'Tup':'soundOff'},serialOut=toneID)
-            self.sm.add_state(name='soundOff', statetimer=0, transitions={'Tup':'waitForSidePoke'},
-                              outputsOff=stimOutput)
+                              transitions={'Cout':'stopStimulus', 'Tup':'stopStimulus'},serialOut=toneID)
+            if soundMode == 'full_duration':
+                self.sm.add_state(name='stopStimulus', statetimer=0,
+                                  transitions={'Tup':'waitForSidePoke'}, 
+                                  outputsOff=stimOutput)
+            elif soundMode == 'off_on_withdrawal':
+                self.sm.add_state(name='stopStimulus', statetimer=0,
+                                  transitions={'Tup':'waitForSidePoke'}, 
+                                  outputsOff=stimOutput, serialOut=soundclient.STOP_ALL_SOUNDS)
             self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                            'Tup':'noChoice'})
@@ -543,13 +560,18 @@ class Paradigm(templates.Paradigm2AFC):
                                   outputsOn=stimOutput, serialOut=noiseID,
                                   outputsOff=trialStartOutput)
                 self.sm.add_state(name='playToneStimulus', statetimer=targetDuration,
-                                  transitions={'Cout':'waitForSidePoke', 'Tup':'waitForSidePoke'}, serialOut=toneID)
-                # NOTE: The idea of outputsOff here (in other paradigms) was to indicate the end
-                #       of the stimulus. But in this paradigm the stimulus will continue to play.
+                                  transitions={'Cout':'stopStimulus', 'Tup':'stopStimulus'}, serialOut=toneID)
+                if soundMode == 'full_duration':
+                    self.sm.add_state(name='stopStimulus', statetimer=0,
+                                  transitions={'Tup':'waitForSidePoke'}, 
+                                  outputsOff=stimOutput)
+                elif soundMode == 'stop_on_withdrawal':
+                    self.sm.add_state(name='stopStimulus', statetimer=0,
+                                  transitions={'Tup':'waitForSidePoke'}, 
+                                  outputsOff=stimOutput, serialOut=soundclient.STOP_ALL_SOUNDS)
                 self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                                   transitions={'Lin':'choiceLeft','Rin':'choiceRight',
-                                               'Tup':'noChoice'},
-                                  outputsOff=stimOutput)
+                                               'Tup':'noChoice'})
             else:
                 laserOnset = self.params['laserOnset'].get_value()
                 laserOffset = self.params['laserOffset'].get_value()
@@ -581,8 +603,14 @@ class Paradigm(templates.Paradigm2AFC):
                     self.sm.add_state(name='playToneStimulus', statetimer=targetDuration,
                                       transitions={'Cout':'stopStimulus', 'Tup':'stopStimulus'}, 
                                       serialOut=toneID)
-                self.sm.add_state(name='stopStimulus', statetimer=0,
-                                      transitions={'Tup':'waitForSidePokeWithLaser'}, serialOut=soundclient.STOP_ALL_SOUNDS)
+                if soundMode == 'full_duration':
+                    self.sm.add_state(name='stopStimulus', statetimer=0,
+                                  transitions={'Tup':'waitForSidePoke'}, 
+                                  outputsOff=stimOutput)
+                elif soundMode == 'off_on_withdrawal':
+                    self.sm.add_state(name='stopStimulus', statetimer=0,
+                                  transitions={'Tup':'waitForSidePoke'}, 
+                                  outputsOff=stimOutput, serialOut=soundclient.STOP_ALL_SOUNDS)
                 self.sm.add_state(name='waitForSidePokeWithLaser', statetimer=laserOffset,
                                       transitions={'Lin':'choiceLeft','Rin':'choiceRight', 'Tup':'laserOff'})
                 self.sm.add_state(name='laserOff', statetimer=0, transitions={'Tup':'waitForSidePoke'},
