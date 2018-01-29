@@ -11,32 +11,32 @@ nextCorrectNoDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'm
 
 pardict = {'subject': 'band046', 'experimenter': 'nadav'}
 pardict.update(sidesDirectMode)
-band006 = pardict.copy()
+band046 = pardict.copy()
 
 pardict = {'subject': 'band047', 'experimenter': 'nadav'}
 pardict.update(sidesDirectMode)
-band006 = pardict.copy()
+band047 = pardict.copy()
 
 pardict = {'subject': 'band048', 'experimenter': 'nadav'}
 pardict.update(sidesDirectMode)
-band006 = pardict.copy()
+band048 = pardict.copy()
 
 pardict = {'subject': 'band049', 'experimenter': 'nadav'}
 pardict.update(sidesDirectMode)
-band006 = pardict.copy()
+band049 = pardict.copy()
 
 pardict = {'subject': 'band050', 'experimenter': 'nadav'}
 pardict.update(sidesDirectMode)
-band006 = pardict.copy()
+band050 = pardict.copy()
 
 pardict = {'subject': 'band051', 'experimenter': 'nadav'}
 pardict.update(sidesDirectMode)
-band006 = pardict.copy()
+band051 = pardict.copy()
 
 pardict = {'subject': 'band052', 'experimenter': 'nadav'}
 pardict.update(sidesDirectMode)
-band006 = pardict.copy()
+band052 = pardict.copy()
 
 pardict = {'subject': 'band053', 'experimenter': 'nadav'}
 pardict.update(sidesDirectMode)
-band006 = pardict.copy()
+band053 = pardict.copy()
