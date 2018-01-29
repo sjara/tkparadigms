@@ -479,15 +479,7 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOn=stimOutput,serialOut=noiseID,
                               outputsOff=trialStartOutput)
             self.sm.add_state(name='playToneStimulus', statetimer=targetDuration,
-                                  transitions={'Cout':'stopStimulus','Tup':'stopStimulus'}, serialOut=toneID)
-            if soundMode == 'full_duration':
-                self.sm.add_state(name='stopStimulus', statetimer=0,
-                                  transitions={'Tup':'waitForSidePoke'}, 
-                                  outputsOff=stimOutput)
-            elif soundMode == 'off_on_withdrawal':
-                self.sm.add_state(name='stopStimulus', statetimer=0,
-                                  transitions={'Tup':'waitForSidePoke'}, 
-                                  outputsOff=stimOutput, serialOut=soundclient.STOP_ALL_SOUNDS)
+                                  transitions={'Tup':'reward'}, serialOut=toneID)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
