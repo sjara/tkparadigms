@@ -24,7 +24,6 @@ from taskontrol.plugins import performancedynamicsplot
 
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
-from taskontrol.plugins import speakernoisecalibration as noisecalibration
 import time
 
 LONGTIME = 100
@@ -258,18 +257,18 @@ class Paradigm(templates.Paradigm2AFC):
         #self.prepare_next_trial(0)
 
     def prepare_target_sound(self, band, noiseInt, toneInt):
-        spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
+        spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
         # FIXME: currently I am averaging calibration from both speakers (not good)
         stimDur = self.params['targetDuration'].get_value()
         modRate = self.params['modRate'].get_value()
-        noiseCal = noisecalibration.Calibration(rigsettings.NOISE_CALIBRATION)
+        noiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
         toneFreq = self.params['toneFreq'].get_value()
-        noiseAmp = noiseCal.find_amplitude(1, noiseInt).mean()
+        noiseAmp = noiseCal.find_amplitude(noiseInt, type='narrowband')
         if np.isinf(band):
             s1 = {'type':'AM', 'modFrequency': modRate, 'duration':stimDur, 'amplitude': noiseAmp}
         else:
             s1 = {'type':'band_AM', 'modRate': modRate, 'frequency': toneFreq, 'octaves': band, 'duration': stimDur, 'amplitude': noiseAmp}
-        toneAmp = spkCal.find_amplitude(toneFreq, noiseInt+toneInt).mean()
+        toneAmp = spkCal.find_amplitude(toneFreq, noiseInt+toneInt)
         s2 = {'type':'tone', 'frequency': toneFreq, 'duration':stimDur, 'amplitude': toneAmp}
         self.soundClient.set_sound(1,s1)
         self.soundClient.set_sound(2,s2)
@@ -565,7 +564,7 @@ class Paradigm(templates.Paradigm2AFC):
                     self.sm.add_state(name='stopStimulus', statetimer=0,
                                   transitions={'Tup':'waitForSidePoke'}, 
                                   outputsOff=stimOutput)
-                elif soundMode == 'stop_on_withdrawal':
+                elif soundMode == 'off_on_withdrawal':
                     self.sm.add_state(name='stopStimulus', statetimer=0,
                                   transitions={'Tup':'waitForSidePoke'}, 
                                   outputsOff=stimOutput, serialOut=soundclient.STOP_ALL_SOUNDS)
