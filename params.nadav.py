@@ -25,7 +25,7 @@ pardict.update(sidesDirectMode)
 band047 = pardict.copy()
 
 pardict = {'subject': 'band048', 'experimenter': 'nadav'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 band048 = pardict.copy()
 
 pardict = {'subject': 'band049', 'experimenter': 'nadav'}
@@ -37,11 +37,11 @@ pardict.update(directMode)
 band050 = pardict.copy()
 
 pardict = {'subject': 'band051', 'experimenter': 'nadav'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 band051 = pardict.copy()
 
 pardict = {'subject': 'band052', 'experimenter': 'nadav'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 band052 = pardict.copy()
 
 pardict = {'subject': 'band053', 'experimenter': 'nadav'}
