@@ -33,7 +33,7 @@ pardict.update(nextCorrectDel2)
 band049 = pardict.copy()
 
 pardict = {'subject': 'band050', 'experimenter': 'nadav'}
-pardict.update(nextCorrectDel)
+pardict.update(nextCorrectDel2)
 band050 = pardict.copy()
 
 pardict = {'subject': 'band051', 'experimenter': 'nadav'}
