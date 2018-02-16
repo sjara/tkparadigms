@@ -61,7 +61,7 @@ laserTuningCurve = {'stimDur':0.1,
                     'isiHalfRange':0.1,
                     'stimType':'SineLaser',
                     'laserProbability':0.5,
-                    'laserDuration':0.1,
+                    'laserDuration':0.2,
                     'laserOnset':-0.05,
                     'subject':subject,
                     'experimenter':'alex'}
