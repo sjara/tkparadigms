@@ -12,7 +12,15 @@ nextCorrectDel2 = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'ma
 
 outcomeOnlyifCorrect= {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
 
-outcomeOnlyifCorrect2= {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
+outcomeOnlyifCorrectOffOnWithdrawal = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 
+                        'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 
+                        'bandMode':'white_only',
+                        'soundMode':'off_on_withdrawal'}
+
+onlyIfCorrectMultipleBandwidths = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 
+                        'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 
+                        'bandMode':'uniform', 'minBand':0.25, 'maxBand':1.0, 'numBands':2, 'includeWhite':'yes',
+                        'soundMode':'off_on_withdrawal'}
 
 # -- bandwidth mice --
 
