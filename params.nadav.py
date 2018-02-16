@@ -25,33 +25,33 @@ onlyIfCorrectMultipleBandwidths = {'outcomeMode':'only_if_correct', 'threshMode'
 # -- bandwidth mice --
 
 pardict = {'subject': 'band046', 'experimenter': 'nadav'}
-pardict.update(nextCorrectNoDel)
+pardict.update(outcomeOnlyifCorrect)
 band046 = pardict.copy()
 
 pardict = {'subject': 'band047', 'experimenter': 'nadav'}
-pardict.update(nextCorrectNoDel)
+pardict.update(outcomeOnlyifCorrect)
 band047 = pardict.copy()
 
 pardict = {'subject': 'band048', 'experimenter': 'nadav'}
-pardict.update(nextCorrectDel)
+pardict.update(outcomeOnlyifCorrect)
 band048 = pardict.copy()
 
 pardict = {'subject': 'band049', 'experimenter': 'nadav'}
-pardict.update(nextCorrectNoDel)
+pardict.update(outcomeOnlyifCorrect)
 band049 = pardict.copy()
 
 pardict = {'subject': 'band050', 'experimenter': 'nadav'}
-pardict.update(nextCorrectNoDel)
+pardict.update(outcomeOnlyifCorrect)
 band050 = pardict.copy()
 
 pardict = {'subject': 'band051', 'experimenter': 'nadav'}
-pardict.update(nextCorrectNoDel)
+pardict.update(outcomeOnlyifCorrect)
 band051 = pardict.copy()
 
 pardict = {'subject': 'band052', 'experimenter': 'nadav'}
-pardict.update(nextCorrectNoDel)
+pardict.update(outcomeOnlyifCorrect)
 band052 = pardict.copy()
 
 pardict = {'subject': 'band053', 'experimenter': 'nadav'}
-pardict.update(nextCorrectNoDel)
+pardict.update(outcomeOnlyifCorrect)
 band053 = pardict.copy()

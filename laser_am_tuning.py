@@ -439,10 +439,10 @@ class Paradigm(QtGui.QMainWindow):
                                   outputsOn=stimOutput,
                                   serialOut=serialOutput)
                 self.sm.add_state(name='playStimPostLaser', statetimer=stimDur-laserOffset,
-                                  transitions={'Tup':'StimulusOff'},
+                                  transitions={'Tup':'stimulusOff'},
                                   outputsOff=laserOutput)
                 self.sm.add_state(name='stimulusOff', statetimer=isi,
-                                  transitions={'Tup':'noChoice'},
+                                  transitions={'Tup':'readyForNextTrial'},
                                   outputsOff=stimOutput)
             elif (laserOnset<0) and (laserOffset>stimDur):
                 #  SOUND:  ........|XXXXXXX|........
