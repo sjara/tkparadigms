@@ -22,6 +22,11 @@ onlyIfCorrectMultipleBandwidths = {'outcomeMode':'only_if_correct', 'threshMode'
                         'bandMode':'uniform', 'minBand':0.25, 'maxBand':1.0, 'numBands':2, 'includeWhite':'yes',
                         'soundMode':'off_on_withdrawal'}
 
+bandEasySNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':10, 'maxSNR':20, 'numSNRs':3, 
+               'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
+               'bandMode':'uniform', 'minBand':0.25, 'maxBand':1.0, 'numBands':2, 'includeWhite':'yes',
+               'soundMode':'off_on_withdrawal'}
+
 # -- bandwidth mice --
 
 pardict = {'subject': 'band046', 'experimenter': 'nadav'}
