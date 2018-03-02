@@ -41,13 +41,23 @@ adap061 = pardict.copy()
 
 
 # ephys params
-subject = 'dapa011'
+subject = 'dapa012'
 
-tuningCurve = {'stimDur':0.1,
+tuningTest = {'stimDur':0.1,
                'minInt':60,
                'maxInt':60,
                'numInt':1,
                'isiMean':0.6,
+               'isiHalfRange':0.1,
+               'stimType' : 'Sine',
+               'subject':subject,
+               'experimenter' : 'alex'}
+
+tuningCurve = {'stimDur':0.1,
+               'minInt':50,
+               'maxInt':70,
+               'numInt':2,
+               'isiMean':0.8,
                'isiHalfRange':0.1,
                'stimType' : 'Sine',
                'subject':subject,
