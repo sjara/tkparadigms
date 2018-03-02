@@ -50,7 +50,7 @@ pardict.update(onlyIfCorrectMultipleBandwidths)
 band050 = pardict.copy()
 
 pardict = {'subject': 'band051', 'experimenter': 'nadav'}
-pardict.update(onlyIfCorrectMultipleBandwidths)
+pardict.update(bandEasySNR)
 band051 = pardict.copy()
 
 pardict = {'subject': 'band052', 'experimenter': 'nadav'}
