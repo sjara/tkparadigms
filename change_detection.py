@@ -30,11 +30,11 @@ class Paradigm(templates.ParadigmGoNoGo):
                                                             units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
 
-        self.params['stimPreFreq'] = paramgui.NumericParam('Stim pre freq',value=10000,
+        self.params['stimPreFreq'] = paramgui.NumericParam('Stim pre freq',value=6000,
                                                             units='Hz',group='Sound parameters')
-        self.params['stimPostFreq'] = paramgui.NumericParam('Stim post freq',value=6000,
+        self.params['stimPostFreq'] = paramgui.NumericParam('Stim post freq',value=4000,
                                                             units='Hz',group='Sound parameters')
-        self.params['stimIntensity'] = paramgui.NumericParam('Intensity',value=60, units='dB-SPL',
+        self.params['stimIntensity'] = paramgui.NumericParam('Intensity',value=40, units='dB-SPL',
                                                             enabled=True, group='Sound parameters')
         self.params['stimPreAmplitude'] = paramgui.NumericParam('Stim pre amplitude', value=0.0,
                                                             units='[0-1]',decimals=4,
@@ -64,7 +64,7 @@ class Paradigm(templates.ParadigmGoNoGo):
         self.setCentralWidget(self.centralWidget)
 
         # -- Load speaker calibration --
-        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
+        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
         #self.spkNoiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_NOISE_CALIBRATION)
 
         # -- Connect to sound server and define sounds --
@@ -118,13 +118,16 @@ class Paradigm(templates.ParadigmGoNoGo):
                           transitions={'Win':'playPreStimulus'})
         self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
                           transitions={'Tup':'playPostStimulus'},
-                          outputsOn=['centerLED'],
                           serialOut=self.stimPreSoundID)
-        self.sm.add_state(name='playPostStimulus', statetimer=stimPostDur,
-                          transitions={'Tup':'readyForNextTrial'},
-                          outputsOn=['rightLED'], outputsOff=['centerLED'],
+        self.sm.add_state(name='playPostStimulus', statetimer=0.1,
+                          transitions={'Tup':'waterDelivery'},
                           serialOut=self.stimPostSoundID)
-
+        self.sm.add_state(name='waterDelivery', statetimer=0.04,
+                          transitions={'Tup':'interTrialInterval'},
+                          outputsOn=['rightWater'])
+        self.sm.add_state(name='interTrialInterval', statetimer=stimPostDur-0.1+1,
+                          transitions={'Tup':'readyForNextTrial'},
+                          outputsOff=['rightWater'])
         self.prepare_sounds()
 
         self.dispatcherModel.set_state_matrix(self.sm)
