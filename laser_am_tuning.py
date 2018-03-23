@@ -1,6 +1,6 @@
 '''
 Tuning curve presentation paradigm: allows presentation of tones at different
-magnitudes, and will send triggers to electrophysiology recording software. 
+magnitudes, and will send triggers to electrophysiology recording software.
 
 
 Nick Ponvert and Santiago Jaramillo
@@ -22,7 +22,7 @@ import random
 from taskontrol.plugins import soundclient
 import time
 
-#class clearButton(QtGui.QPushButton):
+# class clearButton(QtGui.QPushButton):
 #    def __init__(self, parent=None):
 #        super(OutputButton, self).__init__('Clear Tone List')
 #        self.clicked.connect(self.clear_tone_list)
@@ -46,20 +46,21 @@ class Paradigm(QtGui.QMainWindow):
     def __init__(self, parent=None, paramfile=None, paramdictname=None):
 
         '''
-        Set up the taskontrol core modules, add parameters to the GUI, and 
+        Set up the taskontrol core modules, add parameters to the GUI, and
         initialize the sound server.
         '''
 
         super(Paradigm, self).__init__(parent)
 
-        self.name = 'laser_tuning_curve'
+        self.name = 'laser_am_tuning_curve'
 
         # -- Read settings --
         smServerType = rigsettings.STATE_MACHINE_TYPE
 
         # -- Create the speaker calibration object
-        #self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
-        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
+        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_SINE)
+        self.noiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
+
         # -- Create dispatcher --
         self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,
                                                      interval=0.1)
@@ -94,7 +95,7 @@ class Paradigm(QtGui.QMainWindow):
         self.params['numInt'] = paramgui.NumericParam('Number of Intensities',
                                                        value=1,
                                                        group='Parameters')
-        self.params['stimDur'] = paramgui.NumericParam('Tone Duration (s)',
+        self.params['stimDur'] = paramgui.NumericParam('Stimulus Duration (s)',
                                                         value=0.01,
                                                         group='Parameters')
         '''
@@ -111,14 +112,14 @@ class Paradigm(QtGui.QMainWindow):
         self.params['isiHalfRange'] = paramgui.NumericParam('+/-',
                                                       value=1,
                                                       group='Parameters')
-        self.params['noiseAmp'] = paramgui.NumericParam('Amplitude in Noise-Mode',
-                                                       value=0.3,
-                                                       group='Parameters')
+        # self.params['noiseAmp'] = paramgui.NumericParam('Amplitude in Noise-Mode',
+        #                                                value=0.3,
+        #                                                group='Parameters')
         self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
                                                          ['Ordered','Random'],
                                                          value=1,group='Parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
-                                                         ['Sine','Chord', 'Noise','Laser', 'LaserTrain'],
+                                                         ['Sine','Chord', 'Noise', 'AM', 'Laser', 'LaserTrain', 'Light', 'SineLaser'],
                                                          value=2,group='Parameters')
         self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
                                                             value=0, units='Hz',
@@ -137,14 +138,22 @@ class Paradigm(QtGui.QMainWindow):
                                                            enabled=False,
                                                            group='Parameters',
                                                            decimals=4)
-        
-        '''
-        self.params['laserDuration'] = paramgui.NumericParam('Laser duration',value=0.01,
-                                                             group='Parameters',
-                                                             decimals=4)
-        '''
+
+
+        self.params['laserOn'] = paramgui.NumericParam('Laser On', value=0, enabled=False,
+                                                            group='Parameters')
+        self.params['laserProbability'] = paramgui.NumericParam('Laser Probability (s)', value=0,
+                                                            group='Parameters')
+        self.params['laserDuration'] = paramgui.NumericParam('Laser Duration (s)', value=0,
+                                                            group='Parameters')
+        self.params['laserOnset'] = paramgui.NumericParam('Laser Onset (s)', value=0,
+                                                            group='Parameters')
+
+
+
+
         timingParams = self.params.layout_group('Parameters')
-        
+
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
 
@@ -154,7 +163,7 @@ class Paradigm(QtGui.QMainWindow):
                                           outputs=rigsettings.OUTPUTS,
                                           readystate='readyForNextTrial')
 
-        # -- Module for savng the data -- 
+        # -- Module for savng the data --
 
         self.saveData = savedata.SaveData(rigsettings.DATA_DIR,
                                           remotedir=rigsettings.REMOTE_DIR)
@@ -173,22 +182,28 @@ class Paradigm(QtGui.QMainWindow):
         layoutCol1.addWidget(self.dispatcherView) #Add the dispatcher to col1
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.manualControl)
+
+        self.clearButton = QtGui.QPushButton('Clear Stim List', self)
+        self.clearButton.clicked.connect(self.clear_tone_list)
+        layoutCol1.addWidget(self.clearButton)
+
+
         layoutCol2.addWidget(timingParams)  #Add the parameter GUI to column 2
 
         self.centralWidget.setLayout(layoutMain) #Assign the layouts to the main window
         self.setCentralWidget(self.centralWidget)
 
         # -- Connect signals from dispatcher --
-        
-        #prepare_next_trial is sent whenever the dispatcher reaches the end of 
-        #the current trial. 
+
+        #prepare_next_trial is sent whenever the dispatcher reaches the end of
+        #the current trial.
         self.dispatcherModel.prepareNextTrial.connect(self.prepare_next_trial)
 
         # -- Connect the save data button --
         self.saveData.buttonSaveData.clicked.connect(self.save_to_file)
 
         print "Connecting to sound server"
-        print '***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****'        
+        print '***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****'
         time.sleep(0.2)
         self.soundClient = soundclient.SoundClient()
         self.soundClient.start()
@@ -202,7 +217,7 @@ class Paradigm(QtGui.QMainWindow):
 
         '''This function reads the GUI inputs and populates a list of three-item tuples
         containing the frequency, and amplitude for each trial. This function is
-        called by prepare_next_trial at the beginning of the experiment and whenever 
+        called by prepare_next_trial at the beginning of the experiment and whenever
         we run out of combinations of sounds to present'''
 
         ## -- Get the parameters --
@@ -210,15 +225,16 @@ class Paradigm(QtGui.QMainWindow):
         maxFreq = self.params['maxFreq'].get_value()
         minFreq = self.params['minFreq'].get_value()
         numFreqs = self.params['numTones'].get_value()
-        
+
         # -- Create a list of frequencies --
-        toneList = self.logscale(minFreq, maxFreq, numFreqs) 
+        # toneList = self.logscale(minFreq, maxFreq, numFreqs)
+        toneList = np.logspace(np.log10(minFreq), np.log10(maxFreq),num = numFreqs)
 
 
         minInt = self.params['minInt'].get_value()
         maxInt = self.params['maxInt'].get_value()
         numInt = self.params['numInt'].get_value()
-        
+
         ampList = np.linspace(minInt, maxInt, num=numInt)
 
         # -- Make a tuple list of all of the products of the three parameter lists
@@ -239,7 +255,7 @@ class Paradigm(QtGui.QMainWindow):
 
 
     def logscale(self, minFreq, maxFreq, numFreqs):
-        '''This function returns a specified number of frequencies 
+        '''This function returns a specified number of frequencies
         scaled logarithmically between a minimum and maximum val'''
 
         slope=(log(maxFreq)-log(minFreq))/(numFreqs-1)
@@ -252,9 +268,9 @@ class Paradigm(QtGui.QMainWindow):
     def prepare_next_trial(self, nextTrial):
 
         '''
-        Prepare the target sound, send state matrix to the statemachine, and 
+        Prepare the target sound, send state matrix to the statemachine, and
         update the list of GUI parameters so that we can save the history of the
-        frequency, intensity, and amplitude parameters for each trial. 
+        frequency, intensity, and amplitude parameters for each trial.
         '''
 
         if nextTrial > 0:  ## Do not update the history before the first trial
@@ -272,7 +288,6 @@ class Paradigm(QtGui.QMainWindow):
         isi = self.params['isiMean'].get_value() + \
               self.params['isiHalfRange'].get_value()*randNum
 
-
         # -- Get the sound parameters from the parameter list --
         # -- If the parameter list is empty, populate it  --
         # -- returns a tuple with (frequency, intensity)
@@ -286,102 +301,238 @@ class Paradigm(QtGui.QMainWindow):
 
         # -- Prepare the sound using randomly chosen parameters from parameter lists --
 
+        stimType = self.params['stimType'].get_string()
         stimDur = self.params['stimDur'].get_value()
-        ### We were using only the channel's right channel's calibrated values for targetAmp up to 2016-08-04. Then changed to using both channels' calibrated values. ###
-        #targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
-                                               #self.trialParams[1])[1]  
-                                               #Only calibrated right speaker
-        targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
-                                               self.trialParams[1])
-                                               #Now returning a list instead of a single val
+
+        #We used this until 2016-08-04, then changed it to the thing below
+        # targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
+        #                                        self.trialParams[1])[1]
+        #                                        #Only calibrated right speaker
+        if stimType in ['Noise', 'AM']:
+            targetAmp = self.noiseCal.find_amplitude(self.trialParams[1])
+        else:
+            targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
+                                                   self.trialParams[1])
+            #Now returning a list instead of a single val
+
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
-        stimType = self.params['stimType'].get_string()
-        
+
         if stimType == 'Sine':
-            sound = {'type':'tone', 'duration':stimDur, 
+            sound = {'type':'tone', 'duration':stimDur,
                      'amplitude':targetAmp, 'frequency':self.trialParams[0]}
         elif stimType == 'Chord':
             sound = {'type':'chord', 'frequency':self.trialParams[0], 'duration':stimDur,
                   'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
         elif stimType == 'Noise':
-            noiseAmp=self.params['noiseAmp'].get_value()
             sound = {'type':'noise', 'duration':stimDur,
-                     'amplitude':noiseAmp}
+                     'amplitude':targetAmp}
+        elif stimType == 'AM':
+            sound = {'type':'AM', 'duration':stimDur,
+                     'amplitude':targetAmp,'modFrequency':self.trialParams[0]}
+        elif stimType == 'SineLaser':
+            sound = {'type':'tone', 'duration':stimDur,
+                     'amplitude':targetAmp, 'frequency':self.trialParams[0]}
 
         if (stimType == 'Laser') or (stimType == 'LaserTrain'):
             stimOutput = stimSync+laserSync
+            serialOutput = 0
+        elif stimType=='Light':
+            stimOutput = stimSync + ['leftLED', 'centerLED', 'rightLED']
             serialOutput = 0
         else:
             stimOutput = stimSync
             serialOutput = 1
             self.soundClient.set_sound(1,sound)
 
+
+        # -- Determine if the trial will present laser or not randomly --
+        if stimType == 'SineLaser':
+            laserProbability = self.params['laserProbability'].get_value()
+            if random.random() <= laserProbability:
+                laserOutput = laserSync
+                self.params['laserOn'].set_value(1)
+            else:
+                laserOutput = []
+                self.params['laserOn'].set_value(0)
+
+        # -- Get the laser parameters --
+        laserOnset = self.params['laserOnset'].get_value()
+        laserDuration = self.params['laserDuration'].get_value()
+        laserOffset = laserOnset + laserDuration
+
+
         self.params['currentFreq'].set_value(self.trialParams[0])
         self.params['currentIntensity'].set_value(self.trialParams[1])
-        #self.params['currentAmp'].set_value(targetAmp) #This used to be just the right channel's value before 2016-08-04.
         self.params['currentAmpL'].set_value(targetAmp[0])
         self.params['currentAmpR'].set_value(targetAmp[1])
 
         # -- Prepare the state transition matrix --
         soa = 0.2
         if stimType == 'LaserTrain':
-            self.sm.add_state(name='startTrial', statetimer = 0.5 * isi,  
+            self.sm.add_state(name='startTrial', statetimer = 0,
                               transitions={'Tup':'output1On'})
-            self.sm.add_state(name='output1On', statetimer=stimDur, 
+            self.sm.add_state(name='output1On', statetimer=stimDur,
                               transitions={'Tup':'output1Off'},
-                              outputsOn=stimOutput, 
+                              outputsOn=stimOutput,
                               serialOut=serialOutput)
             self.sm.add_state(name='output1Off', statetimer = soa-stimDur,
                               transitions={'Tup':'output2On'},
-                              outputsOff=stimOutput) 
-            self.sm.add_state(name='output2On', statetimer=stimDur, 
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='output2On', statetimer=stimDur,
                               transitions={'Tup':'output2Off'},
-                              outputsOn=stimOutput, 
+                              outputsOn=stimOutput,
                               serialOut=serialOutput)
             self.sm.add_state(name='output2Off', statetimer = soa-stimDur,
                               transitions={'Tup':'output3On'},
-                              outputsOff=stimOutput) 
-            self.sm.add_state(name='output3On', statetimer=stimDur, 
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='output3On', statetimer=stimDur,
                               transitions={'Tup':'output3Off'},
-                              outputsOn=stimOutput, 
+                              outputsOn=stimOutput,
                               serialOut=serialOutput)
             self.sm.add_state(name='output3Off', statetimer = soa-stimDur,
                               transitions={'Tup':'output4On'},
-                              outputsOff=stimOutput) 
-            self.sm.add_state(name='output4On', statetimer=stimDur, 
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='output4On', statetimer=stimDur,
                               transitions={'Tup':'output4Off'},
-                              outputsOn=stimOutput, 
+                              outputsOn=stimOutput,
                               serialOut=serialOutput)
             self.sm.add_state(name='output4Off', statetimer = soa-stimDur,
                               transitions={'Tup':'output5On'},
-                              outputsOff=stimOutput) 
-            self.sm.add_state(name='output5On', statetimer=stimDur, 
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='output5On', statetimer=stimDur,
                               transitions={'Tup':'output5Off'},
-                              outputsOn=stimOutput, 
+                              outputsOn=stimOutput,
                               serialOut=serialOutput)
-            self.sm.add_state(name='output5Off', statetimer = 0.5 * isi,
+            self.sm.add_state(name='output5Off', statetimer = isi,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=stimOutput) 
+                              outputsOff=stimOutput)
+        elif stimType == 'SineLaser':
+            if (laserOnset<0) and (laserOffset<=0):
+                #  SOUND:  ........|XXXXXXX|........
+                #  LASER:  ...ooo...................
+                self.sm.add_state(name='startTrial', statetimer=0,
+                                  transitions={'Tup':'delayDuringLaser'})
+                self.sm.add_state(name='delayDuringLaser', statetimer=laserDuration,
+                                  transitions={'Tup':'delayPostLaser'},
+                                  outputsOn=laserOutput)
+                self.sm.add_state(name='delayPostLaser', statetimer=-laserOnset-laserDuration,
+                                  transitions={'Tup':'stimulusOn'},
+                                  outputsOff=laserOutput)
+                self.sm.add_state(name='stimulusOn', statetimer=stimDur,
+                                  transitions={'Tup':'stimulusOff'},
+                                  outputsOn=stimOutput,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='stimulusOff', statetimer=isi,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=stimOutput)
+            elif (laserOnset<0) and (laserOffset<=stimDur):
+                #  SOUND:  ........|XXXXXXX|........
+                #  LASER:  ...ooooooooo.............
+                self.sm.add_state(name='startTrial', statetimer=0,
+                                  transitions={'Tup':'delayDuringLaser'})
+                self.sm.add_state(name='delayDuringLaser', statetimer=-laserOnset,
+                                  transitions={'Tup':'stimulusOn'},
+                                  outputsOn=laserOutput)
+                self.sm.add_state(name='stimulusOn', statetimer=laserOffset,
+                                  transitions={'Tup':'playStimPostLaser'},
+                                  outputsOn=stimOutput,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='playStimPostLaser', statetimer=stimDur-laserOffset,
+                                  transitions={'Tup':'stimulusOff'},
+                                  outputsOff=laserOutput)
+                self.sm.add_state(name='stimulusOff', statetimer=isi,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=stimOutput)
+            elif (laserOnset<0) and (laserOffset>stimDur):
+                #  SOUND:  ........|XXXXXXX|........
+                #  LASER:  ....ooooooooooooooooo....
+                self.sm.add_state(name='startTrial', statetimer=0,
+                                  transitions={'Tup':'delayDuringLaser'})
+                self.sm.add_state(name='delayDuringLaser', statetimer=-laserOnset,
+                                  transitions={'Tup':'stimulusOn'},
+                                  outputsOn=laserOutput)
+                self.sm.add_state(name='stimulusOn', statetimer=stimDur,
+                                  transitions={'Tup':'laserAfterStim'},
+                                  outputsOn=stimOutput,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='laserAfterStim', statetimer=laserOffset-stimDur,
+                                  transitions={'Tup':'laserOff'},
+                                  outputsOff=stimOutput)
+                self.sm.add_state(name='laserOff', statetimer=isi,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=laserOutput)
+            elif (laserOnset>=0) and (laserOnset<=stimDur) and (laserOffset<=stimDur):
+                #  SOUND:  ........|XXXXXXX|........
+                #  LASER:  ..........oooo...........
+                self.sm.add_state(name='startTrial', statetimer=0,
+                                  transitions={'Tup':'stimulusOn'})
+                self.sm.add_state(name='stimulusOn', statetimer=laserOnset,
+                                  transitions={'Tup':'playStimDuringLaser'},
+                                  outputsOn=stimOutput,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='playStimDuringLaser', statetimer=laserDuration,
+                                  transitions={'Tup':'playStimPostLaser'},
+                                  outputsOn=laserOutput)
+                self.sm.add_state(name='playStimPostLaser', statetimer=stimDur-laserOffset,
+                                  transitions={'Tup':'stimulusOff'},
+                                  outputsOff=laserOutput)
+                self.sm.add_state(name='stimulusOff', statetimer=isi,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=stimOutput)
+            elif (laserOnset>=0) and (laserOnset<=stimDur) and (laserOffset>stimDur):
+                #  SOUND:  ........|XXXXXXX|........
+                #  LASER:  ............oooooooooo...
+                self.sm.add_state(name='startTrial', statetimer=0,
+                                  transitions={'Tup':'stimulusOn'})
+                self.sm.add_state(name='stimulusOn', statetimer=laserOnset,
+                                  transitions={'Tup':'playStimDuringLaser'},
+                                  outputsOn=stimOutput,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='playStimDuringLaser', statetimer=stimDur-laserOnset,
+                                  transitions={'Tup':'LaserAfterStim'},
+                                  outputsOn=laserOutput)
+                self.sm.add_state(name='LaserAfterStim', statetimer=laserOffset-stimDur,
+                                  transitions={'Tup':'laserOff'},
+                                  outputsOff=stimOutput)
+                self.sm.add_state(name='laserOff', statetimer=isi,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=laserOutput)
+            elif (laserOnset>stimDur):
+                #  SOUND:  ........|XXXXXXX|........
+                #  LASER:  ...................oooo..
+                self.sm.add_state(name='startTrial', statetimer=0,
+                                  transitions={'Tup':'stimulusOn'})
+                self.sm.add_state(name='stimulusOn', statetimer=stimDur,
+                                  transitions={'Tup':'stimulusOff'},
+                                  outputsOn=stimOutput,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='stimulusOff', statetimer=laserOnset-stimDur,
+                                  transitions={'Tup':'LaserOn'},
+                                  outputsOff=stimOutput)
+                self.sm.add_state(name='LaserOn', statetimer=laserDuration,
+                                  transitions={'Tup':'laserOff'},
+                                  outputsOn=laserOutput)
+                self.sm.add_state(name='laserOff', statetimer=isi,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=laserOutput)
         else:
-            self.sm.add_state(name='startTrial', statetimer = 0.5 * isi,  
-                              transitions={'Tup':'output1On'})
-            self.sm.add_state(name='output1On', statetimer=stimDur, 
-                              transitions={'Tup':'output1Off'},
-                              outputsOn=stimOutput, 
-                              serialOut=serialOutput)
-            self.sm.add_state(name='output1Off', statetimer = 0.5 * isi,
-                              transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=stimOutput) 
-
-        
+            self.sm.add_state(name='startTrial', statetimer = 0,
+                          transitions={'Tup':'output1On'})
+            self.sm.add_state(name='output1On', statetimer=stimDur,
+                          transitions={'Tup':'output1Off'},
+                          outputsOn=stimOutput,
+                          serialOut=serialOutput)
+            self.sm.add_state(name='output1Off', statetimer = isi,
+                          transitions={'Tup':'readyForNextTrial'},
+                          outputsOff=stimOutput)
         self.dispatcherModel.set_state_matrix(self.sm)
         self.dispatcherModel.ready_to_start_trial()
 
     #def _timer_tic(self, etime, lastEvents):
     #    #timer_tic is sent whenever the dispatcher gets information from the Arduino
-    #    pass 
-    
+    #    pass
+
     def save_to_file(self):
         '''Triggered by button-clicked signal'''
         self.saveData.to_file([self.params, self.dispatcherModel,
@@ -394,7 +545,9 @@ class Paradigm(QtGui.QMainWindow):
     def clear_tone_list(self):
         '''Allow the user to clear the list of tones and assign new tones from the GUI'''
 
+        print self.soundParamList
         self.soundParamList = []
+        print self.soundParamList
 
     def closeEvent(self, event):
         '''
@@ -407,4 +560,3 @@ class Paradigm(QtGui.QMainWindow):
 
 if __name__ == "__main__":
     (app,paradigm) = paramgui.create_app(Paradigm)
-

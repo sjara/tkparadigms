@@ -233,6 +233,18 @@ pardict.update(frequencySet6to19)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 adap061 = pardict.copy()
 
+pardict = {'subject': 'adap067', 'experimenter': 'jardon', 'trainer': ''}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+pardict.update({'delayToTargetMean':0.15,'targetIntensityMode':'fixed'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap067 = pardict.copy()
+
+pardict = {'subject': 'adap071', 'experimenter': 'jardon', 'trainer': ''}
+pardict.update(psyCurveMidBound)
+pardict.update(frequencySet6to19)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+adap071 = pardict.copy()
 
 
 # -- Go-signal mice (and some moved to reward-change) --

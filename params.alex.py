@@ -41,19 +41,44 @@ adap061 = pardict.copy()
 
 
 # ephys params
-subject = 'dapa003'
+subject = 'dapa012'
+
+tuningTest = {'stimDur':0.1,
+               'minInt':60,
+               'maxInt':60,
+               'numInt':1,
+               'isiMean':0.6,
+               'isiHalfRange':0.1,
+               'stimType' : 'Sine',
+               'subject':subject,
+               'experimenter' : 'alex'}
 
 tuningCurve = {'stimDur':0.1,
-           'minInt':50,
-           'maxInt':70,
-	       'numInt':2,
-           'stimType' : 'Chord',
-           'subject':subject,
-           'experimenter' : 'alex'}
+               'minInt':50,
+               'maxInt':70,
+               'numInt':2,
+               'isiMean':0.8,
+               'isiHalfRange':0.1,
+               'stimType' : 'Sine',
+               'subject':subject,
+               'experimenter' : 'alex'}
 
-noisetest = {'stimDur':0.1, 
-             'isiMin':0.5,
-             'isiMax':1,
+laserTuningCurve = {'stimDur':0.1,
+                    'minInt':50,
+                    'maxInt':70,
+                    'numInt':2,
+                    'isiMean':0.8,
+                    'isiHalfRange':0.1,
+                    'stimType':'SineLaser',
+                    'laserProbability':0.5,
+                    'laserDuration':0.2,
+                    'laserOnset':-0.05,
+                    'subject':subject,
+                    'experimenter':'alex'}
+
+noisetest = {'stimDur':0.1,
+             'isiMean':0.9,
+             'isiHalfRange':0.01,
              'randomMode':'Ordered',
              'soundMode':'Noise',
              'minInt':70,
