@@ -22,22 +22,26 @@ class Paradigm(templates.ParadigmGoNoGo):
                                                             units='s',group='Timing parameters')
         self.params['stimPostDuration'] = paramgui.NumericParam('Stim post duration',value=0.8,
                                                             units='s',group='Timing parameters')
-        self.params['timeOut'] = paramgui.NumericParam('Time out duration',value=2,
+        self.params['timeOut'] = paramgui.NumericParam('Time out duration',value=2,enabled=False,
                                                        units='s',group='Timing parameters')
         self.params['interTrialInterval'] = paramgui.NumericParam('Inter-trial interval',value=1,
                                                        units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
 
-        self.params['stimPreFreq'] = paramgui.NumericParam('Stim pre freq',value=6000,
+        self.params['freq1'] = paramgui.NumericParam('Freq 1',value=9000,
                                                             units='Hz',group='Sound parameters')
-        self.params['stimPostFreq'] = paramgui.NumericParam('Stim post freq',value=4000,
+        self.params['freq2'] = paramgui.NumericParam('Freq 2',value=4000,
+                                                            units='Hz',group='Sound parameters')
+        self.params['stimPreFreq'] = paramgui.NumericParam('Stim pre freq',value=0,enabled=False,
+                                                            units='Hz',group='Sound parameters')
+        self.params['stimPostFreq'] = paramgui.NumericParam('Stim post freq',value=0,enabled=False,
                                                             units='Hz',group='Sound parameters')
         self.params['stimIntensity'] = paramgui.NumericParam('Intensity',value=40, units='dB-SPL',
                                                             enabled=True, group='Sound parameters')
         self.params['stimPreAmplitude'] = paramgui.NumericParam('Stim pre amplitude', value=0.0,
                                                             units='[0-1]',decimals=4,
                                                             enabled=False,group='Sound parameters')
-        self.params['stimPostAmplitude'] = paramgui.NumericParam('Stim oost amplitude', value=0.0,
+        self.params['stimPostAmplitude'] = paramgui.NumericParam('Stim post amplitude', value=0.0,
                                                             units='[0-1]',decimals=4,
                                                             enabled=False,group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
@@ -106,6 +110,16 @@ class Paradigm(templates.ParadigmGoNoGo):
 
 
     def prepare_next_trial(self, nextTrial):
+        
+        freq1 = self.params['freq1'].get_value()
+        freq2 = self.params['freq2'].get_value()
+        if np.random.randint(2):
+            self.params['stimPreFreq'].set_value(freq1)
+            self.params['stimPostFreq'].set_value(freq2)
+        else:
+            self.params['stimPreFreq'].set_value(freq2)
+            self.params['stimPostFreq'].set_value(freq1)
+
         stimPreDur = self.params['stimPreDuration'].get_value()
         stimPostDur = self.params['stimPostDuration'].get_value()
         timeOut = self.params['timeOut'].get_value()
@@ -116,8 +130,13 @@ class Paradigm(templates.ParadigmGoNoGo):
                           outputsOff=['centerLED', 'rightLED'])
         self.sm.add_state(name='waitForRun', statetimer=LONGTIME,
                           transitions={'Win':'playPreStimulus'})
+        '''
         self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
                           transitions={'Tup':'playPostStimulus', 'Wout':'stopStimulus'},
+                          serialOut=self.stimPreSoundID)
+        '''
+        self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
+                          transitions={'Tup':'playPostStimulus'},
                           serialOut=self.stimPreSoundID)
         self.sm.add_state(name='playPostStimulus', statetimer=0.1,
                           transitions={'Tup':'waterDelivery'},
