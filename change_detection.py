@@ -11,12 +11,6 @@ from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
 from taskontrol.settings import rigsettings
 
-'''
-from taskontrol.plugins import performancedynamicsplot
-from taskontrol.plugins import soundclient
-from taskontrol.plugins import speakercalibration
-import time
-'''
 
 LONGTIME = 100
 
@@ -28,6 +22,10 @@ class Paradigm(templates.ParadigmGoNoGo):
                                                             units='s',group='Timing parameters')
         self.params['stimPostDuration'] = paramgui.NumericParam('Stim post duration',value=0.8,
                                                             units='s',group='Timing parameters')
+        self.params['timeOut'] = paramgui.NumericParam('Time out duration',value=2,
+                                                       units='s',group='Timing parameters')
+        self.params['interTrialInterval'] = paramgui.NumericParam('Inter-trial interval',value=1,
+                                                       units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
 
         self.params['stimPreFreq'] = paramgui.NumericParam('Stim pre freq',value=6000,
@@ -110,6 +108,8 @@ class Paradigm(templates.ParadigmGoNoGo):
     def prepare_next_trial(self, nextTrial):
         stimPreDur = self.params['stimPreDuration'].get_value()
         stimPostDur = self.params['stimPostDuration'].get_value()
+        timeOut = self.params['timeOut'].get_value()
+        interTrialInterval = self.params['interTrialInterval'].get_value()
         self.sm.reset_transitions()
         self.sm.add_state(name='startTrial', statetimer=0,
                           transitions={'Tup':'waitForRun'},
@@ -117,7 +117,7 @@ class Paradigm(templates.ParadigmGoNoGo):
         self.sm.add_state(name='waitForRun', statetimer=LONGTIME,
                           transitions={'Win':'playPreStimulus'})
         self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
-                          transitions={'Tup':'playPostStimulus'},
+                          transitions={'Tup':'playPostStimulus', 'Wout':'stopStimulus'},
                           serialOut=self.stimPreSoundID)
         self.sm.add_state(name='playPostStimulus', statetimer=0.1,
                           transitions={'Tup':'waterDelivery'},
@@ -125,7 +125,10 @@ class Paradigm(templates.ParadigmGoNoGo):
         self.sm.add_state(name='waterDelivery', statetimer=0.04,
                           transitions={'Tup':'interTrialInterval'},
                           outputsOn=['rightWater'])
-        self.sm.add_state(name='interTrialInterval', statetimer=stimPostDur-0.1+1,
+        self.sm.add_state(name='stopStimulus', statetimer=timeOut,
+                          transitions={'Tup':'interTrialInterval'},
+                          serialOut=soundclient.STOP_ALL_SOUNDS)
+        self.sm.add_state(name='interTrialInterval', statetimer=interTrialInterval+stimPostDur,
                           transitions={'Tup':'readyForNextTrial'},
                           outputsOff=['rightWater'])
         self.prepare_sounds()
