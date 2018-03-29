@@ -6,10 +6,12 @@ import time
 import numpy as np
 from PySide import QtGui
 from taskontrol.core import paramgui
+from taskontrol.core import arraycontainer
 from taskontrol.plugins import templates
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
 from taskontrol.settings import rigsettings
+
 
 
 LONGTIME = 100
@@ -46,6 +48,14 @@ class Paradigm(templates.ParadigmGoNoGo):
                                                             enabled=False,group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
+        self.params['nValid'] = paramgui.NumericParam('N valid',value=0,
+                                                      units='',enabled=False,
+                                                      group='Report')
+        self.params['nRewarded'] = paramgui.NumericParam('N rewarded',value=0,
+                                                         units='',enabled=False,
+                                                         group='Report')
+        reportParams = self.params.layout_group('Report')
+
         # -- Add graphical widgets to main window --
         self.centralWidget = QtGui.QWidget()
         layoutMain = QtGui.QHBoxLayout()
@@ -55,15 +65,35 @@ class Paradigm(templates.ParadigmGoNoGo):
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
 
+        layoutCol1.addWidget(self.sessionInfo)
         layoutCol1.addWidget(self.saveData)
-
         layoutCol1.addWidget(self.dispatcherView)
-        layoutCol2.addWidget(self.sessionInfo)
+
         layoutCol2.addWidget(timingParams)
         layoutCol2.addWidget(soundParams)
+        layoutCol2.addWidget(reportParams)
 
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
+
+        # -- Add variables for storing results --
+        maxNtrials = 4000 # Preallocating space for each vector makes things easier
+        self.results = arraycontainer.Container()
+        #self.results.labels['rewardSide'] = {'left':0,'right':1}
+        #self.results['rewardSide'] = np.random.randint(2,size=maxNtrials)
+        #self.results.labels['choice'] = {'left':0,'right':1,'none':2}
+        #self.results['choice'] = np.empty(maxNtrials,dtype=int)
+        self.results.labels['outcome'] = {'hit':1, 'miss':2, 'falseAlarm':3,'correctRejection':4,
+                                          'invalid':5, 'free':6, 'aborted':7}
+        self.results['outcome'] = np.empty(maxNtrials,dtype=int)
+        # Saving as bool creates an 'enum' vector, so I'm saving as 'int'
+        self.results['valid'] = np.zeros(maxNtrials,dtype='int8') # redundant but useful
+        self.results['timeTrialStart'] = np.empty(maxNtrials,dtype=float)
+        self.results['timeRun'] = np.empty(maxNtrials,dtype=float)
+        self.results['timeStop'] = np.empty(maxNtrials,dtype=float)
+        self.results['timePreStim'] = np.empty(maxNtrials,dtype=float)
+        self.results['timePostStim'] = np.empty(maxNtrials,dtype=float)
+        #self.results['timeLick'] = np.empty(maxNtrials,dtype=float)
 
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
@@ -113,7 +143,11 @@ class Paradigm(templates.ParadigmGoNoGo):
 
 
     def prepare_next_trial(self, nextTrial):
-        
+        # -- Calculate results from last trial (update outcome, choice, etc) --
+        if nextTrial>0:
+            self.params.update_history()
+            self.calculate_results(nextTrial-1)
+
         freq1 = self.params['freq1'].get_value()
         freq2 = self.params['freq2'].get_value()
         if np.random.randint(2):
@@ -134,7 +168,7 @@ class Paradigm(templates.ParadigmGoNoGo):
         self.sm.add_state(name='waitForRun', statetimer=LONGTIME,
                           transitions={'Win':'playPreStimulus'})
         self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
-                          transitions={'Tup':'playPostStimulus', 'Wout':'stopStimulus'},
+                          transitions={'Tup':'playPostStimulus', 'Wout':'invalid'},
                           serialOut=self.stimPreSoundID)
         '''
         self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
@@ -142,21 +176,47 @@ class Paradigm(templates.ParadigmGoNoGo):
                           serialOut=self.stimPreSoundID)
         '''
         self.sm.add_state(name='playPostStimulus', statetimer=0.1,
-                          transitions={'Tup':'waterDelivery'},
+                          transitions={'Tup':'free'},
                           serialOut=self.stimPostSoundID)
-        self.sm.add_state(name='waterDelivery', statetimer=0.04,
-                          transitions={'Tup':'interTrialInterval'},
+        self.sm.add_state(name='free', statetimer=0,
+                          transitions={'Tup':'reward'})
+        self.sm.add_state(name='reward', statetimer=0.04,
+                          transitions={'Tup':'stopReward'},
                           outputsOn=['rightWater'])
+        self.sm.add_state(name='stopReward', statetimer=0,
+                          transitions={'Tup':'interTrialInterval'},
+                          outputsOff=['rightWater'])
+        self.sm.add_state(name='invalid', statetimer=0,
+                          transitions={'Tup':'stopStimulus'})
         self.sm.add_state(name='stopStimulus', statetimer=timeOut,
                           transitions={'Tup':'interTrialInterval'},
                           serialOut=soundclient.STOP_ALL_SOUNDS)
         self.sm.add_state(name='interTrialInterval', statetimer=interTrialInterval+stimPostDur,
-                          transitions={'Tup':'readyForNextTrial'},
-                          outputsOff=['rightWater'])
+                          transitions={'Tup':'readyForNextTrial'})
         self.prepare_sounds()
 
         self.dispatcherModel.set_state_matrix(self.sm)
         self.dispatcherModel.ready_to_start_trial()
+        #print(self.sm) ### DEBUG
+
+
+    def calculate_results(self,trialIndex):
+        eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
+    	# -- Check if it was a valid trial --
+    	if self.sm.statesNameToIndex['playPreStimulus'] in eventsThisTrial[:,2]:
+        	self.params['nValid'].add(1)
+                self.results['valid'][trialIndex] = 1
+
+        lastEvent = eventsThisTrial[-1,:]
+        if lastEvent[1]==-1 and lastEvent[2]==0:
+            self.results['outcome'][trialIndex] = self.results.labels['outcome']['aborted']
+        elif self.sm.statesNameToIndex['free'] in eventsThisTrial[:,2]:
+            self.results['outcome'][trialIndex] = self.results.labels['outcome']['free']
+            self.params['nRewarded'].add(1)
+        elif self.sm.statesNameToIndex['invalid'] in eventsThisTrial[:,2]:
+            self.results['outcome'][trialIndex] = self.results.labels['outcome']['invalid']
+
+        #print('--- OUTCOME [{}]: {} ---'.format(trialIndex,self.results['outcome'][trialIndex])) # DEBUG
 
 
 if __name__ == '__main__':
