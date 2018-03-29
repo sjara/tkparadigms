@@ -22,7 +22,7 @@ class Paradigm(templates.ParadigmGoNoGo):
                                                             units='s',group='Timing parameters')
         self.params['stimPostDuration'] = paramgui.NumericParam('Stim post duration',value=0.8,
                                                             units='s',group='Timing parameters')
-        self.params['timeOut'] = paramgui.NumericParam('Time out duration',value=2,enabled=False,
+        self.params['timeOut'] = paramgui.NumericParam('Time out duration',value=2,
                                                        units='s',group='Timing parameters')
         self.params['interTrialInterval'] = paramgui.NumericParam('Inter-trial interval',value=1,
                                                        units='s',group='Timing parameters')
@@ -64,6 +64,9 @@ class Paradigm(templates.ParadigmGoNoGo):
 
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
+
+        # -- Load parameters from a file --
+        self.params.from_file(paramfile,paramdictname)
 
         # -- Load speaker calibration --
         self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
@@ -130,7 +133,6 @@ class Paradigm(templates.ParadigmGoNoGo):
                           outputsOff=['centerLED', 'rightLED'])
         self.sm.add_state(name='waitForRun', statetimer=LONGTIME,
                           transitions={'Win':'playPreStimulus'})
-        '''
         self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
                           transitions={'Tup':'playPostStimulus', 'Wout':'stopStimulus'},
                           serialOut=self.stimPreSoundID)
@@ -138,6 +140,7 @@ class Paradigm(templates.ParadigmGoNoGo):
         self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
                           transitions={'Tup':'playPostStimulus'},
                           serialOut=self.stimPreSoundID)
+        '''
         self.sm.add_state(name='playPostStimulus', statetimer=0.1,
                           transitions={'Tup':'waterDelivery'},
                           serialOut=self.stimPostSoundID)
