@@ -84,7 +84,7 @@ class Paradigm(templates.ParadigmGoNoGo):
         #self.results.labels['choice'] = {'left':0,'right':1,'none':2}
         #self.results['choice'] = np.empty(maxNtrials,dtype=int)
         self.results.labels['outcome'] = {'hit':1, 'miss':2, 'falseAlarm':3,'correctRejection':4,
-                                          'invalid':5, 'free':6, 'aborted':7}
+                                          'earlyStop':5, 'freeReward':6, 'aborted':7}
         self.results['outcome'] = np.empty(maxNtrials,dtype=int)
         # Saving as bool creates an 'enum' vector, so I'm saving as 'int'
         self.results['valid'] = np.zeros(maxNtrials,dtype='int8') # redundant but useful
@@ -168,17 +168,12 @@ class Paradigm(templates.ParadigmGoNoGo):
         self.sm.add_state(name='waitForRun', statetimer=LONGTIME,
                           transitions={'Win':'playPreStimulus'})
         self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
-                          transitions={'Tup':'playPostStimulus', 'Wout':'invalid'},
+                          transitions={'Tup':'playPostStimulus', 'Wout':'earlyStop'},
                           serialOut=self.stimPreSoundID)
-        '''
-        self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
-                          transitions={'Tup':'playPostStimulus'},
-                          serialOut=self.stimPreSoundID)
-        '''
         self.sm.add_state(name='playPostStimulus', statetimer=0.1,
-                          transitions={'Tup':'free'},
+                          transitions={'Tup':'freeReward'},
                           serialOut=self.stimPostSoundID)
-        self.sm.add_state(name='free', statetimer=0,
+        self.sm.add_state(name='freeReward', statetimer=0,
                           transitions={'Tup':'reward'})
         self.sm.add_state(name='reward', statetimer=0.04,
                           transitions={'Tup':'stopReward'},
@@ -186,11 +181,11 @@ class Paradigm(templates.ParadigmGoNoGo):
         self.sm.add_state(name='stopReward', statetimer=0,
                           transitions={'Tup':'interTrialInterval'},
                           outputsOff=['rightWater'])
-        self.sm.add_state(name='invalid', statetimer=0,
-                          transitions={'Tup':'stopStimulus'})
-        self.sm.add_state(name='stopStimulus', statetimer=timeOut,
-                          transitions={'Tup':'interTrialInterval'},
+        self.sm.add_state(name='earlyStop', statetimer=0,
+                          transitions={'Tup':'punish'},
                           serialOut=soundclient.STOP_ALL_SOUNDS)
+        self.sm.add_state(name='punish', statetimer=timeOut,
+                          transitions={'Tup':'interTrialInterval'})
         self.sm.add_state(name='interTrialInterval', statetimer=interTrialInterval+stimPostDur,
                           transitions={'Tup':'readyForNextTrial'})
         self.prepare_sounds()
@@ -203,18 +198,18 @@ class Paradigm(templates.ParadigmGoNoGo):
     def calculate_results(self,trialIndex):
         eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
     	# -- Check if it was a valid trial --
-    	if self.sm.statesNameToIndex['playPreStimulus'] in eventsThisTrial[:,2]:
+    	if self.sm.statesNameToIndex['playPostStimulus'] in eventsThisTrial[:,2]:
         	self.params['nValid'].add(1)
                 self.results['valid'][trialIndex] = 1
 
         lastEvent = eventsThisTrial[-1,:]
         if lastEvent[1]==-1 and lastEvent[2]==0:
             self.results['outcome'][trialIndex] = self.results.labels['outcome']['aborted']
-        elif self.sm.statesNameToIndex['free'] in eventsThisTrial[:,2]:
-            self.results['outcome'][trialIndex] = self.results.labels['outcome']['free']
+        elif self.sm.statesNameToIndex['freeReward'] in eventsThisTrial[:,2]:
+            self.results['outcome'][trialIndex] = self.results.labels['outcome']['freeReward']
             self.params['nRewarded'].add(1)
-        elif self.sm.statesNameToIndex['invalid'] in eventsThisTrial[:,2]:
-            self.results['outcome'][trialIndex] = self.results.labels['outcome']['invalid']
+        elif self.sm.statesNameToIndex['earlyStop'] in eventsThisTrial[:,2]:
+            self.results['outcome'][trialIndex] = self.results.labels['outcome']['earlyStop']
 
         #print('--- OUTCOME [{}]: {} ---'.format(trialIndex,self.results['outcome'][trialIndex])) # DEBUG
 
