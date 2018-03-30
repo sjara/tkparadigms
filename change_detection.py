@@ -20,13 +20,18 @@ class Paradigm(templates.ParadigmGoNoGo):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(Paradigm, self).__init__(parent)
 
-        self.params['stimPreDuration'] = paramgui.NumericParam('Stim pre duration',value=0.4,
+        self.params['stimPreDurationMean'] = paramgui.NumericParam('Stim pre duration mean',value=1.2,
                                                             units='s',group='Timing parameters')
+        self.params['stimPreDurationHalfRange'] = paramgui.NumericParam('+/-',value=0.6,
+                                                            units='s',group='Timing parameters')
+        self.params['stimPreDuration'] = paramgui.NumericParam('Stim pre duration',value=0,
+                                                               enabled=False, decimals=3,
+                                                               units='s',group='Timing parameters')
         self.params['stimPostDuration'] = paramgui.NumericParam('Stim post duration',value=0.8,
-                                                            units='s',group='Timing parameters')
-        self.params['timeOut'] = paramgui.NumericParam('Time out duration',value=2,
+                                                                units='s',group='Timing parameters')
+        self.params['timeOut'] = paramgui.NumericParam('Time out duration',value=0,
                                                        units='s',group='Timing parameters')
-        self.params['interTrialInterval'] = paramgui.NumericParam('Inter-trial interval',value=1,
+        self.params['interTrialInterval'] = paramgui.NumericParam('Inter-trial interval',value=0,
                                                        units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
 
@@ -147,6 +152,12 @@ class Paradigm(templates.ParadigmGoNoGo):
         if nextTrial>0:
             self.params.update_history()
             self.calculate_results(nextTrial-1)
+
+        # Set stim pre duration
+        randNum = (2*np.random.random(1)[0]-1) # In range [-1,1)
+        stimPreDuration = self.params['stimPreDurationMean'].get_value() + \
+            self.params['stimPreDurationHalfRange'].get_value()*randNum
+        self.params['stimPreDuration'].set_value(stimPreDuration)
 
         freq1 = self.params['freq1'].get_value()
         freq2 = self.params['freq2'].get_value()
