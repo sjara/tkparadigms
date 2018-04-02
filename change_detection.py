@@ -53,6 +53,12 @@ class Paradigm(templates.ParadigmGoNoGo):
                                                             enabled=False,group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
+        self.params['outcomeMode'] = paramgui.MenuParam('Outcome mode',
+                                                        ['on_run','on_stim_change',
+                                                         'on_correct_stop'],
+                                                         value=2, group='Task modes')
+        taskModes = self.params.layout_group('Task modes')
+        
         self.params['nValid'] = paramgui.NumericParam('N valid',value=0,
                                                       units='',enabled=False,
                                                       group='Report')
@@ -76,6 +82,7 @@ class Paradigm(templates.ParadigmGoNoGo):
 
         layoutCol2.addWidget(timingParams)
         layoutCol2.addWidget(soundParams)
+        layoutCol2.addWidget(taskModes)
         layoutCol2.addWidget(reportParams)
 
         self.centralWidget.setLayout(layoutMain)
@@ -150,8 +157,8 @@ class Paradigm(templates.ParadigmGoNoGo):
     def prepare_next_trial(self, nextTrial):
         # -- Calculate results from last trial (update outcome, choice, etc) --
         if nextTrial>0:
-            self.params.update_history()
             self.calculate_results(nextTrial-1)
+            self.params.update_history()
 
         # Set stim pre duration
         randNum = (2*np.random.random(1)[0]-1) # In range [-1,1)
@@ -172,33 +179,68 @@ class Paradigm(templates.ParadigmGoNoGo):
         stimPostDur = self.params['stimPostDuration'].get_value()
         timeOut = self.params['timeOut'].get_value()
         interTrialInterval = self.params['interTrialInterval'].get_value()
+        outcomeMode = self.params['outcomeMode'].get_string()
         self.sm.reset_transitions()
-        self.sm.add_state(name='startTrial', statetimer=0,
-                          transitions={'Tup':'waitForRun'},
-                          outputsOff=['centerLED', 'rightLED'])
-        self.sm.add_state(name='waitForRun', statetimer=LONGTIME,
-                          transitions={'Win':'playPreStimulus'})
-        self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
-                          transitions={'Tup':'playPostStimulus', 'Wout':'earlyStop'},
-                          serialOut=self.stimPreSoundID)
-        self.sm.add_state(name='playPostStimulus', statetimer=0.1,
-                          transitions={'Tup':'freeReward'},
-                          serialOut=self.stimPostSoundID)
-        self.sm.add_state(name='freeReward', statetimer=0,
-                          transitions={'Tup':'reward'})
-        self.sm.add_state(name='reward', statetimer=0.04,
-                          transitions={'Tup':'stopReward'},
-                          outputsOn=['rightWater'])
-        self.sm.add_state(name='stopReward', statetimer=0,
-                          transitions={'Tup':'interTrialInterval'},
-                          outputsOff=['rightWater'])
-        self.sm.add_state(name='earlyStop', statetimer=0,
-                          transitions={'Tup':'punish'},
-                          serialOut=soundclient.STOP_ALL_SOUNDS)
-        self.sm.add_state(name='punish', statetimer=timeOut,
-                          transitions={'Tup':'interTrialInterval'})
-        self.sm.add_state(name='interTrialInterval', statetimer=interTrialInterval+stimPostDur,
-                          transitions={'Tup':'readyForNextTrial'})
+        if outcomeMode == 'on_run':
+            raise ValueError('Option on_run is not implemented yet.')
+        elif outcomeMode == 'on_stim_change':
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'waitForRun'},
+                              outputsOff=['centerLED', 'rightLED'])
+            self.sm.add_state(name='waitForRun', statetimer=LONGTIME,
+                              transitions={'Win':'playPreStimulus'})
+            self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
+                              transitions={'Tup':'playPostStimulus', 'Wout':'earlyStop'},
+                              serialOut=self.stimPreSoundID)
+            self.sm.add_state(name='playPostStimulus', statetimer=0.1,
+                              transitions={'Tup':'freeReward'},
+                              serialOut=self.stimPostSoundID)
+            self.sm.add_state(name='freeReward', statetimer=0,
+                              transitions={'Tup':'reward'})
+            self.sm.add_state(name='reward', statetimer=0.04,
+                              transitions={'Tup':'stopReward'},
+                              outputsOn=['rightWater'])
+            self.sm.add_state(name='stopReward', statetimer=0,
+                              transitions={'Tup':'interTrialInterval'},
+                              outputsOff=['rightWater'])
+            self.sm.add_state(name='earlyStop', statetimer=0,
+                              transitions={'Tup':'punish'},
+                              serialOut=soundclient.STOP_ALL_SOUNDS)
+            self.sm.add_state(name='punish', statetimer=timeOut,
+                              transitions={'Tup':'interTrialInterval'})
+            self.sm.add_state(name='interTrialInterval', statetimer=interTrialInterval+stimPostDur,
+                              transitions={'Tup':'readyForNextTrial'})
+        elif outcomeMode == 'on_correct_stop':
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'waitForRun'},
+                              outputsOff=['centerLED', 'rightLED'])
+            self.sm.add_state(name='waitForRun', statetimer=LONGTIME,
+                              transitions={'Win':'playPreStimulus'})
+            self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
+                              transitions={'Tup':'playPostStimulus', 'Wout':'falseAlarm'},
+                              serialOut=self.stimPreSoundID)
+            self.sm.add_state(name='playPostStimulus', statetimer=stimPostDur,
+                              transitions={'Tup':'miss', 'Wout':'hit'},
+                              serialOut=self.stimPostSoundID)
+            self.sm.add_state(name='hit', statetimer=0,
+                              transitions={'Tup':'reward'})
+            self.sm.add_state(name='reward', statetimer=0.04,
+                              transitions={'Tup':'stopReward'},
+                              outputsOn=['rightWater'], serialOut=soundclient.STOP_ALL_SOUNDS)
+            self.sm.add_state(name='stopReward', statetimer=0,
+                              transitions={'Tup':'interTrialInterval'},
+                              outputsOff=['rightWater'])
+            self.sm.add_state(name='miss', statetimer=0,
+                              transitions={'Tup':'punish'},
+                              serialOut=soundclient.STOP_ALL_SOUNDS)
+            self.sm.add_state(name='falseAlarm', statetimer=0,
+                              transitions={'Tup':'punish'},
+                              serialOut=soundclient.STOP_ALL_SOUNDS)
+            self.sm.add_state(name='punish', statetimer=timeOut,
+                              transitions={'Tup':'interTrialInterval'})
+            self.sm.add_state(name='interTrialInterval', statetimer=interTrialInterval+stimPostDur,
+                              transitions={'Tup':'readyForNextTrial'})
+
         self.prepare_sounds()
 
         self.dispatcherModel.set_state_matrix(self.sm)
@@ -214,13 +256,26 @@ class Paradigm(templates.ParadigmGoNoGo):
                 self.results['valid'][trialIndex] = 1
 
         lastEvent = eventsThisTrial[-1,:]
+        outcomeMode = self.params['outcomeMode'].get_string()
         if lastEvent[1]==-1 and lastEvent[2]==0:
             self.results['outcome'][trialIndex] = self.results.labels['outcome']['aborted']
-        elif self.sm.statesNameToIndex['freeReward'] in eventsThisTrial[:,2]:
-            self.results['outcome'][trialIndex] = self.results.labels['outcome']['freeReward']
-            self.params['nRewarded'].add(1)
-        elif self.sm.statesNameToIndex['earlyStop'] in eventsThisTrial[:,2]:
-            self.results['outcome'][trialIndex] = self.results.labels['outcome']['earlyStop']
+        else:
+            if outcomeMode == 'on_run':
+                raise ValueError('Option on_run is not implemented yet.')
+            elif outcomeMode == 'on_stim_change':
+                if self.sm.statesNameToIndex['freeReward'] in eventsThisTrial[:,2]:
+                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['freeReward']
+                    self.params['nRewarded'].add(1)
+                elif self.sm.statesNameToIndex['earlyStop'] in eventsThisTrial[:,2]:
+                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['earlyStop']
+            elif outcomeMode == 'on_correct_stop':
+                if self.sm.statesNameToIndex['hit'] in eventsThisTrial[:,2]:
+                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
+                    self.params['nRewarded'].add(1)
+                elif self.sm.statesNameToIndex['miss'] in eventsThisTrial[:,2]:
+                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
+                elif self.sm.statesNameToIndex['falseAlarm'] in eventsThisTrial[:,2]:
+                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
 
         #print('--- OUTCOME [{}]: {} ---'.format(trialIndex,self.results['outcome'][trialIndex])) # DEBUG
 
