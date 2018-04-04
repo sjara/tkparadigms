@@ -41,7 +41,7 @@ adap061 = pardict.copy()
 
 
 # ephys params
-subject = 'dapa012'
+subject = 'dapa013'
 
 tuningTest = {'stimDur':0.1,
                'minInt':60,
