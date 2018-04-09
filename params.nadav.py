@@ -27,6 +27,8 @@ bandEasySNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':
                'bandMode':'uniform', 'minBand':0.25, 'maxBand':1.0, 'numBands':2, 'includeWhite':'yes',
                'soundMode':'off_on_withdrawal','noiseMode':'max_only'}
 
+bilateralLaser = {'laserMode':'random'}
+
 # -- bandwidth mice --
 
 pardict = {'subject': 'band046', 'experimenter': 'nadav'}
@@ -51,6 +53,7 @@ band050 = pardict.copy()
 
 pardict = {'subject': 'band051', 'experimenter': 'nadav'}
 pardict.update(bandEasySNR)
+pardict.update(bilateralLaser)
 band051 = pardict.copy()
 
 pardict = {'subject': 'band052', 'experimenter': 'nadav'}
