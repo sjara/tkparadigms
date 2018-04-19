@@ -305,7 +305,7 @@ class Paradigm(templates.ParadigmGoNoGo):
             elif self.sm.statesNameToIndex['falseAlarm'] in statesThisTrial:
                 seqPos = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['falseAlarm'])
                 self.results['timeStop'][trialIndex] = eventsThisTrial[seqPos[0],0] if len(seqPos) else np.nan
-            elif self.sm.statesNameToIndex['falseAlarm'] in statesThisTrial:
+            elif self.sm.statesNameToIndex['miss'] in statesThisTrial:
                 self.results['timeStop'][trialIndex] = np.nan
 
         #print('--- OUTCOME [{}]: {} ---'.format(trialIndex,self.results['outcome'][trialIndex])) # DEBUG
