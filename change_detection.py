@@ -4,7 +4,11 @@ Change detection head-fixed task.
 
 import time
 import numpy as np
-from PySide import QtGui
+import sys
+if sys.platform=='darwin':
+    from qtpy import QtWidgets as QtGui
+else:
+    from PySide import QtGui
 from taskontrol.core import paramgui
 from taskontrol.core import arraycontainer
 from taskontrol.plugins import templates
@@ -58,7 +62,7 @@ class Paradigm(templates.ParadigmGoNoGo):
                                                          'on_correct_stop'],
                                                          value=2, group='Task modes')
         taskModes = self.params.layout_group('Task modes')
-        
+
         self.params['nValid'] = paramgui.NumericParam('N valid',value=0,
                                                       units='',enabled=False,
                                                       group='Report')
@@ -115,8 +119,8 @@ class Paradigm(templates.ParadigmGoNoGo):
         #self.spkNoiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_NOISE_CALIBRATION)
 
         # -- Connect to sound server and define sounds --
-        print 'Conecting to soundserver...'
-        print '***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****' ### DEBUG
+        print('Conecting to soundserver...')
+        print('***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****') ### DEBUG
         time.sleep(0.2)
         self.soundClient = soundclient.SoundClient()
         self.stimPreSoundID = 1
@@ -250,15 +254,25 @@ class Paradigm(templates.ParadigmGoNoGo):
 
     def calculate_results(self,trialIndex):
         eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
-    	# -- Check if it was a valid trial --
-    	if self.sm.statesNameToIndex['playPostStimulus'] in eventsThisTrial[:,2]:
-        	self.params['nValid'].add(1)
-                self.results['valid'][trialIndex] = 1
+        statesThisTrial = eventsThisTrial[:,2]
+        # -- Check if it was a valid trial --
+        if self.sm.statesNameToIndex['playPostStimulus'] in eventsThisTrial[:,2]:
+            self.params['nValid'].add(1)
+            self.results['valid'][trialIndex] = 1
+
+        # -- Find beginning of trial --
+        startTrialStateID = self.sm.statesNameToIndex['startTrial']
+        startTrialInd = np.flatnonzero(statesThisTrial==startTrialStateID)[0]
+        self.results['timeTrialStart'][trialIndex] = eventsThisTrial[startTrialInd,0]
 
         lastEvent = eventsThisTrial[-1,:]
         outcomeMode = self.params['outcomeMode'].get_string()
         if lastEvent[1]==-1 and lastEvent[2]==0:
             self.results['outcome'][trialIndex] = self.results.labels['outcome']['aborted']
+            self.results['timeRun'][trialIndex] = np.nan
+            self.results['timeStop'][trialIndex] = np.nan
+            self.results['timePreStim'][trialIndex] = np.nan
+            self.results['timePostStim'][trialIndex] = np.nan
         else:
             if outcomeMode == 'on_run':
                 raise ValueError('Option on_run is not implemented yet.')
@@ -276,9 +290,33 @@ class Paradigm(templates.ParadigmGoNoGo):
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
                 elif self.sm.statesNameToIndex['falseAlarm'] in eventsThisTrial[:,2]:
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
+            # --- Calculate times of events ---
+            #seqRun = self.sm.statesNameToIndex['playPreStimulus']
+            #seqPos = np.flatnonzero(utils.find_state_sequence(statesThisTrial,seqRun))
+            #timeValue = eventsThisTrial[seqPos[0]+1,0] if len(seqPos) else np.nan
+            seqPos = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['playPreStimulus'])
+            self.results['timeRun'][trialIndex] = eventsThisTrial[seqPos[0],0] if len(seqPos) else np.nan
+            self.results['timePreStim'][trialIndex] = eventsThisTrial[seqPos[0],0]
+            seqPos = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['playPostStimulus'])
+            self.results['timePostStim'][trialIndex] = eventsThisTrial[seqPos[0],0] if len(seqPos) else np.nan
+            if self.sm.statesNameToIndex['hit'] in statesThisTrial:
+                seqPos = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['hit'])
+                self.results['timeStop'][trialIndex] = eventsThisTrial[seqPos[0],0] if len(seqPos) else np.nan
+            elif self.sm.statesNameToIndex['falseAlarm'] in statesThisTrial:
+                seqPos = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['falseAlarm'])
+                self.results['timeStop'][trialIndex] = eventsThisTrial[seqPos[0],0] if len(seqPos) else np.nan
+            elif self.sm.statesNameToIndex['falseAlarm'] in statesThisTrial:
+                self.results['timeStop'][trialIndex] = np.nan
 
         #print('--- OUTCOME [{}]: {} ---'.format(trialIndex,self.results['outcome'][trialIndex])) # DEBUG
 
+'''
+        self.results['timeTrialStart'] = np.empty(maxNtrials,dtype=float)
+        self.results['timeRun'] = np.empty(maxNtrials,dtype=float)
+        self.results['timeStop'] = np.empty(maxNtrials,dtype=float)
+        self.results['timePreStim'] = np.empty(maxNtrials,dtype=float)
+        self.results['timePostStim'] = np.empty(maxNtrials,dtype=float)
+'''
 
 if __name__ == '__main__':
     (app,paradigm) = paramgui.create_app(Paradigm)
