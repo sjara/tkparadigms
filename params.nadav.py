@@ -65,7 +65,7 @@ pardict.update(bandEasySNR)
 band053 = pardict.copy()
 
 pardict = {'subject': 'band065', 'experimenter': 'nadav'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 band065 = pardict.copy()
 
 pardict = {'subject': 'band066', 'experimenter': 'nadav'}
@@ -81,7 +81,7 @@ pardict.update(sidesDirectMode)
 band068 = pardict.copy()
 
 pardict = {'subject': 'band069', 'experimenter': 'nadav'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 band069 = pardict.copy()
 
 pardict = {'subject': 'band070', 'experimenter': 'nadav'}
@@ -89,5 +89,5 @@ pardict.update(sidesDirectMode)
 band070 = pardict.copy()
 
 pardict = {'subject': 'band071', 'experimenter': 'nadav'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 band071 = pardict.copy()
