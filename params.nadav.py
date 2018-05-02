@@ -65,11 +65,11 @@ pardict.update(bandEasySNR)
 band053 = pardict.copy()
 
 pardict = {'subject': 'band065', 'experimenter': 'nadav'}
-pardict.update(nextCorrectNoDel)
+pardict.update(nextCorrectDel)
 band065 = pardict.copy()
 
 pardict = {'subject': 'band066', 'experimenter': 'nadav'}
-pardict.update(directMode)
+pardict.update(nextCorrectNoDel)
 band066 = pardict.copy()
 
 pardict = {'subject': 'band067', 'experimenter': 'nadav'}
