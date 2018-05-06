@@ -69,25 +69,25 @@ pardict.update(nextCorrectDel2)
 band065 = pardict.copy()
 
 pardict = {'subject': 'band066', 'experimenter': 'nadav'}
-pardict.update(nextCorrectDel)
+pardict.update(nextCorrectDel2)
 band066 = pardict.copy()
 
 pardict = {'subject': 'band067', 'experimenter': 'nadav'}
-pardict.update(nextCorrectDel)
+pardict.update(nextCorrectDel2)
 band067 = pardict.copy()
 
 pardict = {'subject': 'band068', 'experimenter': 'nadav'}
-pardict.update(nextCorrectDel)
+pardict.update(nextCorrectDel2)
 band068 = pardict.copy()
 
 pardict = {'subject': 'band069', 'experimenter': 'nadav'}
-pardict.update(nextCorrectDel2)
+pardict.update(outcomeOnlyifCorrect)
 band069 = pardict.copy()
 
 pardict = {'subject': 'band070', 'experimenter': 'nadav'}
-pardict.update(nextCorrectDel)
+pardict.update(nextCorrectDel2)
 band070 = pardict.copy()
 
 pardict = {'subject': 'band071', 'experimenter': 'nadav'}
-pardict.update(nextCorrectDel2)
+pardict.update(outcomeOnlyifCorrect)
 band071 = pardict.copy()
