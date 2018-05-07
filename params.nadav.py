@@ -82,6 +82,7 @@ band068 = pardict.copy()
 
 pardict = {'subject': 'band069', 'experimenter': 'nadav'}
 pardict.update(outcomeOnlyifCorrect)
+#pardict.update({'antibiasMode':'repeat_mistake'})
 band069 = pardict.copy()
 
 pardict = {'subject': 'band070', 'experimenter': 'nadav'}
