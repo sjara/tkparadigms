@@ -65,7 +65,7 @@ pardict.update(bandEasySNR)
 band053 = pardict.copy()
 
 pardict = {'subject': 'band065', 'experimenter': 'nadav'}
-pardict.update(outcomeOnlyifCorrect)
+pardict.update(outcomeOnlyifCorrectOffOnWithdrawal)
 band065 = pardict.copy()
 
 pardict = {'subject': 'band066', 'experimenter': 'nadav'}
