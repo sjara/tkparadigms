@@ -58,6 +58,7 @@ band051 = pardict.copy()
 
 pardict = {'subject': 'band052', 'experimenter': 'nadav'}
 pardict.update(bandEasySNR)
+pardict.update(bilateralLaser)
 band052 = pardict.copy()
 
 pardict = {'subject': 'band053', 'experimenter': 'nadav'}
