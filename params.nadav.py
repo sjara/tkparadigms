@@ -70,15 +70,15 @@ pardict.update(onlyIfCorrectMultipleBandwidths)
 band065 = pardict.copy()
 
 pardict = {'subject': 'band066', 'experimenter': 'nadav'}
-pardict.update(outcomeOnlyifCorrect)
+pardict.update(outcomeOnlyifCorrectOffOnWithdrawal)
 band066 = pardict.copy()
 
 pardict = {'subject': 'band067', 'experimenter': 'nadav'}
-pardict.update(outcomeOnlyifCorrectOffOnWithdrawal)
+pardict.update(onlyIfCorrectMultipleBandwidths)
 band067 = pardict.copy()
 
 pardict = {'subject': 'band068', 'experimenter': 'nadav'}
-pardict.update(outcomeOnlyifCorrect)
+pardict.update(outcomeOnlyifCorrectOffOnWithdrawal)
 band068 = pardict.copy()
 
 pardict = {'subject': 'band069', 'experimenter': 'nadav'}
