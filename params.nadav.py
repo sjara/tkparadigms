@@ -33,6 +33,7 @@ bilateralLaser = {'laserMode':'random'}
 
 pardict = {'subject': 'band046', 'experimenter': 'nadav'}
 pardict.update(bandEasySNR)
+pardict.update(bilateralLaser)
 band046 = pardict.copy()
 
 pardict = {'subject': 'band047', 'experimenter': 'nadav'}
