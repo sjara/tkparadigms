@@ -327,7 +327,7 @@ class Paradigm(QtGui.QMainWindow):
         elif stimType == 'Noise':
             sound = {'type':'noise', 'duration':stimDur,
                      'amplitude':targetAmp}
-        elif (stimType == 'AM') or (stimType = 'AMLaser'):
+        elif (stimType == 'AM') or (stimType == 'AMLaser'):
             sound = {'type':'AM', 'duration':stimDur,
                      'amplitude':targetAmp,'modFrequency':self.trialParams[0]}
 
