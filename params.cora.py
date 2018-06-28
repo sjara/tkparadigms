@@ -10,19 +10,19 @@ directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfR
 
 pardict = {'subject':'bili001','experimenter':'cora'}
 pardict.update({'relevantFeature':'spectral'})
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili001 = pardict.copy()
 
 pardict = {'subject':'bili002','experimenter':'cora'}
 pardict.update({'relevantFeature':'temporal'})
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili002 = pardict.copy()
 
 pardict = {'subject':'bili003','experimenter':'cora'}
 pardict.update({'relevantFeature':'spectral'})
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili003 = pardict.copy()
 
