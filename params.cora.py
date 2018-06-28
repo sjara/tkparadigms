@@ -28,7 +28,7 @@ bili003 = pardict.copy()
 
 pardict = {'subject':'bili004','experimenter':'cora'}
 pardict.update({'relevantFeature':'temporal'})
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili004 = pardict.copy()
 
@@ -46,13 +46,9 @@ bili006 = pardict.copy()
 
 pardict = {'subject':'bili007','experimenter':'cora'}
 pardict.update({'relevantFeature':'spectral'})
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili007 = pardict.copy()
 
-pardict = {'subject':'bili008','experimenter':'cora'}
-pardict.update({'relevantFeature':'temporal'})
-pardict.update(sidesDirectMode)
-#pardict.update({'antibiasMode':'repeat_mistake'})
-bili008 = pardict.copy()
+
 
