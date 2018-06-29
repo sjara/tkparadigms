@@ -51,8 +51,8 @@ class Paradigm(templates.Paradigm2AFC):
                                                          'only_if_correct','simulated'],
                                                          value=3,group='Choice parameters')
         self.params['allowEarlyWithdrawal'] = paramgui.MenuParam('Allow early withdraw',
-                                                        ['off','on'],
-                                                        value=0,group='Choice parameters')
+                                                                 ['off','on'], enabled=False,
+                                                                 value=1, group='Choice parameters')
         self.params['antibiasMode'] = paramgui.MenuParam('Anti-bias mode',
                                                         ['off','repeat_mistake'],
                                                         value=0,group='Choice parameters')
