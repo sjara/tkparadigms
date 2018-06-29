@@ -5,6 +5,7 @@ Speech sounds categorization task.
 #from __future__ import division
 from __future__ import print_function
 import time
+import os
 import numpy as np
 from PySide import QtGui
 
@@ -20,8 +21,13 @@ from taskontrol.settings import rigsettings
 
 LONGTIME = 100
 
-leftSoundFile = './left.wav'
-rightSoundFile = './right.wav'
+#leftSoundFile = './left.wav'
+#rightSoundFile = './right.wav'
+SOUND_DIR = '../jarasounds/'
+soundFilesSpectral = {'left':'ba_8x.wav', 'right':'da_8x.wav'}
+soundFilesTemporal = {'left':'ba_8x.wav', 'right':'pa_8x.wav'}
+#soundFilesSpectral = {'left':'ba_1x.wav', 'right':'da_1x.wav'}
+#soundFilesTemporal = {'left':'ba_1x.wav', 'right':'pa_1x.wav'}
 
 class Paradigm(templates.Paradigm2AFC):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
@@ -111,7 +117,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                                 ['fixed','randMinus20'],
                                                                 value=0,group='Sound parameters')
         # This intensity corresponds to the intensity of each component of the chord
-        self.params['targetMaxIntensity'] = paramgui.NumericParam('Max intensity',value=50,
+        self.params['targetMaxIntensity'] = paramgui.NumericParam('Max intensity',value=70,
                                                                   units='dB-SPL',group='Sound parameters')
         self.params['targetIntensity'] = paramgui.NumericParam('Intensity',value=0.0,units='dB-SPL',
                                                                enabled=False,group='Sound parameters')
@@ -220,9 +226,8 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Prepare sounds --
         self.punishSoundID = 100
-        self.targetSoundID = []
-        for inds in range(1,3):
-            self.targetSoundID.append(inds)
+        self.targetSoundID = {'leftSpectral':1, 'rightSpectral':2,
+                              'leftTemporal':3, 'rightTemporal':4}
         
         # -- Prepare first trial --
         #self.prepare_next_trial(0)
@@ -235,7 +240,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.soundClient.set_sound(self.punishSoundID,sNoise)
 
     def prepare_target_sound(self):
-        targetFrequency = 2000
+        targetFrequency = 10000
         if self.params['targetIntensityMode'].get_string() == 'randMinus20':
             possibleIntensities = self.params['targetMaxIntensity'].get_value()+\
                                   np.array([-20,-15,-10,-5,0])
@@ -247,12 +252,26 @@ class Paradigm(templates.Paradigm2AFC):
         targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
         self.params['targetAmplitude'].set_value(targetAmp)
 
+        '''
         sLeft = {'type':'fromfile', 'filename':leftSoundFile,
                  'channel':'left', 'amplitude':targetAmp}
         sRight = {'type':'fromfile', 'filename':rightSoundFile,
                   'channel':'right', 'amplitude':targetAmp}
         self.soundClient.set_sound(self.targetSoundID[0],sLeft)
         self.soundClient.set_sound(self.targetSoundID[1],sRight)
+        '''
+        sLeftSpectral = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilesSpectral['left']),
+                         'channel':'both', 'amplitude':targetAmp}
+        sRightSpectral = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilesSpectral['right']),
+                         'channel':'both', 'amplitude':targetAmp}
+        sLeftTemporal = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilesTemporal['left']),
+                         'channel':'both', 'amplitude':targetAmp}
+        sRightTemporal = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilesTemporal['right']),
+                         'channel':'both', 'amplitude':targetAmp}
+        self.soundClient.set_sound(self.targetSoundID['leftSpectral'],sLeftSpectral)
+        self.soundClient.set_sound(self.targetSoundID['rightSpectral'],sRightSpectral)
+        self.soundClient.set_sound(self.targetSoundID['leftTemporal'],sLeftTemporal)
+        self.soundClient.set_sound(self.targetSoundID['rightTemporal'],sRightTemporal)
         
         '''
         if self.params['targetIntensityMode'].get_string() == 'randMinus20':
@@ -353,6 +372,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.sm.reset_transitions()
 
         targetDuration = self.params['targetDuration'].get_value()
+        relevantFeature = self.params['relevantFeature'].get_string()
         if rigsettings.OUTPUTS.has_key('outBit1'):
             trialStartOutput = ['outBit1'] # Sync signal for trial-start.
         else:
@@ -363,7 +383,12 @@ class Paradigm(templates.Paradigm2AFC):
             stimOutput = []
         if nextCorrectChoice==self.results.labels['rewardSide']['left']:
             rewardDuration = self.params['timeWaterValveL'].get_value()
-            thisTargetID = self.targetSoundID[0]
+            if relevantFeature=='spectral':
+                thisTargetID = self.targetSoundID['leftSpectral']
+            elif relevantFeature=='temporal':
+                thisTargetID = self.targetSoundID['leftTemporal']
+            else:
+                raise ValueError('Relevant feature for categorization not defined')
             #ledOutput = 'leftLED'
             fromChoiceL = 'reward'
             fromChoiceR = 'punish'
@@ -371,7 +396,12 @@ class Paradigm(templates.Paradigm2AFC):
             correctSidePort = 'Lin'
         elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
             rewardDuration = self.params['timeWaterValveR'].get_value()
-            thisTargetID = self.targetSoundID[1]
+            if relevantFeature=='spectral':
+                thisTargetID = self.targetSoundID['rightSpectral']
+            elif relevantFeature=='temporal':
+                thisTargetID = self.targetSoundID['rightTemporal']
+            else:
+                raise ValueError('Relevant feature for categorization not defined')
             #ledOutput = 'rightLED'
             fromChoiceL = 'punish'
             fromChoiceR = 'reward'
