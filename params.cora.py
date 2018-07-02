@@ -14,13 +14,13 @@ requireCorrectMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 
 
 pardict = {'subject':'bili001','experimenter':'cora'}
 pardict.update({'relevantFeature':'spectral'})
-pardict.update(increaseDelayMode)
+pardict.update(requireCorrectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili001 = pardict.copy()
 
 pardict = {'subject':'bili002','experimenter':'cora'}
 pardict.update({'relevantFeature':'temporal'})
-pardict.update(increaseDelayMode)
+pardict.update(requireCorrectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili002 = pardict.copy()
 
