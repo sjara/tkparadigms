@@ -38,13 +38,13 @@ bili004 = pardict.copy()
 
 pardict = {'subject':'bili005','experimenter':'cora'}
 pardict.update({'relevantFeature':'spectral'})
-pardict.update(increaseDelayMode)
+pardict.update(requireCorrectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili005 = pardict.copy()
 
 pardict = {'subject':'bili006','experimenter':'cora'}
 pardict.update({'relevantFeature':'temporal'})
-pardict.update(increaseDelayMode)
+pardict.update(requireCorrectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili006 = pardict.copy()
 
