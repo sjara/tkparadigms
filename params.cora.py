@@ -9,6 +9,8 @@ increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'de
                      'automationMode':'increase_delay', 'punishTimeEarly':0, 'punishSoundAmplitude':0}
 requireCorrectMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
                       'punishTimeEarly':0, 'punishSoundAmplitude':0}
+psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
+                'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'uniform'}
 
 # ======== Parameters for each animal =========
 
@@ -20,7 +22,7 @@ bili001 = pardict.copy()
 
 pardict = {'subject':'bili002','experimenter':'cora'}
 pardict.update({'relevantFeature':'temporal'})
-pardict.update(requireCorrectMode)
+pardict.update(psyCurveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili002 = pardict.copy()
 
@@ -44,7 +46,7 @@ bili005 = pardict.copy()
 
 pardict = {'subject':'bili006','experimenter':'cora'}
 pardict.update({'relevantFeature':'temporal'})
-pardict.update(requireCorrectMode)
+pardict.update(psyCurveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili006 = pardict.copy()
 
