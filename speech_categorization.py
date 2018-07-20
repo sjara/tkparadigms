@@ -101,7 +101,7 @@ class Paradigm(templates.Paradigm2AFC):
         '''
 
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
-                                                         ['off','uniform'],
+                                                         ['off','uniform','extreme80pc'],
                                                          value=0,group='Psychometric parameters')
         #self.params['psycurveNfreq'] = paramgui.NumericParam('N frequencies',value=8,decimals=0,
         #                                                     group='Psychometric parameters')
@@ -353,7 +353,14 @@ class Paradigm(templates.Paradigm2AFC):
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
                 targetPercentage = randIndex*20
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
-                targetPercentage = (randIndex+3)*20
+                targetPercentage = (5-randIndex)*20
+        elif psycurveMode=='extreme80pc':
+            # -- It assumes 6 possible values. 80% trials on extremes, 20% on the rest --
+            randIndex = np.flatnonzero(np.random.multinomial(1,[0.8, 0.1, 0.1]))[0]
+            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+                targetPercentage = randIndex*20
+            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+                targetPercentage = (5-randIndex)*20
         soundKey = '{0}{1:03}'.format(relevantFeature,targetPercentage)
         self.currentSoundID = self.targetSoundID[soundKey]
         self.params['targetFrequency'].set_value(targetPercentage)

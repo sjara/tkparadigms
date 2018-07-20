@@ -10,7 +10,7 @@ increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'de
 requireCorrectMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
                       'punishTimeEarly':0, 'punishSoundAmplitude':0}
 psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
-                'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'uniform'}
+                'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'extreme80pc'}
 
 # ======== Parameters for each animal =========
 
