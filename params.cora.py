@@ -16,7 +16,8 @@ psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delay
 
 pardict = {'subject':'bili001','experimenter':'cora'}
 pardict.update({'relevantFeature':'spectral'})
-pardict.update(requireCorrectMode)
+#pardict.update(requireCorrectMode)
+pardict.update(psyCurveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili001 = pardict.copy()
 
@@ -28,7 +29,8 @@ bili002 = pardict.copy()
 
 pardict = {'subject':'bili003','experimenter':'cora'}
 pardict.update({'relevantFeature':'spectral'})
-pardict.update(requireCorrectMode)
+#pardict.update(requireCorrectMode)
+pardict.update(psyCurveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili003 = pardict.copy()
 
@@ -52,7 +54,8 @@ bili006 = pardict.copy()
 
 pardict = {'subject':'bili007','experimenter':'cora'}
 pardict.update({'relevantFeature':'spectral'})
-pardict.update(requireCorrectMode)
+#pardict.update(requireCorrectMode)
+pardict.update(psyCurveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili007 = pardict.copy()
 
