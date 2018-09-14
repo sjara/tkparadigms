@@ -133,3 +133,20 @@ pardict.update({'punishSoundAmplitude':0.015,'punishTimeError':2})
 pardict.update({'targetMaxIntensity':50,'targetIntensityMode':'fixed'})
 pardict.update({'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.05})
 d1pi014 = pardict.copy()
+
+
+pardict = {'subject':'adap048','experimenter':'lan'}
+pardict.update({'lowFreq':8600,'highFreq':19200,'psycurveMode':'uniform','psycurveNfreq':6})
+pardict.update({'percentLaserTrialLeft':0,'percentLaserTrialRight':0, 'stimFreq':'continuous'})
+pardict.update({'punishSoundAmplitude':0.015,'punishTimeError':2})
+pardict.update({'targetMaxIntensity':50,'targetIntensityMode':'fixed'})
+pardict.update({'delayToTargetMean':0.1, 'delayToTargetHalfRange':0.02})
+adap048 = pardict.copy()
+
+pardict = {'subject':'adap056','experimenter':'lan'}
+pardict.update({'lowFreq':7300,'highFreq':16300,'psycurveMode':'uniform','psycurveNfreq':6})
+pardict.update({'percentLaserTrialLeft':0,'percentLaserTrialRight':0, 'stimFreq':'continuous'})
+pardict.update({'punishSoundAmplitude':0.015,'punishTimeError':2})
+pardict.update({'targetMaxIntensity':50,'targetIntensityMode':'fixed'})
+pardict.update({'delayToTargetMean':0.13, 'delayToTargetHalfRange':0.02})
+adap056 = pardict.copy()
