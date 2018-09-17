@@ -257,7 +257,7 @@ class Paradigm(templates.Paradigm2AFC):
         #self.prepare_next_trial(0)
 
     def prepare_target_sound(self, band, noiseInt, toneInt):
-        spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_SINE)
+        spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
         # FIXME: currently I am averaging calibration from both speakers (not good)
         stimDur = self.params['targetDuration'].get_value()
         modRate = self.params['modRate'].get_value()
