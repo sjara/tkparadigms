@@ -544,8 +544,6 @@ class Paradigm(templates.Paradigm2AFC):
             if laserMode == 'none':
                 self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
                                   transitions={'Tup':'playNoiseStimulus','Cout':'waitForCenterPoke'})
-                # Note that 'delayPeriod' may happen several times in a trial, so
-                # trialStartOutput off here would only meaningful for the first time in the trial.
                 self.sm.add_state(name='playNoiseStimulus', statetimer=0,
                                   transitions={'Tup':'playToneStimulus'},
                                   outputsOn=stimOutput, serialOut=noiseID,
@@ -596,11 +594,11 @@ class Paradigm(templates.Paradigm2AFC):
                                       serialOut=toneID)
                 if soundMode == 'full_duration':
                     self.sm.add_state(name='stopStimulus', statetimer=0,
-                                  transitions={'Tup':'waitForSidePoke'}, 
+                                  transitions={'Tup':'waitForSidePokeWithLaser'}, 
                                   outputsOff=stimOutput)
                 elif soundMode == 'off_on_withdrawal':
                     self.sm.add_state(name='stopStimulus', statetimer=0,
-                                  transitions={'Tup':'waitForSidePoke'}, 
+                                  transitions={'Tup':'waitForSidePokeWithLaser'}, 
                                   outputsOff=stimOutput, serialOut=soundclient.STOP_ALL_SOUNDS)
                 self.sm.add_state(name='waitForSidePokeWithLaser', statetimer=laserOffset,
                                       transitions={'Lin':'choiceLeft','Rin':'choiceRight', 'Tup':'laserOff'})

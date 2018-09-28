@@ -119,7 +119,7 @@ class Paradigm(QtGui.QMainWindow):
                                                          ['Ordered','Random'],
                                                          value=1,group='Parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
-                                                         ['Sine','Chord', 'Noise', 'AM', 'Laser', 'LaserTrain', 'Light', 'SineLaser'],
+                                                         ['Sine','Chord', 'Noise', 'AM', 'Laser', 'LaserTrain', 'Light', 'SineLaser', 'AMLaser'],
                                                          value=2,group='Parameters')
         self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
                                                             value=0, units='Hz',
@@ -308,7 +308,7 @@ class Paradigm(QtGui.QMainWindow):
         # targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
         #                                        self.trialParams[1])[1]
         #                                        #Only calibrated right speaker
-        if stimType in ['Noise', 'AM']:
+        if stimType in ['Noise', 'AM', 'AMLaser']:
             targetAmp = self.noiseCal.find_amplitude(self.trialParams[1])
         else:
             targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
@@ -318,7 +318,7 @@ class Paradigm(QtGui.QMainWindow):
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
 
-        if stimType == 'Sine':
+        if (stimType == 'Sine') or (stimType == 'SineLaser'):
             sound = {'type':'tone', 'duration':stimDur,
                      'amplitude':targetAmp, 'frequency':self.trialParams[0]}
         elif stimType == 'Chord':
@@ -327,12 +327,10 @@ class Paradigm(QtGui.QMainWindow):
         elif stimType == 'Noise':
             sound = {'type':'noise', 'duration':stimDur,
                      'amplitude':targetAmp}
-        elif stimType == 'AM':
+        elif (stimType == 'AM') or (stimType == 'AMLaser'):
             sound = {'type':'AM', 'duration':stimDur,
                      'amplitude':targetAmp,'modFrequency':self.trialParams[0]}
-        elif stimType == 'SineLaser':
-            sound = {'type':'tone', 'duration':stimDur,
-                     'amplitude':targetAmp, 'frequency':self.trialParams[0]}
+
 
         if (stimType == 'Laser') or (stimType == 'LaserTrain'):
             stimOutput = stimSync+laserSync
@@ -347,7 +345,7 @@ class Paradigm(QtGui.QMainWindow):
 
 
         # -- Determine if the trial will present laser or not randomly --
-        if stimType == 'SineLaser':
+        if (stimType == 'SineLaser') or (stimType == 'AMLaser'):
             laserProbability = self.params['laserProbability'].get_value()
             if random.random() <= laserProbability:
                 laserOutput = laserSync
@@ -407,7 +405,7 @@ class Paradigm(QtGui.QMainWindow):
             self.sm.add_state(name='output5Off', statetimer = isi,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=stimOutput)
-        elif stimType == 'SineLaser':
+        elif (stimType == 'SineLaser') or (stimType == 'AMLaser'):
             if (laserOnset<0) and (laserOffset<=0):
                 #  SOUND:  ........|XXXXXXX|........
                 #  LASER:  ...ooo...................
