@@ -79,19 +79,19 @@ pardict.update(bandEasySNR)
 band067 = pardict.copy()
 
 pardict = {'subject': 'band068', 'experimenter': 'nadav'}
-pardict.update(onlyIfCorrectMultipleBandwidths)
+pardict.update(bandEasySNR)
 band068 = pardict.copy()
 
 pardict = {'subject': 'band069', 'experimenter': 'nadav'}
 pardict.update(bandEasySNR)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 band069 = pardict.copy()
 
 pardict = {'subject': 'band070', 'experimenter': 'nadav'}
-pardict.update(onlyIfCorrectMultipleBandwidths)
+pardict.update(bandEasySNR)
 band070 = pardict.copy()
 
 pardict = {'subject': 'band071', 'experimenter': 'nadav'}
-pardict.update(onlyIfCorrectMultipleBandwidths)
+pardict.update(bandEasySNR)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band071 = pardict.copy()
