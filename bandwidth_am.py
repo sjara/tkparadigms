@@ -298,7 +298,7 @@ class Paradigm(QtGui.QMainWindow):
         stimDur = self.params['stimDur'].get_value()
         charFreq = self.params['charFreq'].get_value()
         modRate = self.params['modRate'].get_value()
-        trialAmp = self.noiseCal.find_amplitude(self.trialParams[1])[0]
+        trialAmp = self.noiseCal.find_amplitude(self.trialParams[1])
         trialBand = self.trialParams[0]
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
