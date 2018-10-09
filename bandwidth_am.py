@@ -383,8 +383,8 @@ class Paradigm(QtGui.QMainWindow):
                 noise = {'type':'band_AM', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'modRate':modRate, 'octaves':trialBand}
 
         signalAmp = self.toneCal.find_amplitude(charFreq, self.trialParams[paramIndex['amplitude']]+self.trialParams[paramIndex['SNR']]-TONE_NOISE_DIFF)
-        signal = {'type':'tone', 'frequency': charFreq, 'duration':stimDur, 'amplitude': signalAmp}
-        #noise = {'type':'band', 'duration':stimDur, 'amplitude':trialAmp, 'frequency':charFreq, 'octaves':trialBand}
+        signal = {'type':'tone_AM', 'duration':stimDur, 'amplitude':signalAmp, 'frequency':charFreq, 'modRate':modRate, 'ntones':1, 'factor':1}
+        #signal = {'type':'tone', 'frequency': charFreq, 'duration':stimDur, 'amplitude': signalAmp}
 #         elif stimType == 'laser_sound':
 #             noise = {'type':'noise', 'duration':stimDur, 'amplitude':trialAmp}
         stimOutput = stimSync
