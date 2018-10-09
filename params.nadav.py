@@ -27,6 +27,11 @@ bandEasySNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':
                'bandMode':'uniform', 'minBand':0.25, 'maxBand':1.0, 'numBands':2, 'includeWhite':'yes',
                'soundMode':'off_on_withdrawal','noiseMode':'max_only'}
 
+bandEasySNR2BW = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':10, 'maxSNR':20, 'numSNRs':3, 
+               'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
+               'bandMode':'uniform', 'minBand':0.25, 'maxBand':0.25, 'numBands':1, 'includeWhite':'yes',
+               'soundMode':'off_on_withdrawal','noiseMode':'max_only'}
+
 bilateralLaser = {'laserMode':'random'}
 
 # -- bandwidth mice --
@@ -67,31 +72,31 @@ pardict.update(bandEasySNR)
 band053 = pardict.copy()
 
 pardict = {'subject': 'band065', 'experimenter': 'nadav'}
-pardict.update(bandEasySNR)
+pardict.update(bandEasySNR2BW)
 band065 = pardict.copy()
 
 pardict = {'subject': 'band066', 'experimenter': 'nadav'}
-pardict.update(bandEasySNR)
+pardict.update(bandEasySNR2BW)
 band066 = pardict.copy()
 
 pardict = {'subject': 'band067', 'experimenter': 'nadav'}
-pardict.update(bandEasySNR)
+pardict.update(bandEasySNR2BW)
 band067 = pardict.copy()
 
 pardict = {'subject': 'band068', 'experimenter': 'nadav'}
-pardict.update(onlyIfCorrectMultipleBandwidths)
+pardict.update(bandEasySNR2BW)
 band068 = pardict.copy()
 
 pardict = {'subject': 'band069', 'experimenter': 'nadav'}
-pardict.update(bandEasySNR)
-pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update(bandEasySNR2BW)
+#pardict.update({'antibiasMode':'repeat_mistake'})
 band069 = pardict.copy()
 
 pardict = {'subject': 'band070', 'experimenter': 'nadav'}
-pardict.update(onlyIfCorrectMultipleBandwidths)
+pardict.update(bandEasySNR2BW)
 band070 = pardict.copy()
 
 pardict = {'subject': 'band071', 'experimenter': 'nadav'}
-pardict.update(onlyIfCorrectMultipleBandwidths)
+pardict.update(bandEasySNR2BW)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band071 = pardict.copy()
