@@ -73,6 +73,7 @@ band053 = pardict.copy()
 
 pardict = {'subject': 'band065', 'experimenter': 'nadav'}
 pardict.update(bandEasySNR2BW)
+bilateralLaser = {'laserMode':'random'}
 band065 = pardict.copy()
 
 pardict = {'subject': 'band066', 'experimenter': 'nadav'}
@@ -94,6 +95,7 @@ band069 = pardict.copy()
 
 pardict = {'subject': 'band070', 'experimenter': 'nadav'}
 pardict.update(bandEasySNR2BW)
+bilateralLaser = {'laserMode':'random'}
 band070 = pardict.copy()
 
 pardict = {'subject': 'band071', 'experimenter': 'nadav'}
