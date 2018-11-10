@@ -41,7 +41,7 @@ pardict = {'subject':'bili004','experimenter':'cora'}
 #pardict.update({'relevantFeature':'temporal'})
 pardict.update({'relevantFeature':'spectral'})
 pardict.update(psyCurveMode)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 bili004 = pardict.copy()
 
 pardict = {'subject':'bili005','experimenter':'cora'}
