@@ -83,7 +83,7 @@ pardict.update(bandEasySNR)
 band053 = pardict.copy()
 
 pardict = {'subject': 'band065', 'experimenter': 'nadav'}
-pardict.update(amplitudevariation)
+pardict.update(bandEasySNR1BW)
 bilateralLaser = {'laserMode':'random'}
 band065 = pardict.copy()
 
