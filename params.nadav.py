@@ -37,6 +37,11 @@ amplitudevariation = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'm
                'bandMode':'uniform', 'minBand':0.25, 'maxBand':0.25, 'numBands':1, 'includeWhite':'no',
                'soundMode':'off_on_withdrawal','noiseMode':'uniform'}
 
+bandEasySNR1BW = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':10, 'maxSNR':20, 'numSNRs':3, 
+               'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
+               'bandMode':'uniform', 'minBand':0.25, 'maxBand':0.25, 'numBands':1, 'includeWhite':'no',
+               'soundMode':'off_on_withdrawal','noiseMode':'max_only'}
+
 
 bilateralLaser = {'laserMode':'random'}
 
