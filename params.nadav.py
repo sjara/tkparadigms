@@ -123,7 +123,7 @@ pardict.update(directMode)
 band078 = pardict.copy()
 
 pardict = {'subject': 'band079', 'experimenter': 'nadav'}
-pardict.update(directMode)
+pardict.update(nextCorrectNoDel)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band079 = pardict.copy()
 
@@ -133,7 +133,7 @@ pardict.update(directMode)
 band080 = pardict.copy()
 
 pardict = {'subject': 'band081', 'experimenter': 'nadav'}
-pardict.update(directMode)
+pardict.update(nextCorrectNoDel)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band081 = pardict.copy()
 
@@ -143,22 +143,22 @@ pardict.update(directMode)
 band082 = pardict.copy()
 
 pardict = {'subject': 'band083', 'experimenter': 'nadav'}
-pardict.update(directMode)
+pardict.update(nextCorrectNoDel)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band083 = pardict.copy()
 
 pardict = {'subject': 'band084', 'experimenter': 'nadav'}
-pardict.update(directMode)
+pardict.update(nextCorrectNoDel)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band084 = pardict.copy()
 
 pardict = {'subject': 'band085', 'experimenter': 'nadav'}
-pardict.update(directMode)
+pardict.update(nextCorrectNoDel)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band085 = pardict.copy()
 
 pardict = {'subject': 'band086', 'experimenter': 'nadav'}
-pardict.update(directMode)
+pardict.update(nextCorrectNoDel)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band086 = pardict.copy()
 
