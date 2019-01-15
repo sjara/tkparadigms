@@ -120,7 +120,7 @@ band071 = pardict.copy()
 
 
 pardict = {'subject': 'band078', 'experimenter': 'nadav'}
-pardict.update(directMode)
+pardict.update(nextCorrectNoDel)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band078 = pardict.copy()
 
@@ -135,12 +135,12 @@ pardict.update(directMode)
 band080 = pardict.copy()
 
 pardict = {'subject': 'band081', 'experimenter': 'nadav'}
-pardict.update(nextCorrectNoDel)
+pardict.update(nextCorrectDel)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band081 = pardict.copy()
 
 pardict = {'subject': 'band082', 'experimenter': 'nadav'}
-pardict.update(directMode)
+pardict.update(nextCorrectNoDel)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band082 = pardict.copy()
 
