@@ -130,7 +130,7 @@ pardict.update(nextCorrectNoDel)
 band079 = pardict.copy()
 
 pardict = {'subject': 'band080', 'experimenter': 'nadav'}
-pardict.update(directMode)
+pardict.update(nextCorrectNoDel)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band080 = pardict.copy()
 
