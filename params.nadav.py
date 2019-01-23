@@ -140,7 +140,7 @@ pardict.update(outcomeOnlyifCorrect)
 band081 = pardict.copy()
 
 pardict = {'subject': 'band082', 'experimenter': 'nadav'}
-pardict.update(nextCorrectDel2)
+pardict.update(outcomeOnlyifCorrect)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band082 = pardict.copy()
 
@@ -165,6 +165,6 @@ pardict.update(outcomeOnlyifCorrect)
 band086 = pardict.copy()
 
 pardict = {'subject': 'band087', 'experimenter': 'nadav'}
-pardict.update(outcomeOnlyifCorrectOffOnWithdrawal)
+pardict.update(bandEasySNR2BW)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band087 = pardict.copy()
