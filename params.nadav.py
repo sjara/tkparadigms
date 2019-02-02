@@ -96,12 +96,12 @@ pardict.update(outcomeOnlyifCorrectOffOnWithdrawal)
 band082 = pardict.copy()
 
 pardict = {'subject': 'band083', 'experimenter': 'nadav'}
-pardict.update(outcomeOnlyifCorrectOffOnWithdrawal)
+pardict.update(onlyIfCorrectMultipleBandwidths)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band083 = pardict.copy()
 
 pardict = {'subject': 'band084', 'experimenter': 'nadav'}
-pardict.update(outcomeOnlyifCorrectOffOnWithdrawal)
+pardict.update(onlyIfCorrectMultipleBandwidths)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band084 = pardict.copy()
 
