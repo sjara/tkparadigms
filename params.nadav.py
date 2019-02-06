@@ -116,6 +116,6 @@ pardict.update(onlyIfCorrectMultipleBandwidths)
 band086 = pardict.copy()
 
 pardict = {'subject': 'band087', 'experimenter': 'nadav'}
-pardict.update(onlyIfCorrectMultipleBandwidths)
+pardict.update(bandEasySNR2BW)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band087 = pardict.copy()
