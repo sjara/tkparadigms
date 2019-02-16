@@ -42,6 +42,10 @@ bandEasySNR1BW = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSN
                'bandMode':'uniform', 'minBand':0.25, 'maxBand':0.25, 'numBands':1, 'includeWhite':'no',
                'soundMode':'off_on_withdrawal','noiseMode':'max_only'}
 
+bandHardSNR2BW = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':0, 'maxSNR':10, 'numSNRs':3, 
+               'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05,
+               'bandMode':'uniform', 'minBand':0.25, 'maxBand':0.25, 'numBands':1, 'includeWhite':'yes',
+               'soundMode':'off_on_withdrawal','noiseMode':'max_only'}
 
 bilateralLaser = {'laserMode':'random'}
 
@@ -53,7 +57,7 @@ pardict.update(bandEasySNR1BW)
 band065 = pardict.copy()
 
 pardict = {'subject': 'band066', 'experimenter': 'nadav'}
-pardict.update(bandEasySNR2BW)
+pardict.update(bandHardSNR2BW)
 bilateralLaser = {'laserMode':'random'}
 band066 = pardict.copy()
 
