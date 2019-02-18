@@ -29,3 +29,6 @@ test000 = {'subject':'test000',
            'targetDuration':0.5,
            'outcomeMode':'on_next_correct',
            'allowEarlyWithdrawal':'on'}
+
+bili000 = {'subject':'bili000',
+           'laserMode':'bilateral','fractionLaserTrials':0.99, 'relevantFeature':'temporal'}
