@@ -4,7 +4,6 @@ Define parameters for different subjects.
 
 sidesDirectMode = {'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0}
 directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0}
-directMode = {'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0}
 increaseDelayMode = {'outcomeMode':'on_next_correct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0,
                      'automationMode':'increase_delay', 'punishTimeEarly':0, 'punishSoundAmplitude':0}
 requireCorrectMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
@@ -18,7 +17,7 @@ psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delay
 
 
 pardict = {'subject':'bili016','experimenter':'erin'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili016 = pardict.copy()
 
