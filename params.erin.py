@@ -17,7 +17,7 @@ psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delay
 
 
 pardict = {'subject':'bili016','experimenter':'erin'}
-pardict.update(directMode)
+pardict.update(sidesDirectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili016 = pardict.copy()
 
