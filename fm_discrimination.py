@@ -124,7 +124,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         
         # 5000, 7000, 9800 (until 2014-03-19)
-        self.params['midFreq'] = paramgui.NumericParam('Mid freq',value=1240,
+        self.params['midFreq'] = paramgui.NumericParam('Mid freq',value=10000,
                                                        units='Hz',group='Sound parameters',enabled=False)
         self.params['fmFactor'] = paramgui.NumericParam('FM factor',value=1.4,
                                                         units='',group='Sound parameters',enabled=False)
