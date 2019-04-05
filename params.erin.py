@@ -17,7 +17,7 @@ psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delay
 
 
 pardict = {'subject':'bili016','experimenter':'erin'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili016 = pardict.copy()
 
@@ -27,27 +27,27 @@ pardict.update(sidesDirectMode)
 bili017 = pardict.copy()
 
 pardict = {'subject':'bili018','experimenter':'erin'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili018 = pardict.copy()
 
 pardict = {'subject':'bili019','experimenter':'erin'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili019 = pardict.copy()
 
 pardict = {'subject':'bili020','experimenter':'erin'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili020 = pardict.copy()
 
 pardict = {'subject':'bili021','experimenter':'erin'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili021 = pardict.copy()
 
 pardict = {'subject':'bili022','experimenter':'erin'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili022 = pardict.copy()
 
@@ -57,7 +57,7 @@ pardict.update(sidesDirectMode)
 bili023 = pardict.copy()
 
 pardict = {'subject':'bili024','experimenter':'erin'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili024 = pardict.copy()
 
