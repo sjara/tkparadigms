@@ -63,48 +63,48 @@ bili024 = pardict.copy()
 
 # -----
 
-pardict = {'subject':'bili0xx','experimenter':'erin'}
+pardict = {'subject':'bili025','experimenter':'erin'}
 pardict.update(sidesDirectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-bili0xx = pardict.copy()
+bili025 = pardict.copy()
 
-pardict = {'subject':'bili0xx','experimenter':'erin'}
+pardict = {'subject':'bili026','experimenter':'erin'}
 pardict.update(sidesDirectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-bili0xx = pardict.copy()
+bili026 = pardict.copy()
 
-pardict = {'subject':'bili0xx','experimenter':'erin'}
+pardict = {'subject':'bili027','experimenter':'erin'}
 pardict.update(sidesDirectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-bili0xx = pardict.copy()
+bili027 = pardict.copy()
 
-pardict = {'subject':'bili0xx','experimenter':'erin'}
+pardict = {'subject':'bili028','experimenter':'erin'}
 pardict.update(sidesDirectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-bili0xx = pardict.copy()
+bili028 = pardict.copy()
 
-pardict = {'subject':'bili0xx','experimenter':'erin'}
+pardict = {'subject':'bili029','experimenter':'erin'}
 pardict.update(sidesDirectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-bili0xx = pardict.copy()
+bili029 = pardict.copy()
 
-pardict = {'subject':'bili0xx','experimenter':'erin'}
+pardict = {'subject':'bili030','experimenter':'erin'}
 pardict.update(sidesDirectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-bili0xx = pardict.copy()
+bili030 = pardict.copy()
 
-pardict = {'subject':'bili0xx','experimenter':'erin'}
+pardict = {'subject':'bili031','experimenter':'erin'}
 pardict.update(sidesDirectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-bili0xx = pardict.copy()
+bili031 = pardict.copy()
 
-pardict = {'subject':'bili0xx','experimenter':'erin'}
+pardict = {'subject':'bili032','experimenter':'erin'}
 pardict.update(sidesDirectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-bili0xx = pardict.copy()
+bili032 = pardict.copy()
 
-pardict = {'subject':'bili0xx','experimenter':'erin'}
+pardict = {'subject':'bili033','experimenter':'erin'}
 pardict.update(sidesDirectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
-bili0xx = pardict.copy()
+bili033 = pardict.copy()
 
