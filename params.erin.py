@@ -78,12 +78,12 @@ pardict.update(sidesDirectMode)
 bili027 = pardict.copy()
 
 pardict = {'subject':'bili028','experimenter':'erin'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili028 = pardict.copy()
 
 pardict = {'subject':'bili029','experimenter':'erin'}
-pardict.update(sidesDirectMode)
+pardict.update(directMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili029 = pardict.copy()
 
