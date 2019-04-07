@@ -16,7 +16,7 @@ psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delay
 ###bili016-024 (PV-ChR2)
 
 pardict = {'subject':'bili016','experimenter':'erin'}
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili016 = pardict.copy()
 
@@ -26,12 +26,12 @@ pardict.update(directMode)
 bili017 = pardict.copy()
 
 pardict = {'subject':'bili018','experimenter':'erin'}
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili018 = pardict.copy()
 
 pardict = {'subject':'bili019','experimenter':'erin'}
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili019 = pardict.copy()
 
@@ -41,7 +41,7 @@ pardict.update(increaseDelayMode)
 bili020 = pardict.copy()
 
 pardict = {'subject':'bili021','experimenter':'erin'}
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili021 = pardict.copy()
 
@@ -56,7 +56,7 @@ pardict.update(directMode)
 bili023 = pardict.copy()
 
 pardict = {'subject':'bili024','experimenter':'erin'}
-pardict.update(directMode)
+pardict.update(increaseDelayMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili024 = pardict.copy()
 
