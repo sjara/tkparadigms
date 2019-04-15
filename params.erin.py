@@ -78,7 +78,7 @@ pardict.update(requireCorrectMode)
 bili027 = pardict.copy()
 
 pardict = {'subject':'bili028','experimenter':'erin'}
-pardict.update(increaseDelayMode)
+pardict.update(requireCorrectMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili028 = pardict.copy()
 
