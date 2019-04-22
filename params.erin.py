@@ -37,7 +37,7 @@ bili019 = pardict.copy()
 
 pardict = {'subject':'bili020','experimenter':'erin'}
 pardict.update(requireCorrectMode)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 bili020 = pardict.copy()
 
 pardict = {'subject':'bili021','experimenter':'erin'}
