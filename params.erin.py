@@ -10,8 +10,19 @@ requireCorrectMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 
                       'punishTimeEarly':0, 'punishSoundAmplitude':0}
 psyCurveMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
                 'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'extreme80pc'}
+activeMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
+              'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'uniform', 'maxNtrials':750}
+passiveMode = {'outcomeMode':'on_any_poke', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
+              'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'uniform', 'maxNtrials':750}
 
 # ======== Parameters for each animal =========
+
+# -- Test mouse --
+pardict = {'subject':'bili000','experimenter':'santiago'}
+#pardict.update(activeMode)
+pardict.update(passiveMode)
+#pardict.update({'antibiasMode':'repeat_mistake'})
+bili000 = pardict.copy()
 
 ###bili016-024 (PV-ChR2)
 

@@ -25,7 +25,7 @@ LONGTIME = 100
 SOUND_DIR = '../jarasounds/fmsounds'
 soundFilesStr = 'fm_{0}Hz_f{1}_{2}s_{3:03.0f}.wav'
 
-                           
+
 class Paradigm(templates.Paradigm2AFC):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(Paradigm, self).__init__(parent)
@@ -45,7 +45,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         self.params['outcomeMode'] = paramgui.MenuParam('Outcome mode',
                                                         ['sides_direct','direct','on_next_correct',
-                                                         'only_if_correct','simulated'],
+                                                         'only_if_correct','on_any_poke'],
                                                          value=3,group='Choice parameters')
         self.params['allowEarlyWithdrawal'] = paramgui.MenuParam('Allow early withdraw',
                                                                  ['off','on'], enabled=False,
@@ -98,6 +98,12 @@ class Paradigm(templates.Paradigm2AFC):
                                                             value=0,group='Categorization parameters', enabled=False)
         categorizationParams = self.params.layout_group('Categorization parameters')
 
+        self.params['maxNtrials'] = paramgui.NumericParam('Max N trials',value=4000,decimals=0,
+                                                             group='Automation',enabled=True)
+        self.params['postSoundDelay'] = paramgui.NumericParam('Delay after sound',value=0.3,
+                                                              units='s',group='Automation')
+        self.params['interTrialInterval'] = paramgui.NumericParam('Inter-trial interval',value=1.5,
+                                                        units='s',group='Automation')
         self.params['automationMode'] = paramgui.MenuParam('Automation Mode',
                                                            ['off','increase_delay'],
                                                            value=0,group='Automation')
@@ -120,9 +126,9 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['fractionLaserTrials'] = paramgui.NumericParam('Fraction trials with laser',value=0.25,
                                                             units='',group='Photostimulation parameters')
         photostimParams = self.params.layout_group('Photostimulation parameters')
-        
 
-        
+
+
         # 5000, 7000, 9800 (until 2014-03-19)
         self.params['midFreq'] = paramgui.NumericParam('Mid freq',value=10000,
                                                        units='Hz',group='Sound parameters',enabled=False)
@@ -201,7 +207,7 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol3.addStretch()
         layoutCol3.addWidget(automationParams)
         layoutCol3.addStretch()
-        
+
         layoutCol4.addWidget(photostimParams)
         layoutCol4.addStretch()
         layoutCol4.addWidget(soundParams)
@@ -260,7 +266,7 @@ class Paradigm(templates.Paradigm2AFC):
                                           outputs=rigsettings.OUTPUTS,
                                           readystate='readyForNextTrial',
                                           extratimers=['laserTimer'])
-        
+
         # -- Prepare first trial --
         #self.prepare_next_trial(0)
 
@@ -288,7 +294,7 @@ class Paradigm(templates.Paradigm2AFC):
         fmFactor = self.params['fmFactor'].get_value()
         duration = self.params['targetDuration'].get_value()
         nSteps = self.params['psycurveNsteps'].get_value()
-        
+
         for inds in range(nSteps):
             soundPercentage = inds*20
             soundID = inds+1
@@ -296,56 +302,8 @@ class Paradigm(templates.Paradigm2AFC):
             soundDict = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilename),
                          'channel':'both', 'amplitude':targetAmp}
             self.soundClient.set_sound(soundID,soundDict)
-        
-        '''
-        sLeft = {'type':'fromfile', 'filename':leftSoundFile,
-                 'channel':'left', 'amplitude':targetAmp}
-        sRight = {'type':'fromfile', 'filename':rightSoundFile,
-                  'channel':'right', 'amplitude':targetAmp}
-        self.soundClient.set_sound(self.targetSoundID[0],sLeft)
-        self.soundClient.set_sound(self.targetSoundID[1],sRight)
-        '''
-        '''
-        sLeftSpectral = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilesSpectral['left']),
-                         'channel':'both', 'amplitude':targetAmp}
-        sRightSpectral = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilesSpectral['right']),
-                         'channel':'both', 'amplitude':targetAmp}
-        sLeftTemporal = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilesTemporal['left']),
-                         'channel':'both', 'amplitude':targetAmp}
-        sRightTemporal = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilesTemporal['right']),
-                         'channel':'both', 'amplitude':targetAmp}
-        self.soundClient.set_sound(self.targetSoundID['leftSpectral'],sLeftSpectral)
-        self.soundClient.set_sound(self.targetSoundID['rightSpectral'],sRightSpectral)
-        self.soundClient.set_sound(self.targetSoundID['leftTemporal'],sLeftTemporal)
-        self.soundClient.set_sound(self.targetSoundID['rightTemporal'],sRightTemporal)
-        '''
-        '''
-        for thisFeature in ['spectral','temporal']:
-            for inds in range(6):
-                soundKey = '{0}{1:03}'.format(thisFeature,inds*20)
-                soundDict = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFiles[soundKey]),
-                             'channel':'both', 'amplitude':targetAmp}
-                self.soundClient.set_sound(self.targetSoundID[soundKey],soundDict)
-        '''
-        
-        '''
-        if self.params['targetIntensityMode'].get_string() == 'randMinus20':
-            possibleIntensities = self.params['targetMaxIntensity'].get_value()+\
-                                  np.array([-20,-15,-10,-5,0])
-            targetIntensity = possibleIntensities[np.random.randint(len(possibleIntensities))]
-        else:
-            targetIntensity = self.params['targetMaxIntensity'].get_value()
-        self.params['targetIntensity'].set_value(targetIntensity)
-        # FIXME: currently I am averaging calibration from both speakers (not good)
-        targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
-        self.params['targetAmplitude'].set_value(targetAmp)
 
-        stimDur = self.params['targetDuration'].get_value()
-        s1 = {'type':'chord', 'frequency':targetFrequency, 'duration':stimDur,
-              'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
-        self.soundClient.set_sound(self.targetSoundID,s1)
-        '''
-    
+
     def prepare_next_trial(self, nextTrial):
         #  TicTime = time.time() ### DEBUG
         # -- Calculate results from last trial (update outcome, choice, etc) --
@@ -356,7 +314,7 @@ class Paradigm(templates.Paradigm2AFC):
             if self.params['antibiasMode'].get_string()=='repeat_mistake':
                 if self.results['outcome'][nextTrial-1]==self.results.labels['outcome']['error']:
                     self.results['rewardSide'][nextTrial] = self.results['rewardSide'][nextTrial-1]
-            nValid = self.params['nValid'].get_value()
+            #nValid = self.params['nValid'].get_value()
 
         # === Prepare next trial ===
         self.execute_automation(nextTrial)
@@ -384,7 +342,7 @@ class Paradigm(templates.Paradigm2AFC):
                 targetPercentage = randIndex*20
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
                 targetPercentage = (5-randIndex)*20
-                
+
         #soundKey = '{0}{1:03}'.format(relevantFeature,targetPercentage)
         #self.currentSoundID = self.targetSoundID[soundKey]
         self.currentSoundID = targetPercentage/20+1
@@ -403,8 +361,11 @@ class Paradigm(templates.Paradigm2AFC):
         self.prepare_punish_sound()
 
         # -- Prepare state matrix --
-        self.set_state_matrix(nextCorrectChoice)
-        self.dispatcherModel.ready_to_start_trial()
+        if nextTrial < self.params['maxNtrials'].get_value():
+            self.set_state_matrix(nextCorrectChoice)
+            self.dispatcherModel.ready_to_start_trial()
+        else:
+            self.dispatcherView.stop()
         ###print('Elapsed Time (preparing next trial): ' + str(time.time()-TicTime)) ### DEBUG
 
         # -- Update sides plot --
@@ -425,7 +386,7 @@ class Paradigm(templates.Paradigm2AFC):
             laserOutput = ['stim1','stim2']
         else:
             laserOutput = []
-       
+
         targetDuration = self.params['targetDuration'].get_value()
         relevantFeature = self.params['relevantFeature'].get_string()
         if rigsettings.OUTPUTS.has_key('outBit1'):
@@ -496,6 +457,30 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput],
                               outputsOff=stimOutput)
+            self.sm.add_state(name='stopReward', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=[rewardOutput])
+        elif outcomeMode=='on_any_poke':
+            postSoundDelay = self.params['postSoundDelay'].get_value()
+            interTrialInterval = self.params['interTrialInterval'].get_value()
+            self.sm.add_state(name='startTrial', statetimer=interTrialInterval,
+                              transitions={'Tup':'waitForCenterPoke'},
+                              outputsOn=trialStartOutput)
+            self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
+                              transitions={'Cin':'delayPeriod',
+                                           'Lin':'delayPeriod',
+                                           'Rin':'delayPeriod'})
+            self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
+                              transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
+            self.sm.add_state(name='playStimulus', statetimer=targetDuration,
+                              transitions={'Tup':'postSoundDelay'},
+                              outputsOn=stimOutput,serialOut=self.currentSoundID,
+                              outputsOff=trialStartOutput)
+            self.sm.add_state(name='postSoundDelay', statetimer=postSoundDelay,
+                              transitions={'Tup':'reward'}, outputsOff=stimOutput)
+            self.sm.add_state(name='reward', statetimer=rewardDuration,
+                              transitions={'Tup':'stopReward'},
+                              outputsOn=[rewardOutput])
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[rewardOutput])
@@ -683,7 +668,7 @@ class Paradigm(templates.Paradigm2AFC):
             self.results['timeTarget'][trialIndex] = eventsThisTrial[targetEventInd,0]
 
             # -- Find center poke-in time --
-            if outcomeModeString in ['on_next_correct','only_if_correct']:
+            if outcomeModeString in ['on_next_correct','only_if_correct','on_any_poke']:
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
                           self.sm.statesNameToIndex['delayPeriod'],
                           self.sm.statesNameToIndex['playStimulus']]
