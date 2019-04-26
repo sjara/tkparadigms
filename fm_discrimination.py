@@ -47,6 +47,9 @@ class Paradigm(templates.Paradigm2AFC):
                                                         ['sides_direct','direct','on_next_correct',
                                                          'only_if_correct','on_any_poke'],
                                                          value=3,group='Choice parameters')
+        self.params['activePort'] = paramgui.MenuParam('Active port',
+                                                        ['left','right'],
+                                                         value=0,group='Choice parameters')
         self.params['allowEarlyWithdrawal'] = paramgui.MenuParam('Allow early withdraw',
                                                                  ['off','on'], enabled=False,
                                                                  value=1, group='Choice parameters')
@@ -461,15 +464,21 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[rewardOutput])
         elif outcomeMode=='on_any_poke':
+            activePort = self.params['activePort'].get_string()
+            activeOutput = activePort+'Water'
+            if activePort=='left':
+                activeEvent = 'Lin'
+            elif activePort=='right':
+                activeEvent = 'Rin'
+            else:
+                activeEvent = 'Cin'
             postSoundDelay = self.params['postSoundDelay'].get_value()
             interTrialInterval = self.params['interTrialInterval'].get_value()
             self.sm.add_state(name='startTrial', statetimer=interTrialInterval,
                               transitions={'Tup':'waitForCenterPoke'},
                               outputsOn=trialStartOutput)
             self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
-                              transitions={'Cin':'delayPeriod',
-                                           'Lin':'delayPeriod',
-                                           'Rin':'delayPeriod'})
+                              transitions={activeEvent:'delayPeriod'})
             self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
                               transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
             self.sm.add_state(name='playStimulus', statetimer=targetDuration,
@@ -480,10 +489,10 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'reward'}, outputsOff=stimOutput)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
-                              outputsOn=[rewardOutput])
+                              outputsOn=[activeOutput])
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=[rewardOutput])
+                              outputsOff=[activeOutput])
         elif outcomeMode=='sides_direct':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
