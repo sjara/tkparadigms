@@ -27,7 +27,7 @@ bili000 = pardict.copy()
 ###bili016-024 (PV-ChR2)
 
 pardict = {'subject':'bili016','experimenter':'erin'}
-pardict.update(requireCorrectMode)
+pardict.update(passiveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili016 = pardict.copy()
 
@@ -53,7 +53,7 @@ bili020 = pardict.copy()
 
 pardict = {'subject':'bili021','experimenter':'erin'}
 pardict.update(requireCorrectMode)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 bili021 = pardict.copy()
 
 pardict = {'subject':'bili022','experimenter':'erin'}
