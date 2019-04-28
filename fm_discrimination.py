@@ -50,6 +50,8 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['activePort'] = paramgui.MenuParam('Active port',
                                                         ['left','right'],
                                                          value=0,group='Choice parameters')
+        self.params['fractionRewarded'] = paramgui.NumericParam('Fraction rewarded',
+                                                        value=0.7, units='',group='Choice parameters')
         self.params['allowEarlyWithdrawal'] = paramgui.MenuParam('Allow early withdraw',
                                                                  ['off','on'], enabled=False,
                                                                  value=1, group='Choice parameters')
@@ -464,6 +466,11 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[rewardOutput])
         elif outcomeMode=='on_any_poke':
+            rewardedTrial = np.random.random(1)[0] < self.params['fractionRewarded'].get_value()
+            if rewardedTrial:
+                rewardNorewardState = 'reward'
+            else:
+                rewardNorewardState = 'noReward'
             activePort = self.params['activePort'].get_string()
             activeOutput = activePort+'Water'
             if activePort=='left':
@@ -486,10 +493,13 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOn=stimOutput,serialOut=self.currentSoundID,
                               outputsOff=trialStartOutput)
             self.sm.add_state(name='postSoundDelay', statetimer=postSoundDelay,
-                              transitions={'Tup':'reward'}, outputsOff=stimOutput)
+                              transitions={'Tup':rewardNorewardState}, outputsOff=stimOutput)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[activeOutput])
+            self.sm.add_state(name='noReward', statetimer=0,
+                              transitions={'Tup':'stopReward'},
+                              outputsOff=[activeOutput])
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[activeOutput])
@@ -732,6 +742,15 @@ class Paradigm(templates.Paradigm2AFC):
             self.results['choice'][trialIndex] = self.results.labels['choice']['none']
         # -- Otherwise evaluate 'choice' and 'outcome' --
         else:
+            if outcomeModeString in ['on_any_poke']:
+                if self.sm.statesNameToIndex['reward'] in eventsThisTrial[:,2]:
+                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['free']
+                    self.params['nRewarded'].add(1)
+                else:
+                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['nochoice']
+                self.results['choice'][trialIndex] = self.results.labels['choice']['none']
+                self.params['nValid'].add(1)
+                self.results['valid'][trialIndex] = 1
             if outcomeModeString in ['simulated','sides_direct','direct']:
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['free']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
