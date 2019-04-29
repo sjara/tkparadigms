@@ -27,7 +27,7 @@ bili000 = pardict.copy()
 ###bili016-024 (PV-ChR2)
 
 pardict = {'subject':'bili016','experimenter':'erin'}
-pardict.update(passiveMode)
+pardict.update(activeMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili016 = pardict.copy()
 
