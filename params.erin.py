@@ -14,6 +14,8 @@ activeMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayTo
               'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'uniform', 'maxNtrials':750}
 passiveMode = {'outcomeMode':'on_any_poke', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
               'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'uniform', 'maxNtrials':750}
+passiveModeExtremes = {'outcomeMode':'on_any_poke', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
+                       'punishTimeEarly':0, 'punishSoundAmplitude':0, 'maxNtrials':750}
 
 # ======== Parameters for each animal =========
 
