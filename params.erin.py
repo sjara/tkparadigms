@@ -91,17 +91,17 @@ pardict.update(requireCorrectMode)
 bili027 = pardict.copy()
 
 pardict = {'subject':'bili028','experimenter':'erin'}
-pardict.update(requireCorrectMode)
+pardict.update(passiveModeExtremes)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili028 = pardict.copy()
 
 pardict = {'subject':'bili029','experimenter':'erin'}
-pardict.update(requireCorrectMode)
+pardict.update(passiveModeExtremes)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili029 = pardict.copy()
 
 pardict = {'subject':'bili030','experimenter':'erin'}
-pardict.update(requireCorrectMode)
+pardict.update(passiveModeExtremes)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili030 = pardict.copy()
 
