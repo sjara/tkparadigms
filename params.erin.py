@@ -86,7 +86,7 @@ pardict.update(activeMode)
 bili026 = pardict.copy()
 
 pardict = {'subject':'bili027','experimenter':'erin'}
-pardict.update(passiveMode)
+pardict.update(activeMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili027 = pardict.copy()
 
@@ -96,22 +96,22 @@ pardict.update(activeMode)
 bili028 = pardict.copy()
 
 pardict = {'subject':'bili029','experimenter':'erin'}
-pardict.update(activeMode)
+pardict.update(passiveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili029 = pardict.copy()
 
 pardict = {'subject':'bili030','experimenter':'erin'}
-pardict.update(requireCorrectMode)
+pardict.update(activeMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili030 = pardict.copy()
 
 pardict = {'subject':'bili031','experimenter':'erin'}
-pardict.update(passiveMode)
+pardict.update(activeMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili031 = pardict.copy()
 
 pardict = {'subject':'bili032','experimenter':'erin'}
-pardict.update(passiveMode)
+pardict.update(activeMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili032 = pardict.copy()
 
