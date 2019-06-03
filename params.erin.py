@@ -29,7 +29,7 @@ bili000 = pardict.copy()
 ###bili016-024 (PV-ChR2)
 
 pardict = {'subject':'bili016','experimenter':'erin'}
-pardict.update(activeMode)
+pardict.update(passiveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili016 = pardict.copy()
 
@@ -39,7 +39,7 @@ pardict.update(activeMode)
 bili017 = pardict.copy()
 
 pardict = {'subject':'bili018','experimenter':'erin'}
-pardict.update(activeMode)
+pardict.update(passiveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili018 = pardict.copy()
 
@@ -64,12 +64,12 @@ pardict.update(activeMode)
 bili022 = pardict.copy()
 
 pardict = {'subject':'bili023','experimenter':'erin'}
-pardict.update(passiveMode)
+pardict.update(activeMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili023 = pardict.copy()
 
 pardict = {'subject':'bili024','experimenter':'erin'}
-pardict.update(activeMode)
+pardict.update(passiveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili024 = pardict.copy()
 
@@ -86,7 +86,7 @@ pardict.update(activeMode)
 bili026 = pardict.copy()
 
 pardict = {'subject':'bili027','experimenter':'erin'}
-pardict.update(passiveMode)
+pardict.update(activeMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili027 = pardict.copy()
 
@@ -96,22 +96,22 @@ pardict.update(activeMode)
 bili028 = pardict.copy()
 
 pardict = {'subject':'bili029','experimenter':'erin'}
-pardict.update(activeMode)
+pardict.update(passiveMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili029 = pardict.copy()
 
 pardict = {'subject':'bili030','experimenter':'erin'}
-pardict.update(passiveMode)
+pardict.update(activeMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili030 = pardict.copy()
 
 pardict = {'subject':'bili031','experimenter':'erin'}
-pardict.update(passiveMode)
+pardict.update(activeMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili031 = pardict.copy()
 
 pardict = {'subject':'bili032','experimenter':'erin'}
-pardict.update(passiveMode)
+pardict.update(activeMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili032 = pardict.copy()
 
