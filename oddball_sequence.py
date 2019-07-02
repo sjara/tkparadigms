@@ -114,7 +114,7 @@ class Paradigm(QtGui.QMainWindow):
         self.params['soundIntensity'] = paramgui.NumericParam('Sound intensity (dB SPL)',
                                                        value=60,
                                                        group='Stimulus parameters')
-        self.params['stimDur'] = paramgui.NumericParam('Sound duration (s)',
+        self.params['stimDuration'] = paramgui.NumericParam('Sound duration (s)',
                                                         value=0.01,
                                                         group='Stimulus parameters')
         self.params['isiMean'] = paramgui.NumericParam('Interstimulus mean (s)',
@@ -128,7 +128,7 @@ class Paradigm(QtGui.QMainWindow):
                                                          value=0,group='Stimulus parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim type',
                                                          ['Sine','Chord'],
-                                                         value=2,group='Stimulus parameters')
+                                                         value=0,group='Stimulus parameters')
         self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
                                                             value=0, units='Hz', decimals=0,
                                                             enabled=False,
@@ -250,7 +250,7 @@ class Paradigm(QtGui.QMainWindow):
         self.params['currentFreq'].set_value(currentFreq)
 
         # -- Prepare the sound  --
-        stimDur = self.params['stimDur'].get_value()
+        stimDuration = self.params['stimDuration'].get_value()
         soundIntensity = self.params['soundIntensity'].get_value()
         soundAmp = self.spkCal.find_amplitude(currentFreq,soundIntensity)
         self.params['currentAmpL'].set_value(soundAmp[0])
@@ -259,10 +259,10 @@ class Paradigm(QtGui.QMainWindow):
         # -- Determine the sound type --
         stimType = self.params['stimType'].get_string()
         if stimType == 'Sine':
-            sound = {'type':'tone', 'duration':stimDur, 
+            sound = {'type':'tone', 'duration':stimDuration, 
                      'amplitude':soundAmp, 'frequency':currentFreq}
         elif stimType == 'Chord':
-            sound = {'type':'chord', 'frequency':currentFreq, 'duration':stimDur,
+            sound = {'type':'chord', 'frequency':currentFreq, 'duration':stimDuration,
                   'amplitude':soundAmp, 'ntones':12, 'factor':1.2}
             
         soundID = 1
@@ -272,7 +272,7 @@ class Paradigm(QtGui.QMainWindow):
         self.sm.reset_transitions()
         self.sm.add_state(name='startTrial', statetimer = 0.5 * isi,  
                           transitions={'Tup':'output1On'})
-        self.sm.add_state(name='output1On', statetimer=stimDur, 
+        self.sm.add_state(name='output1On', statetimer=stimDuration, 
                           transitions={'Tup':'output1Off'},
                           outputsOn=stimSync, 
                           serialOut=soundID)
