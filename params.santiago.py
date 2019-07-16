@@ -29,3 +29,9 @@ test000 = {'subject':'test000',
            'targetDuration':0.5,
            'outcomeMode':'on_next_correct',
            'allowEarlyWithdrawal':'on'}
+
+bili000 = {'subject':'bili000',
+           'laserMode':'bilateral','fractionLaserTrials':0.99, 'relevantFeature':'temporal'}
+
+pred000 = {'subject':'pred000', 'oddballFreq':400, 'standardFreq':500, 'nFreq':9, 'stimDur':0.1,
+           'isiMean':0.2, 'isiHalfRange':0, 'stimType':'Sine', 'sequenceMode':'Descending'}

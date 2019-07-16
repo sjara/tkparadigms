@@ -1,4 +1,4 @@
-subject = 'd1pi026'
+subject = 'd1pi033'
 
 noiseburst = {'stimDur':0.1,
                'isiMean':0.9,
@@ -20,15 +20,27 @@ tuningTest = {'stimDur':0.1,
                'subject':subject,
                'experimenter' : 'Matt'}
 
-tuningCurve = {'stimDur':0.1,
-               'minInt':50,
-               'maxInt':70,
-               'numInt':2,
-               'isiMean':0.8,
-               'isiHalfRange':0.1,
-               'stimType' : 'Sine',
-               'subject':subject,
-               'experimenter' : 'Matt'}
+tc = {'stimDur':0.1,
+      'isiMean':0.8,
+      'isiHalfRange': 0.1,
+      'stimType' : 'Sine',
+      'minFreq':2000,
+      'maxFreq':40000,
+      'minInt':15,
+      'maxInt':70,
+      'numInt':12,
+      'subject':subject,
+      'experimenter' : 'Matt'}
+
+# tuningCurve = {'stimDur':0.1,
+#                'minInt':50,
+#                'maxInt':70,
+#                'numInt':2,
+#                'isiMean':0.8,
+#                'isiHalfRange':0.1,
+#                'stimType' : 'Sine',
+#                'subject':subject,
+#                'experimenter' : 'Matt'}
 
 lasertrain = {'stimDur':0.01,
                'isiMean':1,
@@ -57,26 +69,14 @@ am = {'subject':subject,
       'isiMean':1,
       'isiHalfRange':0.1}
 
-'''
-rlf = {'stimDur':0.1,
-       'isiMean':0.9,
-       'isiHalfRange': 0.01,
-       'stimType' : 'Noise',
-       'minInt':30,
-       'maxInt':70,
-       'numInt':9,
-       'subject':subject,
-       'experimenter' : 'Matt'}
 
-tc = {'stimDur':0.1,
-      'isiMean':0.8,
-      'isiHalfRange': 0.1,
-      'stimType' : 'Sine',
-      'minFreq':2000,
-      'maxFreq':40000,
-      'minInt':15,
-      'maxInt':70,
-      'numInt':12,
-      'subject':subject,
-      'experimenter' : 'Matt'}
-'''
+# rlf = {'stimDur':0.1,
+#        'isiMean':0.9,
+#        'isiHalfRange': 0.01,
+#        'stimType' : 'Noise',
+#        'minInt':30,
+#        'maxInt':70,
+#        'numInt':9,
+#        'subject':subject,
+#        'experimenter' : 'Matt'}
+#
