@@ -460,39 +460,39 @@ pardict.update(bandBilateralLaser)
 band020 = pardict.copy()
 
 pardict = {'subject': 'band088', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
 band088 = pardict.copy()
 
 pardict = {'subject': 'band089', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
 band089 = pardict.copy()
 
 pardict = {'subject': 'band090', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
 band090 = pardict.copy()
 
 pardict = {'subject': 'band091', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
 band091 = pardict.copy()
 
 pardict = {'subject': 'band092', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
 band092 = pardict.copy()
 
 pardict = {'subject': 'band093', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
 band093 = pardict.copy()
 
 pardict = {'subject': 'band094', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
 band094 = pardict.copy()
 
 pardict = {'subject': 'band095', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
 band095 = pardict.copy()
 
 pardict = {'subject': 'band096', 'experimenter': 'anna'}
-pardict.update(bandSidesDirectMode)
+pardict.update(bandDirectMode)
 band096 = pardict.copy()
 
 
