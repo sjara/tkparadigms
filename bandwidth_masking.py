@@ -393,42 +393,47 @@ class Paradigm(templates.Paradigm2AFC):
         punishTimeError = self.params['punishTimeError'].get_value()
         
         # -- Define the type of trial to present --
-        fractionTrialsLaser = self.params['fractionTrialsLaser'].get_value()
-        #print fractionTrialsEachLaserOnset
-        fractionNoLaser = 1-fractionTrialsLaser
-        fractionTrials = np.array([fractionNoLaser,fractionTrialsLaser])
-        trialTypeInd = np.random.choice(2, size=1, p=fractionTrials)[0] 
-        stimMode = self.params['stimMode'].get_string()
-        if trialTypeInd>0:
-            if stimMode == 'unilateral_left':
-                laserOutput = ['stim1']
-                self.params['laserSide'].set_string('left')
-            elif stimMode == 'unilateral_right':
-                laserOutput = ['stim2']
-                self.params['laserSide'].set_string('right')
-            elif stimMode == 'bilateral':
-                laserOutput = ['stim1', 'stim2']
-                self.params['laserSide'].set_string('bilateral')
-            elif stimMode == 'mixed_unilateral':
-                possOutputs = [['stim1'], ['stim2']]
-                possSide = ['left', 'right']
-                sideThisTrial = np.random.choice(2)
-                laserOutput = possOutputs[sideThisTrial]
-                self.params['laserSide'].set_string(possSide[sideThisTrial])
-            elif stimMode == 'mixed_all':
-                possOutputs = [['stim1'], ['stim2'], ['stim1', 'stim2']]
-                possSide = ['left', 'right', 'bilateral']
-                sideThisTrial = np.random.choice(3)
-                laserOutput = possOutputs[sideThisTrial]
-                self.params['laserSide'].set_string(possSide[sideThisTrial])
-        else:
+        laserMode = self.params['laserMode'].get_string()
+        
+        if laserMode=='none':
             laserOutput = []
             self.params['laserSide'].set_string('none')
+        else:   
+            fractionTrialsLaser = self.params['fractionTrialsLaser'].get_value()
+            #print fractionTrialsEachLaserOnset
+            fractionNoLaser = 1-fractionTrialsLaser
+            fractionTrials = np.array([fractionNoLaser,fractionTrialsLaser])
+            trialTypeInd = np.random.choice(2, size=1, p=fractionTrials)[0] 
+            stimMode = self.params['stimMode'].get_string()
+            if trialTypeInd>0:
+                if stimMode == 'unilateral_left':
+                    laserOutput = ['stim1']
+                    self.params['laserSide'].set_string('left')
+                elif stimMode == 'unilateral_right':
+                    laserOutput = ['stim2']
+                    self.params['laserSide'].set_string('right')
+                elif stimMode == 'bilateral':
+                    laserOutput = ['stim1', 'stim2']
+                    self.params['laserSide'].set_string('bilateral')
+                elif stimMode == 'mixed_unilateral':
+                    possOutputs = [['stim1'], ['stim2']]
+                    possSide = ['left', 'right']
+                    sideThisTrial = np.random.choice(2)
+                    laserOutput = possOutputs[sideThisTrial]
+                    self.params['laserSide'].set_string(possSide[sideThisTrial])
+                elif stimMode == 'mixed_all':
+                    possOutputs = [['stim1'], ['stim2'], ['stim1', 'stim2']]
+                    possSide = ['left', 'right', 'bilateral']
+                    sideThisTrial = np.random.choice(3)
+                    laserOutput = possOutputs[sideThisTrial]
+                    self.params['laserSide'].set_string(possSide[sideThisTrial])
+            else:
+                laserOutput = []
+                self.params['laserSide'].set_string('none')
 
         # -- Set state matrix --
         soundMode = self.params['soundMode'].get_string()
         outcomeMode = self.params['outcomeMode'].get_string()
-        laserMode = self.params['laserSide'].get_string()
         if outcomeMode=='simulated':
             stimOutput.append(ledOutput)
             self.sm.add_state(name='startTrial', statetimer=0,
@@ -656,7 +661,8 @@ class Paradigm(templates.Paradigm2AFC):
         # ===== Calculate times of events =====
         # -- Check if it's an aborted trial --
         lastEvent = eventsThisTrial[-1,:]
-        if lastEvent[1]==-1 and lastEvent[2]==0:
+        secondToLastEvent = eventsThisTrial[-2,:] #sometimes extratimer is the last event so we need to check this too
+        if (lastEvent[1]==-1 and lastEvent[2]==0) or (lastEvent[1]==7 and secondToLastEvent[1]==-1 and secondToLastEvent[2]==0):
             self.results['timeTarget'][trialIndex] = np.nan
             self.results['timeCenterIn'][trialIndex] = np.nan
             self.results['timeCenterOut'][trialIndex] = np.nan
@@ -711,8 +717,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         # ===== Calculate choice and outcome =====
         # -- Check if it's an aborted trial --
-        lastEvent = eventsThisTrial[-1,:]
-        if lastEvent[1]==-1 and lastEvent[2]==0:
+        if (lastEvent[1]==-1 and lastEvent[2]==0) or (lastEvent[1]==7 and secondToLastEvent[1]==-1 and secondToLastEvent[2]==0):
             self.results['outcome'][trialIndex] = self.results.labels['outcome']['aborted']
             self.results['choice'][trialIndex] = self.results.labels['choice']['none']
         # -- Otherwise evaluate 'choice' and 'outcome' --
