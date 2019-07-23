@@ -464,7 +464,7 @@ pardict.update(bandNextCorrectIntDel)
 band088 = pardict.copy()
 
 pardict = {'subject': 'band089', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectIntDel)
+pardict.update(bandNextCorrectFinDel)
 band089 = pardict.copy()
 
 pardict = {'subject': 'band090', 'experimenter': 'anna'}
@@ -472,7 +472,7 @@ pardict.update(bandNextCorrectIntDel)
 band090 = pardict.copy()
 
 pardict = {'subject': 'band091', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectNoDel)
+pardict.update(bandNextCorrectIntDel)
 band091 = pardict.copy()
 
 pardict = {'subject': 'band092', 'experimenter': 'anna'}
@@ -480,7 +480,7 @@ pardict.update(bandNextCorrectNoDel)
 band092 = pardict.copy()
 
 pardict = {'subject': 'band093', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectNoDel)
+pardict.update(bandNextCorrectIntDel)
 band093 = pardict.copy()
 
 pardict = {'subject': 'band094', 'experimenter': 'anna'}
@@ -488,11 +488,11 @@ pardict.update(bandNextCorrectIntDel)
 band094 = pardict.copy()
 
 pardict = {'subject': 'band095', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectIntDel)
+pardict.update(bandNextCorrectFinDel)
 band095 = pardict.copy()
 
 pardict = {'subject': 'band096', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectIntDel)
+pardict.update(bandNextCorrectFinDel)
 band096 = pardict.copy()
 
 
