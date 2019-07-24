@@ -69,26 +69,31 @@ bandDirectMode = {'outcomeMode':'direct', 'threshMode': 'max_only', 'maxSNR': 20
 bandNextCorrectNoDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only' }
 
 bandNextCorrectIntDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only',
-                          'delayToTargetMean':0.1, 'delayToTargetHalfRange':0.05 }
+                          'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.05 }
 
 bandNextCorrectFinDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only',
-                          'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
+                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
 
-bandOnlyCorrectEasyMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
+bandOnlyCorrect = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only', 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+
+bandOnlyifCorrectOffOnWithdrawal = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 
+                        'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1, 
+                        'bandMode':'white_only',
+                        'soundMode':'off_on_withdrawal'}
 
 bandOnlyCorrectIntMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'uniform',
                           'minBand':2.0, 'maxBand':4.0, 'numBands':2, 'includeWhite':'yes',
-                          'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
+                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
 
 bandOnlyCorrectHardMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'uniform',
                           'minBand':0.25, 'maxBand':4.0, 'numBands':5, 'includeWhite':'yes',
-                          'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
+                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
 bandPreSNR = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'max_only',
-                          'maxBand':1.0, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
+                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
 bandEasySNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':5, 'maxSNR':20, 'numSNRs':4, 'bandMode':'max_only',
-                          'maxBand':1.0, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
+                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
 bandSNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':-5, 'maxSNR':15, 'numSNRs':5, 'bandMode':'max_only',
-                          'maxBand':1.0, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05 }
+                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
 
 bandBilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6}
 bandUnilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6, 'stimMode':'mixed_all', 'fractionTrialsLaser':0.45}
@@ -460,7 +465,7 @@ pardict.update(bandBilateralLaser)
 band020 = pardict.copy()
 
 pardict = {'subject': 'band088', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectIntDel)
+pardict.update(bandNextCorrectFinDel)
 band088 = pardict.copy()
 
 pardict = {'subject': 'band089', 'experimenter': 'anna'}
@@ -468,19 +473,19 @@ pardict.update(bandNextCorrectFinDel)
 band089 = pardict.copy()
 
 pardict = {'subject': 'band090', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectIntDel)
+pardict.update(bandNextCorrectFinDel)
 band090 = pardict.copy()
 
 pardict = {'subject': 'band091', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectIntDel)
+pardict.update(bandNextCorrectFinDel)
 band091 = pardict.copy()
 
 pardict = {'subject': 'band092', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectNoDel)
+pardict.update(bandNextCorrectIntDel)
 band092 = pardict.copy()
 
 pardict = {'subject': 'band093', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectIntDel)
+pardict.update(bandNextCorrectFinDel)
 band093 = pardict.copy()
 
 pardict = {'subject': 'band094', 'experimenter': 'anna'}
