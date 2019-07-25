@@ -74,7 +74,8 @@ bandNextCorrectIntDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only
 bandNextCorrectFinDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only',
                           'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
 
-bandOnlyCorrect = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only', 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+bandOnlyCorrect = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only', 
+                   'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
 
 bandOnlyifCorrectOffOnWithdrawal = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 
                         'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1, 
@@ -469,7 +470,7 @@ pardict.update(bandNextCorrectFinDel)
 band088 = pardict.copy()
 
 pardict = {'subject': 'band089', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectFinDel)
+pardict.update(bandOnlyCorrect)
 band089 = pardict.copy()
 
 pardict = {'subject': 'band090', 'experimenter': 'anna'}
@@ -477,23 +478,23 @@ pardict.update(bandNextCorrectFinDel)
 band090 = pardict.copy()
 
 pardict = {'subject': 'band091', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectFinDel)
+pardict.update(bandOnlyCorrect)
 band091 = pardict.copy()
 
 pardict = {'subject': 'band092', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectIntDel)
+pardict.update(bandNextCorrectFinDel)
 band092 = pardict.copy()
 
 pardict = {'subject': 'band093', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectFinDel)
+pardict.update(bandOnlyCorrect)
 band093 = pardict.copy()
 
 pardict = {'subject': 'band094', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectIntDel)
+pardict.update(bandNextCorrectFinDel)
 band094 = pardict.copy()
 
 pardict = {'subject': 'band095', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectFinDel)
+pardict.update(bandOnlyCorrect)
 band095 = pardict.copy()
 
 pardict = {'subject': 'band096', 'experimenter': 'anna'}
