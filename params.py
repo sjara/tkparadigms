@@ -61,47 +61,6 @@ psyCurveChangeReward = {'punishTimeError':4,
 
 # ======== Parameters for each animal =========
 
-# -- tone detection task --
-bandSidesDirectMode = {'outcomeMode':'sides_direct', 'threshMode': 'max_only', 'maxSNR': 20, 'bandMode': 'white_only'}
-
-bandDirectMode = {'outcomeMode':'direct', 'threshMode': 'max_only', 'maxSNR': 20, 'bandMode': 'white_only'}
-
-bandNextCorrectNoDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only' }
-
-bandNextCorrectIntDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only',
-                          'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.05 }
-
-bandNextCorrectFinDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only',
-                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
-
-bandOnlyCorrect = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only', 
-                   'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
-
-bandOnlyifCorrectOffOnWithdrawal = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 
-                        'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1, 
-                        'bandMode':'white_only',
-                        'soundMode':'off_on_withdrawal'}
-
-bandOnlyCorrectIntMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'uniform',
-                          'minBand':2.0, 'maxBand':4.0, 'numBands':2, 'includeWhite':'yes',
-                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
-
-bandOnlyCorrectHardMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'uniform',
-                          'minBand':0.25, 'maxBand':4.0, 'numBands':5, 'includeWhite':'yes',
-                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
-bandPreSNR = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'max_only',
-                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
-bandEasySNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':5, 'maxSNR':20, 'numSNRs':4, 'bandMode':'max_only',
-                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
-bandSNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':-5, 'maxSNR':15, 'numSNRs':5, 'bandMode':'max_only',
-                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
-
-bandBilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6}
-bandUnilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6, 'stimMode':'mixed_all', 'fractionTrialsLaser':0.45}
-bandOnsets = {'nOnsetsToUse':'3', 'laserDuration':0.2,'fractionTrialsLaser':0.45}
-threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':30, 'maxNoiseAmp':40, 'numAmps':3}
-oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
-
 
 # -- Frequency discrimination (some LowLeft, some LowRight) --
 adap05xModeLowLeft = basicDiscriminationMode.copy() #This mode is for low frequency going left
@@ -382,7 +341,49 @@ psyCurveChangeReward = {'punishTimeError':4,
 
 
 
-# -- bandwidth mice --
+# -- bandwidth mice (tone detection task) --
+
+bandSidesDirectMode = {'outcomeMode':'sides_direct', 'threshMode': 'max_only', 'maxSNR': 20, 'bandMode': 'white_only'}
+
+bandDirectMode = {'outcomeMode':'direct', 'threshMode': 'max_only', 'maxSNR': 20, 'bandMode': 'white_only'}
+
+bandNextCorrectNoDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only' }
+
+bandNextCorrectIntDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only',
+                          'delayToTargetMean':0.15, 'delayToTargetHalfRange':0.05 }
+
+bandNextCorrectFinDel = {'outcomeMode':'on_next_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only',
+                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+
+bandOnlyCorrect = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'white_only', 
+                   'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+
+bandOnlyifCorrectOffOnWithdrawal = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 
+                        'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1, 
+                        'bandMode':'white_only',
+                        'soundMode':'off_on_withdrawal'}
+
+bandOnlyCorrectIntMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'uniform',
+                          'minBand':2.0, 'maxBand':4.0, 'numBands':2, 'includeWhite':'yes',
+                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+
+bandOnlyCorrectHardMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'uniform',
+                          'minBand':0.25, 'maxBand':4.0, 'numBands':5, 'includeWhite':'yes',
+                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+bandPreSNR = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'max_only',
+                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+bandEasySNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':5, 'maxSNR':20, 'numSNRs':4, 'bandMode':'max_only',
+                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+bandSNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':-5, 'maxSNR':15, 'numSNRs':5, 'bandMode':'max_only',
+                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+
+bandBilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6}
+bandUnilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6, 'stimMode':'mixed_all', 'fractionTrialsLaser':0.45}
+bandOnsets = {'nOnsetsToUse':'3', 'laserDuration':0.2,'fractionTrialsLaser':0.45}
+threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':30, 'maxNoiseAmp':40, 'numAmps':3}
+oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
+
+
 
 pardict = {'subject': 'band006', 'experimenter': 'anna'}
 pardict.update(bandSNR)
@@ -482,7 +483,7 @@ pardict.update(bandOnlyCorrect)
 band091 = pardict.copy()
 
 pardict = {'subject': 'band092', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectFinDel)
+pardict.update(bandOnlyCorrect)
 band092 = pardict.copy()
 
 pardict = {'subject': 'band093', 'experimenter': 'anna'}
@@ -498,7 +499,7 @@ pardict.update(bandOnlyCorrect)
 band095 = pardict.copy()
 
 pardict = {'subject': 'band096', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectFinDel)
+pardict.update(bandOnlyCorrect)
 band096 = pardict.copy()
 
 
