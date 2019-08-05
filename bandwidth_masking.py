@@ -250,8 +250,8 @@ class Paradigm(templates.Paradigm2AFC):
         # -- Specify state matrix with extratimer --
         self.sm = statematrix.StateMatrix(inputs=rigsettings.INPUTS,
                                           outputs=rigsettings.OUTPUTS,
-                                          readystate='ready_next_trial',
-                                          extratimers=['laserTimer'])
+                                          readystate='ready_next_trial')
+                                          #extratimers=['laserTimer'])
 
         # -- Prepare first trial --
         #self.prepare_next_trial(0)
@@ -576,7 +576,7 @@ class Paradigm(templates.Paradigm2AFC):
                                       transitions={'Tup':'playToneStimulus'},
                                       outputsOn=stimOutput, serialOut=noiseID,
                                       outputsOff=trialStartOutput)
-                    #invalid trial if mouse withdraws before laser comes on
+                    #restart trial if mouse withdraws before laser comes on
                     self.sm.add_state(name='playToneStimulusBeforeLaser', statetimer=laserOnset,
                                       transitions={'Cout':'waitForCenterPoke', 'Tup':'laserOn'})
                     self.sm.add_state(name='laserOn', statetimer=0, transitions={'Tup':'playToneStimulus'},
@@ -610,8 +610,7 @@ class Paradigm(templates.Paradigm2AFC):
                 self.sm.add_state(name='laserOff', statetimer=0, transitions={'Tup':'waitForSidePoke'},
                                       outputsOff=laserOutput)
                 self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability-laserOffset,
-                                      transitions={'Lin':'choiceLeft','Rin':'choiceRight', 'laserTimer':'laserOff',
-                                                   'Tup':'noChoice'})
+                                      transitions={'Lin':'choiceLeft','Rin':'choiceRight', 'Tup':'noChoice'})
             if correctSidePort=='Lin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'reward'})
