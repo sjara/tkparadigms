@@ -491,7 +491,7 @@ pardict.update(bandOnlyCorrect)
 band092 = pardict.copy()
 
 pardict = {'subject': 'band093', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrect)
+pardict.update(bandOnlyifCorrectOffOnWithdrawal)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band093 = pardict.copy()
 
@@ -502,12 +502,12 @@ band094 = pardict.copy()
 
 pardict = {'subject': 'band095', 'experimenter': 'anna'}
 pardict.update(bandOnlyCorrect)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 band095 = pardict.copy()
 
 pardict = {'subject': 'band096', 'experimenter': 'anna'}
 pardict.update(bandOnlyCorrect)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 band096 = pardict.copy()
 
 
