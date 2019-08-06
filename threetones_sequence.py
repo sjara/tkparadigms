@@ -96,15 +96,19 @@ class Paradigm(QtGui.QMainWindow):
                                                       value=0,
                                                       group='Stimulus parameters')
         self.params['sequenceMode'] = paramgui.MenuParam('Sequence mode',
-                                                         ['Ascending','Descending'],
+                                                         ['ascending','descending'],
                                                          value=0,group='Stimulus parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim type',
-                                                         ['Sine','Chord'],
+                                                         ['sine','chord'],
                                                          value=0,group='Stimulus parameters')
         self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
                                                             value=0, units='Hz', decimals=0,
                                                             enabled=False,
                                                             group='Stimulus parameters')
+        self.params['stimCondition'] = paramgui.MenuParam('Stimulus condition',
+                                                          ['standard','oddball'],
+                                                          enabled=False,
+                                                          value=0,group='Stimulus parameters')
         '''
         self.params['currentIntensity'] = paramgui.NumericParam('Current Intensity',
                                                                  value=0,
@@ -201,23 +205,29 @@ class Paradigm(QtGui.QMainWindow):
         stepInSequence = nextTrial%nFreq
         # -- Define next sequence --
         if self.nPatternsAfterOddball >= self.nextOddballPeriod:
+            self.params['stimCondition'].set_string('oddball')
             self.nPatternsAfterOddball = 0
             oddballPeriod = self.params['oddballPeriod'].get_value()
             oddballPeriodHalfRange = self.params['oddballPeriodHalfRange'].get_value()
             jitter = np.random.randint(2*oddballPeriodHalfRange+1)-oddballPeriodHalfRange
             self.nextOddballPeriod = oddballPeriod + jitter
-            if sequenceMode=='Ascending':
+            if sequenceMode=='ascending':
                 self.sequence = [0,2,1]
-            elif sequenceMode=='Descending':
+            elif sequenceMode=='descending':
                 self.sequence = [2,0,1]
-            # FIXME: first item is ignored because of the way nPatternsAfterOddball is updated
+            else:
+                raise ValueError('Sequence not defined')
+                # FIXME: first item is ignored because of the way nPatternsAfterOddball is updated
         else:
             if stepInSequence==0 or not len(self.sequence):
+                self.params['stimCondition'].set_string('standard')
                 self.nPatternsAfterOddball += 1
-                if sequenceMode=='Ascending':
+                if sequenceMode=='ascending':
                     self.sequence = np.arange(nFreq)
-                elif sequenceMode=='Descending':
+                elif sequenceMode=='descending':
                     self.sequence = np.arange(nFreq)[::-1]
+                else:
+                    raise ValueError('Sequence not defined')
         '''
         # -- DEBUG --
         print('=========================================================')
@@ -238,10 +248,10 @@ class Paradigm(QtGui.QMainWindow):
 
         # -- Determine the sound type --
         stimType = self.params['stimType'].get_string()
-        if stimType == 'Sine':
+        if stimType == 'sine':
             sound = {'type':'tone', 'duration':stimDur, 
                      'amplitude':soundAmp, 'frequency':currentFreq}
-        elif stimType == 'Chord':
+        elif stimType == 'chord':
             sound = {'type':'chord', 'frequency':currentFreq, 'duration':stimDur,
                   'amplitude':soundAmp, 'ntones':12, 'factor':1.2}
             
