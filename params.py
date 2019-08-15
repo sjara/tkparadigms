@@ -365,17 +365,22 @@ bandOnlyifCorrectOffOnWithdrawal = {'outcomeMode':'only_if_correct', 'threshMode
 
 bandOnlyCorrectIntMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'uniform',
                           'minBand':2.0, 'maxBand':4.0, 'numBands':2, 'includeWhite':'yes',
-                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1,
+                          'soundMode':'off_on_withdrawal'}
 
 bandOnlyCorrectHardMode = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'uniform',
                           'minBand':0.25, 'maxBand':4.0, 'numBands':5, 'includeWhite':'yes',
-                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+                          'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1,
+                          'soundMode':'off_on_withdrawal'}
 bandPreSNR = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR':20, 'bandMode':'max_only',
-                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1,
+                          'soundMode':'off_on_withdrawal'}
 bandEasySNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':5, 'maxSNR':20, 'numSNRs':4, 'bandMode':'max_only',
-                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1,
+                          'soundMode':'off_on_withdrawal'}
 bandSNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':-5, 'maxSNR':15, 'numSNRs':5, 'bandMode':'max_only',
-                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1 }
+                          'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1,
+                          'soundMode':'off_on_withdrawal'}
 
 bandBilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6}
 bandUnilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6, 'stimMode':'mixed_all', 'fractionTrialsLaser':0.45}
@@ -477,22 +482,22 @@ pardict.update(bandOnlyifCorrectOffOnWithdrawal)
 band089 = pardict.copy()
 
 pardict = {'subject': 'band090', 'experimenter': 'anna'}
-pardict.update(bandOnlyifCorrectOffOnWithdrawal)
+pardict.update(bandOnlyCorrectIntMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band090 = pardict.copy()
 
 pardict = {'subject': 'band091', 'experimenter': 'anna'}
-pardict.update(bandOnlyifCorrectOffOnWithdrawal)
+pardict.update(bandOnlyCorrectIntMode)
 band091 = pardict.copy()
 
 pardict = {'subject': 'band092', 'experimenter': 'anna'}
 pardict.update(bandOnlyCorrect)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 band092 = pardict.copy()
 
 pardict = {'subject': 'band093', 'experimenter': 'anna'}
 pardict.update(bandOnlyifCorrectOffOnWithdrawal)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 band093 = pardict.copy()
 
 pardict = {'subject': 'band094', 'experimenter': 'anna'}
