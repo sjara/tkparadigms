@@ -472,7 +472,7 @@ pardict.update(bandBilateralLaser)
 band020 = pardict.copy()
 
 pardict = {'subject': 'band088', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrect)
+pardict.update(bandOnlyifCorrectOffOnWithdrawal)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band088 = pardict.copy()
 
@@ -491,7 +491,7 @@ pardict.update(bandOnlyifCorrectOffOnWithdrawal)
 band091 = pardict.copy()
 
 pardict = {'subject': 'band092', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrect)
+pardict.update(bandOnlyifCorrectOffOnWithdrawal)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band092 = pardict.copy()
 
@@ -511,7 +511,7 @@ pardict.update(bandOnlyifCorrectOffOnWithdrawal)
 band095 = pardict.copy()
 
 pardict = {'subject': 'band096', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrect)
+pardict.update(bandOnlyifCorrectOffOnWithdrawal)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band096 = pardict.copy()
 
