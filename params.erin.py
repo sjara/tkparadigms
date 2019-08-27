@@ -14,6 +14,8 @@ activeMode = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayTo
               'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'uniform', 'maxNtrials':750}
 activeModeExtremes = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
               'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'off', 'maxNtrials':2000}
+activeModePsych = {'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
+              'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'uniform', 'maxNtrials':2000}
 passiveMode = {'outcomeMode':'on_any_poke', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
               'punishTimeEarly':0, 'punishSoundAmplitude':0, 'psycurveMode':'uniform', 'maxNtrials':750}
 passiveModeExtremes = {'outcomeMode':'on_any_poke', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.1,
@@ -31,47 +33,47 @@ bili000 = pardict.copy()
 ###bili016-024 (PV-ChR2)
 
 pardict = {'subject':'bili016','experimenter':'santiago'}
-pardict.update(activeModeExtremes)
+pardict.update(activeModePsych)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili016 = pardict.copy()
 
 pardict = {'subject':'bili017','experimenter':'santiago'}
-pardict.update(activeModeExtremes)
+pardict.update(activeModePsych)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili017 = pardict.copy()
 
 pardict = {'subject':'bili018','experimenter':'santiago'}
-pardict.update(activeModeExtremes)
+pardict.update(activeModePsych)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili018 = pardict.copy()
 
 pardict = {'subject':'bili019','experimenter':'santiago'}
-pardict.update(activeModeExtremes)
+pardict.update(activeModePsych)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili019 = pardict.copy()
 
 pardict = {'subject':'bili020','experimenter':'santiago'}
-pardict.update(activeModeExtremes)
+pardict.update(activeModePsych)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili020 = pardict.copy()
 
 pardict = {'subject':'bili021','experimenter':'santiago'}
-pardict.update(activeModeExtremes)
+pardict.update(activeModePsych)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili021 = pardict.copy()
 
 pardict = {'subject':'bili022','experimenter':'santiago'}
-pardict.update(activeModeExtremes)
+pardict.update(activeModePsych)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili022 = pardict.copy()
 
 pardict = {'subject':'bili023','experimenter':'santiago'}
-pardict.update(activeModeExtremes)
+pardict.update(activeModePsych)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili023 = pardict.copy()
 
 pardict = {'subject':'bili024','experimenter':'santiago'}
-pardict.update(activeModeExtremes)
+pardict.update(activeModePsych)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 bili024 = pardict.copy()
 
