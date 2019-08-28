@@ -23,6 +23,7 @@ reload(templates)
 from taskontrol.plugins import performancedynamicsplot
 
 from taskontrol.plugins import soundclient
+reload(soundclient)
 from taskontrol.plugins import speakercalibration
 import time
 
@@ -257,7 +258,7 @@ class Paradigm(templates.Paradigm2AFC):
         #self.prepare_next_trial(0)
 
     def prepare_target_sound(self, band, noiseInt, toneInt):
-        spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
+        spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_SINE)
         # FIXME: currently I am averaging calibration from both speakers (not good)
         stimDur = self.params['targetDuration'].get_value()
         modRate = self.params['modRate'].get_value()
@@ -329,7 +330,7 @@ class Paradigm(templates.Paradigm2AFC):
             allBands = np.logspace(np.log2(minBand), np.log2(maxBand), numBands, base=2.0)
             if self.params['includeWhite'].get_string()=='yes':
                 allBands = np.append(allBands, np.inf)
-            currentBand = np.random.choice(allBands)
+            currentBand = float(np.random.choice(allBands))
         if self.params['noiseMode'].get_string()=='max_only':
             currentNoiseAmp = self.params['maxNoiseAmp'].get_value()
         else:
@@ -647,6 +648,7 @@ class Paradigm(templates.Paradigm2AFC):
         outcomeModeString = self.params['outcomeMode'].get_items()[outcomeModeID]
 
         eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
+        print eventsThisTrial
         #print eventsThisTrial
         statesThisTrial = eventsThisTrial[:,2]
 
