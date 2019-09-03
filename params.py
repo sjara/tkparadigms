@@ -378,6 +378,10 @@ bandPreSNR = {'outcomeMode':'only_if_correct', 'threshMode':'max_only', 'maxSNR'
 bandEasySNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':5, 'maxSNR':20, 'numSNRs':4, 'bandMode':'max_only',
                           'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1,
                           'soundMode':'off_on_withdrawal'}
+bandEasySNR2BW = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':10, 'maxSNR':20, 'numSNRs':3, 
+               'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1,
+               'bandMode':'uniform', 'minBand':0.25, 'maxBand':0.25, 'numBands':1, 'includeWhite':'yes',
+               'soundMode':'off_on_withdrawal','noiseMode':'max_only'}
 bandSNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':-5, 'maxSNR':15, 'numSNRs':5, 'bandMode':'max_only',
                           'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1,
                           'soundMode':'off_on_withdrawal'}
@@ -482,12 +486,12 @@ pardict.update(bandOnlyCorrectIntMode)
 band089 = pardict.copy()
 
 pardict = {'subject': 'band090', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandEasySNR2BW)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band090 = pardict.copy()
 
 pardict = {'subject': 'band091', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandEasySNR2BW)
 band091 = pardict.copy()
 
 pardict = {'subject': 'band092', 'experimenter': 'anna'}
@@ -501,12 +505,12 @@ pardict.update(bandOnlyCorrectHardMode)
 band093 = pardict.copy()
 
 pardict = {'subject': 'band094', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectIntMode)
+pardict.update(bandOnlyCorrectHardMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band094 = pardict.copy()
 
 pardict = {'subject': 'band095', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectIntMode)
+pardict.update(bandOnlyCorrectHardMode)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band095 = pardict.copy()
 
