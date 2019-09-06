@@ -481,7 +481,7 @@ pardict.update(bandOnlyCorrectHardMode)
 band088 = pardict.copy()
 
 pardict = {'subject': 'band089', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandEasySNR2BW)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band089 = pardict.copy()
 
