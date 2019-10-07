@@ -64,6 +64,9 @@ class Paradigm(QtGui.QMainWindow):
         self.params['waitTime'] = paramgui.NumericParam('Wait time',value=0.5,
                                                         units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
+        self.params['taskMode'] = paramgui.MenuParam('Task mode', ['one_track','cooperate'], value=0,
+                                                     group='General parameters')
+        generalParams = self.params.layout_group('General parameters')
 
 
         # -- Add graphical widgets to main window --
@@ -84,6 +87,8 @@ class Paradigm(QtGui.QMainWindow):
         layoutCol2.addWidget(waterDelivery)
         layoutCol2.addStretch()
         layoutCol2.addWidget(timingParams)
+        layoutCol2.addStretch()
+        layoutCol2.addWidget(generalParams)
 
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
@@ -134,6 +139,7 @@ class Paradigm(QtGui.QMainWindow):
             self.params.update_history()
             
         # -- Prepare next trial --
+        taskMode = self.params['taskMode'].get_string()
         waitTime = self.params['waitTime'].get_value()
         timeWaterValvesN = self.params['timeWaterValvesN'].get_value()
         timeWaterValvesS = self.params['timeWaterValvesS'].get_value()
@@ -150,80 +156,42 @@ class Paradigm(QtGui.QMainWindow):
             LED1 = 'S1LED'; LED2 = 'S2LED'
             Water1 = 'S1Water'; Water2 = 'S2Water'
             self.results['activeSide'][nextTrial+1]=self.results.labels['activeSide']['north']
-        
-        self.sm.add_state(name='startTrial', statetimer=0,
-                          transitions={'Tup':'waitForPoke'},
-                          outputsOff=[LED1,LED2])
-        self.sm.add_state(name='waitForPoke', statetimer=LONGTIME,
-                          transitions={port1in:'waitForPort2', port2in:'waitForPort1'})
-        self.sm.add_state(name='waitForPort2', statetimer=waitTime,
-                          transitions={port2in:'rewardN', 'Tup':'singlePoke'},
-                          outputsOn=[LED1])
-        self.sm.add_state(name='waitForPort1', statetimer=waitTime,
-                          transitions={port1in:'rewardN', 'Tup':'singlePoke'},
-                          outputsOn=[LED2])
-        self.sm.add_state(name='singlePoke', statetimer=0,
-                          transitions={'Tup':'readyForNextTrial'},
-                          outputsOff=[LED1,LED2])
-        self.sm.add_state(name='rewardN', statetimer=timeWaterValvesN,
-                          transitions={'Tup':'stopReward'},
-                          outputsOn=[Water1, Water2],
-                          outputsOff=[LED1,LED2])
-        self.sm.add_state(name='stopReward', statetimer=0,
-                          transitions={'Tup':'readyForNextTrial'},
-                          outputsOff=[Water1, Water2])
-        
-            
-        '''
-        if self.results['activeSide'][nextTrial] == self.results.labels['activeSide']['north']:
+
+        if taskMode == 'one_track':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForPoke'},
-                              outputsOff=['N1LED','N2LED'])
+                              outputsOff=[LED1,LED2])
             self.sm.add_state(name='waitForPoke', statetimer=LONGTIME,
-                              transitions={'N1in':'waitForN2', 'N2in':'waitForN1'})
-            self.sm.add_state(name='waitForN2', statetimer=waitTime,
-                              transitions={'N2in':'rewardN', 'Tup':'singlePoke'},
-                              outputsOn=['N1LED'])
-            self.sm.add_state(name='waitForN1', statetimer=waitTime,
-                              transitions={'N1in':'rewardN', 'Tup':'singlePoke'},
-                              outputsOn=['N2LED'])
-            self.sm.add_state(name='singlePoke', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=['N1LED','N2LED'])
-            # NOTE: what about one poking N and the other poking S?                          
-            self.sm.add_state(name='rewardN', statetimer=timeWaterValvesN,
+                              transitions={port1in:'reward', port2in:'reward'})
+            self.sm.add_state(name='reward', statetimer=timeWaterValvesN,
                               transitions={'Tup':'stopReward'},
-                              outputsOn=['N1Water','N2Water'],
-                              outputsOff=['N1LED','N2LED'])
+                              outputsOn=[Water1, Water2],
+                              outputsOff=[LED1,LED2])
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=['N1Water','N2Water','S1Water','S2Water',])
-            self.results['activeSide'][nextTrial+1]=self.results.labels['activeSide']['south']
-        else:
+                              outputsOff=[Water1, Water2])
+        elif taskMode == 'cooperate':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForPoke'},
-                              outputsOff=['S1LED','S2LED'])
+                              outputsOff=[LED1,LED2])
             self.sm.add_state(name='waitForPoke', statetimer=LONGTIME,
-                              transitions={'S1in':'waitForS2', 'S2in':'waitForS1'})
-            self.sm.add_state(name='waitForS2', statetimer=waitTime,
-                              transitions={'S2in':'rewardS', 'Tup':'singlePoke'},
-                              outputsOn=['S1LED'])
-            self.sm.add_state(name='waitForS1', statetimer=waitTime,
-                              transitions={'S1in':'rewardS', 'Tup':'singlePoke'},
-                              outputsOn=['S2LED'])
+                              transitions={port1in:'waitForPort2', port2in:'waitForPort1'})
+            self.sm.add_state(name='waitForPort2', statetimer=waitTime,
+                              transitions={port2in:'reward', 'Tup':'singlePoke'},
+                              outputsOn=[LED1])
+            self.sm.add_state(name='waitForPort1', statetimer=waitTime,
+                              transitions={port1in:'reward', 'Tup':'singlePoke'},
+                              outputsOn=[LED2])
             self.sm.add_state(name='singlePoke', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=['S1LED','S2LED'])
-            # NOTE: what about one poking N and the other poking S?                          
-            self.sm.add_state(name='rewardS', statetimer=timeWaterValvesS,
+                              outputsOff=[LED1,LED2])
+            self.sm.add_state(name='reward', statetimer=timeWaterValvesN,
                               transitions={'Tup':'stopReward'},
-                              outputsOn=['S1Water','S2Water'],
-                              outputsOff=['S1LED','S2LED'])
+                              outputsOn=[Water1, Water2],
+                              outputsOff=[LED1,LED2])
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=['N1Water','N2Water','S1Water','S2Water',])
-            self.results['activeSide'][nextTrial+1]=self.results.labels['activeSide']['north']
-        '''
+                              outputsOff=[Water1, Water2])
         
         self.dispatcherModel.set_state_matrix(self.sm)
         self.dispatcherModel.ready_to_start_trial()
