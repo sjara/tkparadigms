@@ -70,7 +70,7 @@ class Paradigm(QtGui.QMainWindow):
 
         self.params['targetDuration'] = paramgui.NumericParam('Target duration',value=0.2, units='s',
                                                               group='Sound parameters')
-        self.params['targetIntensity'] = paramgui.NumericParam('Target intensity',value=60, units='dB-SPL',
+        self.params['targetIntensity'] = paramgui.NumericParam('Target intensity',value=50, units='dB-SPL',
                                                         enabled=True, group='Sound parameters')
         self.params['targetAmplitude'] = paramgui.NumericParam('Target amplitude',value=0.0,units='[0-1]',
                                                         enabled=False,decimals=4,group='Sound parameters')
@@ -188,11 +188,11 @@ class Paradigm(QtGui.QMainWindow):
                               transitions={'Cin':'reward'})
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
-                              outputsOn=['centerLED'],
+                              outputsOn=['centerWater','centerLED'],
                               serialOut=self.targetSoundID)
             self.sm.add_state(name='stopReward', statetimer=interTrialInterval,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=['centerLED'])
+                              outputsOff=['centerWater','centerLED'])
         elif taskMode == 'detect_sound':
             pass
 
