@@ -61,7 +61,9 @@ class Paradigm(QtGui.QMainWindow):
                                                                 units='s',group='Water delivery')
         waterDelivery = self.params.layout_group('Water delivery')
        
-        self.params['waitTime'] = paramgui.NumericParam('Wait time',value=0.5,
+        self.params['waitTime'] = paramgui.NumericParam('Wait time',value=3,
+                                                        units='s',group='Timing parameters')
+        self.params['timeLEDon'] = paramgui.NumericParam('Time LED on',value=1,
                                                         units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
         self.params['taskMode'] = paramgui.MenuParam('Task mode', ['one_track','cooperate'], value=0,
@@ -141,6 +143,7 @@ class Paradigm(QtGui.QMainWindow):
         # -- Prepare next trial --
         taskMode = self.params['taskMode'].get_string()
         waitTime = self.params['waitTime'].get_value()
+        timeLEDon = self.params['timeLEDon'].get_value()
         timeWaterValvesN = self.params['timeWaterValvesN'].get_value()
         timeWaterValvesS = self.params['timeWaterValvesS'].get_value()
 
@@ -178,20 +181,26 @@ class Paradigm(QtGui.QMainWindow):
                               transitions={port1in:'waitForPort2', port2in:'waitForPort1'})
             self.sm.add_state(name='waitForPort2', statetimer=waitTime,
                               transitions={port2in:'reward', 'Tup':'singlePoke'},
-                              outputsOn=[LED1])
+                              outputsOn=[])
             self.sm.add_state(name='waitForPort1', statetimer=waitTime,
                               transitions={port1in:'reward', 'Tup':'singlePoke'},
-                              outputsOn=[LED2])
+                              outputsOn=[])
             self.sm.add_state(name='singlePoke', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[LED1,LED2])
             self.sm.add_state(name='reward', statetimer=timeWaterValvesN,
                               transitions={'Tup':'stopReward'},
-                              outputsOn=[Water1, Water2],
-                              outputsOff=[LED1,LED2])
+                              outputsOn=[Water1, Water2, LED1, LED2],
+                              outputsOff=[])
             self.sm.add_state(name='stopReward', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'keepLEDon'},
                               outputsOff=[Water1, Water2])
+            self.sm.add_state(name='keepLEDon', statetimer=timeLEDon,
+                              transitions={'Tup':'turnLEDoff'},
+                              outputsOff=[])
+            self.sm.add_state(name='turnLEDoff', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=[LED1, LED2])
         
         self.dispatcherModel.set_state_matrix(self.sm)
         self.dispatcherModel.ready_to_start_trial()
