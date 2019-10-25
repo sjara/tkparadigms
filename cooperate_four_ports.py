@@ -66,12 +66,12 @@ class Paradigm(QtGui.QMainWindow):
         self.params['timeLEDon'] = paramgui.NumericParam('Time LED on',value=1,
                                                         units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
-        self.params['activePorts'] = paramgui.MenuParam('Active ports', ['north','south'], value=0,
+        self.params['activeSide'] = paramgui.MenuParam('Active side', ['north','south'], value=0,
                                                         group='General parameters', enabled=False)
         self.params['taskMode'] = paramgui.MenuParam('Task mode', ['one_track','cooperate'], value=1,
                                                      group='General parameters')
         self.params['nextPortAfterFail'] = paramgui.MenuParam('Next port after fail', ['same','opposite'], value=0,
-                                                     group='General parameters')
+                                                     group='General parameters', enabled=False)
         self.params['nRewarded'] = paramgui.NumericParam('N trials rewarded',value=0, enabled=False,
                                                          units='trials',group='General parameters')
         generalParams = self.params.layout_group('General parameters')
@@ -106,9 +106,9 @@ class Paradigm(QtGui.QMainWindow):
         self.results = arraycontainer.Container()
         self.results.labels['outcome'] = {'aborted':0, 'rewarded':1, 'poke1only':2, 'poke2only':3, 'none':-1}
         self.results['outcome'] = np.empty(maxNtrials,dtype=int)
-        self.results.labels['activeSide'] = {'north':0,'south':1}
-        self.results['activeSide'] = np.empty(maxNtrials,dtype=int)
-        self.results['activeSide'][0] = 0
+        #self.results.labels['activeSide'] = {'north':0,'south':1}
+        #self.results['activeSide'] = np.empty(maxNtrials,dtype=int)
+        #self.results['activeSide'][0] = 0
         
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
@@ -146,6 +146,9 @@ class Paradigm(QtGui.QMainWindow):
         if nextTrial>0:
             self.params.update_history()
             self.calculate_results(nextTrial-1)
+            previousOutcome = self.results['outcome'][nextTrial-1]
+        else:
+            previousOutcome = self.results.labels['outcome']['rewarded']
             
         # -- Prepare next trial --
         taskMode = self.params['taskMode'].get_string()
@@ -154,20 +157,27 @@ class Paradigm(QtGui.QMainWindow):
         timeLEDon = self.params['timeLEDon'].get_value()
         timeWaterValvesN = self.params['timeWaterValvesN'].get_value()
         timeWaterValvesS = self.params['timeWaterValvesS'].get_value()
-
+        activeSide = self.params['activeSide'].get_string()
+        
         self.sm.reset_transitions()
 
-        if self.results['activeSide'][nextTrial] == self.results.labels['activeSide']['north']:
+        switchActiveSide = (previousOutcome==self.results.labels['outcome']['rewarded'])
+
+        if (activeSide=='south' and switchActiveSide) or (activeSide=='north' and not switchActiveSide):
             port1in = 'N1in'; port2in = 'N2in'
             LED1 = 'N1LED'; LED2 = 'N2LED'
             Water1 = 'N1Water'; Water2 = 'N2Water'
-            self.results['activeSide'][nextTrial+1]=self.results.labels['activeSide']['south']
-        else:
+            #self.results['activeSide'][nextTrial+1]=self.results.labels['activeSide']['south']
+            self.params['activeSide'].set_string('north')
+        elif (activeSide=='north' and switchActiveSide) or (activeSide=='south' and not switchActiveSide):
             port1in = 'S1in'; port2in = 'S2in'
             LED1 = 'S1LED'; LED2 = 'S2LED'
             Water1 = 'S1Water'; Water2 = 'S2Water'
-            self.results['activeSide'][nextTrial+1]=self.results.labels['activeSide']['north']
-
+            #self.results['activeSide'][nextTrial+1]=self.results.labels['activeSide']['north']
+            self.params['activeSide'].set_string('south')
+        else:
+            raise
+        
         if taskMode == 'one_track':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForPoke'},
