@@ -66,8 +66,14 @@ class Paradigm(QtGui.QMainWindow):
         self.params['timeLEDon'] = paramgui.NumericParam('Time LED on',value=1,
                                                         units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
-        self.params['taskMode'] = paramgui.MenuParam('Task mode', ['one_track','cooperate'], value=0,
+        self.params['activePorts'] = paramgui.MenuParam('Active ports', ['north','south'], value=0,
+                                                        group='General parameters', enabled=False)
+        self.params['taskMode'] = paramgui.MenuParam('Task mode', ['one_track','cooperate'], value=1,
                                                      group='General parameters')
+        self.params['nextPortAfterFail'] = paramgui.MenuParam('Next port after fail', ['same','opposite'], value=0,
+                                                     group='General parameters')
+        self.params['nRewarded'] = paramgui.NumericParam('N trials rewarded',value=0, enabled=False,
+                                                         units='trials',group='General parameters')
         generalParams = self.params.layout_group('General parameters')
 
 
@@ -98,7 +104,7 @@ class Paradigm(QtGui.QMainWindow):
         # -- Add variables for storing results --
         maxNtrials = MAX_N_TRIALS # Preallocating space for each vector makes things easier
         self.results = arraycontainer.Container()
-        self.results.labels['outcome'] = {'correct':1,'error':0}
+        self.results.labels['outcome'] = {'aborted':0, 'rewarded':1, 'poke1only':2, 'poke2only':3, 'none':-1}
         self.results['outcome'] = np.empty(maxNtrials,dtype=int)
         self.results.labels['activeSide'] = {'north':0,'south':1}
         self.results['activeSide'] = np.empty(maxNtrials,dtype=int)
@@ -139,9 +145,11 @@ class Paradigm(QtGui.QMainWindow):
         # -- Calculate results from last trial (update outcome, choice, etc) --
         if nextTrial>0:
             self.params.update_history()
+            self.calculate_results(nextTrial-1)
             
         # -- Prepare next trial --
         taskMode = self.params['taskMode'].get_string()
+        nextPortAfterFail = self.params['nextPortAfterFail'].get_string()
         waitTime = self.params['waitTime'].get_value()
         timeLEDon = self.params['timeLEDon'].get_value()
         timeWaterValvesN = self.params['timeWaterValvesN'].get_value()
@@ -205,6 +213,21 @@ class Paradigm(QtGui.QMainWindow):
         self.dispatcherModel.set_state_matrix(self.sm)
         self.dispatcherModel.ready_to_start_trial()
 
+        
+    def calculate_results(self,trialIndex):
+        eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
+        statesThisTrial = eventsThisTrial[:,2]
+        if self.sm.statesNameToIndex['reward'] in statesThisTrial:
+            self.params['nRewarded'].add(1)
+            self.results['outcome'][trialIndex] = self.results.labels['outcome']['rewarded']
+        elif self.sm.statesNameToIndex['waitForPort2'] in statesThisTrial:
+            self.results['outcome'][trialIndex] = self.results.labels['outcome']['poke1only']
+        elif self.sm.statesNameToIndex['waitForPort1'] in statesThisTrial:
+            self.results['outcome'][trialIndex] = self.results.labels['outcome']['poke2only']
+        else:
+            # This should not happen
+            self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
+        
     def closeEvent(self, event):
         '''
         Executed when closing the main window.
