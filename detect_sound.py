@@ -62,7 +62,12 @@ class Paradigm(QtGui.QMainWindow):
        
         self.params['rewardAvailability'] = paramgui.NumericParam('Reward availability',value=1,
                                                         units='s',group='Timing parameters')
-        self.params['interTrialInterval'] = paramgui.NumericParam('Inter trial interval',value=2,
+        self.params['interTrialInterval'] = paramgui.NumericParam('Inter trial interval (ITI)',value=0,
+                                                                  units='s',group='Timing parameters',
+                                                                  decimals=3, enabled=False)
+        self.params['interTrialIntervalMean'] = paramgui.NumericParam('ITI mean',value=2,
+                                                        units='s',group='Timing parameters')
+        self.params['interTrialIntervalHalfRange'] = paramgui.NumericParam('ITI +/-',value=0.5,
                                                         units='s',group='Timing parameters')
         #self.params['timeLEDon'] = paramgui.NumericParam('Time LED on',value=1,
         #                                                units='s',group='Timing parameters')
@@ -175,9 +180,13 @@ class Paradigm(QtGui.QMainWindow):
         # -- Prepare next trial --
         taskMode = self.params['taskMode'].get_string()
         rewardAvailability = self.params['rewardAvailability'].get_value()
-        interTrialInterval = self.params['interTrialInterval'].get_value()
         timeWaterValve = self.params['timeWaterValve'].get_value()
-
+        interTrialIntervalMean = self.params['interTrialIntervalMean'].get_value()
+        interTrialIntervalHalfRange = self.params['interTrialIntervalHalfRange'].get_value()
+        randNum = (2*np.random.random(1)[0]-1)
+        interTrialInterval = interTrialIntervalMean + randNum*interTrialIntervalHalfRange
+        self.params['interTrialInterval'].set_value(interTrialInterval)
+        
         self.sm.reset_transitions()
 
         if taskMode == 'water_on_lick':
