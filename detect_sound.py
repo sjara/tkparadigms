@@ -65,10 +65,12 @@ class Paradigm(QtGui.QMainWindow):
         self.params['interTrialInterval'] = paramgui.NumericParam('Inter trial interval (ITI)',value=0,
                                                                   units='s',group='Timing parameters',
                                                                   decimals=3, enabled=False)
-        self.params['interTrialIntervalMean'] = paramgui.NumericParam('ITI mean',value=2,
+        self.params['interTrialIntervalMean'] = paramgui.NumericParam('ITI mean',value=4,
                                                         units='s',group='Timing parameters')
-        self.params['interTrialIntervalHalfRange'] = paramgui.NumericParam('ITI +/-',value=0.5,
+        self.params['interTrialIntervalHalfRange'] = paramgui.NumericParam('ITI +/-',value=2,
                                                         units='s',group='Timing parameters')
+        #self.params['punishTimeOut'] = paramgui.NumericParam('Time out (punish)',value=1,
+        #                                                units='s',group='Timing parameters')
         #self.params['timeLEDon'] = paramgui.NumericParam('Time LED on',value=1,
         #                                                units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
@@ -85,6 +87,14 @@ class Paradigm(QtGui.QMainWindow):
                                                      group='General parameters')
         generalParams = self.params.layout_group('General parameters')
 
+        self.params['nHits'] = paramgui.NumericParam('N hits',value=0, enabled=False,
+                                                      units='trials',group='Report')
+        self.params['nMisses'] = paramgui.NumericParam('N misses',value=0, enabled=False,
+                                                      units='trials',group='Report')
+        self.params['nFalseAlarms'] = paramgui.NumericParam('N false alarms',value=0, enabled=False,
+                                                      units='trials',group='Report')
+        reportInfo = self.params.layout_group('Report')
+
 
         # -- Add graphical widgets to main window --
         self.centralWidget = QtGui.QWidget()
@@ -97,6 +107,7 @@ class Paradigm(QtGui.QMainWindow):
 
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.sessionInfo)
+        layoutCol1.addWidget(reportInfo)
         layoutCol1.addWidget(self.dispatcherView)
 
         layoutCol2.addWidget(self.manualControl)
@@ -115,7 +126,7 @@ class Paradigm(QtGui.QMainWindow):
         # -- Add variables for storing results --
         maxNtrials = MAX_N_TRIALS # Preallocating space for each vector makes things easier
         self.results = arraycontainer.Container()
-        self.results.labels['outcome'] = {'hit':1,'falseAlarm':0}
+        self.results.labels['outcome'] = {'hit':1,'falseAlarm':0, 'miss':2, 'none':-1}
         self.results['outcome'] = np.empty(maxNtrials,dtype=int)
         
         # -- Load parameters from a file --
@@ -176,10 +187,12 @@ class Paradigm(QtGui.QMainWindow):
         # -- Calculate results from last trial (update outcome, choice, etc) --
         if nextTrial>0:
             self.params.update_history()
+            self.calculate_results(nextTrial-1)
             
         # -- Prepare next trial --
         taskMode = self.params['taskMode'].get_string()
         rewardAvailability = self.params['rewardAvailability'].get_value()
+        targetDuration = self.params['targetDuration'].get_value()
         timeWaterValve = self.params['timeWaterValve'].get_value()
         interTrialIntervalMean = self.params['interTrialIntervalMean'].get_value()
         interTrialIntervalHalfRange = self.params['interTrialIntervalHalfRange'].get_value()
@@ -203,13 +216,55 @@ class Paradigm(QtGui.QMainWindow):
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=['centerWater','centerLED'])
         elif taskMode == 'detect_sound':
-            pass
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'delayPeriod'},
+                              outputsOff=['centerLED'])
+            self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval,
+                              transitions={'Cin':'falseAlarm', 'Tup':'playTarget'})
+            self.sm.add_state(name='playTarget', statetimer=targetDuration,
+                              transitions={'Cin':'hit', 'Tup':'waitForLick'},
+                              outputsOn=['centerLED'],
+                              serialOut=self.targetSoundID)
+            self.sm.add_state(name='waitForLick', statetimer=rewardAvailability,
+                              transitions={'Cin':'hit', 'Tup':'miss'},
+                              outputsOff=['centerLED'])
+            self.sm.add_state(name='hit', statetimer=0,
+                              transitions={'Tup':'reward'},
+                              outputsOff=['centerLED'])            
+            self.sm.add_state(name='miss', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'})            
+            self.sm.add_state(name='falseAlarm', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'})            
+            self.sm.add_state(name='reward', statetimer=timeWaterValve,
+                              transitions={'Tup':'stopReward'},
+                              outputsOn=['centerWater'])
+            self.sm.add_state(name='stopReward', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=['centerWater'])
+
 
         self.prepare_target_sound()
         
         self.dispatcherModel.set_state_matrix(self.sm)
         self.dispatcherModel.ready_to_start_trial()
 
+    def calculate_results(self,trialIndex):
+        if self.params['taskMode'].get_string()=='detect_sound':
+            eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
+            statesThisTrial = eventsThisTrial[:,2]
+            if self.sm.statesNameToIndex['hit'] in statesThisTrial:
+                self.params['nHits'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
+            elif self.sm.statesNameToIndex['miss'] in statesThisTrial:
+                self.params['nMisses'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
+            elif self.sm.statesNameToIndex['falseAlarm'] in statesThisTrial:
+                self.params['nFalseAlarms'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
+            else:
+                # This should not happen
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
+        
     def closeEvent(self, event):
         '''
         Executed when closing the main window.
