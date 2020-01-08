@@ -35,3 +35,8 @@ bili000 = {'subject':'bili000',
 
 pred000 = {'subject':'pred000', 'oddballFreq':400, 'standardFreq':500, 'nFreq':9, 'stimDur':0.1,
            'isiMean':0.2, 'isiHalfRange':0, 'stimType':'Sine', 'sequenceMode':'Descending'}
+
+hfix000 = {'subject':'test000', 'taskMode':'discriminate_sound', 'interTrialIntervalMean':2,
+           'interTrialIntervalHalfRange':0, 'targetIntensity':30}
+hfix001 = {'subject':'test000', 'taskMode':'lick_after_sound', 'interTrialIntervalMean':2,
+           'interTrialIntervalHalfRange':0, 'targetIntensity':30}
