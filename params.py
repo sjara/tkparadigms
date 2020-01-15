@@ -386,8 +386,8 @@ bandSNR = {'outcomeMode':'only_if_correct', 'threshMode':'linear', 'minSNR':-5, 
                           'maxBand':1.0, 'delayToTargetMean':0.3, 'delayToTargetHalfRange':0.1,
                           'soundMode':'off_on_withdrawal'}
 
-bandBilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6}
-bandUnilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6, 'stimMode':'mixed_all', 'fractionTrialsLaser':0.45}
+bandBilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6, 'laserMode':'random'}
+bandUnilateralLaser = {'nOnsetsToUse':'1', 'laserOnsetFromSoundOnset1':0, 'laserDuration':0.6, 'stimMode':'mixed_all', 'fractionTrialsLaser':0.45, 'laserMode':'random'}
 bandOnsets = {'nOnsetsToUse':'3', 'laserDuration':0.2,'fractionTrialsLaser':0.45}
 threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':30, 'maxNoiseAmp':40, 'numAmps':3}
 oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
