@@ -409,7 +409,7 @@ pardict.update(bandBilateralLaser)
 band093 = pardict.copy()
 
 pardict = {'subject': 'band105', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrect)
+pardict.update(bandOnlyifCorrectOffOnWithdrawal)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band105 = pardict.copy()
 
