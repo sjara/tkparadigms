@@ -648,7 +648,7 @@ class Paradigm(templates.Paradigm2AFC):
         outcomeModeString = self.params['outcomeMode'].get_items()[outcomeModeID]
 
         eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
-        print eventsThisTrial
+        #print eventsThisTrial
         statesThisTrial = eventsThisTrial[:,2]
 
         # -- Find beginning of trial --
@@ -731,9 +731,9 @@ class Paradigm(templates.Paradigm2AFC):
             leftInInds = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['choiceLeft'])
             rightInInds = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['choiceRight'])
             if len(leftInInds):
-                leftTimeValue = eventsThisTrial[leftInInds[0],0]
+                timeValue = eventsThisTrial[leftInInds[0],0]
             elif len(rightInInds):
-                rightTimeValue = eventsThisTrial[rightInInds[0],0]
+                timeValue = eventsThisTrial[rightInInds[0],0]
             else:
                 timeValue = np.nan
             self.results['timeSideIn'][trialIndex] = timeValue
