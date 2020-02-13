@@ -692,6 +692,7 @@ class Paradigm(templates.Paradigm2AFC):
             cInInds = np.flatnonzero(eventsThisTrial[:targetEventInd,1]==self.sm.eventsDict['Cin'])
             timeValue = eventsThisTrial[cInInds[-1],0] if len(cInInds) else np.nan
             self.results['timeCenterIn'][trialIndex] = timeValue
+            print timeValue
 
             # -- Find center poke-out time --
 #             if len(seqPos):
@@ -706,6 +707,7 @@ class Paradigm(templates.Paradigm2AFC):
             cOutInd = np.flatnonzero(eventsThisTrial[cInInds[-1]:,1]==self.sm.eventsDict['Cout'])
             timeValue = eventsThisTrial[cOutInd[0]+cInInds[-1],0] if len(cOutInd) else np.nan
             self.results['timeCenterOut'][trialIndex] = timeValue
+            print timeValue
 
             # -- Find side poke time --
 #             if outcomeModeString in ['on_next_correct','only_if_correct']:
@@ -735,6 +737,7 @@ class Paradigm(templates.Paradigm2AFC):
             else:
                 timeValue = np.nan
             self.results['timeSideIn'][trialIndex] = timeValue
+            print timeValue
 
         # ===== Calculate choice and outcome =====
         # -- Check if it's an aborted trial --
