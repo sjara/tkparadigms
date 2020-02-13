@@ -649,7 +649,6 @@ class Paradigm(templates.Paradigm2AFC):
 
         eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
         print eventsThisTrial
-        #print eventsThisTrial
         statesThisTrial = eventsThisTrial[:,2]
 
         # -- Find beginning of trial --
@@ -688,6 +687,11 @@ class Paradigm(templates.Paradigm2AFC):
             seqPos = np.flatnonzero(utils.find_state_sequence(statesThisTrial,seqCin))
             timeValue = eventsThisTrial[seqPos[0]+1,0] if len(seqPos) else np.nan
             self.results['timeCenterIn'][trialIndex] = timeValue
+            print timeValue
+            
+            cInInds = np.flatnonzero(eventsThisTrial[:targetEventInd,1]==self.sm.eventsDict['Cin'])
+            timeValue = eventsThisTrial[cInInds[-1],0] if len(cInInds) else np.nan
+            print timeValue
 
             # -- Find center poke-out time --
             if len(seqPos):
@@ -697,6 +701,11 @@ class Paradigm(templates.Paradigm2AFC):
             else:
                 timeValue = np.nan
             self.results['timeCenterOut'][trialIndex] = timeValue
+            
+            print timeValue
+            cOutInd = np.flatnonzero(eventsThisTrial[cInInds[-1]:,1]==self.sm.eventsDict['Cout'])
+            timeValue = eventsThisTrial[cOutInd[0]+cInInds[-1],0] if len(cOutInd) else np.nan
+            print timeValue
 
             # -- Find side poke time --
             if outcomeModeString in ['on_next_correct','only_if_correct']:
@@ -715,6 +724,17 @@ class Paradigm(templates.Paradigm2AFC):
             elif outcomeModeString in ['simulated','sides_direct','direct']:
                 timeValue = np.nan
             self.results['timeSideIn'][trialIndex] = timeValue
+            
+            print timeValue
+            leftInInds = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['choiceLeft'])
+            rightInInds = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['choiceRight'])
+            if len(leftInInds):
+                leftTimeValue = eventsThisTrial[leftInInds[0],0]
+            elif len(rightInInds):
+                rightTimeValue = eventsThisTrial[rightInInds[0],0]
+            else:
+                timeValue = np.nan
+            print timeValue
 
         # ===== Calculate choice and outcome =====
         # -- Check if it's an aborted trial --
