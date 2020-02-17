@@ -405,7 +405,7 @@ pardict.update(bandUnilateralLaser)
 band093 = pardict.copy()
 
 pardict = {'subject': 'band105', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandEasySNR2BW)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band105 = pardict.copy()
 
@@ -460,7 +460,7 @@ pardict.update(bandEasySNR2BW)
 band115 = pardict.copy()
 
 pardict = {'subject': 'band116', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandEasySNR2BW)
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band116 = pardict.copy()
 
