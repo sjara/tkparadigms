@@ -436,7 +436,7 @@ band110 = pardict.copy()
 
 pardict = {'subject': 'band111', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 band111 = pardict.copy()
 
 pardict = {'subject': 'band112', 'experimenter': 'anna'}
@@ -446,7 +446,7 @@ band112 = pardict.copy()
 
 pardict = {'subject': 'band113', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 band113 = pardict.copy()
 
 pardict = {'subject': 'band114', 'experimenter': 'anna'}
@@ -466,7 +466,7 @@ band116 = pardict.copy()
 
 pardict = {'subject': 'band117', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 band117 = pardict.copy()
 
 pardict = {'subject': 'band118', 'experimenter': 'anna'}
