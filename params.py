@@ -395,7 +395,7 @@ oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
 
 pardict = {'subject': 'band091', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
-pardict.update(bandBilateralLaser)
+pardict.update(bandUnilateralLaser)
 band091 = pardict.copy()
 
 pardict = {'subject': 'band093', 'experimenter': 'anna'}
@@ -406,7 +406,7 @@ band093 = pardict.copy()
 
 pardict = {'subject': 'band105', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 band105 = pardict.copy()
 
 pardict = {'subject': 'band106', 'experimenter': 'anna'}
@@ -451,7 +451,7 @@ band113 = pardict.copy()
 
 pardict = {'subject': 'band114', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 band114 = pardict.copy()
 
 pardict = {'subject': 'band115', 'experimenter': 'anna'}
