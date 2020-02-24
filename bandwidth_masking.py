@@ -59,6 +59,9 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['soundMode'] = paramgui.MenuParam('Sound presentation mode',
                                                         ['full_duration', 'off_on_withdrawal'],
                                                          value=0,group='Choice parameters')
+        self.params['toneSide'] = paramgui.MenuParam('Tone side',
+                                                        ['left', 'right'],
+                                                         value=1,group='Choice parameters')
         self.params['antibiasMode'] = paramgui.MenuParam('Anti-bias mode',
                                                         ['off','repeat_mistake'],
                                                         value=0,group='Choice parameters')
@@ -305,20 +308,25 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Prepare sound --
         threshMode = self.params['threshMode'].get_string()
+        toneSide = self.params['toneSide'].get_string()
         if threshMode=='max_only':
-            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
-                currentToneInt = -np.inf
-            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+            if nextCorrectChoice==self.results.labels['rewardSide'][toneSide]:
                 currentToneInt = self.params['maxSNR'].get_value()
-        elif threshMode=='linear': 
-            if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+            else:
                 currentToneInt = -np.inf
-            elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+#             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
+#                 currentToneInt = -np.inf
+#             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
+#                 currentToneInt = self.params['maxSNR'].get_value()
+        elif threshMode=='linear': 
+            if nextCorrectChoice==self.results.labels['rewardSide'][toneSide]:
                 numSNRs = self.params['numSNRs'].get_value()
                 minSNR = self.params['minSNR'].get_value()
                 maxSNR = self.params['maxSNR'].get_value()
                 allSNRs = np.linspace(minSNR, maxSNR, numSNRs)
                 currentToneInt = np.random.choice(allSNRs)
+            else:
+                currentToneInt = -np.inf
         if self.params['bandMode'].get_string()=='white_only':
             currentBand = np.inf
         elif self.params['bandMode'].get_string()=='max_only':
