@@ -712,7 +712,7 @@ class Paradigm(templates.Paradigm2AFC):
 #             self.results['timeCenterOut'][trialIndex] = timeValue
 #             print timeValue
             
-            cOutInd = np.flatnonzero(eventsThisTrial[cInInds[-1]:,1]==self.sm.eventsDict['Cout'])
+            cOutInd = np.flatnonzero(eventsThisTrial[cInInds[-1]:,1]==self.sm.eventsDict['Cout']) if len(cInInds) else np.zeros(0)
             timeValue = eventsThisTrial[cOutInd[0]+cInInds[-1],0] if len(cOutInd) else np.nan
             self.results['timeCenterOut'][trialIndex] = timeValue
             print timeValue
@@ -735,14 +735,16 @@ class Paradigm(templates.Paradigm2AFC):
 #                 timeValue = np.nan
 #             self.results['timeSideIn'][trialIndex] = timeValue
 #             print timeValue
-            
-            leftInInds = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['choiceLeft'])
-            rightInInds = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['choiceRight'])
-            if len(leftInInds):
-                timeValue = eventsThisTrial[leftInInds[0],0]
-            elif len(rightInInds):
-                timeValue = eventsThisTrial[rightInInds[0],0]
-            else:
+            if outcomeModeString in ['on_next_correct','only_if_correct']:
+                leftInInds = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['choiceLeft'])
+                rightInInds = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['choiceRight'])
+                if len(leftInInds):
+                    timeValue = eventsThisTrial[leftInInds[0],0]
+                elif len(rightInInds):
+                    timeValue = eventsThisTrial[rightInInds[0],0]
+                else:
+                    timeValue = np.nan
+            elif outcomeModeString in ['simulated','sides_direct','direct']:
                 timeValue = np.nan
             self.results['timeSideIn'][trialIndex] = timeValue
             print timeValue
