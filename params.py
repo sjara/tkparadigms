@@ -396,7 +396,7 @@ oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
 
 pardict = {'subject': 'band091', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
-pardict.update(bandUnilateralLaser)
+pardict.update(bandBilateralLaser)
 band091 = pardict.copy()
 
 pardict = {'subject': 'band093', 'experimenter': 'anna'}
