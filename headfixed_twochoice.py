@@ -89,7 +89,7 @@ class Paradigm(QtGui.QMainWindow):
         soundParams = self.params.layout_group('Sound parameters')
 
         
-        self.params['rewardSideMode'] = paramgui.MenuParam('Reward side mode', ['random','toggle'], value=1,
+        self.params['rewardSideMode'] = paramgui.MenuParam('Reward side mode', ['random','toggle','onlyL','onlyR'], value=1,
                                                            group='Choice parameters')
         self.params['rewardSide'] = paramgui.MenuParam('Reward side', ['left','right'], value=0,
                                                        enabled=False, group='Choice parameters')
@@ -248,6 +248,10 @@ class Paradigm(QtGui.QMainWindow):
                 nextRewardSide = 'left'
         elif rewardSideMode=='random':
             nextRewardSide = possibleSides[np.random.randint(2)]
+        elif rewardSideMode=='onlyL':
+                nextRewardSide = 'left'
+        elif rewardSideMode=='onlyR':
+                nextRewardSide = 'right'
                 
         if nextRewardSide=='left':
             self.params['rewardSide'].set_string('left')
