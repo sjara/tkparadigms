@@ -4,6 +4,7 @@ Two-alternative choice for head-fixed with two lick ports (right/left).
 
 import numpy as np
 from PySide import QtGui 
+#from qtpy import QtGui
 from taskontrol.core import dispatcher
 from taskontrol.core import statematrix
 from taskontrol.core import savedata
@@ -174,8 +175,8 @@ class Paradigm(QtGui.QMainWindow):
         self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
 
         # -- Connect to sound server and define sounds --
-        print 'Conecting to soundserver...'
-        print '***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****' ### DEBUG
+        print('Conecting to soundserver...')
+        print('***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****') ### DEBUG
         time.sleep(0.2)
         self.soundClient = soundclient.SoundClient()
         self.targetSoundID = 1
@@ -198,7 +199,7 @@ class Paradigm(QtGui.QMainWindow):
 
     def _show_message(self,msg):
         self.statusBar().showMessage(str(msg))
-        print msg
+        print(msg)
 
     def save_to_file(self):
         '''Triggered by button-clicked signal'''
@@ -281,6 +282,11 @@ class Paradigm(QtGui.QMainWindow):
             self.sm.add_state(name='stopReward', statetimer=interTrialInterval,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[rewardOutput,'centerLED'])
+            # -- A few empty states necessary to avoid errors when changing taskMode --
+            self.sm.add_state(name='hit')            
+            self.sm.add_state(name='error')            
+            self.sm.add_state(name='miss')            
+            self.sm.add_state(name='falseAlarm')            
         elif taskMode == 'lick_after_sound':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'delayPeriod'},
@@ -344,13 +350,19 @@ class Paradigm(QtGui.QMainWindow):
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[rewardOutput])
 
-
+        #print(self.sm) ### DEBUG
         self.dispatcherModel.set_state_matrix(self.sm)
         self.dispatcherModel.ready_to_start_trial()
 
     def calculate_results(self,trialIndex):
         # NOTE: Changes to graphical parameters (like nHits) are saved before calling
         #       this method. Therefore, those set here will be saved on the next trial.
+
+        #taskModeLabels = self.params['taskMode'].get_items()
+        #firstTrialModeInd = self.params.history['taskMode'][0]
+        #if taskModeLabels[firstTrialModeInd] == 'water_on_lick':
+        #    self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
+
         if self.params['taskMode'].get_string() in ['lick_after_sound', 'discriminate_sound']:
             lastRewardSide = self.params['rewardSide'].get_string()
             eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
@@ -380,7 +392,7 @@ class Paradigm(QtGui.QMainWindow):
                     self.params['nMissesRight'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
             else:
-                # This should not happen
+                # This may happen if changing from one taskMode to another
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
 
     def closeEvent(self, event):
