@@ -19,7 +19,7 @@ import time
 
 
 LONGTIME = 100
-MAX_N_TRIALS = 4000
+MAX_N_TRIALS = 8000
 
 class Paradigm(QtGui.QMainWindow):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
