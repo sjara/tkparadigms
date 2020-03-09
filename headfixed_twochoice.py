@@ -42,6 +42,8 @@ class Paradigm(QtGui.QMainWindow):
 
         # -- Manual control of outputs --
         self.manualControl = manualcontrol.ManualControl(self.dispatcherModel.statemachine)
+        timeWaterValve = 0.03
+        self.singleDrop = manualcontrol.SingleDrop(self.dispatcherModel.statemachine, timeWaterValve)
         
         # -- Define graphical parameters --
         self.params = paramgui.Container()
@@ -55,7 +57,7 @@ class Paradigm(QtGui.QMainWindow):
                                                       group='Session info')
         self.sessionInfo = self.params.layout_group('Session info')
 
-        self.params['timeWaterValve'] = paramgui.NumericParam('Time valve',value=0.03,
+        self.params['timeWaterValve'] = paramgui.NumericParam('Time valve',value=timeWaterValve,
                                                                 units='s',group='Water delivery')
         #self.params['timeWaterValvesS'] = paramgui.NumericParam('Time valves S',value=0.03,
         #                                                        units='s',group='Water delivery')
@@ -143,13 +145,17 @@ class Paradigm(QtGui.QMainWindow):
         layoutMain.addLayout(layoutCol2)
 
         layoutCol1.addWidget(self.saveData)
+        layoutCol1.addStretch()
+        layoutCol1.addWidget(waterDelivery)
+        layoutCol1.addStretch()
         layoutCol1.addWidget(self.sessionInfo)
+        layoutCol1.addStretch()
         layoutCol1.addWidget(reportInfo)
+        layoutCol1.addStretch()
         layoutCol1.addWidget(self.dispatcherView)
 
         layoutCol2.addWidget(self.manualControl)
-        layoutCol2.addStretch()
-        layoutCol2.addWidget(waterDelivery)
+        layoutCol2.addWidget(self.singleDrop)
         layoutCol2.addStretch()
         layoutCol2.addWidget(timingParams)
         layoutCol2.addStretch()
