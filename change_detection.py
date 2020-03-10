@@ -24,18 +24,22 @@ class Paradigm(templates.ParadigmGoNoGo):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(Paradigm, self).__init__(parent)
 
-        self.params['stimPreDurationMean'] = paramgui.NumericParam('Stim pre duration mean',value=1.2,
+        self.params['fadeTime'] = paramgui.NumericParam('Fade in/out time',value=1,
                                                             units='s',group='Timing parameters')
-        self.params['stimPreDurationHalfRange'] = paramgui.NumericParam('+/-',value=0.6,
+        self.params['stimPreDurationMean'] = paramgui.NumericParam('Stim pre duration mean',value=4,
+                                                            units='s',group='Timing parameters')
+        self.params['stimPreDurationHalfRange'] = paramgui.NumericParam('+/-',value=1,
                                                             units='s',group='Timing parameters')
         self.params['stimPreDuration'] = paramgui.NumericParam('Stim pre duration',value=0,
                                                                enabled=False, decimals=3,
                                                                units='s',group='Timing parameters')
-        self.params['stimPostDuration'] = paramgui.NumericParam('Stim post duration',value=0.8,
+        self.params['stimPostDuration'] = paramgui.NumericParam('Stim post duration',value=4,
                                                                 units='s',group='Timing parameters')
         self.params['timeOut'] = paramgui.NumericParam('Time out duration',value=0,
                                                        units='s',group='Timing parameters')
-        self.params['interTrialInterval'] = paramgui.NumericParam('Inter-trial interval',value=0,
+        self.params['interTrialInterval'] = paramgui.NumericParam('Inter-trial interval',value=1,
+                                                       units='s',group='Timing parameters')
+        self.params['syncDuration'] = paramgui.NumericParam('Sync signal duration',value=0.1,
                                                        units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
 
@@ -57,11 +61,11 @@ class Paradigm(templates.ParadigmGoNoGo):
                                                             enabled=False,group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
-        self.params['outcomeMode'] = paramgui.MenuParam('Outcome mode',
-                                                        ['on_run','on_stim_change',
+        self.params['taskMode'] = paramgui.MenuParam('Task mode',
+                                                        ['auto','on_stim_change',
                                                          'on_correct_stop'],
-                                                         value=2, group='Task modes')
-        taskModes = self.params.layout_group('Task modes')
+                                                         value=0, group='General parameters')
+        generalParams = self.params.layout_group('General parameters')
 
         self.params['nValid'] = paramgui.NumericParam('N valid',value=0,
                                                       units='',enabled=False,
@@ -86,7 +90,7 @@ class Paradigm(templates.ParadigmGoNoGo):
 
         layoutCol2.addWidget(timingParams)
         layoutCol2.addWidget(soundParams)
-        layoutCol2.addWidget(taskModes)
+        layoutCol2.addWidget(generalParams)
         layoutCol2.addWidget(reportParams)
 
         self.centralWidget.setLayout(layoutMain)
@@ -150,10 +154,17 @@ class Paradigm(templates.ParadigmGoNoGo):
 
         stimPreDur = self.params['stimPreDuration'].get_value()
         stimPostDur = self.params['stimPostDuration'].get_value()
+        fadeTime = self.params['fadeTime'].get_value()
+        '''
         s1 = {'type':'chord', 'frequency':stimPreFreq, 'duration':stimPreDur,
               'amplitude':stimPreAmp, 'ntones':12, 'factor':1.2}
         s2 = {'type':'chord', 'frequency':stimPostFreq, 'duration':stimPostDur,
               'amplitude':stimPostAmp, 'ntones':12, 'factor':1.2}
+        '''
+        s1 = {'type':'chord', 'frequency':stimPreFreq, 'duration':stimPreDur,
+              'amplitude':stimPreAmp, 'ntones':12, 'factor':1.2, 'fadein':fadeTime}
+        s2 = {'type':'chord', 'frequency':stimPostFreq, 'duration':stimPostDur,
+              'amplitude':stimPostAmp, 'ntones':12, 'factor':1.2, 'fadeout':fadeTime}
         self.soundClient.set_sound(self.stimPreSoundID,s1)
         self.soundClient.set_sound(self.stimPostSoundID,s2)
 
@@ -183,11 +194,28 @@ class Paradigm(templates.ParadigmGoNoGo):
         stimPostDur = self.params['stimPostDuration'].get_value()
         timeOut = self.params['timeOut'].get_value()
         interTrialInterval = self.params['interTrialInterval'].get_value()
-        outcomeMode = self.params['outcomeMode'].get_string()
+        syncDuration = self.params['syncDuration'].get_value()
+        taskMode = self.params['taskMode'].get_string()
         self.sm.reset_transitions()
-        if outcomeMode == 'on_run':
-            raise ValueError('Option on_run is not implemented yet.')
-        elif outcomeMode == 'on_stim_change':
+        if taskMode == 'auto':
+            self.sm.add_state(name='startTrial', statetimer=syncDuration,
+                              transitions={'Tup':'playPreStimulus'},
+                              outputsOn = ['centerLED'],
+                              outputsOff=['rightLED','leftLED'])
+            self.sm.add_state(name='playPreStimulus', statetimer=stimPreDur,
+                              transitions={'Tup':'playPostStimulus'},
+                              outputsOff=['centerLED', 'rightLED','leftLED'],
+                              serialOut=self.stimPreSoundID)
+            self.sm.add_state(name='playPostStimulus', statetimer=stimPostDur,
+                              transitions={'Tup':'interTrialInterval'},
+                              serialOut=self.stimPostSoundID)
+            self.sm.add_state(name='interTrialInterval', statetimer=interTrialInterval+stimPostDur,
+                              transitions={'Tup':'readyForNextTrial'})
+            # -- A few empty states necessary for other modes --
+            self.sm.add_state(name='hit')
+            self.sm.add_state(name='miss')
+            self.sm.add_state(name='falseAlarm')
+        elif taskMode == 'on_stim_change':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForRun'},
                               outputsOff=['centerLED', 'rightLED'])
@@ -214,7 +242,7 @@ class Paradigm(templates.ParadigmGoNoGo):
                               transitions={'Tup':'interTrialInterval'})
             self.sm.add_state(name='interTrialInterval', statetimer=interTrialInterval+stimPostDur,
                               transitions={'Tup':'readyForNextTrial'})
-        elif outcomeMode == 'on_correct_stop':
+        elif taskMode == 'on_correct_stop':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForRun'},
                               outputsOff=['centerLED', 'rightLED'])
@@ -266,7 +294,7 @@ class Paradigm(templates.ParadigmGoNoGo):
         self.results['timeTrialStart'][trialIndex] = eventsThisTrial[startTrialInd,0]
 
         lastEvent = eventsThisTrial[-1,:]
-        outcomeMode = self.params['outcomeMode'].get_string()
+        taskMode = self.params['taskMode'].get_string()
         if lastEvent[1]==-1 and lastEvent[2]==0:
             self.results['outcome'][trialIndex] = self.results.labels['outcome']['aborted']
             self.results['timeRun'][trialIndex] = np.nan
@@ -274,15 +302,15 @@ class Paradigm(templates.ParadigmGoNoGo):
             self.results['timePreStim'][trialIndex] = np.nan
             self.results['timePostStim'][trialIndex] = np.nan
         else:
-            if outcomeMode == 'on_run':
-                raise ValueError('Option on_run is not implemented yet.')
-            elif outcomeMode == 'on_stim_change':
+            if taskMode == 'auto':
+                pass
+            elif taskMode == 'on_stim_change':
                 if self.sm.statesNameToIndex['freeReward'] in eventsThisTrial[:,2]:
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['freeReward']
                     self.params['nRewarded'].add(1)
                 elif self.sm.statesNameToIndex['earlyStop'] in eventsThisTrial[:,2]:
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['earlyStop']
-            elif outcomeMode == 'on_correct_stop':
+            elif taskMode == 'on_correct_stop':
                 if self.sm.statesNameToIndex['hit'] in eventsThisTrial[:,2]:
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
                     self.params['nRewarded'].add(1)
@@ -306,6 +334,8 @@ class Paradigm(templates.ParadigmGoNoGo):
                 seqPos = np.flatnonzero(statesThisTrial==self.sm.statesNameToIndex['falseAlarm'])
                 self.results['timeStop'][trialIndex] = eventsThisTrial[seqPos[0],0] if len(seqPos) else np.nan
             elif self.sm.statesNameToIndex['miss'] in statesThisTrial:
+                self.results['timeStop'][trialIndex] = np.nan
+            else:
                 self.results['timeStop'][trialIndex] = np.nan
 
         #print('--- OUTCOME [{}]: {} ---'.format(trialIndex,self.results['outcome'][trialIndex])) # DEBUG
