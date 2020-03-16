@@ -384,7 +384,7 @@ class Paradigm(QtGui.QMainWindow):
                 else:
                     self.params['nHitsRight'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
-            if self.sm.statesNameToIndex['error'] in statesThisTrial:
+            elif self.sm.statesNameToIndex['error'] in statesThisTrial:
                 if lastRewardSide=='left':
                     self.params['nErrorsLeft'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['error']
