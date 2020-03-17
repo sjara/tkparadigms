@@ -83,6 +83,9 @@ class Paradigm(QtGui.QMainWindow):
                                                         group='Sound parameters')
         self.params['lowFreq'] = paramgui.NumericParam('Low frequency', value=6000, units='Hz',
                                                         group='Sound parameters')
+        self.params['targetFrequency'] = paramgui.NumericParam('Target frequency', value=0,
+                                                               decimals=0, units='Hz', enabled=False,
+                                                               group='Sound parameters')
         self.params['targetDuration'] = paramgui.NumericParam('Target duration', value=0.2, units='s',
                                                               group='Sound parameters')
         self.params['targetIntensity'] = paramgui.NumericParam('Target intensity', value=50, units='dB-SPL',
@@ -91,7 +94,6 @@ class Paradigm(QtGui.QMainWindow):
                                                         enabled=False, decimals=4, group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
-        
         self.params['rewardSideMode'] = paramgui.MenuParam('Reward side mode', ['random','toggle','onlyL','onlyR'], value=1,
                                                            group='Choice parameters')
         self.params['rewardSide'] = paramgui.MenuParam('Reward side', ['left','right'], value=0,
@@ -99,6 +101,11 @@ class Paradigm(QtGui.QMainWindow):
         choiceParams = self.params.layout_group('Choice parameters')
 
         
+        self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
+                                                         ['off','uniform'],
+                                                         value=0,group='General parameters')
+        self.params['psycurveNsteps'] = paramgui.NumericParam('N steps',value=6,decimals=0,
+                                                              group='General parameters')
         self.params['taskMode'] = paramgui.MenuParam('Task mode',
                                                      ['water_on_lick','lick_after_sound','discriminate_sound'],
                                                      value=0, group='General parameters')
@@ -259,22 +266,40 @@ class Paradigm(QtGui.QMainWindow):
                 nextRewardSide = 'left'
         elif rewardSideMode=='onlyR':
                 nextRewardSide = 'right'
-                
+
+        psycurveMode = self.params['psycurveMode'].get_string()
+        lowFreq = self.params['lowFreq'].get_value()
+        highFreq = self.params['highFreq'].get_value()
+        nFreqs = self.params['psycurveNsteps'].get_value()
+        freqsAll = np.logspace(np.log10(lowFreq),np.log10(highFreq),nFreqs)
+        freqBoundary = np.sqrt(lowFreq*highFreq)
+        leftFreqInds = np.flatnonzero(freqsAll<freqBoundary)
+        rightFreqInds = np.flatnonzero(freqsAll>freqBoundary)
+
         if nextRewardSide=='left':
             self.params['rewardSide'].set_string('left')
             rewardedEvent = 'Lin'
             punishedEvent = 'Rin'
             rewardOutput = 'leftWater'
             targetLED = 'leftLED'
-            targetFrequency = self.params['lowFreq'].get_value()
-        else:
+            if psycurveMode=='uniform':
+                freqIndex = np.random.randint(len(leftFreqInds))
+            else:
+                freqIndex = 0  # Lowest freq
+        elif nextRewardSide=='right':
             self.params['rewardSide'].set_string('right')
             rewardedEvent = 'Rin'
             punishedEvent = 'Lin'
             rewardOutput = 'rightWater'
             targetLED = 'rightLED'
             targetFrequency = self.params['highFreq'].get_value()
-            
+            if psycurveMode=='uniform':
+                freqIndex = np.random.randint(len(rightFreqInds))+len(leftFreqInds)
+            else:
+                freqIndex = -1 # Highest freq
+
+        targetFrequency = freqsAll[freqIndex]
+        self.params['targetFrequency'].set_value(targetFrequency)
         self.prepare_target_sound(targetFrequency)
         
         self.sm.reset_transitions()
