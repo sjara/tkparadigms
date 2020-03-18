@@ -180,6 +180,8 @@ class Paradigm(QtGui.QMainWindow):
         self.results = arraycontainer.Container()
         self.results.labels['outcome'] = {'hit':1, 'error':0,'falseAlarm':3, 'miss':2, 'none':-1}
         self.results['outcome'] = np.empty(maxNtrials,dtype=int)
+        self.results.labels['choice'] = {'left':0,'right':1,'none':2}
+        self.results['choice'] = np.empty(maxNtrials,dtype=int)
         
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
@@ -406,29 +408,39 @@ class Paradigm(QtGui.QMainWindow):
                 if lastRewardSide=='left':
                     self.params['nHitsLeft'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
+                    self.results['choice'][trialIndex] = self.results.labels['choice']['left']
                 else:
                     self.params['nHitsRight'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
+                    self.results['choice'][trialIndex] = self.results.labels['choice']['right']
             elif self.sm.statesNameToIndex['error'] in statesThisTrial:
                 if lastRewardSide=='left':
                     self.params['nErrorsLeft'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['error']
+                    self.results['choice'][trialIndex] = self.results.labels['choice']['right']
                 else:
                     self.params['nErrorsRight'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['error']
+                    self.results['choice'][trialIndex] = self.results.labels['choice']['left']
             elif self.sm.statesNameToIndex['falseAlarm'] in statesThisTrial:
                 self.params['nFalseAlarms'].add(1)
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
+                self.results['choice'][trialIndex] = self.results.labels['choice']['none']
             elif self.sm.statesNameToIndex['miss'] in statesThisTrial:
                 if lastRewardSide=='left':
                     self.params['nMissesLeft'].add(1)
-                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
                 else:
                     self.params['nMissesRight'].add(1)
-                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
+                self.results['choice'][trialIndex] = self.results.labels['choice']['none']
             else:
                 # This may happen if changing from one taskMode to another
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
+                self.results['choice'][trialIndex] = self.results.labels['choice']['none']
+        else:
+            # -- For any other task modes (like water_on_lick)
+            self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
+            self.results['choice'][trialIndex] = self.results.labels['choice']['none']
 
     def closeEvent(self, event):
         '''
