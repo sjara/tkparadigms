@@ -83,6 +83,9 @@ class Paradigm(QtGui.QMainWindow):
                                                         group='Sound parameters')
         self.params['lowFreq'] = paramgui.NumericParam('Low frequency', value=6000, units='Hz',
                                                         group='Sound parameters')
+        self.params['targetFrequency'] = paramgui.NumericParam('Target frequency', value=0,
+                                                               decimals=0, units='Hz', enabled=False,
+                                                               group='Sound parameters')
         self.params['targetDuration'] = paramgui.NumericParam('Target duration', value=0.2, units='s',
                                                               group='Sound parameters')
         self.params['targetIntensity'] = paramgui.NumericParam('Target intensity', value=50, units='dB-SPL',
@@ -91,7 +94,6 @@ class Paradigm(QtGui.QMainWindow):
                                                         enabled=False, decimals=4, group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
-        
         self.params['rewardSideMode'] = paramgui.MenuParam('Reward side mode', ['random','toggle','onlyL','onlyR'], value=1,
                                                            group='Choice parameters')
         self.params['rewardSide'] = paramgui.MenuParam('Reward side', ['left','right'], value=0,
@@ -99,6 +101,11 @@ class Paradigm(QtGui.QMainWindow):
         choiceParams = self.params.layout_group('Choice parameters')
 
         
+        self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
+                                                         ['off','uniform'],
+                                                         value=0,group='General parameters')
+        self.params['psycurveNsteps'] = paramgui.NumericParam('N steps',value=6,decimals=0,
+                                                              group='General parameters')
         self.params['taskMode'] = paramgui.MenuParam('Task mode',
                                                      ['water_on_lick','lick_after_sound','discriminate_sound'],
                                                      value=0, group='General parameters')
@@ -173,6 +180,8 @@ class Paradigm(QtGui.QMainWindow):
         self.results = arraycontainer.Container()
         self.results.labels['outcome'] = {'hit':1, 'error':0,'falseAlarm':3, 'miss':2, 'none':-1}
         self.results['outcome'] = np.empty(maxNtrials,dtype=int)
+        self.results.labels['choice'] = {'left':0,'right':1,'none':2}
+        self.results['choice'] = np.empty(maxNtrials,dtype=int)
         
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
@@ -259,22 +268,40 @@ class Paradigm(QtGui.QMainWindow):
                 nextRewardSide = 'left'
         elif rewardSideMode=='onlyR':
                 nextRewardSide = 'right'
-                
+
+        psycurveMode = self.params['psycurveMode'].get_string()
+        lowFreq = self.params['lowFreq'].get_value()
+        highFreq = self.params['highFreq'].get_value()
+        nFreqs = self.params['psycurveNsteps'].get_value()
+        freqsAll = np.logspace(np.log10(lowFreq),np.log10(highFreq),nFreqs)
+        freqBoundary = np.sqrt(lowFreq*highFreq)
+        leftFreqInds = np.flatnonzero(freqsAll<freqBoundary)
+        rightFreqInds = np.flatnonzero(freqsAll>freqBoundary)
+
         if nextRewardSide=='left':
             self.params['rewardSide'].set_string('left')
             rewardedEvent = 'Lin'
             punishedEvent = 'Rin'
             rewardOutput = 'leftWater'
             targetLED = 'leftLED'
-            targetFrequency = self.params['lowFreq'].get_value()
-        else:
+            if psycurveMode=='uniform':
+                freqIndex = np.random.randint(len(leftFreqInds))
+            else:
+                freqIndex = 0  # Lowest freq
+        elif nextRewardSide=='right':
             self.params['rewardSide'].set_string('right')
             rewardedEvent = 'Rin'
             punishedEvent = 'Lin'
             rewardOutput = 'rightWater'
             targetLED = 'rightLED'
             targetFrequency = self.params['highFreq'].get_value()
-            
+            if psycurveMode=='uniform':
+                freqIndex = np.random.randint(len(rightFreqInds))+len(leftFreqInds)
+            else:
+                freqIndex = -1 # Highest freq
+
+        targetFrequency = freqsAll[freqIndex]
+        self.params['targetFrequency'].set_value(targetFrequency)
         self.prepare_target_sound(targetFrequency)
         
         self.sm.reset_transitions()
@@ -381,29 +408,39 @@ class Paradigm(QtGui.QMainWindow):
                 if lastRewardSide=='left':
                     self.params['nHitsLeft'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
+                    self.results['choice'][trialIndex] = self.results.labels['choice']['left']
                 else:
                     self.params['nHitsRight'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
-            if self.sm.statesNameToIndex['error'] in statesThisTrial:
+                    self.results['choice'][trialIndex] = self.results.labels['choice']['right']
+            elif self.sm.statesNameToIndex['error'] in statesThisTrial:
                 if lastRewardSide=='left':
                     self.params['nErrorsLeft'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['error']
+                    self.results['choice'][trialIndex] = self.results.labels['choice']['right']
                 else:
                     self.params['nErrorsRight'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['error']
+                    self.results['choice'][trialIndex] = self.results.labels['choice']['left']
             elif self.sm.statesNameToIndex['falseAlarm'] in statesThisTrial:
                 self.params['nFalseAlarms'].add(1)
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
+                self.results['choice'][trialIndex] = self.results.labels['choice']['none']
             elif self.sm.statesNameToIndex['miss'] in statesThisTrial:
                 if lastRewardSide=='left':
                     self.params['nMissesLeft'].add(1)
-                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
                 else:
                     self.params['nMissesRight'].add(1)
-                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
+                self.results['choice'][trialIndex] = self.results.labels['choice']['none']
             else:
                 # This may happen if changing from one taskMode to another
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
+                self.results['choice'][trialIndex] = self.results.labels['choice']['none']
+        else:
+            # -- For any other task modes (like water_on_lick)
+            self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
+            self.results['choice'][trialIndex] = self.results.labels['choice']['none']
 
     def closeEvent(self, event):
         '''
