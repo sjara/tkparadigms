@@ -473,7 +473,7 @@ pardict.update(bandEasySNR2BW)
 band120 = pardict.copy()
 
 pardict = {'subject': 'band121', 'experimenter': 'anna'}
-pardict.update(bandOnlyifCorrectOffOnWithdrawal)
+pardict.update(bandOnlyCorrectIntMode)
 pardict.update({'toneSide': 'left'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band121 = pardict.copy()
