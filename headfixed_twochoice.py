@@ -101,6 +101,9 @@ class Paradigm(QtGui.QMainWindow):
         choiceParams = self.params.layout_group('Choice parameters')
 
         
+        self.params['stimType'] = paramgui.MenuParam('Stim type',
+                                                         ['sound_and_light', 'sound_only', 'light_only'],
+                                                         value=0,group='General parameters')
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
                                                          ['off','uniform'],
                                                          value=0,group='General parameters')
@@ -304,6 +307,16 @@ class Paradigm(QtGui.QMainWindow):
         self.params['targetFrequency'].set_value(targetFrequency)
         self.prepare_target_sound(targetFrequency)
         
+        stimType = self.params['stimType'].get_string()
+        if (stimType=='sound_and_light') | (stimType=='sound_only'):
+            soundOutput = self.targetSoundID
+        else:
+            soundOutput = soundclient.STOP_ALL_SOUNDS
+        if (stimType=='sound_and_light') | (stimType=='light_only'):
+            lightOutput = [targetLED]
+        else:
+            lightOutput = []
+        
         self.sm.reset_transitions()
 
         if taskMode == 'water_on_lick':
@@ -315,7 +328,7 @@ class Paradigm(QtGui.QMainWindow):
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput,'centerLED'],
-                              serialOut=self.targetSoundID)
+                              serialOut=soundOutput)
             self.sm.add_state(name='stopReward', statetimer=interTrialInterval,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[rewardOutput,'centerLED'])
@@ -333,8 +346,8 @@ class Paradigm(QtGui.QMainWindow):
             self.sm.add_state(name='playTarget', statetimer=targetDuration,
                               transitions={rewardedEvent:'hit',
                                            'Tup':'waitForLick'},
-                              outputsOn=[targetLED],
-                              serialOut=self.targetSoundID)
+                              outputsOn=lightOutput,
+                              serialOut=soundOutput)
             self.sm.add_state(name='waitForLick', statetimer=rewardAvailability,
                               transitions={rewardedEvent:'hit', punishedEvent:'error',
                                            'Tup':'miss'},
@@ -364,8 +377,8 @@ class Paradigm(QtGui.QMainWindow):
             self.sm.add_state(name='playTarget', statetimer=targetDuration,
                               transitions={rewardedEvent:'hit', punishedEvent:'error',
                                            'Tup':'waitForLick'},
-                              outputsOn=[targetLED],
-                              serialOut=self.targetSoundID)
+                              outputsOn=lightOutput,
+                              serialOut=soundOutput)
             self.sm.add_state(name='waitForLick', statetimer=rewardAvailability,
                               transitions={rewardedEvent:'hit', punishedEvent:'error',
                                            'Tup':'miss'},
