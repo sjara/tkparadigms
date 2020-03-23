@@ -110,7 +110,7 @@ class Paradigm(QtGui.QMainWindow):
         self.params['psycurveNsteps'] = paramgui.NumericParam('N steps',value=6,decimals=0,
                                                               group='General parameters')
         self.params['taskMode'] = paramgui.MenuParam('Task mode',
-                                                     ['water_on_lick','lick_after_sound','discriminate_sound'],
+                                                     ['water_on_lick','lick_after_stim','discriminate_stim'],
                                                      value=0, group='General parameters')
         generalParams = self.params.layout_group('General parameters')
 
@@ -327,17 +327,17 @@ class Paradigm(QtGui.QMainWindow):
                               transitions={rewardedEvent:'reward'})
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
-                              outputsOn=[rewardOutput,'centerLED'],
+                              outputsOn=[rewardOutput]+lightOutput,
                               serialOut=soundOutput)
             self.sm.add_state(name='stopReward', statetimer=interTrialInterval,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=[rewardOutput,'centerLED'])
+                              outputsOff=[rewardOutput]+lightOutput)
             # -- A few empty states necessary to avoid errors when changing taskMode --
             self.sm.add_state(name='hit')            
             self.sm.add_state(name='error')            
             self.sm.add_state(name='miss')            
             self.sm.add_state(name='falseAlarm')            
-        elif taskMode == 'lick_after_sound':
+        elif taskMode == 'lick_after_stim':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'delayPeriod'},
                               outputsOff=['centerLED','rightLED','leftLED'])
@@ -368,7 +368,7 @@ class Paradigm(QtGui.QMainWindow):
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[rewardOutput])
-        elif taskMode == 'discriminate_sound':
+        elif taskMode == 'discriminate_stim':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'delayPeriod'},
                               outputsOff=['centerLED','rightLED','leftLED'])
@@ -413,7 +413,7 @@ class Paradigm(QtGui.QMainWindow):
         #if taskModeLabels[firstTrialModeInd] == 'water_on_lick':
         #    self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
 
-        if self.params['taskMode'].get_string() in ['lick_after_sound', 'discriminate_sound']:
+        if self.params['taskMode'].get_string() in ['lick_after_stim', 'discriminate_stim']:
             lastRewardSide = self.params['rewardSide'].get_string()
             eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
             statesThisTrial = eventsThisTrial[:,2]
