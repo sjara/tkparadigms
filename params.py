@@ -419,14 +419,14 @@ pardict = {'subject': 'band121', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
 pardict.update({'toneSide': 'left'})
 pardict.update(bandBilateralLaser)
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 band121 = pardict.copy()
 
 pardict = {'subject': 'band122', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
 pardict.update({'toneSide': 'left'})
 pardict.update(bandBilateralLaser)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 band122 = pardict.copy()
 
 pardict = {'subject': 'band124', 'experimenter': 'anna'}
@@ -440,7 +440,7 @@ pardict = {'subject': 'band125', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
 pardict.update({'toneSide': 'left'})
 pardict.update(bandBilateralLaser)
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 band125 = pardict.copy()
 
 
@@ -495,7 +495,7 @@ band123 = pardict.copy()
 pardict = {'subject': 'band126', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
 pardict.update({'toneSide': 'left'})
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 band126 = pardict.copy()
 
 pardict = {'subject': 'band127', 'experimenter': 'anna'}
@@ -523,7 +523,7 @@ pardict.update({'toneSide': 'left'})
 band130 = pardict.copy()
 
 pardict = {'subject': 'band131', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectIntDel)
+pardict.update(bandNextCorrectFinDel)
 pardict.update({'toneSide': 'right'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band131 = pardict.copy()
@@ -535,7 +535,7 @@ pardict.update({'toneSide': 'right'})
 band132 = pardict.copy()
 
 pardict = {'subject': 'band133', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectIntDel)
+pardict.update(bandNextCorrectFinDel)
 pardict.update({'toneSide': 'left'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band133 = pardict.copy()
