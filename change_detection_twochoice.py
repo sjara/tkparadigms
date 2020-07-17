@@ -79,9 +79,9 @@ class Paradigm(QtGui.QMainWindow):
         timingParams = self.params.layout_group('Timing parameters')
 
         
-        self.params['maxFreq'] = paramgui.NumericParam('Max frequency', value=1300, units='Hz',
+        self.params['maxFreq'] = paramgui.NumericParam('Max frequency', value=13000, units='Hz',
                                                         group='Sound parameters')
-        self.params['minFreq'] = paramgui.NumericParam('Min frequency', value=600, units='Hz',
+        self.params['minFreq'] = paramgui.NumericParam('Min frequency', value=6000, units='Hz',
                                                         group='Sound parameters')
         self.params['preFreq'] = paramgui.NumericParam('Pre frequency', value=0,
                                                                decimals=0, units='Hz', enabled=False,
@@ -89,9 +89,9 @@ class Paradigm(QtGui.QMainWindow):
         self.params['postFreq'] = paramgui.NumericParam('Post frequency', value=0,
                                                                decimals=0, units='Hz', enabled=False,
                                                                group='Sound parameters')
-        self.params['preDuration'] = paramgui.NumericParam('Pre duration', value=0.8, units='s',
+        self.params['preDuration'] = paramgui.NumericParam('Pre duration', value=1.0, units='s',
                                                               group='Sound parameters')
-        self.params['postDuration'] = paramgui.NumericParam('Post duration', value=0.5, units='s',
+        self.params['postDuration'] = paramgui.NumericParam('Post duration', value=1.0, units='s',
                                                               group='Sound parameters')
         self.params['soundIntensity'] = paramgui.NumericParam('Sound intensity', value=50, units='dB-SPL',
                                                         enabled=True, group='Sound parameters')
