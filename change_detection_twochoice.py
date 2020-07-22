@@ -123,7 +123,7 @@ class Paradigm(QtGui.QMainWindow):
                                                               group='General parameters')
         '''
         self.params['taskMode'] = paramgui.MenuParam('Task mode',
-                                                     ['water_on_lick','lick_after_stim','discriminate_stim'],
+                                                     ['water_on_lick','lick_after_change','discriminate_change'],
                                                      value=0, group='General parameters')
         generalParams = self.params.layout_group('General parameters')
 
@@ -135,7 +135,9 @@ class Paradigm(QtGui.QMainWindow):
                                                       units='trials',group='Report')
         self.params['nErrorsRight'] = paramgui.NumericParam('Errors R',value=0, enabled=False,
                                                       units='trials',group='Report')
-        self.params['nFalseAlarms'] = paramgui.NumericParam('False alarms',value=0, enabled=False,
+        self.params['nFalseAlarmsLeft'] = paramgui.NumericParam('False alarms L',value=0, enabled=False,
+                                                      units='trials',group='Report')
+        self.params['nFalseAlarmsRight'] = paramgui.NumericParam('False alarms R',value=0, enabled=False,
                                                       units='trials',group='Report')
         self.params['nMissesLeft'] = paramgui.NumericParam('Misses L',value=0, enabled=False,
                                                       units='trials',group='Report')
@@ -305,6 +307,8 @@ class Paradigm(QtGui.QMainWindow):
             targetLED = 'leftLED'
             preFreq = allFreq[randPre]
             postFreq = allFreq[randPre]
+            stateAfterPre = 'morePre'
+            timeStillAvailable = rewardAvailability
             '''
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(leftFreqInds))
@@ -319,6 +323,8 @@ class Paradigm(QtGui.QMainWindow):
             targetLED = 'rightLED'
             preFreq = allFreq[randPre]
             postFreq = allFreq[1-randPre]
+            stateAfterPre = 'playPost'
+            timeStillAvailable = max(0,rewardAvailability-postDuration)
             '''
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(rightFreqInds))+len(leftFreqInds)
@@ -370,38 +376,49 @@ class Paradigm(QtGui.QMainWindow):
             self.sm.add_state(name='miss')            
             self.sm.add_state(name='falseAlarmL')            
             self.sm.add_state(name='falseAlarmR')            
-        elif taskMode == 'lick_after_stim':
+        elif taskMode == 'lick_after_change':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'delayPeriod'},
                               outputsOff=['centerLED','rightLED','leftLED'])
             self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval,
-                              transitions={'Lin':'falseAlarm', 'Rin':'falseAlarm','Tup':'playTarget'})
-            self.sm.add_state(name='playTarget', statetimer=targetDuration,
-                              transitions={rewardedEvent:'hit',
-                                           'Tup':'waitForLick'},
-                              outputsOn=lightOutput,
-                              serialOut=soundOutput)
-            self.sm.add_state(name='waitForLick', statetimer=rewardAvailability,
+                              transitions={'Tup':'playPre'})
+            self.sm.add_state(name='playPre', statetimer=preDuration,
+                              transitions={'Tup':stateAfterPre},
+                              serialOut=self.preSoundID)
+            self.sm.add_state(name='morePre', statetimer=postDuration,
+                              transitions={'Tup':'waitForLick'},
+                              serialOut=self.preSoundID)
+            self.sm.add_state(name='playPost', statetimer=postDuration,
+                              transitions={rewardedEvent:'hit', 'Tup':'waitForLick'},
+                              serialOut=self.postSoundID)
+            # FIXME: it doesn't work properly if postDuration > rewardAvailability
+            self.sm.add_state(name='waitForLick', statetimer=timeStillAvailable,
                               transitions={rewardedEvent:'hit', punishedEvent:'error',
                                            'Tup':'miss'},
                               outputsOff=['centerLED','rightLED','leftLED'])
             self.sm.add_state(name='hit', statetimer=0,
                               transitions={'Tup':'reward'},
-                              outputsOff=['centerLED','rightLED','leftLED'])            
+                              outputsOff=['centerLED','rightLED','leftLED'],
+                              serialOut=soundclient.STOP_ALL_SOUNDS)            
             self.sm.add_state(name='error', statetimer=0,
-                              transitions={'Tup':'waitForLick'},
-                              outputsOff=['centerLED','rightLED','leftLED'])            
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=['centerLED','rightLED','leftLED'],
+                              serialOut=soundclient.STOP_ALL_SOUNDS)            
             self.sm.add_state(name='miss', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
-            self.sm.add_state(name='falseAlarm', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'})            
+            self.sm.add_state(name='falseAlarmL', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'},
+                              serialOut=soundclient.STOP_ALL_SOUNDS)            
+            self.sm.add_state(name='falseAlarmR', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'},
+                              serialOut=soundclient.STOP_ALL_SOUNDS)            
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[rewardOutput])
-        elif taskMode == 'discriminate_stim':
+        elif taskMode == 'discriminate_change':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'delayPeriod'},
                               outputsOff=['centerLED','rightLED','leftLED'])
@@ -409,15 +426,19 @@ class Paradigm(QtGui.QMainWindow):
                               transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR','Tup':'playPre'})
             self.sm.add_state(name='playPre', statetimer=preDuration,
                               transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR',
-                                           'Tup':'playPost'},
+                                           'Tup':stateAfterPre},
+                              serialOut=self.preSoundID)
+            self.sm.add_state(name='morePre', statetimer=postDuration,
+                              transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR',
+                                           punishedEvent:'error',
+                                           'Tup':'waitForLick'},
                               serialOut=self.preSoundID)
             self.sm.add_state(name='playPost', statetimer=postDuration,
                               transitions={rewardedEvent:'hit', punishedEvent:'error',
-                                           'Lin':'falseAlarmL', 'Rin':'falseAlarmR',
                                            'Tup':'waitForLick'},
                               serialOut=self.postSoundID)
-            # FIXME: it should be rewardAvailability-postDuration
-            self.sm.add_state(name='waitForLick', statetimer=rewardAvailability,
+            # FIXME: it doesn't work properly if postDuration > rewardAvailability
+            self.sm.add_state(name='waitForLick', statetimer=timeStillAvailable,
                               transitions={rewardedEvent:'hit', punishedEvent:'error',
                                            'Tup':'miss'},
                               outputsOff=['centerLED','rightLED','leftLED'])
@@ -457,7 +478,7 @@ class Paradigm(QtGui.QMainWindow):
         #if taskModeLabels[firstTrialModeInd] == 'water_on_lick':
         #    self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
 
-        if self.params['taskMode'].get_string() in ['lick_after_stim', 'discriminate_stim']:
+        if self.params['taskMode'].get_string() in ['lick_after_change', 'discriminate_change']:
             lastRewardSide = self.params['rewardSide'].get_string()
             eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
             statesThisTrial = eventsThisTrial[:,2]
@@ -479,9 +500,12 @@ class Paradigm(QtGui.QMainWindow):
                     self.params['nErrorsRight'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['error']
                     self.results['choice'][trialIndex] = self.results.labels['choice']['left']
-            elif self.sm.statesNameToIndex['falseAlarmL'] in statesThisTrial or \
-                 self.sm.statesNameToIndex['falseAlarmR'] in statesThisTrial:
-                self.params['nFalseAlarms'].add(1)
+            elif self.sm.statesNameToIndex['falseAlarmL'] in statesThisTrial:
+                self.params['nFalseAlarmsLeft'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
+                self.results['choice'][trialIndex] = self.results.labels['choice']['none']
+            elif self.sm.statesNameToIndex['falseAlarmR'] in statesThisTrial:
+                self.params['nFalseAlarmsRight'].add(1)
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
             elif self.sm.statesNameToIndex['miss'] in statesThisTrial:

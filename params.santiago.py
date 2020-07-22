@@ -41,3 +41,8 @@ hfix000 = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialInter
            'highFreq':11000, 'lowFreq':5000, 'psycurveMode':'uniform'}
 hfix001 = {'subject':'test000', 'taskMode':'lick_after_stim', 'interTrialIntervalMean':2,
            'interTrialIntervalHalfRange':0, 'targetIntensity':30}
+
+#chad000 = {'subject':'test000', 'taskMode':'discriminate_change',
+#           'interTrialIntervalMean':2, 'maxFreq':600, 'minFreq':500}
+chad000 = {'subject':'test000', 'taskMode':'lick_after_change',
+           'interTrialIntervalMean':2, 'maxFreq':600, 'minFreq':500}
