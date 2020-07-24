@@ -393,7 +393,7 @@ class Paradigm(QtGui.QMainWindow):
                               serialOut=self.postSoundID)
             # FIXME: it doesn't work properly if postDuration > rewardAvailability
             self.sm.add_state(name='waitForLick', statetimer=timeStillAvailable,
-                              transitions={rewardedEvent:'hit', punishedEvent:'error',
+                              transitions={rewardedEvent:'hit',
                                            'Tup':'miss'},
                               outputsOff=['centerLED','rightLED','leftLED'])
             self.sm.add_state(name='hit', statetimer=0,
