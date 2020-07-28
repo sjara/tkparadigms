@@ -306,10 +306,10 @@ class Paradigm(QtGui.QMainWindow):
         randPre = np.random.randint(nFreqs)  # Which sound will be the "pre" sound
         preFreq = allFreq[randPre]
         minRatio = self.params['minFreqRatio'].get_value() # Min ratio between pre and post frequency
-        possiblePostBool = np.logical_or( (preFreq/allFreq)>minRatio, (allFreq/preFreq)>minRatio )
+        possiblePostBool = np.logical_or( (preFreq/allFreq)>=minRatio, (allFreq/preFreq)>=minRatio )
         possiblePostInds = np.flatnonzero(possiblePostBool)
-        print('=======================================')
-        print(possiblePostInds)
+        #print('=======================================')
+        #print(possiblePostInds)
         if len(possiblePostInds)==0:
             self.dispatcherView.stop()
             raise ValueError('There are no frequencies in the range far enough'+\
