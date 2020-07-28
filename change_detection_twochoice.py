@@ -83,6 +83,10 @@ class Paradigm(QtGui.QMainWindow):
                                                         group='Sound parameters')
         self.params['minFreq'] = paramgui.NumericParam('Min frequency', value=6000, units='Hz',
                                                         group='Sound parameters')
+        self.params['nFreqs'] = paramgui.NumericParam('N frequencies', value=6, units='',
+                                                        group='Sound parameters')
+        self.params['minFreqRatio'] = paramgui.NumericParam('Min freq ratio', value=2.0, units='',
+                                                        group='Sound parameters')
         self.params['preFreq'] = paramgui.NumericParam('Pre frequency', value=0,
                                                                decimals=0, units='Hz', enabled=False,
                                                                group='Sound parameters')
@@ -104,7 +108,7 @@ class Paradigm(QtGui.QMainWindow):
         soundParams = self.params.layout_group('Sound parameters')
 
         self.params['rewardSideMode'] = paramgui.MenuParam('Reward side mode',
-                                                           ['random','toggle','onlyL','onlyR'], value=1,
+                                                           ['random','toggle','onlyL','onlyR'], value=0,
                                                            group='Choice parameters')
         self.params['rewardSide'] = paramgui.MenuParam('Reward side', ['left','right'], value=0,
                                                        enabled=False, group='Choice parameters')
@@ -297,16 +301,30 @@ class Paradigm(QtGui.QMainWindow):
 
         maxFreq = self.params['maxFreq'].get_value()
         minFreq = self.params['minFreq'].get_value()
-        allFreq = [minFreq, maxFreq]
-        randPre = np.random.randint(2)  # Which sound will be the "pre" sound
+        nFreqs = self.params['nFreqs'].get_value()
+        allFreq = np.logspace(np.log10(minFreq),np.log10(maxFreq),nFreqs)
+        randPre = np.random.randint(nFreqs)  # Which sound will be the "pre" sound
+        preFreq = allFreq[randPre]
+        minRatio = self.params['minFreqRatio'].get_value() # Min ratio between pre and post frequency
+        possiblePostBool = np.logical_or( (preFreq/allFreq)>minRatio, (allFreq/preFreq)>minRatio )
+        possiblePostInds = np.flatnonzero(possiblePostBool)
+        print('=======================================')
+        print(possiblePostInds)
+        if len(possiblePostInds)==0:
+            self.dispatcherView.stop()
+            raise ValueError('There are no frequencies in the range far enough'+\
+                             ' from {:0.0f} Hz.'.format(allFreq[randPre]))
+        randPost = np.random.choice(possiblePostInds)
+        #allFreq = [minFreq, maxFreq]
+        #randPre = np.random.randint(2)  # Which sound will be the "pre" sound
+
         if nextRewardSide=='left':
             self.params['rewardSide'].set_string('left')
             rewardedEvent = 'Lin'
             punishedEvent = 'Rin'
             rewardOutput = 'leftWater'
             targetLED = 'leftLED'
-            preFreq = allFreq[randPre]
-            postFreq = allFreq[randPre]
+            postFreq = preFreq
             stateAfterPre = 'morePre'
             timeStillAvailable = rewardAvailability
             '''
@@ -321,8 +339,8 @@ class Paradigm(QtGui.QMainWindow):
             punishedEvent = 'Lin'
             rewardOutput = 'rightWater'
             targetLED = 'rightLED'
-            preFreq = allFreq[randPre]
-            postFreq = allFreq[1-randPre]
+            postFreq = allFreq[randPost]
+            #postFreq = allFreq[1-randPre]
             stateAfterPre = 'playPost'
             timeStillAvailable = max(0,rewardAvailability-postDuration)
             '''
