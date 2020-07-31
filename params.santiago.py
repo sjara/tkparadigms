@@ -47,4 +47,5 @@ hfix001 = {'subject':'test000', 'taskMode':'lick_after_stim', 'interTrialInterva
 chad000 = {'subject':'test000', 'taskMode':'lick_after_change',
            'rewardSideMode':'toggle',
            'interTrialIntervalMean':2, 'maxFreq':600, 'minFreq':500,
+           'postDuration':2,
            'nFreqs':5, 'minFreqRatio':1.0 }
