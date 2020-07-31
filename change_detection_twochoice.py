@@ -326,13 +326,10 @@ class Paradigm(QtGui.QMainWindow):
             targetLED = 'leftLED'
             postFreq = preFreq
             stateAfterPre = 'morePre'
-            timeStillAvailable = rewardAvailability
-            '''
-            if psycurveMode=='uniform':
-                freqIndex = np.random.randint(len(leftFreqInds))
-            else:
-                freqIndex = 0  # Lowest freq
-            '''
+            timeInWaitForLick = rewardAvailability
+            timeInPost = postDuration
+            timeInMorePost = 0
+            stateAfterPost = 'waitForLick'
         elif nextRewardSide=='right':
             self.params['rewardSide'].set_string('right')
             rewardedEvent = 'Rin'
@@ -340,33 +337,27 @@ class Paradigm(QtGui.QMainWindow):
             rewardOutput = 'rightWater'
             targetLED = 'rightLED'
             postFreq = allFreq[randPost]
-            #postFreq = allFreq[1-randPre]
             stateAfterPre = 'playPost'
-            timeStillAvailable = max(0,rewardAvailability-postDuration)
-            '''
-            if psycurveMode=='uniform':
-                freqIndex = np.random.randint(len(rightFreqInds))+len(leftFreqInds)
+            timeInWaitForLick = max(0,rewardAvailability-postDuration)
+            timeInMorePost = max(0,postDuration-rewardAvailability)
+            timeInPost = postDuration-timeInMorePost
+            if rewardAvailability > postDuration:
+                # If rewardAvailability > postDuration, finish post and go to waitForLick
+                stateAfterPost = 'waitForLick'
             else:
-                freqIndex = -1 # Highest freq
-            '''
-        #targetFrequency = freqsAll[freqIndex]
+                # If rewardAvailability < postDuration, make post shorter
+                # (but continue playing sound) and go to morePost (with no reward)
+                stateAfterPost = 'morePost'
+                
+            #timeInWaitForLick = max(0,rewardAvailability-postDuration)
+            #timeInMorePost = max(0,postDuration-rewardAvailability)
+            #timeStillAvailable = max(0,rewardAvailability-postDuration)
+            #timeStillAvailable = rewardAvailability-postDuration # Could be negative
 
         self.params['preFreq'].set_value(preFreq)
         self.params['postFreq'].set_value(postFreq)
         self.prepare_sounds()
 
-        '''
-        stimType = self.params['stimType'].get_string()
-        if (stimType=='sound_and_light') | (stimType=='sound_only'):
-            soundOutput = self.targetSoundID
-        else:
-            soundOutput = soundclient.STOP_ALL_SOUNDS
-        if (stimType=='sound_and_light') | (stimType=='light_only'):
-            lightOutput = [targetLED]
-        else:
-            lightOutput = []
-        '''
-        
         self.sm.reset_transitions()
 
         if taskMode == 'water_on_lick':
@@ -405,12 +396,14 @@ class Paradigm(QtGui.QMainWindow):
                               serialOut=self.preSoundID)
             self.sm.add_state(name='morePre', statetimer=postDuration,
                               transitions={'Tup':'waitForLick'},
-                              serialOut=self.preSoundID)
-            self.sm.add_state(name='playPost', statetimer=postDuration,
-                              transitions={rewardedEvent:'hit', 'Tup':'waitForLick'},
                               serialOut=self.postSoundID)
-            # FIXME: it doesn't work properly if postDuration > rewardAvailability
-            self.sm.add_state(name='waitForLick', statetimer=timeStillAvailable,
+            self.sm.add_state(name='playPost', statetimer=timeInPost,
+                              transitions={rewardedEvent:'hit', 'Tup':stateAfterPost},
+                              serialOut=self.postSoundID)
+            self.sm.add_state(name='morePost', statetimer=timeInMorePost,
+                              transitions={'Tup':'miss'},
+                              outputsOff=['centerLED','rightLED','leftLED'])
+            self.sm.add_state(name='waitForLick', statetimer=timeInWaitForLick,
                               transitions={rewardedEvent:'hit',
                                            'Tup':'miss'},
                               outputsOff=['centerLED','rightLED','leftLED'])
@@ -450,13 +443,15 @@ class Paradigm(QtGui.QMainWindow):
                               transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR',
                                            punishedEvent:'error',
                                            'Tup':'waitForLick'},
-                              serialOut=self.preSoundID)
-            self.sm.add_state(name='playPost', statetimer=postDuration,
+                              serialOut=self.postSoundID)
+            self.sm.add_state(name='playPost', statetimer=timeInPost,
                               transitions={rewardedEvent:'hit', punishedEvent:'error',
                                            'Tup':'waitForLick'},
                               serialOut=self.postSoundID)
-            # FIXME: it doesn't work properly if postDuration > rewardAvailability
-            self.sm.add_state(name='waitForLick', statetimer=timeStillAvailable,
+            self.sm.add_state(name='morePost', statetimer=timeInMorePost,
+                              transitions={'Tup':'miss'},
+                              outputsOff=['centerLED','rightLED','leftLED'])
+            self.sm.add_state(name='waitForLick', statetimer=timeInWaitForLick,
                               transitions={rewardedEvent:'hit', punishedEvent:'error',
                                            'Tup':'miss'},
                               outputsOff=['centerLED','rightLED','leftLED'])
