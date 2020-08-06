@@ -147,6 +147,16 @@ class Paradigm(QtGui.QMainWindow):
                                                       units='trials',group='Report')
         self.params['nMissesRight'] = paramgui.NumericParam('Misses R',value=0, enabled=False,
                                                       units='trials',group='Report')
+        self.params['nLicksLeft'] = paramgui.NumericParam('Licks L',value=0, enabled=False,
+                                                      units='trials',group='Report')
+        self.params['nLicksRight'] = paramgui.NumericParam('Licks R',value=0, enabled=False,
+                                                      units='trials',group='Report')
+        self.params['nLicksLeftInvalid'] = paramgui.NumericParam('Invalid licks L',
+                                                                      value=0, enabled=False,
+                                                                      units='trials',group='Report')
+        self.params['nLicksRightInvalid'] = paramgui.NumericParam('Invalid licks R',
+                                                                       value=0, enabled=False,
+                                                                       units='trials',group='Report')
         reportInfo = self.params.layout_group('Report')
 
 
@@ -532,11 +542,30 @@ class Paradigm(QtGui.QMainWindow):
                 # This may happen if changing from one taskMode to another
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
+            # -- Estimate number of licks --
+            eventCodesThisTrial = eventsThisTrial[:,1]
+            nLicksLeftThisTrial = np.sum(eventCodesThisTrial==self.sm.eventsDict['Lin'])
+            nLicksRightThisTrial = np.sum(eventCodesThisTrial==self.sm.eventsDict['Rin'])
+            self.params['nLicksLeft'].add(nLicksLeftThisTrial)
+            self.params['nLicksRight'].add(nLicksRightThisTrial)
+            # NOTE: The following code is a little redundant with the code above
+            #       but left this way for clarity.
+            hitEventBool = statesThisTrial == self.sm.statesNameToIndex['hit']
+            if hitEventBool.any():
+                lastEvent = np.flatnonzero(hitEventBool)[0]
+            else:
+                lastEvent = len(hitEventBool)
+            eventsIndsBeforeReward = np.arange(0,lastEvent)
+            eventCodesBeforeReward = eventCodesThisTrial[eventsIndsBeforeReward]
+            nLicksLeftBeforeReward = np.sum(eventCodesBeforeReward==self.sm.eventsDict['Lin'])
+            nLicksRightBeforeReward = np.sum(eventCodesBeforeReward==self.sm.eventsDict['Rin'])
+            self.params['nLicksLeftInvalid'].add(nLicksLeftBeforeReward)
+            self.params['nLicksRightInvalid'].add(nLicksRightBeforeReward)
         else:
             # -- For any other task modes (like water_on_lick)
             self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
             self.results['choice'][trialIndex] = self.results.labels['choice']['none']
-
+            
     def closeEvent(self, event):
         '''
         Executed when closing the main window.
