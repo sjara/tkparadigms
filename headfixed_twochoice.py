@@ -86,6 +86,13 @@ class Paradigm(QtGui.QMainWindow):
         self.params['targetFrequency'] = paramgui.NumericParam('Target frequency', value=0,
                                                                decimals=0, units='Hz', enabled=False,
                                                                group='Sound parameters')
+        self.params['highAMdepth'] = paramgui.NumericParam('High AM depth', value=100, units='',
+                                                        group='Sound parameters')
+        self.params['lowAMdepth'] = paramgui.NumericParam('Low AM depth', value=0, units='',
+                                                        group='Sound parameters')
+        self.params['targetAMdepth'] = paramgui.NumericParam('Target AM depth', value=0,
+                                                               decimals=0, units='', enabled=False,
+                                                               group='Sound parameters')
         self.params['targetDuration'] = paramgui.NumericParam('Target duration', value=0.2, units='s',
                                                               group='Sound parameters')
         self.params['targetIntensity'] = paramgui.NumericParam('Target intensity', value=50, units='dB-SPL',
@@ -103,6 +110,9 @@ class Paradigm(QtGui.QMainWindow):
         
         self.params['stimType'] = paramgui.MenuParam('Stim type',
                                                          ['sound_and_light', 'sound_only', 'light_only'],
+                                                         value=0,group='General parameters')
+        self.params['soundType'] = paramgui.MenuParam('Sound type',
+                                                         ['chords', 'AM_depth'],
                                                          value=0,group='General parameters')
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
                                                          ['off','uniform'],
@@ -191,6 +201,7 @@ class Paradigm(QtGui.QMainWindow):
 
         # -- Load speaker calibration --
         self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
+        self.noiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
 
         # -- Connect to sound server and define sounds --
         print('Conecting to soundserver...')
@@ -228,15 +239,23 @@ class Paradigm(QtGui.QMainWindow):
                               subject=self.params['subject'].get_value(),
                               paradigm=self.name)
 
-    def prepare_target_sound(self, targetFrequency):
+    def prepare_target_sound(self, soundType, soundParam):
         #targetFrequency = 6000
         targetIntensity = self.params['targetIntensity'].get_value()
         targetDuration = self.params['targetDuration'].get_value()
         # FIXME: currently I am averaging calibration from both speakers (not good)
-        targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
+        if soundType == 'chords':
+            targetFrequency = soundParam
+            targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
+            s1 = {'type':'chord', 'frequency':targetFrequency, 'duration':targetDuration,
+                  'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
+        elif soundType == 'AM_depth':
+            modDepth = soundParam
+            targetAmp = self.noiseCal.find_amplitude(targetIntensity).mean()
+            modFrequency = 10
+            s1 = {'type':'AM', 'modFrequency':modFrequency, 'duration':targetDuration,
+                  'modDepth':modDepth, 'amplitude':targetAmp}
         self.params['targetAmplitude'].set_value(targetAmp)
-        s1 = {'type':'chord', 'frequency':targetFrequency, 'duration':targetDuration,
-              'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
         self.soundClient.set_sound(self.targetSoundID,s1)
 
         
@@ -287,6 +306,7 @@ class Paradigm(QtGui.QMainWindow):
             punishedEvent = 'Rin'
             rewardOutput = 'leftWater'
             targetLED = 'leftLED'
+            targetAMdepth = self.params['lowAMdepth'].get_value()
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(leftFreqInds))
             else:
@@ -297,15 +317,21 @@ class Paradigm(QtGui.QMainWindow):
             punishedEvent = 'Lin'
             rewardOutput = 'rightWater'
             targetLED = 'rightLED'
-            targetFrequency = self.params['highFreq'].get_value()
+            targetAMdepth = self.params['highAMdepth'].get_value()
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(rightFreqInds))+len(leftFreqInds)
             else:
                 freqIndex = -1 # Highest freq
 
         targetFrequency = freqsAll[freqIndex]
-        self.params['targetFrequency'].set_value(targetFrequency)
-        self.prepare_target_sound(targetFrequency)
+        soudnType = self.params['soundType'].get_string()
+        if soudnType == 'chords':
+            self.params['targetFrequency'].set_value(targetFrequency)
+            self.prepare_target_sound(soudnType, targetFrequency)
+        elif soudnType == 'AM_depth':
+            self.params['targetAMdepth'].set_value(targetAMdepth)
+            self.prepare_target_sound(soudnType, targetAMdepth)
+
         
         stimType = self.params['stimType'].get_string()
         if (stimType=='sound_and_light') | (stimType=='sound_only'):
