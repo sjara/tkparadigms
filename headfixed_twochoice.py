@@ -124,14 +124,6 @@ class Paradigm(QtGui.QMainWindow):
                                                      value=0, group='General parameters')
         generalParams = self.params.layout_group('General parameters')
 
-        '''
-        self.params['nHits'] = paramgui.NumericParam('N hits',value=0, enabled=False,
-                                                      units='trials',group='Report')
-        self.params['nMisses'] = paramgui.NumericParam('N misses',value=0, enabled=False,
-                                                      units='trials',group='Report')
-        self.params['nFalseAlarms'] = paramgui.NumericParam('N false alarms',value=0, enabled=False,
-                                                      units='trials',group='Report')
-        '''
         self.params['nHitsLeft'] = paramgui.NumericParam('Hits L',value=0, enabled=False,
                                                              units='trials',group='Report')
         self.params['nHitsRight'] = paramgui.NumericParam('Hits R',value=0, enabled=False,
@@ -140,7 +132,6 @@ class Paradigm(QtGui.QMainWindow):
                                                       units='trials',group='Report')
         self.params['nErrorsRight'] = paramgui.NumericParam('Errors R',value=0, enabled=False,
                                                       units='trials',group='Report')
-        '''
         self.params['nFalseAlarmsLeft'] = paramgui.NumericParam('False alarms L',value=0, enabled=False,
                                                       units='trials',group='Report')
         self.params['nFalseAlarmsRight'] = paramgui.NumericParam('False alarms R',value=0, enabled=False,
@@ -148,9 +139,14 @@ class Paradigm(QtGui.QMainWindow):
         '''
         self.params['nFalseAlarms'] = paramgui.NumericParam('False alarms',value=0, enabled=False,
                                                       units='trials',group='Report')
+        '''
         self.params['nMissesLeft'] = paramgui.NumericParam('Misses L',value=0, enabled=False,
                                                       units='trials',group='Report')
         self.params['nMissesRight'] = paramgui.NumericParam('Misses R',value=0, enabled=False,
+                                                      units='trials',group='Report')
+        self.params['nLicksLeft'] = paramgui.NumericParam('Licks L',value=0, enabled=False,
+                                                      units='trials',group='Report')
+        self.params['nLicksRight'] = paramgui.NumericParam('Licks R',value=0, enabled=False,
                                                       units='trials',group='Report')
         reportInfo = self.params.layout_group('Report')
 
@@ -371,13 +367,14 @@ class Paradigm(QtGui.QMainWindow):
             self.sm.add_state(name='hit')            
             self.sm.add_state(name='error')            
             self.sm.add_state(name='miss')            
-            self.sm.add_state(name='falseAlarm')            
+            self.sm.add_state(name='falseAlarmL')            
+            self.sm.add_state(name='falseAlarmR')            
         elif taskMode == 'lick_after_stim':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'delayPeriod'},
                               outputsOff=['centerLED','rightLED','leftLED'])
             self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval,
-                              transitions={'Lin':'falseAlarm', 'Rin':'falseAlarm','Tup':'playTarget'})
+                              transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR','Tup':'playTarget'})
             self.sm.add_state(name='playTarget', statetimer=targetDuration,
                               transitions={rewardedEvent:'hit',
                                            'Tup':'waitForLick'},
@@ -395,7 +392,9 @@ class Paradigm(QtGui.QMainWindow):
                               outputsOff=['centerLED','rightLED','leftLED'])            
             self.sm.add_state(name='miss', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
-            self.sm.add_state(name='falseAlarm', statetimer=0,
+            self.sm.add_state(name='falseAlarmL', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'})            
+            self.sm.add_state(name='falseAlarmR', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
@@ -408,7 +407,7 @@ class Paradigm(QtGui.QMainWindow):
                               transitions={'Tup':'delayPeriod'},
                               outputsOff=['centerLED','rightLED','leftLED'])
             self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval,
-                              transitions={'Lin':'falseAlarm', 'Rin':'falseAlarm','Tup':'playTarget'})
+                              transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR','Tup':'playTarget'})
             self.sm.add_state(name='playTarget', statetimer=targetDuration,
                               transitions={rewardedEvent:'hit', punishedEvent:'error',
                                            'Tup':'waitForLick'},
@@ -426,7 +425,9 @@ class Paradigm(QtGui.QMainWindow):
                               outputsOff=['centerLED','rightLED','leftLED'])            
             self.sm.add_state(name='miss', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
-            self.sm.add_state(name='falseAlarm', statetimer=0,
+            self.sm.add_state(name='falseAlarmL', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'})            
+            self.sm.add_state(name='falseAlarmR', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
@@ -470,8 +471,12 @@ class Paradigm(QtGui.QMainWindow):
                     self.params['nErrorsRight'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['error']
                     self.results['choice'][trialIndex] = self.results.labels['choice']['left']
-            elif self.sm.statesNameToIndex['falseAlarm'] in statesThisTrial:
-                self.params['nFalseAlarms'].add(1)
+            elif self.sm.statesNameToIndex['falseAlarmL'] in statesThisTrial:
+                self.params['nFalseAlarmsLeft'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
+                self.results['choice'][trialIndex] = self.results.labels['choice']['none']
+            elif self.sm.statesNameToIndex['falseAlarmR'] in statesThisTrial:
+                self.params['nFalseAlarmsRight'].add(1)
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
             elif self.sm.statesNameToIndex['miss'] in statesThisTrial:
@@ -485,6 +490,12 @@ class Paradigm(QtGui.QMainWindow):
                 # This may happen if changing from one taskMode to another
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
+            # -- Estimate number of licks --
+            eventCodesThisTrial = eventsThisTrial[:,1]
+            nLicksLeftThisTrial = np.sum(eventCodesThisTrial==self.sm.eventsDict['Lin'])
+            nLicksRightThisTrial = np.sum(eventCodesThisTrial==self.sm.eventsDict['Rin'])
+            self.params['nLicksLeft'].add(nLicksLeftThisTrial)
+            self.params['nLicksRight'].add(nLicksRightThisTrial)
         else:
             # -- For any other task modes (like water_on_lick)
             self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
