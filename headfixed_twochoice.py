@@ -101,7 +101,7 @@ class Paradigm(QtGui.QMainWindow):
                                                         enabled=False, decimals=4, group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
-        self.params['rewardSideMode'] = paramgui.MenuParam('Reward side mode', ['random','toggle','onlyL','onlyR'], value=1,
+        self.params['rewardSideMode'] = paramgui.MenuParam('Reward side mode', ['random','toggle','onlyL','onlyR','repeat_mistake'], value=1,
                                                            group='Choice parameters')
         self.params['rewardSide'] = paramgui.MenuParam('Reward side', ['left','right'], value=0,
                                                        enabled=False, group='Choice parameters')
@@ -264,6 +264,10 @@ class Paradigm(QtGui.QMainWindow):
         if nextTrial>0:
             self.params.update_history()
             self.calculate_results(nextTrial-1)
+            lastTrialWasRewarded = self.results['outcome'][nextTrial-1] == \
+                                   self.results.labels['outcome']['hit']
+        else:
+            lastTrialWasRewarded = True
             
         # -- Prepare next trial --
         taskMode = self.params['taskMode'].get_string()
@@ -286,6 +290,11 @@ class Paradigm(QtGui.QMainWindow):
                 nextRewardSide = 'left'
         elif rewardSideMode=='random':
             nextRewardSide = possibleSides[np.random.randint(2)]
+        elif rewardSideMode=='repeat_mistake':
+            if lastTrialWasRewarded:
+                nextRewardSide = possibleSides[np.random.randint(2)]
+            else:
+                nextRewardSide = lastRewardSide
         elif rewardSideMode=='onlyL':
                 nextRewardSide = 'left'
         elif rewardSideMode=='onlyR':
