@@ -22,6 +22,8 @@ import time
 LONGTIME = 100
 MAX_N_TRIALS = 8000
 
+PUNISHMENT_DURATION = 0.5
+
 class Paradigm(QtGui.QMainWindow):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(Paradigm, self).__init__(parent)
@@ -115,6 +117,11 @@ class Paradigm(QtGui.QMainWindow):
         choiceParams = self.params.layout_group('Choice parameters')
 
         
+        self.params['punishMode'] = paramgui.MenuParam('Punishment',
+                                                     ['none', 'noise'],
+                                                     value=0,group='General parameters')
+        self.params['punishIntensity'] = paramgui.NumericParam('Noise intensity', value=60, units='dB-SPL',
+                                                        group='General parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim type',
                                                          ['sound_only', 'light_only','sound_and_light'],
                                                          value=0,group='General parameters',
@@ -206,6 +213,7 @@ class Paradigm(QtGui.QMainWindow):
 
         # -- Load speaker calibration --
         self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
+        self.noiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
 
         # -- Connect to sound server and define sounds --
         print('Conecting to soundserver...')
@@ -214,6 +222,7 @@ class Paradigm(QtGui.QMainWindow):
         self.soundClient = soundclient.SoundClient()
         self.preSoundID = 1
         self.postSoundID = 2
+        self.punishSoundID = 3
         self.soundClient.start()
       
         # -- Connect signals from dispatcher --
@@ -263,7 +272,13 @@ class Paradigm(QtGui.QMainWindow):
         self.soundClient.set_sound(self.preSoundID, sPre)
         self.soundClient.set_sound(self.postSoundID,sPost)
 
+        # -- Prepare punishment noise --
+        punishIntensity = self.params['punishIntensity'].get_value()
+        targetAmp = self.noiseCal.find_amplitude(punishIntensity).mean()
+        sNoise = {'type':'noise', 'duration': PUNISHMENT_DURATION, 'amplitude':targetAmp}
+        self.soundClient.set_sound(self.punishSoundID,sNoise)
         
+       
     def prepare_next_trial(self, nextTrial):
         # -- Calculate results from last trial (update outcome, choice, etc) --
         if nextTrial>0:
@@ -364,6 +379,11 @@ class Paradigm(QtGui.QMainWindow):
             #timeStillAvailable = max(0,rewardAvailability-postDuration)
             #timeStillAvailable = rewardAvailability-postDuration # Could be negative
 
+        if self.params['punishMode'].get_string()=='noise':
+            punishSoundID = self.punishSoundID
+        else:
+            punishSoundID = soundclient.STOP_ALL_SOUNDS
+        
         self.params['preFreq'].set_value(preFreq)
         self.params['postFreq'].set_value(postFreq)
         self.prepare_sounds()
@@ -469,18 +489,19 @@ class Paradigm(QtGui.QMainWindow):
                               transitions={'Tup':'reward'},
                               outputsOff=['centerLED','rightLED','leftLED'],
                               serialOut=soundclient.STOP_ALL_SOUNDS)            
-            self.sm.add_state(name='error', statetimer=0,
+            self.sm.add_state(name='error', statetimer=PUNISHMENT_DURATION,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=['centerLED','rightLED','leftLED'],
-                              serialOut=soundclient.STOP_ALL_SOUNDS)            
+                              serialOut=punishSoundID)            
+            #                  serialOut=soundclient.STOP_ALL_SOUNDS)            
             self.sm.add_state(name='miss', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
-            self.sm.add_state(name='falseAlarmL', statetimer=0,
+            self.sm.add_state(name='falseAlarmL', statetimer=PUNISHMENT_DURATION,
                               transitions={'Tup':'readyForNextTrial'},
-                              serialOut=soundclient.STOP_ALL_SOUNDS)            
-            self.sm.add_state(name='falseAlarmR', statetimer=0,
+                              serialOut=punishSoundID)            
+            self.sm.add_state(name='falseAlarmR', statetimer=PUNISHMENT_DURATION,
                               transitions={'Tup':'readyForNextTrial'},
-                              serialOut=soundclient.STOP_ALL_SOUNDS)            
+                              serialOut=punishSoundID)            
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
