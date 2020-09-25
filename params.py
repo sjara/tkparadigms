@@ -473,7 +473,7 @@ band120 = pardict.copy()
 pardict = {'subject': 'band127', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
 pardict.update({'toneSide': 'left'})
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'threshMode':'max_only'})
 band127 = pardict.copy()
 
@@ -498,7 +498,7 @@ band130 = pardict.copy()
 pardict = {'subject': 'band131', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
 pardict.update({'toneSide': 'right'})
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 pardict.update({'threshMode':'max_only'})
 band131 = pardict.copy()
 
@@ -530,7 +530,7 @@ pardict = {'subject': 'band136', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
 pardict.update({'toneSide': 'left'})
 pardict.update({'threshMode':'max_only'})
-pardict.update({'antibiasMode':'repeat_mistake'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
 band136 = pardict.copy()
 
 pardict = {'subject': 'band137', 'experimenter': 'anna'}
@@ -556,6 +556,30 @@ pardict.update(bandEasySNR2BW)
 pardict.update({'toneSide': 'left'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band140 = pardict.copy()
+
+pardict = {'subject': 'band141', 'experimenter': 'anna'}
+pardict.update(bandSidesDirectMode)
+pardict.update({'toneSide': 'left'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
+band141 = pardict.copy()
+
+pardict = {'subject': 'band142', 'experimenter': 'anna'}
+pardict.update(bandSidesDirectMode)
+pardict.update({'toneSide': 'left'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
+band142 = pardict.copy()
+
+pardict = {'subject': 'band143', 'experimenter': 'anna'}
+pardict.update(bandSidesDirectMode)
+pardict.update({'toneSide': 'right'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
+band143 = pardict.copy()
+
+pardict = {'subject': 'band144', 'experimenter': 'anna'}
+pardict.update(bandSidesDirectMode)
+pardict.update({'toneSide': 'right'})
+#pardict.update({'antibiasMode':'repeat_mistake'})
+band144 = pardict.copy()
 
 
 # -- adaptive frequency discrimination --
