@@ -3,7 +3,13 @@ Detect sound and lick to obtain reward. Used in head-fixed configuration.
 '''
 
 import numpy as np
-from PySide import QtGui 
+import sys
+if sys.version_info.major==3:
+    #from taskontrol.core import dispatcher.QtWidgets as QtWidgets
+    from qtpy import QtWidgets
+else:
+    from PySide import QtGui as QtWidgets
+
 from taskontrol.core import dispatcher
 from taskontrol.core import statematrix
 from taskontrol.core import savedata
@@ -21,7 +27,7 @@ import time
 LONGTIME = 100
 MAX_N_TRIALS = 8000
 
-class Paradigm(QtGui.QMainWindow):
+class Paradigm(QtWidgets.QMainWindow):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(Paradigm, self).__init__(parent)
 
@@ -85,6 +91,8 @@ class Paradigm(QtGui.QMainWindow):
         
         self.params['taskMode'] = paramgui.MenuParam('Task mode', ['water_on_lick','detect_sound'], value=0,
                                                      group='General parameters')
+        self.params['lightMode'] = paramgui.MenuParam('Light mode', ['center','all'], value=0,
+                                                     group='General parameters')
         generalParams = self.params.layout_group('General parameters')
 
         self.params['nHits'] = paramgui.NumericParam('N hits',value=0, enabled=False,
@@ -97,10 +105,10 @@ class Paradigm(QtGui.QMainWindow):
 
 
         # -- Add graphical widgets to main window --
-        self.centralWidget = QtGui.QWidget()
-        layoutMain = QtGui.QHBoxLayout()
-        layoutCol1 = QtGui.QVBoxLayout()
-        layoutCol2 = QtGui.QVBoxLayout()
+        self.centralWidget = QtWidgets.QWidget()
+        layoutMain = QtWidgets.QHBoxLayout()
+        layoutCol1 = QtWidgets.QVBoxLayout()
+        layoutCol2 = QtWidgets.QVBoxLayout()
 
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
@@ -136,8 +144,8 @@ class Paradigm(QtGui.QMainWindow):
         self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
 
         # -- Connect to sound server and define sounds --
-        print 'Conecting to soundserver...'
-        print '***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****' ### DEBUG
+        print('Conecting to soundserver...')
+        print('***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****') ### DEBUG
         time.sleep(0.2)
         self.soundClient = soundclient.SoundClient()
         self.targetSoundID = 1
@@ -160,7 +168,7 @@ class Paradigm(QtGui.QMainWindow):
 
     def _show_message(self,msg):
         self.statusBar().showMessage(str(msg))
-        print msg
+        print(msg)
 
     def save_to_file(self):
         '''Triggered by button-clicked signal'''
@@ -199,8 +207,14 @@ class Paradigm(QtGui.QMainWindow):
         randNum = (2*np.random.random(1)[0]-1)
         interTrialInterval = interTrialIntervalMean + randNum*interTrialIntervalHalfRange
         self.params['interTrialInterval'].set_value(interTrialInterval)
-        
+        lightMode = self.params['lightMode'].get_string()
+        if lightMode=='center':
+            lightOutput = ['centerLED']
+        elif lightMode=='all':
+            lightOutput = ['centerLED', 'leftLED','rightLED']
+            
         self.sm.reset_transitions()
+
 
         if taskMode == 'water_on_lick':
             self.sm.add_state(name='startTrial', statetimer=0,
@@ -215,22 +229,26 @@ class Paradigm(QtGui.QMainWindow):
             self.sm.add_state(name='stopReward', statetimer=interTrialInterval,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=['centerWater','centerLED'])
+            # -- A few empty states necessary to avoid errors when changing taskMode --
+            self.sm.add_state(name='hit')            
+            self.sm.add_state(name='miss')            
+            self.sm.add_state(name='falseAlarm')            
         elif taskMode == 'detect_sound':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'delayPeriod'},
-                              outputsOff=['centerLED'])
+                              outputsOff=lightOutput)
             self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval,
                               transitions={'Cin':'falseAlarm', 'Tup':'playTarget'})
             self.sm.add_state(name='playTarget', statetimer=targetDuration,
                               transitions={'Cin':'hit', 'Tup':'waitForLick'},
-                              outputsOn=['centerLED'],
+                              outputsOn=lightOutput,
                               serialOut=self.targetSoundID)
             self.sm.add_state(name='waitForLick', statetimer=rewardAvailability,
                               transitions={'Cin':'hit', 'Tup':'miss'},
-                              outputsOff=['centerLED'])
+                              outputsOff=lightOutput)
             self.sm.add_state(name='hit', statetimer=0,
                               transitions={'Tup':'reward'},
-                              outputsOff=['centerLED'])            
+                              outputsOff=lightOutput)            
             self.sm.add_state(name='miss', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
             self.sm.add_state(name='falseAlarm', statetimer=0,
@@ -268,7 +286,7 @@ class Paradigm(QtGui.QMainWindow):
     def closeEvent(self, event):
         '''
         Executed when closing the main window.
-        This method is inherited from QtGui.QMainWindow, which explains
+        This method is inherited from QtWidgets.QMainWindow, which explains
         its camelCase naming.
         '''
         self.soundClient.shutdown()
