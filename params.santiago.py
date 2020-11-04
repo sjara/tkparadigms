@@ -44,8 +44,13 @@ hfix001 = {'subject':'test000', 'taskMode':'lick_after_stim', 'interTrialInterva
 
 #chad000 = {'subject':'test000', 'taskMode':'discriminate_change',
 #           'interTrialIntervalMean':2, 'maxFreq':600, 'minFreq':500}
-chad000 = {'subject':'test000', 'taskMode':'lick_after_change',
+chad00x = {'subject':'test000', 'taskMode':'lick_after_change',
            'rewardSideMode':'toggle',
            'interTrialIntervalMean':2, 'maxFreq':600, 'minFreq':500,
+           'postDuration':0.5,
+           'nFreqs':3, 'minFreqRatio':1.01 }
+
+chad000 = {'subject':'test000', 'taskMode':'water_on_lick',
+           'interTrialIntervalMean':2, 'minFreq':500, 'maxFreq':600,
            'postDuration':0.5,
            'nFreqs':3, 'minFreqRatio':1.01 }
