@@ -37,8 +37,9 @@ pred000 = {'subject':'pred000', 'oddballFreq':400, 'standardFreq':500, 'nFreq':9
            'isiMean':0.2, 'isiHalfRange':0, 'stimType':'Sine', 'sequenceMode':'Descending'}
 
 hfix000 = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialIntervalMean':1,
-           'interTrialIntervalHalfRange':0, 'targetIntensity':40,
-           'highFreq':11000, 'lowFreq':5000, 'psycurveMode':'uniform'}
+           'interTrialIntervalHalfRange':0, 'targetIntensity':40, 'soundType':'AM_vs_chord',
+           'highFreq':1200, 'lowFreq':500, 'psycurveMode':'off'}
+
 hfix001 = {'subject':'test000', 'taskMode':'lick_after_stim', 'interTrialIntervalMean':2,
            'interTrialIntervalHalfRange':0, 'targetIntensity':30}
 

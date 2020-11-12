@@ -105,7 +105,9 @@ class Paradigm(QtWidgets.QMainWindow):
                                                         enabled=False, decimals=4, group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
-        self.params['rewardSideMode'] = paramgui.MenuParam('Reward side mode', ['random','toggle','onlyL','onlyR','repeat_mistake'], value=1,
+        self.params['rewardSideMode'] = paramgui.MenuParam('Reward side mode',
+                                                           ['random','toggle','onlyL','onlyR',
+                                                            'repeat_mistake'], value=0,
                                                            group='Choice parameters')
         self.params['rewardSide'] = paramgui.MenuParam('Reward side', ['left','right'], value=0,
                                                        enabled=False, group='Choice parameters')
@@ -113,11 +115,11 @@ class Paradigm(QtWidgets.QMainWindow):
 
         
         self.params['stimType'] = paramgui.MenuParam('Stim type',
-                                                         ['sound_and_light', 'sound_only', 'light_only'],
-                                                         value=0,group='General parameters')
+                                                     ['sound_and_light', 'sound_only', 'light_only'],
+                                                     value=1, group='General parameters')
         self.params['soundType'] = paramgui.MenuParam('Sound type',
-                                                         ['chords', 'AM_depth'],
-                                                         value=0,group='General parameters')
+                                                      ['chords', 'AM_depth','AM_vs_chord'],
+                                                      value=0,group='General parameters')
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
                                                          ['off','uniform'],
                                                          value=0,group='General parameters')
@@ -333,13 +335,21 @@ class Paradigm(QtWidgets.QMainWindow):
                 freqIndex = -1 # Highest freq
 
         targetFrequency = freqsAll[freqIndex]
-        soudnType = self.params['soundType'].get_string()
-        if soudnType == 'chords':
+        soundType = self.params['soundType'].get_string()
+        if soundType == 'chords':
             self.params['targetFrequency'].set_value(targetFrequency)
-            self.prepare_target_sound(soudnType, targetFrequency)
-        elif soudnType == 'AM_depth':
+            self.prepare_target_sound(soundType, targetFrequency)
+        elif soundType == 'AM_depth':
             self.params['targetAMdepth'].set_value(targetAMdepth)
-            self.prepare_target_sound(soudnType, targetAMdepth)
+            self.prepare_target_sound(soundType, targetAMdepth)
+        elif soundType == 'AM_vs_chord':
+            if nextRewardSide=='left':
+                targetAMdepth = self.params['lowAMdepth'].get_value()
+                self.params['targetAMdepth'].set_value(targetAMdepth)
+                self.prepare_target_sound('AM_depth', targetAMdepth)
+            if nextRewardSide=='right':
+                self.params['targetFrequency'].set_value(highFreq)
+                self.prepare_target_sound('chords', targetFrequency)
 
         
         stimType = self.params['stimType'].get_string()
