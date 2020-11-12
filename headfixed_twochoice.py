@@ -3,8 +3,13 @@ Two-alternative choice for head-fixed with two lick ports (right/left).
 '''
 
 import numpy as np
-from PySide import QtGui 
-#from qtpy import QtGui
+import sys
+if sys.version_info.major==3:
+    from qtpy import QtWidgets
+    from taskontrol import rigsettings
+else:
+    from PySide import QtGui as QtWidgets
+    from taskontrol.settings import rigsettings
 from taskontrol.core import dispatcher
 from taskontrol.core import statematrix
 from taskontrol.core import savedata
@@ -12,7 +17,6 @@ from taskontrol.core import paramgui
 from taskontrol.core import messenger
 from taskontrol.core import arraycontainer
 from taskontrol.plugins import manualcontrol
-from taskontrol.settings import rigsettings
 
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
@@ -22,7 +26,7 @@ import time
 LONGTIME = 100
 MAX_N_TRIALS = 8000
 
-class Paradigm(QtGui.QMainWindow):
+class Paradigm(QtWidgets.QMainWindow):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(Paradigm, self).__init__(parent)
 
@@ -152,10 +156,10 @@ class Paradigm(QtGui.QMainWindow):
 
 
         # -- Add graphical widgets to main window --
-        self.centralWidget = QtGui.QWidget()
-        layoutMain = QtGui.QHBoxLayout()
-        layoutCol1 = QtGui.QVBoxLayout()
-        layoutCol2 = QtGui.QVBoxLayout()
+        self.centralWidget = QtWidgets.QWidget()
+        layoutMain = QtWidgets.QHBoxLayout()
+        layoutCol1 = QtWidgets.QVBoxLayout()
+        layoutCol2 = QtWidgets.QVBoxLayout()
 
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
@@ -504,7 +508,7 @@ class Paradigm(QtGui.QMainWindow):
     def closeEvent(self, event):
         '''
         Executed when closing the main window.
-        This method is inherited from QtGui.QMainWindow, which explains
+        This method is inherited from QtWidgets.QMainWindow, which explains
         its camelCase naming.
         '''
         self.soundClient.shutdown()
