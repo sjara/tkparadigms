@@ -7,8 +7,10 @@ import numpy as np
 if sys.version_info.major==3:
     #from taskontrol.core import dispatcher.QtWidgets as QtWidgets
     from qtpy import QtWidgets
+    from taskontrol import rigsettings
 else:
     from PySide import QtGui as QtWidgets
+    from taskontrol.settings import rigsettings
 #from PySide import QtGui 
 #from qtpy import QtGui
 from taskontrol.core import dispatcher
@@ -18,7 +20,6 @@ from taskontrol.core import paramgui
 from taskontrol.core import messenger
 from taskontrol.core import arraycontainer
 from taskontrol.plugins import manualcontrol
-from taskontrol.settings import rigsettings
 
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
