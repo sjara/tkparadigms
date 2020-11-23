@@ -94,6 +94,8 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['postDuration'] = paramgui.NumericParam('Post duration', value=0, units='s',
                                                             group='Timing parameters', decimals=3,
                                                             enabled=False)
+        self.params['fadeIn'] = paramgui.NumericParam('Fade in', value=1.0, units='s',
+                                                       group='Timing parameters', decimals=3)
         timingParams = self.params.layout_group('Timing parameters')
 
         
@@ -267,8 +269,9 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['postSoundAmplitude'].set_value(postSoundAmp)
         preDuration = self.params['preDuration'].get_value()
         postDuration = self.params['postDuration'].get_value()
+        fadeIn = self.params['fadeIn'].get_value()
         sPre = {'type':'chord', 'frequency':preFreq, 'ntones':12, 'factor':1.2,
-                'duration':preDuration, 'amplitude':preSoundAmp}
+                'duration':preDuration, 'amplitude':preSoundAmp, 'fadein':fadeIn}
         sPost = {'type':'chord', 'frequency':postFreq, 'ntones':12, 'factor':1.2,
                  'duration':postDuration, 'amplitude':postSoundAmp} #, 'delay':preDuration}
         self.soundClient.set_sound(self.preSoundID, sPre)
