@@ -8,17 +8,24 @@ if sys.version_info.major==3:
     #from taskontrol.core import dispatcher.QtWidgets as QtWidgets
     from qtpy import QtWidgets
     from taskontrol import rigsettings
+    from taskontrol import dispatcher
+    from taskontrol import statematrix
+    from taskontrol import savedata
+    from taskontrol import paramgui
+    from taskontrol import paramgui as messenger
+    from taskontrol import utils as arraycontainer
+    arraycontainer.Container = arraycontainer.EnumContainer
 else:
     from PySide import QtGui as QtWidgets
     from taskontrol.settings import rigsettings
+    from taskontrol.core import dispatcher
+    from taskontrol.core import statematrix
+    from taskontrol.core import savedata
+    from taskontrol.core import paramgui
+    from taskontrol.core import messenger
+    from taskontrol.core import arraycontainer
 #from PySide import QtGui 
 #from qtpy import QtGui
-from taskontrol.core import dispatcher
-from taskontrol.core import statematrix
-from taskontrol.core import savedata
-from taskontrol.core import paramgui
-from taskontrol.core import messenger
-from taskontrol.core import arraycontainer
 from taskontrol.plugins import manualcontrol
 
 from taskontrol.plugins import soundclient
