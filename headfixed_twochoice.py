@@ -1,23 +1,29 @@
-'''
+"""
 Two-alternative choice for head-fixed with two lick ports (right/left).
-'''
+"""
 
 import numpy as np
 import sys
 if sys.version_info.major==3:
     from qtpy import QtWidgets
     from taskontrol import rigsettings
+    from taskontrol import dispatcher
+    from taskontrol import statematrix
+    from taskontrol import savedata
+    from taskontrol import paramgui
+    from taskontrol import paramgui as messenger
+    from taskontrol import utils as arraycontainer
+    arraycontainer.Container = arraycontainer.EnumContainer
 else:
     from PySide import QtGui as QtWidgets
     from taskontrol.settings import rigsettings
-from taskontrol.core import dispatcher
-from taskontrol.core import statematrix
-from taskontrol.core import savedata
-from taskontrol.core import paramgui
-from taskontrol.core import messenger
-from taskontrol.core import arraycontainer
+    from taskontrol.core import dispatcher
+    from taskontrol.core import statematrix
+    from taskontrol.core import savedata
+    from taskontrol.core import paramgui
+    from taskontrol.core import messenger
+    from taskontrol.core import arraycontainer
 from taskontrol.plugins import manualcontrol
-
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
 import time
@@ -63,8 +69,6 @@ class Paradigm(QtWidgets.QMainWindow):
 
         self.params['timeWaterValve'] = paramgui.NumericParam('Time valve',value=timeWaterValve,
                                                                 units='s',group='Water delivery')
-        #self.params['timeWaterValvesS'] = paramgui.NumericParam('Time valves S',value=0.03,
-        #                                                        units='s',group='Water delivery')
         waterDelivery = self.params.layout_group('Water delivery')
        
         self.params['rewardAvailability'] = paramgui.NumericParam('Reward availability',value=1,
@@ -126,7 +130,8 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['psycurveNsteps'] = paramgui.NumericParam('N steps',value=6,decimals=0,
                                                               group='General parameters')
         self.params['taskMode'] = paramgui.MenuParam('Task mode',
-                                                     ['water_on_lick','lick_after_stim','discriminate_stim'],
+                                                     ['water_on_sound','water_on_lick',
+                                                      'lick_after_stim','discriminate_stim'],
                                                      value=0, group='General parameters')
         generalParams = self.params.layout_group('General parameters')
 
@@ -364,7 +369,27 @@ class Paradigm(QtWidgets.QMainWindow):
         
         self.sm.reset_transitions()
 
-        if taskMode == 'water_on_lick':
+        if taskMode == 'water_on_sound':
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'delayPeriod'})
+            self.sm.add_state(name='delayPeriod', statetimer=0,
+                              transitions={'Tup':'playTarget'})
+            self.sm.add_state(name='playTarget', statetimer=0,
+                              transitions={'Tup':'reward'},
+                              serialOut=soundOutput)            
+            self.sm.add_state(name='reward', statetimer=timeWaterValve,
+                              transitions={'Tup':'stopReward'},
+                              outputsOn=[rewardOutput])
+            self.sm.add_state(name='stopReward', statetimer=interTrialInterval,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=[rewardOutput])
+            # -- A few empty states necessary to avoid errors when changing taskMode --
+            self.sm.add_state(name='hit')            
+            self.sm.add_state(name='error')            
+            self.sm.add_state(name='miss')            
+            self.sm.add_state(name='falseAlarmL')            
+            self.sm.add_state(name='falseAlarmR')            
+        elif taskMode == 'water_on_lick':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForLick'},
                               outputsOff=['centerLED'])
@@ -463,10 +488,10 @@ class Paradigm(QtWidgets.QMainWindow):
         #if taskModeLabels[firstTrialModeInd] == 'water_on_lick':
         #    self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
 
+        lastRewardSide = self.params['rewardSide'].get_string()
+        eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
+        statesThisTrial = eventsThisTrial[:,2]
         if self.params['taskMode'].get_string() in ['lick_after_stim', 'discriminate_stim']:
-            lastRewardSide = self.params['rewardSide'].get_string()
-            eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
-            statesThisTrial = eventsThisTrial[:,2]
             if self.sm.statesNameToIndex['hit'] in statesThisTrial:
                 if lastRewardSide=='left':
                     self.params['nHitsLeft'].add(1)
@@ -504,16 +529,16 @@ class Paradigm(QtWidgets.QMainWindow):
                 # This may happen if changing from one taskMode to another
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
-            # -- Estimate number of licks --
-            eventCodesThisTrial = eventsThisTrial[:,1]
-            nLicksLeftThisTrial = np.sum(eventCodesThisTrial==self.sm.eventsDict['Lin'])
-            nLicksRightThisTrial = np.sum(eventCodesThisTrial==self.sm.eventsDict['Rin'])
-            self.params['nLicksLeft'].add(nLicksLeftThisTrial)
-            self.params['nLicksRight'].add(nLicksRightThisTrial)
         else:
             # -- For any other task modes (like water_on_lick)
             self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
             self.results['choice'][trialIndex] = self.results.labels['choice']['none']
+        # -- Estimate number of licks --
+        eventCodesThisTrial = eventsThisTrial[:,1]
+        nLicksLeftThisTrial = np.sum(eventCodesThisTrial==self.sm.eventsDict['Lin'])
+        nLicksRightThisTrial = np.sum(eventCodesThisTrial==self.sm.eventsDict['Rin'])
+        self.params['nLicksLeft'].add(nLicksLeftThisTrial)
+        self.params['nLicksRight'].add(nLicksRightThisTrial)
 
     def closeEvent(self, event):
         '''
