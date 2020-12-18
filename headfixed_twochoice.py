@@ -70,7 +70,9 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['timeWaterValve'] = paramgui.NumericParam('Time valve',value=timeWaterValve,
                                                                 units='s',group='Water delivery')
         waterDelivery = self.params.layout_group('Water delivery')
-       
+
+        self.params['lickingPeriod'] = paramgui.NumericParam('Licking period',value=1.5,
+                                                        units='s',group='Timing parameters')
         self.params['rewardAvailability'] = paramgui.NumericParam('Reward availability',value=1,
                                                         units='s',group='Timing parameters')
         self.params['interTrialInterval'] = paramgui.NumericParam('Inter trial interval (ITI)',value=0,
@@ -174,6 +176,7 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addStretch()
         layoutCol1.addWidget(waterDelivery)
+        layoutCol1.addWidget(self.singleDrop)
         layoutCol1.addStretch()
         layoutCol1.addWidget(self.sessionInfo)
         layoutCol1.addStretch()
@@ -182,7 +185,6 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1.addWidget(self.dispatcherView)
 
         layoutCol2.addWidget(self.manualControl)
-        layoutCol2.addWidget(self.singleDrop)
         layoutCol2.addStretch()
         layoutCol2.addWidget(timingParams)
         layoutCol2.addStretch()
@@ -286,6 +288,7 @@ class Paradigm(QtWidgets.QMainWindow):
         randNum = (2*np.random.random(1)[0]-1)
         interTrialInterval = interTrialIntervalMean + randNum*interTrialIntervalHalfRange
         self.params['interTrialInterval'].set_value(interTrialInterval)
+        lickingPeriod = self.params['lickingPeriod'].get_value()
 
         lastRewardSide = self.params['rewardSide'].get_string()
         rewardSideMode = self.params['rewardSideMode'].get_string()
@@ -381,8 +384,10 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
             self.sm.add_state(name='stopReward', statetimer=interTrialInterval,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'lickingPeriod'},
                               outputsOff=[rewardOutput])
+            self.sm.add_state(name='lickingPeriod', statetimer=lickingPeriod,
+                              transitions={'Tup':'readyForNextTrial'})
             # -- A few empty states necessary to avoid errors when changing taskMode --
             self.sm.add_state(name='hit')            
             self.sm.add_state(name='error')            
@@ -425,12 +430,12 @@ class Paradigm(QtWidgets.QMainWindow):
                               outputsOff=['centerLED','rightLED','leftLED'])
             self.sm.add_state(name='hit', statetimer=0,
                               transitions={'Tup':'reward'},
-                              outputsOff=['centerLED','rightLED','leftLED'])            
+                              outputsOff=['centerLED','rightLED','leftLED'])
             self.sm.add_state(name='error', statetimer=0,
                               transitions={'Tup':'waitForLick'},
                               outputsOff=['centerLED','rightLED','leftLED'])            
             self.sm.add_state(name='miss', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'})            
+                              transitions={'Tup':'lickingPeriod'})
             self.sm.add_state(name='falseAlarmL', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
             self.sm.add_state(name='falseAlarmR', statetimer=0,
@@ -439,8 +444,10 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
             self.sm.add_state(name='stopReward', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'lickingPeriod'},
                               outputsOff=[rewardOutput])
+            self.sm.add_state(name='lickingPeriod', statetimer=lickingPeriod,
+                              transitions={'Tup':'readyForNextTrial'})
         elif taskMode == 'discriminate_stim':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'delayPeriod'},
@@ -460,10 +467,10 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'reward'},
                               outputsOff=['centerLED','rightLED','leftLED'])            
             self.sm.add_state(name='error', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'lickingPeriod'},
                               outputsOff=['centerLED','rightLED','leftLED'])            
             self.sm.add_state(name='miss', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'})            
+                              transitions={'Tup':'lickingPeriod'})
             self.sm.add_state(name='falseAlarmL', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
             self.sm.add_state(name='falseAlarmR', statetimer=0,
@@ -472,8 +479,10 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
             self.sm.add_state(name='stopReward', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'lickingPeriod'},
                               outputsOff=[rewardOutput])
+            self.sm.add_state(name='lickingPeriod', statetimer=lickingPeriod,
+                              transitions={'Tup':'readyForNextTrial'})
 
         #print(self.sm) ### DEBUG
         self.dispatcherModel.set_state_matrix(self.sm)

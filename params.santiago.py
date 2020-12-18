@@ -36,12 +36,17 @@ bili000 = {'subject':'bili000',
 pred000 = {'subject':'pred000', 'oddballFreq':400, 'standardFreq':500, 'nFreq':9, 'stimDur':0.1,
            'isiMean':0.2, 'isiHalfRange':0, 'stimType':'Sine', 'sequenceMode':'Descending'}
 
-hfix000 = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialIntervalMean':1,
-           'interTrialIntervalHalfRange':0, 'targetIntensity':50, 'soundType':'AM_vs_chord',
+hfix000 = {'subject':'test000', 'taskMode':'water_on_sound', 'interTrialIntervalMean':1,
+           'interTrialIntervalHalfRange':0, 'targetIntensity':50, 'soundType':'chords',
            'highFreq':1200, 'lowFreq':500, 'psycurveMode':'off', 'rewardSideMode':'toggle'}
 
 hfix001 = {'subject':'test000', 'taskMode':'lick_after_stim', 'interTrialIntervalMean':2,
            'interTrialIntervalHalfRange':0, 'targetIntensity':30}
+
+hfix002 = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialIntervalMean':1,
+           'interTrialIntervalHalfRange':0, 'targetIntensity':50, 'soundType':'chords',
+           'highFreq':600, 'lowFreq':400, 'psycurveMode':'off', 'rewardSideMode':'toggle'}
+
 
 #chad000 = {'subject':'test000', 'taskMode':'discriminate_change',
 #           'interTrialIntervalMean':2, 'maxFreq':600, 'minFreq':500}
