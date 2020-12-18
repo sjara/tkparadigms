@@ -78,7 +78,10 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['interTrialInterval'] = paramgui.NumericParam('Inter trial interval (ITI)',value=0,
                                                                   units='s',group='Timing parameters',
                                                                   decimals=3, enabled=False)
-        self.params['interTrialIntervalMean'] = paramgui.NumericParam('ITI mean',value=4,
+        self.params['addedITI'] = paramgui.NumericParam('Added ITI',value=0,
+                                                                  units='s',group='Timing parameters',
+                                                                  decimals=3, enabled=False)
+        self.params['interTrialIntervalMean'] = paramgui.NumericParam('ITI mean',value=2.5,
                                                         units='s',group='Timing parameters')
         self.params['interTrialIntervalHalfRange'] = paramgui.NumericParam('ITI +/-',value=1,
                                                         units='s',group='Timing parameters')
@@ -285,8 +288,9 @@ class Paradigm(QtWidgets.QMainWindow):
         timeWaterValve = self.params['timeWaterValve'].get_value()
         interTrialIntervalMean = self.params['interTrialIntervalMean'].get_value()
         interTrialIntervalHalfRange = self.params['interTrialIntervalHalfRange'].get_value()
+        addedITI = self.params['addedITI'].get_value()
         randNum = (2*np.random.random(1)[0]-1)
-        interTrialInterval = interTrialIntervalMean + randNum*interTrialIntervalHalfRange
+        interTrialInterval = interTrialIntervalMean + randNum*interTrialIntervalHalfRange + addedITI
         self.params['interTrialInterval'].set_value(interTrialInterval)
         lickingPeriod = self.params['lickingPeriod'].get_value()
 
@@ -435,7 +439,7 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'waitForLick'},
                               outputsOff=['centerLED','rightLED','leftLED'])            
             self.sm.add_state(name='miss', statetimer=0,
-                              transitions={'Tup':'lickingPeriod'})
+                              transitions={'Tup':'readyForNextTrial'})
             self.sm.add_state(name='falseAlarmL', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
             self.sm.add_state(name='falseAlarmR', statetimer=0,
@@ -470,7 +474,7 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'lickingPeriod'},
                               outputsOff=['centerLED','rightLED','leftLED'])            
             self.sm.add_state(name='miss', statetimer=0,
-                              transitions={'Tup':'lickingPeriod'})
+                              transitions={'Tup':'readyForNextTrial'})
             self.sm.add_state(name='falseAlarmL', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
             self.sm.add_state(name='falseAlarmR', statetimer=0,
@@ -502,6 +506,7 @@ class Paradigm(QtWidgets.QMainWindow):
         statesThisTrial = eventsThisTrial[:,2]
         if self.params['taskMode'].get_string() in ['lick_after_stim', 'discriminate_stim']:
             if self.sm.statesNameToIndex['hit'] in statesThisTrial:
+                self.params['addedITI'].set_value(0)
                 if lastRewardSide=='left':
                     self.params['nHitsLeft'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
@@ -511,6 +516,7 @@ class Paradigm(QtWidgets.QMainWindow):
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
                     self.results['choice'][trialIndex] = self.results.labels['choice']['right']
             elif self.sm.statesNameToIndex['error'] in statesThisTrial:
+                self.params['addedITI'].set_value(self.params['lickingPeriod'].get_value())
                 if lastRewardSide=='left':
                     self.params['nErrorsLeft'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['error']
@@ -520,14 +526,17 @@ class Paradigm(QtWidgets.QMainWindow):
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['error']
                     self.results['choice'][trialIndex] = self.results.labels['choice']['left']
             elif self.sm.statesNameToIndex['falseAlarmL'] in statesThisTrial:
+                self.params['addedITI'].set_value(self.params['lickingPeriod'].get_value())
                 self.params['nFalseAlarmsLeft'].add(1)
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
             elif self.sm.statesNameToIndex['falseAlarmR'] in statesThisTrial:
+                self.params['addedITI'].set_value(self.params['lickingPeriod'].get_value())
                 self.params['nFalseAlarmsRight'].add(1)
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
             elif self.sm.statesNameToIndex['miss'] in statesThisTrial:
+                self.params['addedITI'].set_value(self.params['lickingPeriod'].get_value())
                 if lastRewardSide=='left':
                     self.params['nMissesLeft'].add(1)
                 else:
@@ -536,6 +545,7 @@ class Paradigm(QtWidgets.QMainWindow):
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
             else:
                 # This may happen if changing from one taskMode to another
+                self.params['addedITI'].set_value(0)
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
         else:
