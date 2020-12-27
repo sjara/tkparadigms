@@ -2,12 +2,26 @@
 Test sounds, lights, valves and pokes.
 '''
 
-from PySide import QtGui 
-from taskontrol.settings import rigsettings
-from taskontrol.core import statematrix
-from taskontrol.core import dispatcher
-from taskontrol.core import paramgui
-from taskontrol.core import messenger
+import sys
+if sys.version_info.major==3:
+    from qtpy import QtWidgets
+    from taskontrol import rigsettings
+    from taskontrol import dispatcher
+    from taskontrol import statematrix
+    from taskontrol import savedata
+    from taskontrol import paramgui
+    from taskontrol import paramgui as messenger
+    from taskontrol import utils as arraycontainer
+    arraycontainer.Container = arraycontainer.EnumContainer
+else:
+    from PySide import QtGui as QtWidgets
+    from taskontrol.settings import rigsettings
+    from taskontrol.core import dispatcher
+    from taskontrol.core import statematrix
+    from taskontrol.core import savedata
+    from taskontrol.core import paramgui
+    from taskontrol.core import messenger
+    from taskontrol.core import arraycontainer
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
 from taskontrol.plugins import manualcontrol
@@ -18,7 +32,7 @@ centerSoundFile = './center.wav'
 leftSoundFile = './left.wav'
 rightSoundFile = './right.wav'
 
-class RigTest(QtGui.QMainWindow):
+class RigTest(QtWidgets.QMainWindow):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(RigTest, self).__init__(parent)
 
@@ -38,28 +52,28 @@ class RigTest(QtGui.QMainWindow):
        
         # -- Add parameters --
         self.params = paramgui.Container()
-        self.params['timeWaterValveL'] = paramgui.NumericParam('Time valve left',value=0.03,
-                                                               units='s',group='Water delivery')
-        self.params['timeWaterValveR'] = paramgui.NumericParam('Time valve right',value=0.03,
-                                                               units='s',group='Water delivery')
-        self.params['offTime'] = paramgui.NumericParam('Time between',value=0.25,
-                                                       units='s',group='Schedule')
-        self.params['soundDuration'] = paramgui.NumericParam('Sound duration',value=0.26,decimals=2,
-                                                             units='s',group='Sound',enabled=False)
-        self.params['soundIntensity'] = paramgui.NumericParam('Sound intensity',value=80,
-                                                              units='dB-SPL',group='Sound')
-        self.params['soundAmplitude'] = paramgui.NumericParam('Avg sound amp',value=0.1,decimals=4,
-                                                              units='dB-SPL',group='Sound',enabled=False)
+        self.params['timeWaterValveL'] = paramgui.NumericParam('Time valve left', value=0.03,
+                                                               units='s', group='Water delivery')
+        self.params['timeWaterValveR'] = paramgui.NumericParam('Time valve right', value=0.03,
+                                                               units='s', group='Water delivery')
+        self.params['offTime'] = paramgui.NumericParam('Time between', value=0.25,
+                                                       units='s', group='Schedule')
+        self.params['soundDuration'] = paramgui.NumericParam('Sound duration', value=0.26, decimals=2,
+                                                             units='s', group='Sound', enabled=False)
+        self.params['soundIntensity'] = paramgui.NumericParam('Sound intensity', value=80,
+                                                              units='dB-SPL', group='Sound')
+        self.params['soundAmplitude'] = paramgui.NumericParam('Avg sound amp', value=1.0, decimals=4,
+                                                              units='dB-SPL', group='Sound', enabled=False)
         scheduleGroup = self.params.layout_group('Schedule')
         soundGroup = self.params.layout_group('Sound')
         waterGroup = self.params.layout_group('Water delivery')
 
         # -- Add graphical widgets to main window --
-        self.centralWidget = QtGui.QWidget()
-        layoutMain = QtGui.QHBoxLayout()
-        layoutCol1 = QtGui.QVBoxLayout()
-        layoutCol2 = QtGui.QVBoxLayout()
-        layoutCol3 = QtGui.QVBoxLayout()
+        self.centralWidget = QtWidgets.QWidget()
+        layoutMain = QtWidgets.QHBoxLayout()
+        layoutCol1 = QtWidgets.QVBoxLayout()
+        layoutCol2 = QtWidgets.QVBoxLayout()
+        layoutCol3 = QtWidgets.QVBoxLayout()
 
         layoutCol1.addWidget(self.dispatcherView)
         layoutCol2.addWidget(self.manualControl)
@@ -75,15 +89,15 @@ class RigTest(QtGui.QMainWindow):
         self.setCentralWidget(self.centralWidget)
 
         # -- Connect to sound server and define sounds --
-        print 'Conecting to soundserver...'
-        print '***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****' ### DEBUG
-        time.sleep(0.2)
+        if sys.version_info.major<3:
+            print('Conecting to soundserver...')
+            print('***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****') ### DEBUG
+            time.sleep(0.2)
         self.soundClient = soundclient.SoundClient()
         self.soundCenterID = 1
         self.soundLeftID = 2
         self.soundRightID = 3
         self.soundClient.start()
-        self.prepare_sounds()
 
         # -- Connect signals from dispatcher --
         self.dispatcherModel.prepareNextTrial.connect(self.prepare_next_trial)
@@ -98,11 +112,11 @@ class RigTest(QtGui.QMainWindow):
         self.dispatcherModel.logMessage.connect(self.messagebar.collect)
 
         # -- Center in screen --
-        paramgui.center_in_screen(self)
+        #paramgui.center_on_screen(self)
 
     def _show_message(self,msg):
         self.statusBar().showMessage(str(msg))
-        print msg
+        print(msg)
 
     def _timer_tic(self,etime,lastEvents):
         pass
@@ -131,6 +145,7 @@ class RigTest(QtGui.QMainWindow):
         self.soundClient.set_sound(self.soundRightID,sRight)
 
     def prepare_next_trial(self, nextTrial):
+        self.prepare_sounds()
         self.sm.reset_transitions()
         if nextTrial==0:
             self.prepare_automatic_trial() # This will change self.sm
@@ -142,7 +157,7 @@ class RigTest(QtGui.QMainWindow):
                 self.prepare_automatic_trial() # This will change self.sm
             else:
                 self.prepare_manual_trial() # This will change self.sm
-        #print self.sm ### DEBUG
+        #print(self.sm) ### DEBUG
         self.dispatcherModel.set_state_matrix(self.sm)
         self.dispatcherModel.ready_to_start_trial()
         pass
@@ -196,7 +211,7 @@ class RigTest(QtGui.QMainWindow):
     def closeEvent(self, event):
         '''
         Executed when closing the main window.
-        This method is inherited from QtGui.QMainWindow, which explains
+        This method is inherited from QtWidgets.QMainWindow, which explains
         its camelCase naming.
         '''
         self.soundClient.shutdown()
