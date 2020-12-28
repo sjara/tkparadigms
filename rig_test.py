@@ -97,11 +97,11 @@ class RigTest(QtWidgets.QMainWindow):
         self.soundCenterID = 1
         self.soundLeftID = 2
         self.soundRightID = 3
+        self.prepare_sounds()
         self.soundClient.start()
 
         # -- Connect signals from dispatcher --
         self.dispatcherModel.prepareNextTrial.connect(self.prepare_next_trial)
-        self.dispatcherModel.timerTic.connect(self._timer_tic)
 
         # -- Connect messenger --
         self.messagebar = messenger.Messenger()
@@ -118,9 +118,6 @@ class RigTest(QtWidgets.QMainWindow):
         self.statusBar().showMessage(str(msg))
         print(msg)
 
-    def _timer_tic(self,etime,lastEvents):
-        pass
-
     def prepare_sounds(self):
         #spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION)
         spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
@@ -134,18 +131,25 @@ class RigTest(QtWidgets.QMainWindow):
         self.soundClient.set_sound(self.soundLeftID,sNoise)
         self.soundClient.set_sound(self.soundRightID,sNoise)
         '''
-        sCenter = {'type':'fromfile', 'filename':centerSoundFile,
-                 'channel':'both', 'amplitude':soundAmplitude}
-        sLeft = {'type':'fromfile', 'filename':leftSoundFile,
-                 'channel':'left', 'amplitude':soundAmplitude}
-        sRight = {'type':'fromfile', 'filename':rightSoundFile,
-                  'channel':'right', 'amplitude':soundAmplitude}
+        if sys.version_info.major==3:
+            sCenter = {'type':'fromfile', 'filename':centerSoundFile,
+                       'amplitude':soundAmplitude}
+            sLeft = {'type':'fromfile', 'filename':leftSoundFile,
+                     'amplitude':[soundAmplitude[0], 0]}
+            sRight = {'type':'fromfile', 'filename':rightSoundFile,
+                      'amplitude':[0, soundAmplitude[1]]}
+        else:
+            sCenter = {'type':'fromfile', 'filename':centerSoundFile,
+                     'channel':'both', 'amplitude':soundAmplitude}
+            sLeft = {'type':'fromfile', 'filename':leftSoundFile,
+                     'channel':'left', 'amplitude':soundAmplitude}
+            sRight = {'type':'fromfile', 'filename':rightSoundFile,
+                      'channel':'right', 'amplitude':soundAmplitude}
         self.soundClient.set_sound(self.soundCenterID,sCenter)
         self.soundClient.set_sound(self.soundLeftID,sLeft)
         self.soundClient.set_sound(self.soundRightID,sRight)
 
     def prepare_next_trial(self, nextTrial):
-        self.prepare_sounds()
         self.sm.reset_transitions()
         if nextTrial==0:
             self.prepare_automatic_trial() # This will change self.sm
