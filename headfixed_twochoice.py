@@ -130,7 +130,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                       ['chords', 'AM_depth','AM_vs_chord'],
                                                       value=0,group='General parameters')
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
-                                                         ['off','uniform'],
+                                                         ['off', 'uniform', 'mid_and_extreme'],
                                                          value=0,group='General parameters')
         self.params['psycurveNsteps'] = paramgui.NumericParam('N steps',value=6,decimals=0,
                                                               group='General parameters')
@@ -172,7 +172,10 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutMain = QtWidgets.QHBoxLayout()
         layoutCol1 = QtWidgets.QVBoxLayout()
         layoutCol2 = QtWidgets.QVBoxLayout()
+        layoutCol3 = QtWidgets.QVBoxLayout()
+        layoutCol4 = QtWidgets.QVBoxLayout()
 
+        '''
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
 
@@ -196,7 +199,34 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol2.addWidget(choiceParams)
         layoutCol2.addStretch()
         layoutCol2.addWidget(generalParams)
+        '''
+        
+        layoutMain.addLayout(layoutCol1)
+        layoutMain.addLayout(layoutCol2)
+        layoutMain.addLayout(layoutCol3)
+        layoutMain.addLayout(layoutCol4)
 
+        layoutCol1.addWidget(self.saveData)
+        layoutCol1.addStretch()
+        layoutCol1.addWidget(self.sessionInfo)
+        layoutCol1.addStretch()
+        layoutCol1.addWidget(self.dispatcherView)
+
+        layoutCol2.addWidget(waterDelivery)
+        layoutCol2.addWidget(self.singleDrop)
+        layoutCol2.addStretch()
+        layoutCol2.addWidget(reportInfo)
+ 
+        layoutCol3.addWidget(soundParams)
+        layoutCol3.addStretch()
+        layoutCol3.addWidget(self.manualControl)
+
+        layoutCol4.addStretch()
+        layoutCol4.addWidget(timingParams)
+        layoutCol4.addStretch()
+        layoutCol4.addWidget(choiceParams)
+        layoutCol4.addStretch()
+        layoutCol4.addWidget(generalParams)
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
 
@@ -332,6 +362,9 @@ class Paradigm(QtWidgets.QMainWindow):
             targetAMdepth = self.params['lowAMdepth'].get_value()
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(leftFreqInds))
+            elif psycurveMode=='mid_and_extreme':
+                freqSubset = [0, nFreqs//2-1] 
+                freqIndex = freqSubset[np.random.randint(len(freqSubset))]
             else:
                 freqIndex = 0  # Lowest freq
         elif nextRewardSide=='right':
@@ -343,6 +376,9 @@ class Paradigm(QtWidgets.QMainWindow):
             targetAMdepth = self.params['highAMdepth'].get_value()
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(rightFreqInds))+len(leftFreqInds)
+            elif psycurveMode=='mid_and_extreme':
+                freqSubset = [nFreqs//2, nFreqs-1] 
+                freqIndex = freqSubset[np.random.randint(len(freqSubset))]
             else:
                 freqIndex = -1 # Highest freq
 
