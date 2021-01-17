@@ -1,33 +1,17 @@
-'''
+"""
 Two-alternative choice for head-fixed with two lick ports (right/left).
-'''
+"""
 
 import sys
 import numpy as np
-if sys.version_info.major==3:
-    #from taskontrol.core import dispatcher.QtWidgets as QtWidgets
-    from qtpy import QtWidgets
-    from taskontrol import rigsettings
-    from taskontrol import dispatcher
-    from taskontrol import statematrix
-    from taskontrol import savedata
-    from taskontrol import paramgui
-    from taskontrol import paramgui as messenger
-    from taskontrol import utils as arraycontainer
-    arraycontainer.Container = arraycontainer.EnumContainer
-else:
-    from PySide import QtGui as QtWidgets
-    from taskontrol.settings import rigsettings
-    from taskontrol.core import dispatcher
-    from taskontrol.core import statematrix
-    from taskontrol.core import savedata
-    from taskontrol.core import paramgui
-    from taskontrol.core import messenger
-    from taskontrol.core import arraycontainer
-#from PySide import QtGui 
-#from qtpy import QtGui
+from qtpy import QtWidgets
+from taskontrol import rigsettings
+from taskontrol import dispatcher
+from taskontrol import statematrix
+from taskontrol import savedata
+from taskontrol import paramgui
+from taskontrol import utils
 from taskontrol.plugins import manualcontrol
-
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
 import time
@@ -42,7 +26,7 @@ class Paradigm(QtWidgets.QMainWindow):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(Paradigm, self).__init__(parent)
 
-        self.name = 'detectiontwochoice'
+        self.name = 'detectiongonogo'
 
         # -- Create an empty statematrix --
         self.sm = statematrix.StateMatrix(inputs=rigsettings.INPUTS, outputs=rigsettings.OUTPUTS,
@@ -50,16 +34,15 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Create dispatcher --
         smServerType = rigsettings.STATE_MACHINE_TYPE
-        self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,interval=0.1)
-        self.dispatcherView = dispatcher.DispatcherGUI(model=self.dispatcherModel)
+        self.dispatcher = dispatcher.Dispatcher(serverType=smServerType,interval=0.1)
 
         # -- Module for saving data --
         self.saveData = savedata.SaveData(rigsettings.DATA_DIR, remotedir=rigsettings.REMOTE_DIR)
 
         # -- Manual control of outputs --
-        self.manualControl = manualcontrol.ManualControl(self.dispatcherModel.statemachine)
+        self.manualControl = manualcontrol.ManualControl(self.dispatcher.statemachine)
         timeWaterValve = 0.03
-        self.singleDrop = manualcontrol.SingleDrop(self.dispatcherModel.statemachine, timeWaterValve)
+        self.singleDrop = manualcontrol.SingleDrop(self.dispatcher.statemachine, timeWaterValve)
         
         # -- Define graphical parameters --
         self.params = paramgui.Container()
@@ -198,7 +181,7 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1.addStretch()
         layoutCol1.addWidget(reportInfo)
         layoutCol1.addStretch()
-        layoutCol1.addWidget(self.dispatcherView)
+        layoutCol1.addWidget(self.dispatcher.widget)
 
         layoutCol2.addWidget(self.manualControl)
         layoutCol2.addStretch()
@@ -213,7 +196,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Add variables for storing results --
         maxNtrials = MAX_N_TRIALS # Preallocating space for each vector makes things easier
-        self.results = arraycontainer.Container()
+        self.results = utils.EnumContainer()
         self.results.labels['outcome'] = {'hit':1, 'error':0,'falseAlarm':3, 'miss':2, 'none':-1}
         self.results['outcome'] = np.empty(maxNtrials,dtype=int)
         #self.results.labels['choice'] = {'left':0,'right':1,'none':2}
@@ -237,16 +220,16 @@ class Paradigm(QtWidgets.QMainWindow):
         self.soundClient.start()
       
         # -- Connect signals from dispatcher --
-        self.dispatcherModel.prepareNextTrial.connect(self.prepare_next_trial)
+        self.dispatcher.prepareNextTrial.connect(self.prepare_next_trial)
 
         # -- Connect messenger --
-        self.messagebar = messenger.Messenger()
+        self.messagebar = paramgui.Messenger()
         self.messagebar.timedMessage.connect(self._show_message)
         self.messagebar.collect('Created window')
 
         # -- Connect signals to messenger
         self.saveData.logMessage.connect(self.messagebar.collect)
-        self.dispatcherModel.logMessage.connect(self.messagebar.collect)
+        self.dispatcher.logMessage.connect(self.messagebar.collect)
 
         # -- Connect other signals --
         self.saveData.buttonSaveData.clicked.connect(self.save_to_file)
@@ -257,9 +240,9 @@ class Paradigm(QtWidgets.QMainWindow):
 
     def save_to_file(self):
         '''Triggered by button-clicked signal'''
-        self.saveData.to_file([self.params, self.dispatcherModel,
+        self.saveData.to_file([self.params, self.dispatcher,
                                self.sm, self.results],
-                              self.dispatcherModel.currentTrial,
+                              self.dispatcher.currentTrial,
                               experimenter='',
                               subject=self.params['subject'].get_value(),
                               paradigm=self.name)
@@ -294,7 +277,7 @@ class Paradigm(QtWidgets.QMainWindow):
     def prepare_next_trial(self, nextTrial):
         # -- Calculate results from last trial (update outcome, etc) --
         if nextTrial>0:
-            self.params.update_history()
+            self.params.update_history(nextTrial-1)
             self.calculate_results(nextTrial-1)
             
         # -- Prepare next trial --
@@ -518,14 +501,14 @@ class Paradigm(QtWidgets.QMainWindow):
                               outputsOff=[activeValve])
             self.sm.add_state(name='correctReject')            
         #print(self.sm) ### DEBUG
-        self.dispatcherModel.set_state_matrix(self.sm)
-        self.dispatcherModel.ready_to_start_trial()
+        self.dispatcher.set_state_matrix(self.sm)
+        self.dispatcher.ready_to_start_trial()
 
     def calculate_results(self,trialIndex):
         # NOTE: Changes to graphical parameters (like nHits) are saved before calling
         #       this method. Therefore, those set here will be saved on the next trial.
 
-        eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
+        eventsThisTrial = self.dispatcher.events_one_trial(trialIndex)
         statesThisTrial = eventsThisTrial[:,2]
         if self.params['taskMode'].get_string() in ['lick_after_change', 'water_on_change',
                                                     'wait_for_change']:
@@ -559,7 +542,7 @@ class Paradigm(QtWidgets.QMainWindow):
         its camelCase naming.
         '''
         self.soundClient.shutdown()
-        self.dispatcherModel.die()
+        self.dispatcher.die()
         event.accept()
 
 if __name__ == '__main__':
