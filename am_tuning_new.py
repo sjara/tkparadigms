@@ -15,7 +15,7 @@ from taskontrol import statematrix
 from taskontrol.plugins import speakercalibration
 from taskontrol.plugins import manualcontrol
 from taskontrol.plugins import soundclient
-from taskontrol.settings import rigsettings
+from taskontrol import rigsettings
 
 import numpy as np
 from numpy import log
