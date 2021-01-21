@@ -28,15 +28,15 @@ import time
 #        super(OutputButton, self).__init__('Clear Tone List')
 #        self.clicked.connect(self.clear_tone_list)
 
-if rigsettings.OUTPUTS.has_key('outBit1'):
+if 'outBit1' in rigsettings.OUTPUTS:
     trialStartSync = ['outBit1'] # Sync signal for trial-start.
 else:
     trialStartSync = []
-if rigsettings.OUTPUTS.has_key('outBit0'):
+if 'outBit0' in rigsettings.OUTPUTS:
     stimSync = ['outBit0'] # Sync signal for sound stimulus
 else:
     stimSync = []
-if rigsettings.OUTPUTS.has_key('outBit2'):
+if 'outBit2' in rigsettings.OUTPUTS:
     laserSync = ['outBit2','stim1'] # Sync signal for laser
 else:
     laserSync = ['centerLED'] # Use center LED during emulation
