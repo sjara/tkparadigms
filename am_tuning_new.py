@@ -11,15 +11,16 @@ from qtpy import QtWidgets
 from taskontrol import dispatcher
 from taskontrol import paramgui
 from taskontrol import savedata
-from taskontrol.settings import rigsettings
 from taskontrol import statematrix
 from taskontrol.plugins import speakercalibration
 from taskontrol.plugins import manualcontrol
-from numpy import log
+from taskontrol.plugins import soundclient
+from taskontrol.settings import rigsettings
+
 import numpy as np
+from numpy import log
 import itertools
 import random
-from taskontrol.plugins import soundclient
 import time
 
 # class clearButton(QtWidgets.QPushButton):
