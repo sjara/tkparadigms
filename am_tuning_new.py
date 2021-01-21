@@ -7,7 +7,7 @@ Nick Ponvert and Santiago Jaramillo
 
 '''
 
-from qtpy import QWidgets
+from qtpy import QtWidgets
 from taskontrol import dispatcher
 from taskontrol import paramgui
 from taskontrol import savedata
@@ -22,7 +22,7 @@ import random
 from taskontrol.plugins import soundclient
 import time
 
-# class clearButton(QWidgets.QPushButton):
+# class clearButton(QtWidgets.QPushButton):
 #    def __init__(self, parent=None):
 #        super(OutputButton, self).__init__('Clear Tone List')
 #        self.clicked.connect(self.clear_tone_list)
@@ -42,7 +42,7 @@ else:
 
 
 
-class Paradigm(QWidgets.QMainWindow):
+class Paradigm(QtWidgets.QMainWindow):
     def __init__(self, parent=None, paramfile=None, paramdictname=None):
 
         '''
@@ -158,10 +158,10 @@ class Paradigm(QWidgets.QMainWindow):
         self.saveData.checkInteractive.setChecked(True)
 
         # -- Add graphical widgets to main window --
-        self.centralWidget = QWidgets.QWidget()
-        layoutMain = QWidgets.QHBoxLayout() #Create a main layout and two columns
-        layoutCol1 = QWidgets.QVBoxLayout()
-        layoutCol2 = QWidgets.QVBoxLayout()
+        self.centralWidget = QtWidgets.QWidget()
+        layoutMain = QtWidgets.QHBoxLayout() #Create a main layout and two columns
+        layoutCol1 = QtWidgets.QVBoxLayout()
+        layoutCol2 = QtWidgets.QVBoxLayout()
 
 
         layoutMain.addLayout(layoutCol1) #Add the columns to the main layout
@@ -171,7 +171,7 @@ class Paradigm(QWidgets.QMainWindow):
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.manualControl)
 
-        self.clearButton = QWidgets.QPushButton('Clear Stim List', self)
+        self.clearButton = QtWidgets.QPushButton('Clear Stim List', self)
         self.clearButton.clicked.connect(self.clear_tone_list)
         layoutCol1.addWidget(self.clearButton)
 
@@ -414,7 +414,7 @@ class Paradigm(QWidgets.QMainWindow):
     def closeEvent(self, event):
         '''
         Executed when closing the main window.
-        This method is inherited from QWidgets.QMainWindow, which explains
+        This method is inherited from QtWidgets.QMainWindow, which explains
         its camelCase naming.
         '''
         self.dispatcherModel.die()
