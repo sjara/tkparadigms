@@ -18,7 +18,7 @@ chad056 = {'psycurveMode':'mid_and_extreme',
                'taskMode':'discriminate_stim',
                'stimType' : 'sound_only',
                'soundType':'chords',
-               'subject':'chad055',
+               'subject':'chad056',
                'experimenter' : 'isabella'}
 
 chad057 = {'psycurveMode':'mid_and_extreme',
@@ -26,7 +26,7 @@ chad057 = {'psycurveMode':'mid_and_extreme',
                'taskMode':'discriminate_stim',
                'stimType' : 'sound_only',
                'soundType':'chords',
-               'subject':'chad055',
+               'subject':'chad057',
                'experimenter' : 'isabella'}
 
 chad058 = {'psycurveMode':'mid_and_extreme',
@@ -34,7 +34,7 @@ chad058 = {'psycurveMode':'mid_and_extreme',
                'taskMode':'discriminate_stim',
                'stimType' : 'sound_only',
                'soundType':'chords',
-               'subject':'chad055',
+               'subject':'chad058',
                'experimenter' : 'isabella'}
 
 chad059 = {'psycurveMode':'mid_and_extreme',
@@ -42,6 +42,6 @@ chad059 = {'psycurveMode':'mid_and_extreme',
                'taskMode':'discriminate_stim',
                'stimType' : 'sound_only',
                'soundType':'chords',
-               'subject':'chad055',
+               'subject':'chad059',
                'experimenter' : 'isabella'}
 
