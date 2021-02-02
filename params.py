@@ -446,37 +446,37 @@ band144 = pardict.copy()
 
 # -- not implanted mice --
 pardict = {'subject': 'band145', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectNoDel)
+pardict.update(bandNextCorrectIntDel)
 pardict.update({'toneSide': 'left'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band145 = pardict.copy()
 
 pardict = {'subject': 'band146', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectNoDel)
+pardict.update(bandNextCorrectIntDel)
 pardict.update({'toneSide': 'left'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band146 = pardict.copy()
 
 pardict = {'subject': 'band147', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectNoDel)
+pardict.update(bandNextCorrectIntDel)
 pardict.update({'toneSide': 'left'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band147 = pardict.copy()
 
 pardict = {'subject': 'band148', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectNoDel)
+pardict.update(bandNextCorrectIntDel)
 pardict.update({'toneSide': 'right'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band148 = pardict.copy()
 
 pardict = {'subject': 'band149', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectNoDel)
+pardict.update(bandNextCorrectIntDel)
 pardict.update({'toneSide': 'right'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band149 = pardict.copy()
 
 pardict = {'subject': 'band150', 'experimenter': 'anna'}
-pardict.update(bandNextCorrectNoDel)
+pardict.update(bandNextCorrectIntDel)
 pardict.update({'toneSide': 'right'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band150 = pardict.copy()
