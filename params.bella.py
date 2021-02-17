@@ -45,6 +45,12 @@ chad059 = {'psycurveMode':'mid_and_extreme',
                'subject':'chad059',
                'experimenter' : 'isabella'}
 
+pals001 = {'taskMode':'water_on_sound',
+               'stimType' : 'sound_only',
+               'soundType':'AM_depth',
+               'subject':'pals001',
+               'experimenter' : 'isabella'}
+
 pals003 = {'taskMode':'water_on_sound',
                'stimType' : 'sound_only',
                'soundType':'AM_depth',
