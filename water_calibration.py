@@ -1,21 +1,18 @@
-'''
+"""
 Create a paradigm for calibrating the amount of water delivered.
-'''
+"""
 
-import sys
-from PySide import QtCore 
-from PySide import QtGui 
-from taskontrol.settings import rigsettings
-from taskontrol.core import dispatcher
-from taskontrol.core import statematrix
-from taskontrol.core import savedata
-from taskontrol.core import paramgui
-from taskontrol.core import messenger
-from taskontrol.core import arraycontainer
+from qtpy import QtWidgets
+from taskontrol import rigsettings
+from taskontrol import dispatcher
+from taskontrol import statematrix
+from taskontrol import savedata
+from taskontrol import paramgui
+from taskontrol import utils
 from taskontrol.plugins import manualcontrol
 
 
-class WaterCalibration(QtGui.QMainWindow):
+class WaterCalibration(QtWidgets.QMainWindow):
     def __init__(self, parent=None, paramfile=None, paramdictname=None, dummy=False):
         super(WaterCalibration, self).__init__(parent)
 
@@ -73,22 +70,21 @@ class WaterCalibration(QtGui.QMainWindow):
 
 
         # -- Create dispatcher --
-        self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,interval=0.1)
-        self.dispatcherView = dispatcher.DispatcherGUI(model=self.dispatcherModel)
+        self.dispatcher = dispatcher.Dispatcher(serverType=smServerType,interval=0.1)
  
         # -- Manual control of outputs --
-        self.manualControl = manualcontrol.ManualControl(self.dispatcherModel.statemachine)
+        self.manualControl = manualcontrol.ManualControl(self.dispatcher.statemachine)
 
         # -- Add graphical widgets to main window --
-        self.centralWidget = QtGui.QWidget()
-        layoutMain = QtGui.QHBoxLayout()
-        layoutCol1 = QtGui.QVBoxLayout()
-        layoutCol2 = QtGui.QVBoxLayout()
-        layoutCol3 = QtGui.QVBoxLayout()
+        self.centralWidget = QtWidgets.QWidget()
+        layoutMain = QtWidgets.QHBoxLayout()
+        layoutCol1 = QtWidgets.QVBoxLayout()
+        layoutCol2 = QtWidgets.QVBoxLayout()
+        layoutCol3 = QtWidgets.QVBoxLayout()
 
         layoutCol1.addWidget(self.saveData)
         #layoutCol1.addWidget(self.sessionInfo)
-        layoutCol1.addWidget(self.dispatcherView)
+        layoutCol1.addWidget(self.dispatcher.widget)
 
         layoutCol2.addWidget(valvesTimes)
         layoutCol2.addStretch()
@@ -106,26 +102,26 @@ class WaterCalibration(QtGui.QMainWindow):
         self.setCentralWidget(self.centralWidget)
 
         # -- Add variables storing results --
-        self.results = arraycontainer.Container()
+        self.results = utils.EnumContainer()
 
         # -- Connect signals from dispatcher --
-        self.dispatcherModel.prepareNextTrial.connect(self.prepare_next_trial)
-        self.dispatcherModel.timerTic.connect(self._timer_tic)
+        self.dispatcher.prepareNextTrial.connect(self.prepare_next_trial)
+        self.dispatcher.timerTic.connect(self._timer_tic)
 
         # -- Connect messenger --
-        self.messagebar = messenger.Messenger()
+        self.messagebar = paramgui.Messenger()
         self.messagebar.timedMessage.connect(self._show_message)
         self.messagebar.collect('Created window')
 
         # -- Connect signals to messenger
         self.saveData.logMessage.connect(self.messagebar.collect)
-        self.dispatcherModel.logMessage.connect(self.messagebar.collect)
+        self.dispatcher.logMessage.connect(self.messagebar.collect)
 
         # -- Connect other signals --
         self.saveData.buttonSaveData.clicked.connect(self.save_to_file)
 
         # -- Center in screen --
-        paramgui.center_in_screen(self)
+        paramgui.center_on_screen(self)
 
         # -- Prepare first trial --
         # - No need to prepare here. Dispatcher sends a signal when pressing Start -
@@ -134,7 +130,7 @@ class WaterCalibration(QtGui.QMainWindow):
 
     def _show_message(self,msg):
         self.statusBar().showMessage(str(msg))
-        print msg
+        print(msg)
 
     def _timer_tic(self,etime,lastEvents):
         pass
@@ -143,7 +139,7 @@ class WaterCalibration(QtGui.QMainWindow):
         pass
 
     def prepare_next_trial(self, nextTrial):
-        print '============ Prearing trial {0} ==========='.format(self.dispatcherModel.currentTrial)
+        print('============ Prearing trial {0} ==========='.format(self.dispatcher.currentTrial))
         self.sm.reset_transitions()
         valveTimeR = self.params['timeWaterValveR'].get_value()
         #valveTimeR = self.params['timeWaterValveR'].get_value()
@@ -167,17 +163,14 @@ class WaterCalibration(QtGui.QMainWindow):
                           transitions={'Tup':'readyForNextTrial'},
                           outputsOff={'rightLED','rightWater'})
         pass
-        print self.sm ### DEBUG
-        self.dispatcherModel.set_state_matrix(self.sm)
+        print(self.sm) ### DEBUG
+        self.dispatcher.set_state_matrix(self.sm)
 
-        #if self.dispatcherModel.currentTrial < 0:
-        #print '---- {0} ---'.format(self.dispatcherModel.currentTrial)
-        #pass
         if self.params['nDelivered'].get_value() < self.params['nDeliveries'].get_value():
-            self.dispatcherModel.ready_to_start_trial()
+            self.dispatcher.ready_to_start_trial()
             self.params['nDelivered'].set_value(int(self.params['nDelivered'].get_value())+1)
         else:
-            self.dispatcherView.stop()
+            self.dispatcher.widget.stop()
             self.params['nDelivered'].set_value(0)
 
     def closeEvent(self, event):
@@ -186,7 +179,7 @@ class WaterCalibration(QtGui.QMainWindow):
         This method is inherited from QtGui.QMainWindow, which explains
         its camelCase naming.
         '''
-        self.dispatcherModel.die()
+        self.dispatcher.die()
         event.accept()
 
 if __name__ == "__main__":
