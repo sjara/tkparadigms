@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Params for mice chad055-059 
 @author: isabe
@@ -13,9 +12,7 @@ chad055 = {'psycurveMode':'mid_and_extreme',
                'subject':'chad055',
                'experimenter' : 'isabella'}
 
-chad056 = {'psycurveMode':'mid_and_extreme',
-               'psycurveNsteps':10,
-               'taskMode':'discriminate_stim',
+chad056 = {'taskMode':'discriminate_stim',
                'stimType' : 'sound_only',
                'soundType':'chords',
                'subject':'chad056',
@@ -48,22 +45,10 @@ pals001 = {'taskMode':'lick_after_stim',
                'subject':'pals001',
                'experimenter' : 'isabella'}
 
-pals003 = {'taskMode':'lick_after_stim',
+pals003 = {'taskMode':'discriminate_stim',
                'rewardSideMode': 'repeat_mistake',
                'stimType' : 'sound_only',
                'soundType':'AM_depth',
                'subject':'pals003',
-               'experimenter' : 'isabella'}
-
-pals004 = {'taskMode':'water_on_sound',
-               'stimType' : 'sound_only',
-               'soundType':'AM_depth',
-               'subject':'pals004',
-               'experimenter' : 'isabella'} 
-
-pals005 = {'taskMode':'water_on_sound',
-               'stimType' : 'sound_only',
-               'soundType':'AM_depth',
-               'subject':'pals005',
                'experimenter' : 'isabella'}
 
