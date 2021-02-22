@@ -34,7 +34,7 @@ chad058 = {'taskMode':'discriminate_stim',
 
 chad059 = {'taskMode':'discriminate_stim',
                'stimType' : 'sound_only',
-               'soundType':'chords',
+               'soundType':'AM_depth',
                'subject':'chad059',
                'experimenter' : 'isabella'}
 
@@ -52,3 +52,16 @@ pals003 = {'taskMode':'discriminate_stim',
                'subject':'pals003',
                'experimenter' : 'isabella'}
 
+pals004 = {'taskMode':'lick_after_stim',
+               'rewardSideMode': 'repeat_mistake',
+               'stimType' : 'sound_only',
+               'soundType':'AM_depth',
+               'subject':'pals004',
+               'experimenter' : 'isabella'}
+
+pals005 = {'taskMode':'discriminate_stim',
+               'rewardSideMode': 'repeat_mistake',
+               'stimType' : 'sound_only',
+               'soundType':'AM_depth',
+               'subject':'pals005',
+               'experimenter' : 'isabella'}
