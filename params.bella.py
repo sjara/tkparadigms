@@ -14,7 +14,7 @@ chad055 = {'psycurveMode':'mid_and_extreme',
 
 chad056 = {'taskMode':'discriminate_stim',
                'stimType' : 'sound_only',
-               'soundType':'chords',
+               'soundType': 'AM_depth',
                'subject':'chad056',
                'experimenter' : 'isabella'}
 
@@ -38,7 +38,7 @@ chad059 = {'taskMode':'discriminate_stim',
                'subject':'chad059',
                'experimenter' : 'isabella'}
 
-pals001 = {'taskMode':'lick_after_stim',
+pals001 = {'taskMode':'discriminate_stim',
                'rewardSideMode': 'repeat_mistake',
                'stimType' : 'sound_only',
                'soundType':'AM_depth',
@@ -52,7 +52,7 @@ pals003 = {'taskMode':'discriminate_stim',
                'subject':'pals003',
                'experimenter' : 'isabella'}
 
-pals004 = {'taskMode':'lick_after_stim',
+pals004 = {'taskMode':'discriminate_stim',
                'rewardSideMode': 'repeat_mistake',
                'stimType' : 'sound_only',
                'soundType':'AM_depth',
