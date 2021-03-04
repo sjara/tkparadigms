@@ -399,7 +399,7 @@ oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
 pardict = {'subject': 'band145', 'experimenter': 'anna'}
 pardict.update(bandOnlyCorrect)
 pardict.update({'toneSide': 'left'})
-#pardict.update({'antibiasMode':'repeat_mistake'})
+pardict.update({'antibiasMode':'repeat_mistake'})
 band145 = pardict.copy()
 
 pardict = {'subject': 'band146', 'experimenter': 'anna'}
@@ -409,7 +409,7 @@ pardict.update({'toneSide': 'left'})
 band146 = pardict.copy()
 
 pardict = {'subject': 'band147', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrectHardMode)
+pardict.update(bandEasySNR2BW)
 pardict.update({'toneSide': 'left'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
 band147 = pardict.copy()
