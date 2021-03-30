@@ -1,4 +1,4 @@
-'''
+"""
 Create a frequency discrimination 2AFC paradigm.
 
 
@@ -7,13 +7,29 @@ Create a frequency discrimination 2AFC paradigm.
 - Check that all times are saved
 - Note that outcomeMode (menu) is saved different from labels (e.g., outcome)
 - Verify that the choice of last trial is saved properly
+"""
+
+import numpy as np
+import sys
+from qtpy import QtWidgets
+from taskontrol import rigsettings
+from taskontrol import dispatcher
+from taskontrol import statematrix
+from taskontrol import savedata
+from taskontrol import paramgui
+from taskontrol import utils
+from taskontrol.plugins import templates
+from taskontrol.plugins import performancedynamicsplot
+from taskontrol.plugins import soundclient
+from taskontrol.plugins import speakercalibration
+import time
+
 
 '''
-
 import numpy as np
 from taskontrol.settings import rigsettings
 from taskontrol.core import paramgui
-from PySide import QtGui 
+from PySide import QtGui
 from taskontrol.core import arraycontainer
 from taskontrol.core import utils
 
@@ -24,6 +40,7 @@ from taskontrol.plugins import performancedynamicsplot
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
 import time
+'''
 
 LONGTIME = 100
 
@@ -153,18 +170,18 @@ class Paradigm(templates.Paradigm2AFC):
 
 
         # 
-        self.params['experimenter'].set_value('santiago')
-        self.params['subject'].set_value('test')
+        #self.params['experimenter'].set_value('santiago')
+        #self.params['subject'].set_value('test')
 
         # -- Add graphical widgets to main window --
-        self.centralWidget = QtGui.QWidget()
-        layoutMain = QtGui.QVBoxLayout()
-        layoutTop = QtGui.QVBoxLayout()
-        layoutBottom = QtGui.QHBoxLayout()
-        layoutCol1 = QtGui.QVBoxLayout()
-        layoutCol2 = QtGui.QVBoxLayout()
-        layoutCol3 = QtGui.QVBoxLayout()
-        layoutCol4 = QtGui.QVBoxLayout()
+        self.centralWidget = QtWidgets.QWidget()
+        layoutMain = QtWidgets.QVBoxLayout()
+        layoutTop = QtWidgets.QVBoxLayout()
+        layoutBottom = QtWidgets.QHBoxLayout()
+        layoutCol1 = QtWidgets.QVBoxLayout()
+        layoutCol2 = QtWidgets.QVBoxLayout()
+        layoutCol3 = QtWidgets.QVBoxLayout()
+        layoutCol4 = QtWidgets.QVBoxLayout()
         
         layoutMain.addLayout(layoutTop)
         #layoutMain.addStretch()
@@ -181,7 +198,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.sessionInfo)
-        layoutCol1.addWidget(self.dispatcherView)
+        layoutCol1.addWidget(self.dispatcher.widget)
         
         layoutCol2.addWidget(self.manualControl)
         layoutCol2.addStretch()
@@ -209,7 +226,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Add variables for storing results --
         maxNtrials = 4000 # Preallocating space for each vector makes things easier
-        self.results = arraycontainer.Container()
+        self.results = utils.EnumContainer()
         self.results.labels['rewardSide'] = {'left':0,'right':1}
         self.results['rewardSide'] = np.random.randint(2,size=maxNtrials)
         self.results.labels['choice'] = {'left':0,'right':1,'none':2}
@@ -243,9 +260,9 @@ class Paradigm(templates.Paradigm2AFC):
         self.spkNoiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
 
         # -- Connect to sound server and define sounds --
-        print 'Conecting to soundserver...'
-        print '***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****' ### DEBUG
-        time.sleep(0.2)
+        print('Conecting to soundserver...')
+        #print('***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****') ### DEBUG
+        #time.sleep(0.2)
         self.soundClient = soundclient.SoundClient()
         '''
         highFreq = self.params['highFreq'].get_value()
@@ -335,7 +352,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Calculate results from last trial (update outcome, choice, etc) --
         if nextTrial>0:
-            self.params.update_history()
+            self.params.update_history(nextTrial-1)
             self.calculate_results(nextTrial-1)
             # -- Apply anti-bias --
             if self.params['antibiasMode'].get_string()=='repeat_mistake':
@@ -398,7 +415,7 @@ class Paradigm(templates.Paradigm2AFC):
                     leftFreqInds = np.flatnonzero(freqsAll>freqBoundary)
                     rightFreqInds = np.flatnonzero(freqsAll<freqBoundary)
             else:
-                print 'WARNING! PsyCurve for this block type has not been implemented'
+                print('WARNING! PsyCurve for this block type has not been implemented')
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
                 randindex = np.random.randint(len(freqsAll[leftFreqInds]))
                 targetFrequency = freqsAll[leftFreqInds][randindex]
@@ -414,7 +431,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Prepare state matrix --
         self.set_state_matrix(nextCorrectChoice)
-        self.dispatcherModel.ready_to_start_trial()
+        self.dispatcher.ready_to_start_trial()
         ###print 'Elapsed Time (preparing next trial): ' + str(time.time()-TicTime) ### DEBUG
 
         # -- Update sides plot --
@@ -430,11 +447,11 @@ class Paradigm(templates.Paradigm2AFC):
 
         soundID = 1  # The appropriate sound has already been prepared and sent to server with ID=1
         targetDuration = self.params['targetDuration'].get_value()
-        if rigsettings.OUTPUTS.has_key('outBit1'):
+        if 'outBit1' in rigsettings.OUTPUTS:
             trialStartOutput = ['outBit1'] # Sync signal for trial-start.
         else:
             trialStartOutput = []
-        if rigsettings.OUTPUTS.has_key('outBit0'):
+        if 'outBit0' in rigsettings.OUTPUTS:
             stimOutput = ['outBit0'] # Sync signal for stimulus
         else:
             stimOutput = []
@@ -484,7 +501,7 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOn=[rewardOutput],
                               outputsOff=stimOutput)
             self.sm.add_state(name='stopReward', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'ready_next_trial'},
                               outputsOff=[rewardOutput])
         elif outcomeMode=='sides_direct':
             self.sm.add_state(name='startTrial', statetimer=0,
@@ -501,7 +518,7 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOn=[rewardOutput],
                               outputsOff=stimOutput)
             self.sm.add_state(name='stopReward', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'ready_next_trial'},
                               outputsOff=[rewardOutput])
         elif outcomeMode=='direct':
             self.sm.add_state(name='startTrial', statetimer=0,
@@ -518,7 +535,7 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOn=[rewardOutput],
                               outputsOff=stimOutput)
             self.sm.add_state(name='stopReward', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'ready_next_trial'},
                               outputsOff=[rewardOutput])
         elif outcomeMode=='on_next_correct':
             self.sm.add_state(name='startTrial', statetimer=0,
@@ -558,22 +575,22 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Tup':'reward'})
             if allowEarlyWithdrawal=='on':
                 self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
-                                  transitions={'Tup':'readyForNextTrial'},
+                                  transitions={'Tup':'ready_next_trial'},
                                   outputsOff=stimOutput)
             else:
                 self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
-                                  transitions={'Tup':'readyForNextTrial'},
+                                  transitions={'Tup':'ready_next_trial'},
                                   outputsOff=stimOutput,serialOut=self.punishSoundID)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
             self.sm.add_state(name='stopReward', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'ready_next_trial'},
                               outputsOff=[rewardOutput])
             self.sm.add_state(name='punish', statetimer=punishTimeError,
-                              transitions={'Tup':'readyForNextTrial'})
+                              transitions={'Tup':'ready_next_trial'})
             self.sm.add_state(name='noChoice', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'})
+                              transitions={'Tup':'ready_next_trial'})
 
         elif outcomeMode=='only_if_correct':
             self.sm.add_state(name='startTrial', statetimer=0,
@@ -610,23 +627,23 @@ class Paradigm(templates.Paradigm2AFC):
                 self.sm.add_state(name='choiceRight', statetimer=0,
                                   transitions={'Tup':'reward'})
             self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'ready_next_trial'},
                               outputsOff=stimOutput,serialOut=self.punishSoundID)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
             self.sm.add_state(name='stopReward', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'ready_next_trial'},
                               outputsOff=[rewardOutput]+stimOutput)
             self.sm.add_state(name='punish', statetimer=punishTimeError,
-                              transitions={'Tup':'readyForNextTrial'})
+                              transitions={'Tup':'ready_next_trial'})
             self.sm.add_state(name='noChoice', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'})
+                              transitions={'Tup':'ready_next_trial'})
 
         else:
             raise TypeError('outcomeMode={0} has not been implemented'.format(outcomeMode))
         ###print self.sm ### DEBUG
-        self.dispatcherModel.set_state_matrix(self.sm)
+        self.dispatcher.set_state_matrix(self.sm)
 
 
     def calculate_results(self,trialIndex):
@@ -634,7 +651,7 @@ class Paradigm(templates.Paradigm2AFC):
         outcomeModeID = self.params.history['outcomeMode'][trialIndex]
         outcomeModeString = self.params['outcomeMode'].get_items()[outcomeModeID]
 
-        eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
+        eventsThisTrial = self.dispatcher.events_one_trial(trialIndex)
         #print eventsThisTrial
         statesThisTrial = eventsThisTrial[:,2]
 
@@ -669,7 +686,7 @@ class Paradigm(templates.Paradigm2AFC):
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
                           self.sm.statesNameToIndex['playStimulus']]
             else:
-                print 'CenterIn time cannot be calculated for this Outcome Mode.'
+                print('CenterIn time cannot be calculated for this Outcome Mode.')
             seqPos = np.flatnonzero(utils.find_state_sequence(statesThisTrial,seqCin))
             timeValue = eventsThisTrial[seqPos[0]+1,0] if len(seqPos) else np.nan
             self.results['timeCenterIn'][trialIndex] = timeValue
@@ -739,10 +756,10 @@ class Paradigm(templates.Paradigm2AFC):
                     elif self.sm.statesNameToIndex['punish'] in eventsThisTrial[:,2]:
                         self.results['outcome'][trialIndex] = \
                             self.results.labels['outcome']['error']
-            	# -- Check if it was a valid trial --
-            	if self.sm.statesNameToIndex['waitForSidePoke'] in eventsThisTrial[:,2]:
-                	self.params['nValid'].add(1)
-                        self.results['valid'][trialIndex] = 1
+                # -- Check if it was a valid trial --
+                if self.sm.statesNameToIndex['waitForSidePoke'] in eventsThisTrial[:,2]:
+                    self.params['nValid'].add(1)
+                    self.results['valid'][trialIndex] = 1
 
     def execute_automation(self,nextTrial):
         automationMode = self.params['automationMode'].get_string()
@@ -754,11 +771,11 @@ class Paradigm(templates.Paradigm2AFC):
     def closeEvent(self, event):
         '''
         Executed when closing the main window.
-        This method is inherited from QtGui.QMainWindow, which explains
+        This method is inherited from QtWidgets.QMainWindow, which explains
         its camelCase naming.
         '''
         self.soundClient.shutdown()
-        self.dispatcherModel.die()
+        self.dispatcher.die()
         event.accept()
 
 if __name__ == '__main__':
