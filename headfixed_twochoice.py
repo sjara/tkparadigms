@@ -141,7 +141,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                               group='General parameters')
         self.params['taskMode'] = paramgui.MenuParam('Task mode',
                                                      ['water_on_sound','water_on_lick',
-                                                      'lick_after_stim','discriminate_stim'],
+                                                      'lick_on_stim','discriminate_stim'],
                                                      value=0, group='General parameters')
         generalParams = self.params.layout_group('General parameters')
 
@@ -180,32 +180,6 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol3 = QtWidgets.QVBoxLayout()
         layoutCol4 = QtWidgets.QVBoxLayout()
 
-        '''
-        layoutMain.addLayout(layoutCol1)
-        layoutMain.addLayout(layoutCol2)
-
-        layoutCol1.addWidget(self.saveData)
-        layoutCol1.addStretch()
-        layoutCol1.addWidget(waterDelivery)
-        layoutCol1.addWidget(self.singleDrop)
-        layoutCol1.addStretch()
-        layoutCol1.addWidget(self.sessionInfo)
-        layoutCol1.addStretch()
-        layoutCol1.addWidget(reportInfo)
-        layoutCol1.addStretch()
-        layoutCol1.addWidget(self.dispatcherView)
-
-        layoutCol2.addWidget(self.manualControl)
-        layoutCol2.addStretch()
-        layoutCol2.addWidget(timingParams)
-        layoutCol2.addStretch()
-        layoutCol2.addWidget(soundParams)
-        layoutCol2.addStretch()
-        layoutCol2.addWidget(choiceParams)
-        layoutCol2.addStretch()
-        layoutCol2.addWidget(generalParams)
-        '''
-        
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
         layoutMain.addLayout(layoutCol3)
@@ -459,7 +433,7 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='miss')            
             self.sm.add_state(name='falseAlarmL')            
             self.sm.add_state(name='falseAlarmR')            
-        elif taskMode == 'lick_after_stim':
+        elif taskMode == 'lick_on_stim':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'delayPeriod'},
                               outputsOff=['centerLED','rightLED','leftLED'])
@@ -567,7 +541,7 @@ class Paradigm(QtWidgets.QMainWindow):
         lastRewardSide = self.params['rewardSide'].get_string()
         eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
         statesThisTrial = eventsThisTrial[:,2]
-        if self.params['taskMode'].get_string() in ['lick_after_stim', 'discriminate_stim']:
+        if self.params['taskMode'].get_string() in ['lick_on_stim', 'discriminate_stim']:
             if self.sm.statesNameToIndex['hit'] in statesThisTrial:
                 self.params['addedITI'].set_value(0)
                 if lastRewardSide=='left':
