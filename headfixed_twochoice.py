@@ -100,20 +100,25 @@ class Paradigm(QtWidgets.QMainWindow):
                                                                decimals=0, units='Hz', enabled=False,
                                                                group='Sound parameters')
         self.params['highAMdepth'] = paramgui.NumericParam('High AM depth', value=100, units='',
-                                                        group='Sound parameters')
+                                                           group='Sound parameters')
         self.params['lowAMdepth'] = paramgui.NumericParam('Low AM depth', value=0, units='',
-                                                        group='Sound parameters')
+                                                          group='Sound parameters')
         self.params['targetAMdepth'] = paramgui.NumericParam('Target AM depth', value=0,
-                                                               decimals=0, units='', enabled=False,
-                                                               group='Sound parameters')
+                                                             decimals=0, units='', enabled=False,
+                                                             group='Sound parameters')
         self.params['targetDuration'] = paramgui.NumericParam('Target duration', value=0.2, units='s',
                                                               group='Sound parameters')
-        self.params['targetIntensity'] = paramgui.NumericParam('Target intensity', value=50, units='dB-SPL',
-                                                        enabled=True, group='Sound parameters')
-        self.params['targetAmplitude'] = paramgui.NumericParam('Target amplitude',value=0.0,units='[0-1]',
-                                                        enabled=False, decimals=4, group='Sound parameters')
+        self.params['targetIntensity'] = paramgui.NumericParam('Target intensity', value=50,
+                                                               units='dB-SPL', enabled=True,
+                                                               group='Sound parameters')
+        self.params['targetAmplitude'] = paramgui.NumericParam('Target amplitude',value=0.0,
+                                                               units='[0-1]', enabled=False,
+                                                               decimals=4, group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
+        self.params['lickBeforeStimOffset'] = paramgui.MenuParam('Lick before stim offset',
+                                                           ['reward','ignore','abort','punish'], value=0,
+                                                           group='Choice parameters')
         self.params['rewardSideMode'] = paramgui.MenuParam('Reward side mode',
                                                            ['random','toggle','onlyL','onlyR',
                                                             'repeat_mistake'], value=0,
@@ -136,7 +141,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                               group='General parameters')
         self.params['taskMode'] = paramgui.MenuParam('Task mode',
                                                      ['water_on_sound','water_on_lick',
-                                                      'lick_after_stim','discriminate_stim'],
+                                                      'lick_on_stim','discriminate_stim'],
                                                      value=0, group='General parameters')
         generalParams = self.params.layout_group('General parameters')
 
@@ -175,32 +180,6 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol3 = QtWidgets.QVBoxLayout()
         layoutCol4 = QtWidgets.QVBoxLayout()
 
-        '''
-        layoutMain.addLayout(layoutCol1)
-        layoutMain.addLayout(layoutCol2)
-
-        layoutCol1.addWidget(self.saveData)
-        layoutCol1.addStretch()
-        layoutCol1.addWidget(waterDelivery)
-        layoutCol1.addWidget(self.singleDrop)
-        layoutCol1.addStretch()
-        layoutCol1.addWidget(self.sessionInfo)
-        layoutCol1.addStretch()
-        layoutCol1.addWidget(reportInfo)
-        layoutCol1.addStretch()
-        layoutCol1.addWidget(self.dispatcherView)
-
-        layoutCol2.addWidget(self.manualControl)
-        layoutCol2.addStretch()
-        layoutCol2.addWidget(timingParams)
-        layoutCol2.addStretch()
-        layoutCol2.addWidget(soundParams)
-        layoutCol2.addStretch()
-        layoutCol2.addWidget(choiceParams)
-        layoutCol2.addStretch()
-        layoutCol2.addWidget(generalParams)
-        '''
-        
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
         layoutMain.addLayout(layoutCol3)
@@ -323,6 +302,7 @@ class Paradigm(QtWidgets.QMainWindow):
         interTrialInterval = interTrialIntervalMean + randNum*interTrialIntervalHalfRange + addedITI
         self.params['interTrialInterval'].set_value(interTrialInterval)
         lickingPeriod = self.params['lickingPeriod'].get_value()
+        lickBeforeStimOffset = self.params['lickBeforeStimOffset'].get_string()
 
         lastRewardSide = self.params['rewardSide'].get_string()
         rewardSideMode = self.params['rewardSideMode'].get_string()
@@ -409,7 +389,7 @@ class Paradigm(QtWidgets.QMainWindow):
             lightOutput = [targetLED]
         else:
             lightOutput = []
-        
+
         self.sm.reset_transitions()
 
         if taskMode == 'water_on_sound':
@@ -453,20 +433,30 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='miss')            
             self.sm.add_state(name='falseAlarmL')            
             self.sm.add_state(name='falseAlarmR')            
-        elif taskMode == 'lick_after_stim':
+        elif taskMode == 'lick_on_stim':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'delayPeriod'},
                               outputsOff=['centerLED','rightLED','leftLED'])
             self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval,
-                              transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR','Tup':'playTarget'})
-            self.sm.add_state(name='playTarget', statetimer=targetDuration,
-                              transitions={rewardedEvent:'hit',
-                                           'Tup':'waitForLick'},
-                              outputsOn=lightOutput,
-                              serialOut=soundOutput)
+                              transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR',
+                                           'Tup':'playTarget'})
+            if lickBeforeStimOffset=='reward':
+                self.sm.add_state(name='playTarget', statetimer=targetDuration,
+                                  transitions={rewardedEvent:'hit', 'Tup':'waitForLick'},
+                                  outputsOn=lightOutput, serialOut=soundOutput)
+            elif lickBeforeStimOffset=='ignore':
+                self.sm.add_state(name='playTarget', statetimer=targetDuration,
+                                  transitions={'Tup':'waitForLick'},
+                                  outputsOn=lightOutput, serialOut=soundOutput)
+            elif lickBeforeStimOffset=='abort':
+                self.sm.add_state(name='playTarget', statetimer=targetDuration,
+                                  transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR',
+                                               'Tup':'waitForLick'},
+                                  outputsOn=lightOutput, serialOut=soundOutput)
+            else:
+                raise ValueError(f'Lick mode: "{lickBeforeStimOffset}" has not been implemented')
             self.sm.add_state(name='waitForLick', statetimer=rewardAvailability,
-                              transitions={rewardedEvent:'hit', punishedEvent:'error',
-                                           'Tup':'miss'},
+                              transitions={rewardedEvent:'hit', punishedEvent:'error', 'Tup':'miss'},
                               outputsOff=['centerLED','rightLED','leftLED'])
             self.sm.add_state(name='hit', statetimer=0,
                               transitions={'Tup':'reward'},
@@ -494,11 +484,22 @@ class Paradigm(QtWidgets.QMainWindow):
                               outputsOff=['centerLED','rightLED','leftLED'])
             self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval,
                               transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR','Tup':'playTarget'})
-            self.sm.add_state(name='playTarget', statetimer=targetDuration,
-                              transitions={rewardedEvent:'hit', punishedEvent:'error',
-                                           'Tup':'waitForLick'},
-                              outputsOn=lightOutput,
-                              serialOut=soundOutput)
+            if lickBeforeStimOffset=='reward':
+                self.sm.add_state(name='playTarget', statetimer=targetDuration,
+                                  transitions={rewardedEvent:'hit', punishedEvent:'error',
+                                               'Tup':'waitForLick'},
+                                  outputsOn=lightOutput, serialOut=soundOutput)
+            elif lickBeforeStimOffset=='ignore':
+                self.sm.add_state(name='playTarget', statetimer=targetDuration,
+                                  transitions={punishedEvent:'error', 'Tup':'waitForLick'},
+                                  outputsOn=lightOutput, serialOut=soundOutput)
+            elif lickBeforeStimOffset=='abort':
+                self.sm.add_state(name='playTarget', statetimer=targetDuration,
+                                  transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR',
+                                               'Tup':'waitForLick'},
+                                  outputsOn=lightOutput, serialOut=soundOutput)
+            else:
+                raise ValueError(f'Lick mode: "{lickBeforeStimOffset}" has not been implemented')
             self.sm.add_state(name='waitForLick', statetimer=rewardAvailability,
                               transitions={rewardedEvent:'hit', punishedEvent:'error',
                                            'Tup':'miss'},
@@ -540,7 +541,7 @@ class Paradigm(QtWidgets.QMainWindow):
         lastRewardSide = self.params['rewardSide'].get_string()
         eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
         statesThisTrial = eventsThisTrial[:,2]
-        if self.params['taskMode'].get_string() in ['lick_after_stim', 'discriminate_stim']:
+        if self.params['taskMode'].get_string() in ['lick_on_stim', 'discriminate_stim']:
             if self.sm.statesNameToIndex['hit'] in statesThisTrial:
                 self.params['addedITI'].set_value(0)
                 if lastRewardSide=='left':
