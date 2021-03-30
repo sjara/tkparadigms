@@ -393,44 +393,28 @@ threeNoiseThreshMode = {'noiseMode':'uniform', 'minNoiseAmp':30, 'maxNoiseAmp':4
 oneNoiseThreshMode = {'noiseMode':'max_only', 'maxNoiseAmp':40}
 
 # -- implanted mice --
-
-
-# -- not implanted mice --
-pardict = {'subject': 'band145', 'experimenter': 'anna'}
-pardict.update(bandOnlyCorrect)
-pardict.update({'toneSide': 'left'})
-pardict.update({'antibiasMode':'repeat_mistake'})
-band145 = pardict.copy()
-
-pardict = {'subject': 'band146', 'experimenter': 'anna'}
-pardict.update(bandEasySNR2BW)
-pardict.update({'toneSide': 'left'})
-#pardict.update({'antibiasMode':'repeat_mistake'})
-band146 = pardict.copy()
-
 pardict = {'subject': 'band147', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
 pardict.update({'toneSide': 'left'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
+paradict.update(bandBilateralLaser)
 band147 = pardict.copy()
-
-pardict = {'subject': 'band148', 'experimenter': 'anna'}
-pardict.update(bandEasySNR2BW)
-pardict.update({'toneSide': 'right'})
-#pardict.update({'antibiasMode':'repeat_mistake'})
-band148 = pardict.copy()
 
 pardict = {'subject': 'band149', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
 pardict.update({'toneSide': 'right'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
+paradict.update(bandBilateralLaser)
 band149 = pardict.copy()
 
 pardict = {'subject': 'band150', 'experimenter': 'anna'}
 pardict.update(bandEasySNR2BW)
 pardict.update({'toneSide': 'right'})
 #pardict.update({'antibiasMode':'repeat_mistake'})
+paradict.update(bandBilateralLaser)
 band150 = pardict.copy()
+
+# -- not implanted mice --
 
 
 # -- adaptive frequency discrimination --
