@@ -37,33 +37,56 @@ chad059 = {'taskMode':'discriminate_stim',
                'subject':'chad059',
                'experimenter' : 'isabella'}
 
-pals001 = {'taskMode':'discriminate_stim',
-               'rewardSideMode': 'repeat_mistake',
-               'stimType' : 'sound_only',
-               'soundType':'AM_depth',
-               'subject':'pals001',
-               'experimenter' : 'isabella'}
+pals001 = {'taskMode': 'lick_on_stim',
+                'lickBeforeStimOffset': 'ignore',
+                'rewardSideMode': 'repeat_mistake',
+                'soundType': 'AM_depth',
+                'subject':'pals001',
+                'experimenter': 'isabella'}
+               
 
-pals003 = {'taskMode':'discriminate_stim',
-               'rewardSideMode': 'repeat_mistake',
-               'stimType' : 'sound_only',
-               'soundType':'AM_depth',
-               'subject':'pals003',
-               'experimenter' : 'isabella'}
+pals003 = {'taskMode': 'lick_on_stim',
+                'lickBeforeStimOffset': 'ignore',
+                'rewardSideMode': 'repeat_mistake',
+                'soundType': 'AM_depth',
+                'subject':'pals003',
+                'experimenter': 'isabella'}
 
-pals004 = {'taskMode':'discriminate_stim',
-               'rewardSideMode': 'repeat_mistake',
-               'stimType' : 'sound_only',
-               'soundType':'AM_depth',
-               'subject':'pals004',
-               'experimenter' : 'isabella'}
+pals004 = {'taskMode': 'lick_on_stim',
+                'lickBeforeStimOffset': 'ignore',
+                'rewardSideMode': 'repeat_mistake',
+                'soundType': 'AM_depth',
+                'subject':'pals004',
+                'experimenter': 'isabella'}
 
-pals005 = {'taskMode':'discriminate_stim',
-               'rewardSideMode': 'repeat_mistake',
-               'stimType' : 'sound_only',
-               'soundType':'AM_depth',
-               'subject':'pals005',
-               'experimenter' : 'isabella'}
+pals005 = {'taskMode': 'lick_on_stim',
+                'lickBeforeStimOffset': 'ignore',
+                'rewardSideMode': 'repeat_mistake',
+                'soundType': 'AM_depth',
+                'subject':'pals005',
+                'experimenter': 'isabella'}
+
+pals002 = {'taskMode': 'water_on_sound',
+                'rewardSideMode': 'random',
+                'soundType':'AM_depth',
+                'subject':'pals002',
+                'experimenter': 'isabella'}
+           
+pals007 = {'taskMode': 'water_on_sound',
+                'rewardSideMode': 'random',
+                'soundType':'AM_depth',
+                'subject':'pals007',
+                'experimenter': 'isabella'}
+
+pals008 = {'taskMode': 'water_on_sound',
+                'rewardSideMode': 'random',
+                'soundType':'AM_depth',
+                'subject':'pals008',
+                'experimenter': 'isabella'}
+
+
+
+
 
 AM_stage_one = {'taskMode': 'water_on_sound',
                 'rewardSideMode': 'random',
