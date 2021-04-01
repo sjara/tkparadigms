@@ -37,13 +37,19 @@ chad059 = {'taskMode':'discriminate_stim',
                'subject':'chad059',
                'experimenter' : 'isabella'}
 
-pals001 = {'taskMode': 'lick_on_stim',
+pals001 = {'taskMode': 'discriminate_stim',
+                  'lickBeforeStimOffset': 'ignore', 
+                  'rewardSideMode': 'repeat_mistake',
+                  'soundType': 'AM_depth',
+                  'subject':'pals001',
+                  'experimenter': 'isabella'}
+
+pals002 = {'taskMode': 'lick_on_stim',
                 'lickBeforeStimOffset': 'ignore',
                 'rewardSideMode': 'repeat_mistake',
                 'soundType': 'AM_depth',
-                'subject':'pals001',
-                'experimenter': 'isabella'}
-               
+                'subject':'pals002',
+                'experimenter': 'isabella'}               
 
 pals003 = {'taskMode': 'lick_on_stim',
                 'lickBeforeStimOffset': 'ignore',
@@ -64,12 +70,6 @@ pals005 = {'taskMode': 'lick_on_stim',
                 'rewardSideMode': 'repeat_mistake',
                 'soundType': 'AM_depth',
                 'subject':'pals005',
-                'experimenter': 'isabella'}
-
-pals002 = {'taskMode': 'water_on_sound',
-                'rewardSideMode': 'random',
-                'soundType':'AM_depth',
-                'subject':'pals002',
                 'experimenter': 'isabella'}
            
 pals007 = {'taskMode': 'water_on_sound',
