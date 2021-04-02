@@ -467,9 +467,11 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='miss', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
             self.sm.add_state(name='falseAlarmL', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'})            
+                              transitions={'Tup':'readyForNextTrial'},
+                              serialOut=soundclient.STOP_ALL_SOUNDS)            
             self.sm.add_state(name='falseAlarmR', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'})            
+                              transitions={'Tup':'readyForNextTrial'},
+                              serialOut=soundclient.STOP_ALL_SOUNDS)            
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
@@ -513,9 +515,11 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='miss', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
             self.sm.add_state(name='falseAlarmL', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'})            
+                              transitions={'Tup':'readyForNextTrial'},
+                              serialOut=soundclient.STOP_ALL_SOUNDS)            
             self.sm.add_state(name='falseAlarmR', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'})            
+                              transitions={'Tup':'readyForNextTrial'},
+                              serialOut=soundclient.STOP_ALL_SOUNDS)            
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
