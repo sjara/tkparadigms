@@ -51,12 +51,12 @@ pals002 = {'taskMode': 'lick_on_stim',
                 'subject':'pals002',
                 'experimenter': 'isabella'}               
 
-pals003 = {'taskMode': 'lick_on_stim',
-                'lickBeforeStimOffset': 'ignore',
-                'rewardSideMode': 'repeat_mistake',
-                'soundType': 'AM_depth',
-                'subject':'pals003',
-                'experimenter': 'isabella'}
+pals003 = {'taskMode': 'discriminate_stim',
+                  'lickBeforeStimOffset': 'ignore', 
+                  'rewardSideMode': 'repeat_mistake',
+                  'soundType': 'AM_depth',
+                  'subject':'pals003',
+                  'experimenter': 'isabella'}
 
 pals004 = {'taskMode': 'lick_on_stim',
                 'lickBeforeStimOffset': 'ignore',
@@ -65,22 +65,24 @@ pals004 = {'taskMode': 'lick_on_stim',
                 'subject':'pals004',
                 'experimenter': 'isabella'}
 
-pals005 = {'taskMode': 'lick_on_stim',
+pals005 = {'taskMode': 'discriminate_stim',
+                  'lickBeforeStimOffset': 'ignore', 
+                  'rewardSideMode': 'repeat_mistake',
+                  'soundType': 'AM_depth',
+                  'subject':'pals005',
+                  'experimenter': 'isabella'}
+           
+pals007 = {'taskMode': 'lick_on_stim',
                 'lickBeforeStimOffset': 'ignore',
                 'rewardSideMode': 'repeat_mistake',
                 'soundType': 'AM_depth',
-                'subject':'pals005',
-                'experimenter': 'isabella'}
-           
-pals007 = {'taskMode': 'water_on_sound',
-                'rewardSideMode': 'random',
-                'soundType':'AM_depth',
                 'subject':'pals007',
                 'experimenter': 'isabella'}
 
-pals008 = {'taskMode': 'water_on_sound',
-                'rewardSideMode': 'random',
-                'soundType':'AM_depth',
+pals008 = {'taskMode': 'lick_on_stim',
+                'lickBeforeStimOffset': 'ignore',
+                'rewardSideMode': 'repeat_mistake',
+                'soundType': 'AM_depth',
                 'subject':'pals008',
                 'experimenter': 'isabella'}
 
