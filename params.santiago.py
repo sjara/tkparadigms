@@ -43,7 +43,7 @@ hfix000 = {'subject':'test000', 'taskMode':'water_on_sound', 'interTrialInterval
 hfix001 = {'subject':'test000', 'taskMode':'lick_on_stim', 'interTrialIntervalMean':1,
            'interTrialIntervalHalfRange':0, 'targetIntensity':50, 'soundType':'chords',
            'highFreq':1200, 'lowFreq':500, 'psycurveMode':'off', 'rewardSideMode':'toggle',
-           'targetDuration': 2}
+           'targetDuration': 2, 'lickBeforeStimOffset':'abort'}
 
 hfix002 = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialIntervalMean':1,
            'lickingPeriod':0, 'psycurveMode':'mid_and_extreme', 'psycurveNsteps':8,
