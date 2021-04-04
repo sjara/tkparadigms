@@ -72,19 +72,19 @@ pals005 = {'taskMode': 'discriminate_stim',
                   'subject':'pals005',
                   'experimenter': 'isabella'}
            
-pals007 = {'taskMode': 'lick_on_stim',
-                'lickBeforeStimOffset': 'ignore',
-                'rewardSideMode': 'repeat_mistake',
-                'soundType': 'AM_depth',
-                'subject':'pals007',
-                'experimenter': 'isabella'}
+pals007 = {'taskMode': 'discriminate_stim',
+                  'lickBeforeStimOffset': 'ignore', 
+                  'rewardSideMode': 'repeat_mistake',
+                  'soundType': 'AM_depth',
+                  'subject':'pals007',
+                  'experimenter': 'isabella'}
 
-pals008 = {'taskMode': 'lick_on_stim',
-                'lickBeforeStimOffset': 'ignore',
-                'rewardSideMode': 'repeat_mistake',
-                'soundType': 'AM_depth',
-                'subject':'pals008',
-                'experimenter': 'isabella'}
+pals008 = {'taskMode': 'discriminate_stim',
+                  'lickBeforeStimOffset': 'ignore', 
+                  'rewardSideMode': 'repeat_mistake',
+                  'soundType': 'AM_depth',
+                  'subject':'pals008',
+                  'experimenter': 'isabella'}
 
 
 
