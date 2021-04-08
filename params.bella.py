@@ -44,7 +44,7 @@ pals001 = {'taskMode': 'discriminate_stim',
                   'subject':'pals001',
                   'experimenter': 'isabella'}
 
-pals002 = {'taskMode': 'lick_on_stim',
+pals002 = {'taskMode': 'discriminate_stim',
                 'lickBeforeStimOffset': 'ignore',
                 'rewardSideMode': 'repeat_mistake',
                 'soundType': 'AM_depth',
