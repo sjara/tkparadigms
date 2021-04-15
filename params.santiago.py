@@ -50,6 +50,15 @@ hfix002 = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialInter
            'interTrialIntervalHalfRange':0, 'targetIntensity':50, 'soundType':'chords',
            'highFreq':1300, 'lowFreq':600, 'rewardSideMode':'random'}
 
+hfix003b = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialIntervalMean':1,
+           'lickingPeriod':0.5, 'interTrialIntervalHalfRange':0,
+           'targetIntensity':50, 'targetDuration': 0.5,
+           'soundType':'chords', 'highFreq':2260, 'lowFreq':566, 'rewardSideMode':'toggle'}
+
+hfix003 = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialIntervalMean':1,
+           'lickingPeriod':0.5, 'interTrialIntervalHalfRange':0,
+           'targetIntensity':55, 'targetDuration': 0.5,
+           'soundType':'tone_cloud', 'highFreq':3200, 'lowFreq':400, 'rewardSideMode':'toggle'}
 
 #chad000 = {'subject':'test000', 'taskMode':'discriminate_change',
 #           'interTrialIntervalMean':2, 'maxFreq':600, 'minFreq':500}
