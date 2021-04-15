@@ -99,6 +99,9 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['targetFrequency'] = paramgui.NumericParam('Target frequency', value=0,
                                                                decimals=0, units='Hz', enabled=False,
                                                                group='Sound parameters')
+        self.params['targetCloudStrength'] = paramgui.NumericParam('Target cloud strength', value=0,
+                                                               decimals=0, units='[-100,100]', enabled=False,
+                                                               group='Sound parameters')
         self.params['highAMdepth'] = paramgui.NumericParam('High AM depth', value=100, units='',
                                                            group='Sound parameters')
         self.params['lowAMdepth'] = paramgui.NumericParam('Low AM depth', value=0, units='',
@@ -132,7 +135,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                      ['sound_and_light', 'sound_only', 'light_only'],
                                                      value=1, group='General parameters')
         self.params['soundType'] = paramgui.MenuParam('Sound type',
-                                                      ['chords', 'AM_depth','AM_vs_chord'],
+                                                      ['chords', 'AM_depth','AM_vs_chord', 'tone_cloud'],
                                                       value=0,group='General parameters')
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
                                                          ['off', 'uniform', 'mid_and_extreme'],
@@ -261,6 +264,11 @@ class Paradigm(QtWidgets.QMainWindow):
                               paradigm=self.name)
 
     def prepare_target_sound(self, soundType, soundParam):
+        """
+        The meaning of soundParam depends on the soundType. For example:
+        for soundType='chords', soundParam is the target frequency,
+        for soundType='AM_depth', soundParam is the modulation depth.
+        """
         #targetFrequency = 6000
         targetIntensity = self.params['targetIntensity'].get_value()
         targetDuration = self.params['targetDuration'].get_value()
@@ -276,6 +284,21 @@ class Paradigm(QtWidgets.QMainWindow):
             modFrequency = 10
             s1 = {'type':'AM', 'modFrequency':modFrequency, 'duration':targetDuration,
                   'modDepth':modDepth, 'amplitude':targetAmp}
+        if soundType == 'tone_cloud':
+            cloudStrength = soundParam  # A value bewteen -100 and 100
+            highestFreq = self.params['highFreq'].get_value()
+            lowestFreq = self.params['lowFreq'].get_value()
+            factorToMidpoint = np.power(highestFreq/lowestFreq,1/6)
+            centerHighThird = highestFreq/factorToMidpoint
+            centerLowThird = lowestFreq*factorToMidpoint
+            # FIXME: Amplitude estimation needs to be fixed! This is a temporary hack.
+            if cloudStrength>=0:
+                targetAmp = self.spkCal.find_amplitude(centerHighThird,targetIntensity).mean()
+            else:
+                targetAmp = self.spkCal.find_amplitude(centerLowThird,targetIntensity).mean()
+            s1 = {'type':'toneCloud', 'duration':targetDuration, 'amplitude':targetAmp,
+                  'freqRange':[lowestFreq,highestFreq], 'nFreq':18, 'toneDuration':0.03,
+                  'toneOnsetAsync': 0.01, 'strength':soundParam}
         self.params['targetAmplitude'].set_value(targetAmp)
         self.soundClient.set_sound(self.targetSoundID,s1)
 
@@ -340,6 +363,7 @@ class Paradigm(QtWidgets.QMainWindow):
             rewardOutput = 'leftWater'
             targetLED = 'leftLED'
             targetAMdepth = self.params['lowAMdepth'].get_value()
+            targetCloudStrength = -100
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(leftFreqInds))
             elif psycurveMode=='mid_and_extreme':
@@ -354,6 +378,7 @@ class Paradigm(QtWidgets.QMainWindow):
             rewardOutput = 'rightWater'
             targetLED = 'rightLED'
             targetAMdepth = self.params['highAMdepth'].get_value()
+            targetCloudStrength = 100
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(rightFreqInds))+len(leftFreqInds)
             elif psycurveMode=='mid_and_extreme':
@@ -378,7 +403,10 @@ class Paradigm(QtWidgets.QMainWindow):
             if nextRewardSide=='right':
                 self.params['targetFrequency'].set_value(highFreq)
                 self.prepare_target_sound('chords', targetFrequency)
-
+        elif soundType == 'tone_cloud':
+            self.params['targetCloudStrength'].set_value(targetCloudStrength)
+            self.prepare_target_sound(soundType, targetCloudStrength)
+            
         
         stimType = self.params['stimType'].get_string()
         if (stimType=='sound_and_light') | (stimType=='sound_only'):
