@@ -224,7 +224,8 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params.from_file(paramfile,paramdictname)
 
         # -- Load speaker calibration --
-        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
+        self.sineCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_SINE)
+        self.chordCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
         self.noiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
 
         # -- Connect to sound server and define sounds --
@@ -275,7 +276,7 @@ class Paradigm(QtWidgets.QMainWindow):
         # FIXME: currently I am averaging calibration from both speakers (not good)
         if soundType == 'chords':
             targetFrequency = soundParam
-            targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
+            targetAmp = self.chordCal.find_amplitude(targetFrequency,targetIntensity).mean()
             s1 = {'type':'chord', 'frequency':targetFrequency, 'duration':targetDuration,
                   'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
         elif soundType == 'AM_depth':
@@ -291,14 +292,20 @@ class Paradigm(QtWidgets.QMainWindow):
             factorToMidpoint = np.power(highestFreq/lowestFreq,1/6)
             centerHighThird = highestFreq/factorToMidpoint
             centerLowThird = lowestFreq*factorToMidpoint
+            '''
             # FIXME: Amplitude estimation needs to be fixed! This is a temporary hack.
             if cloudStrength>=0:
-                targetAmp = self.spkCal.find_amplitude(centerHighThird,targetIntensity).mean()
+                targetAmp = self.chordCal.find_amplitude(centerHighThird,targetIntensity).mean()
             else:
-                targetAmp = self.spkCal.find_amplitude(centerLowThird,targetIntensity).mean()
-            s1 = {'type':'toneCloud', 'duration':targetDuration, 'amplitude':targetAmp,
+                targetAmp = self.chordCal.find_amplitude(centerLowThird,targetIntensity).mean()
+            '''
+            s1 = {'type':'toneCloud', 'duration':targetDuration, 'amplitude':0,
                   'freqRange':[lowestFreq,highestFreq], 'nFreq':18, 'toneDuration':0.03,
                   'toneOnsetAsync': 0.01, 'strength':soundParam}
+            freqEachTone = np.logspace(*np.log10(s1['freqRange']), s1['nFreq'])
+            calibArray = self.sineCal.find_amplitudes(freqEachTone, targetIntensity).mean(axis=1)
+            s1.update({'amplitude':1, 'calibration':calibArray})
+            targetAmp = 0 # Set to zero since it doesn't mean anything in this case
         self.params['targetAmplitude'].set_value(targetAmp)
         self.soundClient.set_sound(self.targetSoundID,s1)
 
