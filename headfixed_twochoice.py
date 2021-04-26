@@ -357,11 +357,12 @@ class Paradigm(QtWidgets.QMainWindow):
         psycurveMode = self.params['psycurveMode'].get_string()
         lowFreq = self.params['lowFreq'].get_value()
         highFreq = self.params['highFreq'].get_value()
-        nFreqs = self.params['psycurveNsteps'].get_value()
-        freqsAll = np.logspace(np.log10(lowFreq),np.log10(highFreq),nFreqs)
+        nSteps = self.params['psycurveNsteps'].get_value()
+        possibleFreqs = np.logspace(np.log10(lowFreq), np.log10(highFreq), nSteps)
+        possibleStrengths = np.linspace(-100, 100, nSteps)
         freqBoundary = np.sqrt(lowFreq*highFreq)
-        leftFreqInds = np.flatnonzero(freqsAll<freqBoundary)
-        rightFreqInds = np.flatnonzero(freqsAll>freqBoundary)
+        leftFreqInds = np.flatnonzero(possibleFreqs<freqBoundary)
+        rightFreqInds = np.flatnonzero(possibleFreqs>freqBoundary)
 
         if nextRewardSide=='left':
             self.params['rewardSide'].set_string('left')
@@ -370,14 +371,15 @@ class Paradigm(QtWidgets.QMainWindow):
             rewardOutput = 'leftWater'
             targetLED = 'leftLED'
             targetAMdepth = self.params['lowAMdepth'].get_value()
-            targetCloudStrength = -100
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(leftFreqInds))
+                strengthIndex = np.random.randint(int(nSteps/2))
             elif psycurveMode=='mid_and_extreme':
-                freqSubset = [0, nFreqs//2-1] 
+                freqSubset = [0, nSteps//2-1] 
                 freqIndex = freqSubset[np.random.randint(len(freqSubset))]
             else:
                 freqIndex = 0  # Lowest freq
+                strengthIndex = 0  # strength=-100 (100% low)
         elif nextRewardSide=='right':
             self.params['rewardSide'].set_string('right')
             rewardedEvent = 'Rin'
@@ -385,16 +387,18 @@ class Paradigm(QtWidgets.QMainWindow):
             rewardOutput = 'rightWater'
             targetLED = 'rightLED'
             targetAMdepth = self.params['highAMdepth'].get_value()
-            targetCloudStrength = 100
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(rightFreqInds))+len(leftFreqInds)
+                strengthIndex = np.random.randint(int(nSteps/2)) + int(nSteps/2)
             elif psycurveMode=='mid_and_extreme':
-                freqSubset = [nFreqs//2, nFreqs-1] 
+                freqSubset = [nSteps//2, nSteps-1] 
                 freqIndex = freqSubset[np.random.randint(len(freqSubset))]
             else:
                 freqIndex = -1 # Highest freq
+                strengthIndex = -1  # strength=100 (100% high)
 
-        targetFrequency = freqsAll[freqIndex]
+        targetFrequency = possibleFreqs[freqIndex]
+        targetCloudStrength = possibleStrengths[strengthIndex]
         soundType = self.params['soundType'].get_string()
         if soundType == 'chords':
             self.params['targetFrequency'].set_value(targetFrequency)
