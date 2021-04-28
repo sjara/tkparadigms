@@ -38,49 +38,49 @@ chad059 = {'taskMode':'discriminate_stim',
                'experimenter' : 'isabella'}
 
 pals001 = {'taskMode': 'discriminate_stim',
-                  'lickBeforeStimOffset': 'ignore', 
+                  'lickBeforeStimOffset': 'abort', 
                   'rewardSideMode': 'repeat_mistake',
                   'soundType': 'AM_depth',
                   'subject':'pals001',
                   'experimenter': 'isabella'}
 
 pals002 = {'taskMode': 'discriminate_stim',
-                'lickBeforeStimOffset': 'ignore',
+                'lickBeforeStimOffset': 'abort',
                 'rewardSideMode': 'repeat_mistake',
                 'soundType': 'AM_depth',
                 'subject':'pals002',
                 'experimenter': 'isabella'}               
 
 pals003 = {'taskMode': 'discriminate_stim',
-                  'lickBeforeStimOffset': 'ignore', 
+                  'lickBeforeStimOffset': 'abort', 
                   'rewardSideMode': 'repeat_mistake',
                   'soundType': 'AM_depth',
                   'subject':'pals003',
                   'experimenter': 'isabella'}
 
 pals004 = {'taskMode': 'lick_on_stim',
-                'lickBeforeStimOffset': 'ignore',
+                'lickBeforeStimOffset': 'abort',
                 'rewardSideMode': 'repeat_mistake',
                 'soundType': 'AM_depth',
                 'subject':'pals004',
                 'experimenter': 'isabella'}
 
 pals005 = {'taskMode': 'discriminate_stim',
-                  'lickBeforeStimOffset': 'ignore', 
+                  'lickBeforeStimOffset': 'abort', 
                   'rewardSideMode': 'repeat_mistake',
                   'soundType': 'AM_depth',
                   'subject':'pals005',
                   'experimenter': 'isabella'}
            
 pals007 = {'taskMode': 'discriminate_stim',
-                  'lickBeforeStimOffset': 'ignore', 
+                  'lickBeforeStimOffset': 'abort', 
                   'rewardSideMode': 'repeat_mistake',
                   'soundType': 'AM_depth',
                   'subject':'pals007',
                   'experimenter': 'isabella'}
 
 pals008 = {'taskMode': 'discriminate_stim',
-                  'lickBeforeStimOffset': 'ignore', 
+                  'lickBeforeStimOffset': 'abort', 
                   'rewardSideMode': 'repeat_mistake',
                   'soundType': 'AM_depth',
                   'subject':'pals008',
