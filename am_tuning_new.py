@@ -73,75 +73,96 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Add parameters --
         self.params = paramgui.Container()
+        
         self.params['experimenter'] = paramgui.StringParam('Experimenter',
                                                             value='santiago',
-                                                            group='Parameters')
-        self.params['subject'] = paramgui.StringParam('Subject',value='test030',
-                                                       group='Parameters')
+                                                            group='Session Parameters')
+        self.params['subject'] = paramgui.StringParam('Subject',value='test000',
+                                                       group='Session Parameters')
+
+        sessionParams = self.params.layout_group('Session Parameters')
+       
         self.params['minFreq'] = paramgui.NumericParam('Min Frequency (Hz)',
                                                         value=2000,
-                                                        group='Parameters')
+                                                        group='Stim Parameters')
         self.params['maxFreq'] = paramgui.NumericParam('Max Frequency (Hz)',
                                                         value=40000,
-                                                        group='Parameters')
+                                                        group='Stim Parameters')
         self.params['numTones'] = paramgui.NumericParam('Number of Frequencies',
                                                          value=16,
-                                                         group='Parameters')
+                                                         group='Stim Parameters')
         self.params['minInt'] = paramgui.NumericParam('Min Intensity (dB SPL)',
                                                        value=60,
-                                                       group='Parameters')
+                                                       group='Stim Parameters')
         self.params['maxInt'] = paramgui.NumericParam('Max Intensity (dB SPL)',
                                                        value=60,
-                                                       group='Parameters')
+                                                       group='Stim Parameters')
         self.params['numInt'] = paramgui.NumericParam('Number of Intensities',
                                                        value=1,
-                                                       group='Parameters')
+                                                       group='Stim Parameters')
         self.params['stimDur'] = paramgui.NumericParam('Stimulus Duration (s)',
                                                         value=0.01,
-                                                        group='Parameters')
+                                                        group='Stim Parameters')
         '''
         self.params['isiMin'] = paramgui.NumericParam('Minimum Interstimulus Interval (s)',
                                                        value=1,
-                                                       group='Parameters')
+                                                       group='Stim Parameters')
         self.params['isiMax'] = paramgui.NumericParam('Maximum Interstimulus Interval',
                                                       value=3,
-                                                      group='Parameters')
+                                                      group='Stim Parameters')
         '''
         self.params['isiMean'] = paramgui.NumericParam('Interstimulus interval mean (s)',
                                                        value=2,
-                                                       group='Parameters')
+                                                       group='Stim Parameters')
         self.params['isiHalfRange'] = paramgui.NumericParam('+/-',
                                                       value=1,
-                                                      group='Parameters')
+                                                      group='Stim Parameters')
         # self.params['noiseAmp'] = paramgui.NumericParam('Amplitude in Noise-Mode',
         #                                                value=0.3,
-        #                                                group='Parameters')
+        #                                                group='Stim Parameters')
         self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
                                                          ['Ordered','Random'],
-                                                         value=1,group='Parameters')
+                                                         value=1,group='Stim Parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
                                                          ['Sine','Chord', 'Noise', 'AM', 'Laser', 'LaserTrain', 'Light'],
-                                                         value=2,group='Parameters')
+                                                         value=2,group='Stim Parameters')
         self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
                                                             value=0, units='Hz',
-                                                            enabled=False,
-                                                            group='Parameters')
+                                                            enabled=False, decimals=3,
+                                                            group='Stim Parameters')
 
         self.params['currentIntensity'] = paramgui.NumericParam('Target Intensity',
                                                                  value=0,
                                                                  enabled=False,
-                                                                 group='Parameters')
+                                                                 group='Stim Parameters')
         self.params['currentAmpL'] = paramgui.NumericParam('Current Amplitude - L',value=0,
                                                            enabled=False,
-                                                           group='Parameters',
+                                                           group='Stim Parameters',
                                                            decimals=4)
         self.params['currentAmpR'] = paramgui.NumericParam('Current Amplitude - R',value=0,
                                                            enabled=False,
-                                                           group='Parameters',
+                                                           group='Stim Parameters',
                                                            decimals=4)
 
+        self.params['laserTrialsFraction'] = paramgui.NumericParam('Fraction of trials with laser',
+                                                                   value=0,
+                                                                   group='Laser Parameters')
+        #self.params['laserType'] = paramgui.MenuParam('Laser colour',
+        #                                                 ['blue', 'green'],
+        #                                                 value=1,group='Laser Parameters')
+        self.params['laserFrontOverhang'] = paramgui.NumericParam('Laser Front Overhang',value=0,
+                                                                  group='Laser Parameters', enabled=False,
+                                                                  decimals=1)
+        self.params['laserBackOverhang'] = paramgui.NumericParam('Laser Back Overhang',value=0,
+                                                                 group='Laser Parameters', enabled=False,
+                                                                 decimals=1)
+        self.params['laserTrial'] = paramgui.NumericParam('Laser Trial?',value=0,
+                                                           enabled=False,
+                                                           group='Laser Parameters',
+                                                           decimals=0)
+        laserParams = self.params.layout_group('Laser Parameters')
 
-        timingParams = self.params.layout_group('Parameters')
+        stimParams = self.params.layout_group('Stim Parameters')
 
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
@@ -177,7 +198,10 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1.addWidget(self.clearButton)
 
 
-        layoutCol2.addWidget(timingParams)  #Add the parameter GUI to column 2
+        layoutCol2.addWidget(sessionParams)
+        layoutCol2.addWidget(stimParams)  #Add the parameter GUI to column 2
+        #layoutCol2.addStretch()
+        layoutCol2.addWidget(laserParams)  #Add the parameter GUI to column 2
 
         self.centralWidget.setLayout(layoutMain) #Assign the layouts to the main window
         self.setCentralWidget(self.centralWidget)
@@ -321,14 +345,22 @@ class Paradigm(QtWidgets.QMainWindow):
             sound = {'type':'AM', 'duration':stimDur,
                      'amplitude':targetAmp,'modFrequency':self.trialParams[0]}
 
+        fractionLaserTrials = self.params['laserTrialsFraction'].get_value()
+        laserTrial = np.random.rand(1)[0]<fractionLaserTrials
+        self.params['laserTrial'].set_value(int(laserTrial))
+            
         if (stimType == 'Laser') or (stimType == 'LaserTrain'):
             stimOutput = stimSync+laserSync
             serialOutput = 0
         elif stimType=='Light':
             stimOutput = stimSync + ['leftLED', 'centerLED', 'rightLED']
+            if laserTrial:
+                stimOutput = stimOutput + laserSync
             serialOutput = 0
         else:
             stimOutput = stimSync
+            if laserTrial:
+                stimOutput = stimOutput + laserSync
             serialOutput = 1
             self.soundClient.set_sound(1,sound)
 

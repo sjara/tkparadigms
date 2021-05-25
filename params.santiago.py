@@ -4,15 +4,17 @@ auto000 = {'subject':'auto000','experimenter':'santiago',
            'lowFreq':1000,'midFreq':5000,'highFreq':10000,
            'outcomeMode':'simulated', 'targetDuration':0.2, 'intensityMode':'fixed'}
 
+tuningFreq = {'subject':'test000', 'experimenter':'santiago', 
+              'minFreq':2000, 'maxFreq':40000, 'numTones':16, 
+              'stimType':'Sine', 'stimDur':0.1,
+              'isiMean':1, 'isiHalfRange':0,
+              'minInt':60, 'maxInt':60}
+
 tuningAM = {'subject':'test000', 'experimenter':'santiago', 
             'minFreq':4, 'maxFreq':128, 'numTones':11, 
             'stimType':'AM', 'stimDur':0.5,
-            'isiMin':1, 'isiMax':2}
-
-tuningAM2 = {'subject':'test089', 'experimenter':'billy', 
-            'minFreq':4, 'maxFreq':128, 'numTones':11, 
-            'stimType':'AM', 'stimDur':0.5,
-            'isiMin':0.5, 'isiMax':2, 'noiseAmp':0.1}
+            'isiMean':1, 'isiHalfRange':0,
+            'minInt':60, 'maxInt':60}
 
 laser000 = {'subject':'test000',
            'delayToTargetHalfRange':0,
