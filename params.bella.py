@@ -86,7 +86,35 @@ pals008 = {'taskMode': 'discriminate_stim',
                   'subject':'pals008',
                   'experimenter': 'isabella'}
 
+pals010 = {'taskMode': 'water_on_sound',
+           'rewardSideMode': 'random',
+           'soundType':'AM_depth',
+           'experimenter': 'isabella',
+           'subject':'pals010'}
 
+pals011 = {'taskMode': 'water_on_sound',
+           'rewardSideMode': 'random',
+           'soundType':'AM_depth',
+           'experimenter': 'isabella',
+           'subject':'pals011'}
+
+pals012 = {'taskMode': 'water_on_sound',
+           'rewardSideMode': 'random',
+           'soundType':'AM_depth',
+           'experimenter': 'isabella',
+           'subject':'pals012'}
+           
+pals013 = {'taskMode': 'water_on_sound',
+           'rewardSideMode': 'random',
+           'soundType':'AM_depth',
+           'experimenter': 'isabella',
+           'subject':'pals013'}
+
+pals014 = {'taskMode': 'water_on_sound',
+           'rewardSideMode': 'random',
+           'soundType':'AM_depth',
+           'experimenter': 'isabella',
+           'subject':'pals014'}
 
 
 
