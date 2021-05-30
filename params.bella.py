@@ -92,22 +92,25 @@ pals010 = {'taskMode': 'water_on_sound',
            'experimenter': 'isabella',
            'subject':'pals010'}
 
-pals011 = {'taskMode': 'water_on_sound',
-           'rewardSideMode': 'random',
-           'soundType':'AM_depth',
-           'experimenter': 'isabella',
+pals011 = {'taskMode': 'lick_on_stim',
+          'lickBeforeStimOffset': 'ignore', 
+          'rewardSideMode': 'repeat_mistake',
+          'soundType':'AM_depth',
+          'experimenter': 'isabella',
            'subject':'pals011'}
 
-pals012 = {'taskMode': 'water_on_sound',
-           'rewardSideMode': 'random',
-           'soundType':'AM_depth',
-           'experimenter': 'isabella',
-           'subject':'pals012'}
+pals012 = {'taskMode': 'lick_on_stim',
+          'lickBeforeStimOffset': 'ignore', 
+          'rewardSideMode': 'repeat_mistake',
+          'soundType':'AM_depth',
+          'experimenter': 'isabella',
+          'subject':'pals012'}
            
-pals013 = {'taskMode': 'water_on_sound',
-           'rewardSideMode': 'random',
-           'soundType':'AM_depth',
-           'experimenter': 'isabella',
+pals013 = {'taskMode': 'lick_on_stim',
+          'lickBeforeStimOffset': 'ignore', 
+          'rewardSideMode': 'repeat_mistake',
+          'soundType':'AM_depth',
+          'experimenter': 'isabella',
            'subject':'pals013'}
 
 pals014 = {'taskMode': 'water_on_sound',
