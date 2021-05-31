@@ -86,10 +86,11 @@ pals008 = {'taskMode': 'discriminate_stim',
                   'subject':'pals008',
                   'experimenter': 'isabella'}
 
-pals010 = {'taskMode': 'water_on_sound',
-           'rewardSideMode': 'random',
-           'soundType':'AM_depth',
-           'experimenter': 'isabella',
+pals010 = {'taskMode': 'lick_on_stim',
+          'lickBeforeStimOffset': 'ignore', 
+          'rewardSideMode': 'repeat_mistake',
+          'soundType':'AM_depth',
+          'experimenter': 'isabella',
            'subject':'pals010'}
 
 pals011 = {'taskMode': 'lick_on_stim',
