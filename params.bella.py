@@ -121,7 +121,12 @@ pals014 = {'taskMode': 'lick_on_stim',
           'experimenter': 'isabella',
            'subject':'pals014'}
 
-
+punish_stage_three = { 'taskMode': 'discriminate_stim',
+                       'lickBeforeStimOffset': 'punish', 
+                       'rewardSideMode': 'repeat_mistake',
+                       'soundType':'AM_depth',
+                       'experimenter': 'isabella',
+                       'punishmentSound': 'chord'}
 
 AM_stage_one = {'taskMode': 'water_on_sound',
                 'rewardSideMode': 'random',
