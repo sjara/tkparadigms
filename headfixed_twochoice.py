@@ -109,6 +109,9 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['targetAMdepth'] = paramgui.NumericParam('Target AM depth', value=0,
                                                              decimals=0, units='', enabled=False,
                                                              group='Sound parameters')
+        self.params['targetFMslope'] = paramgui.NumericParam('Target FM slope', value=0,
+                                                             decimals=2, units='', enabled=False,
+                                                             group='Sound parameters')
         self.params['targetDuration'] = paramgui.NumericParam('Target duration', value=0.2, units='s',
                                                               group='Sound parameters')
         self.params['targetIntensity'] = paramgui.NumericParam('Target intensity', value=50,
@@ -135,7 +138,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                      ['sound_and_light', 'sound_only', 'light_only'],
                                                      value=1, group='General parameters')
         self.params['soundType'] = paramgui.MenuParam('Sound type',
-                                                      ['chords', 'AM_depth','AM_vs_chord', 'tone_cloud'],
+                                                      ['chords', 'AM_depth','AM_vs_chord', 'tone_cloud', 'FM_direction'],
                                                       value=0,group='General parameters')
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
                                                          ['off', 'uniform', 'mid_and_extreme'],
@@ -306,6 +309,22 @@ class Paradigm(QtWidgets.QMainWindow):
             calibArray = self.sineCal.find_amplitudes(freqEachTone, targetIntensity).mean(axis=1)
             s1.update({'amplitude':1, 'calibration':calibArray})
             targetAmp = 0 # Set to zero since it doesn't mean anything in this case
+        elif soundType == 'FM_direction':
+            FMslope = soundParam  # [-1,1]
+            highFreq = self.params['highFreq'].get_value()
+            lowFreq = self.params['lowFreq'].get_value()
+            midFreq = np.sqrt(lowFreq*highFreq)
+            if FMslope==1:
+                frequencyStart = lowFreq
+                frequencyEnd = highFreq
+            elif FMslope==-1:
+                frequencyStart = highFreq
+                frequencyEnd = lowFreq
+            else:
+                raise ValueError('FMslope value is not valid.')
+            targetAmp = self.sineCal.find_amplitude(midFreq, targetIntensity).mean()
+            s1 = {'type':'FM', 'frequencyStart':frequencyStart, 'frequencyEnd':frequencyEnd,
+                  'duration':targetDuration, 'amplitude':targetAmp}
         self.params['targetAmplitude'].set_value(targetAmp)
         self.soundClient.set_sound(self.targetSoundID,s1)
 
@@ -371,6 +390,7 @@ class Paradigm(QtWidgets.QMainWindow):
             rewardOutput = 'leftWater'
             targetLED = 'leftLED'
             targetAMdepth = self.params['lowAMdepth'].get_value()
+            targetFMslope = -1
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(leftFreqInds))
                 strengthIndex = np.random.randint(int(nSteps/2))
@@ -387,6 +407,7 @@ class Paradigm(QtWidgets.QMainWindow):
             rewardOutput = 'rightWater'
             targetLED = 'rightLED'
             targetAMdepth = self.params['highAMdepth'].get_value()
+            targetFMslope = 1
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(rightFreqInds))+len(leftFreqInds)
                 strengthIndex = np.random.randint(int(nSteps/2)) + int(nSteps/2)
@@ -417,6 +438,9 @@ class Paradigm(QtWidgets.QMainWindow):
         elif soundType == 'tone_cloud':
             self.params['targetCloudStrength'].set_value(targetCloudStrength)
             self.prepare_target_sound(soundType, targetCloudStrength)
+        elif soundType == 'FM_direction':
+            self.params['targetFMslope'].set_value(targetFMslope)
+            self.prepare_target_sound(soundType, targetFMslope)
             
         
         stimType = self.params['stimType'].get_string()
