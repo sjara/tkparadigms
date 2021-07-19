@@ -184,9 +184,9 @@ class Paradigm(QtWidgets.QMainWindow):
                                                       units='trials',group='Report')
         self.params['nFalseAlarmsRight'] = paramgui.NumericParam('False alarms R',value=0, enabled=False,
                                                       units='trials',group='Report')
-        self.params['nPunishmentLeft'] = paramgui.NumericParam('Punishments Left',value=0, enabled=False,
+        self.params['nEarlyLicksLeft'] = paramgui.NumericParam('Early licks L',value=0, enabled=False,
                                                       units='trials',group='Report')
-        self.params['nPunishmentRight'] = paramgui.NumericParam('Punishments Right',value=0, enabled=False,
+        self.params['nEarlyLicksRight'] = paramgui.NumericParam('Early licks R',value=0, enabled=False,
                                                       units='trials',group='Report')       
         '''
         self.params['nFalseAlarms'] = paramgui.NumericParam('False alarms',value=0, enabled=False,
@@ -742,12 +742,12 @@ class Paradigm(QtWidgets.QMainWindow):
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']  
             elif self.sm.statesNameToIndex['earlyLickL'] in statesThisTrial:
                 self.params['addedITI'].set_value(self.params['lickingPeriod'].get_value())
-                self.params['nPunishmentLeft'].add(1)
+                self.params['nEarlyLicksLeft'].add(1)
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['punishments']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
             elif self.sm.statesNameToIndex['earlyLickR'] in statesThisTrial:
                 self.params['addedITI'].set_value(self.params['lickingPeriod'].get_value())
-                self.params['nPunishmentRight'].add(1)
+                self.params['nEarlyLicksRight'].add(1)
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['punishments']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
             elif self.sm.statesNameToIndex['miss'] in statesThisTrial:
