@@ -32,6 +32,15 @@ import time
 LONGTIME = 100
 MAX_N_TRIALS = 8000
 
+if 'outBit1' in rigsettings.OUTPUTS:
+    trialStartSync = ['outBit1'] # Sync signal for trial-start.
+else:
+    trialStartSync = []
+if 'outBit0' in rigsettings.OUTPUTS:
+    stimSync = ['outBit0'] # Sync signal for sound stimulus
+else:
+    stimSync = []
+
 class Paradigm(QtWidgets.QMainWindow):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(Paradigm, self).__init__(parent)
@@ -446,10 +455,13 @@ class Paradigm(QtWidgets.QMainWindow):
         stimType = self.params['stimType'].get_string()
         if (stimType=='sound_and_light') | (stimType=='sound_only'):
             soundOutput = self.targetSoundID
+            stimOutput = stimSync
         else:
             soundOutput = soundclient.STOP_ALL_SOUNDS
+            stimOutput = stimSync
         if (stimType=='sound_and_light') | (stimType=='light_only'):
             lightOutput = [targetLED]
+            stimOutput = stimSync + ['leftLED','rightLED']
         else:
             lightOutput = []
 
@@ -506,11 +518,11 @@ class Paradigm(QtWidgets.QMainWindow):
             if lickBeforeStimOffset=='reward':
                 self.sm.add_state(name='playTarget', statetimer=targetDuration,
                                   transitions={rewardedEvent:'hit', 'Tup':'waitForLick'},
-                                  outputsOn=lightOutput, serialOut=soundOutput)
+                                  outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
             elif lickBeforeStimOffset=='ignore':
                 self.sm.add_state(name='playTarget', statetimer=targetDuration,
                                   transitions={'Tup':'waitForLick'},
-                                  outputsOn=lightOutput, serialOut=soundOutput)
+                                  outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
             elif lickBeforeStimOffset=='abort':
                 self.sm.add_state(name='playTarget', statetimer=targetDuration,
                                   transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR',
@@ -520,13 +532,13 @@ class Paradigm(QtWidgets.QMainWindow):
                 raise ValueError(f'Lick mode: "{lickBeforeStimOffset}" has not been implemented')
             self.sm.add_state(name='waitForLick', statetimer=rewardAvailability,
                               transitions={rewardedEvent:'hit', punishedEvent:'error', 'Tup':'miss'},
-                              outputsOff=['centerLED','rightLED','leftLED'])
+                              outputsOff=['centerLED','rightLED','leftLED']+stimOutput)
             self.sm.add_state(name='hit', statetimer=0,
                               transitions={'Tup':'reward'},
-                              outputsOff=['centerLED','rightLED','leftLED'])
+                              outputsOff=['centerLED','rightLED','leftLED']+stimOutput)
             self.sm.add_state(name='error', statetimer=0,
                               transitions={'Tup':'waitForLick'},
-                              outputsOff=['centerLED','rightLED','leftLED'])            
+                              outputsOff=['centerLED','rightLED','leftLED']+stimOutput)            
             self.sm.add_state(name='miss', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
             self.sm.add_state(name='falseAlarmL', statetimer=0,
@@ -553,28 +565,29 @@ class Paradigm(QtWidgets.QMainWindow):
                 self.sm.add_state(name='playTarget', statetimer=targetDuration,
                                   transitions={rewardedEvent:'hit', punishedEvent:'error',
                                                'Tup':'waitForLick'},
-                                  outputsOn=lightOutput, serialOut=soundOutput)
+                                  outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
             elif lickBeforeStimOffset=='ignore':
                 self.sm.add_state(name='playTarget', statetimer=targetDuration,
                                   transitions={punishedEvent:'error', 'Tup':'waitForLick'},
-                                  outputsOn=lightOutput, serialOut=soundOutput)
+                                  outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
             elif lickBeforeStimOffset=='abort':
                 self.sm.add_state(name='playTarget', statetimer=targetDuration,
                                   transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR',
                                                'Tup':'waitForLick'},
-                                  outputsOn=lightOutput, serialOut=soundOutput)
+                                  outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
+
             else:
                 raise ValueError(f'Lick mode: "{lickBeforeStimOffset}" has not been implemented')
             self.sm.add_state(name='waitForLick', statetimer=rewardAvailability,
                               transitions={rewardedEvent:'hit', punishedEvent:'error',
                                            'Tup':'miss'},
-                              outputsOff=['centerLED','rightLED','leftLED'])
+                              outputsOff=['centerLED','rightLED','leftLED']+stimOutput)
             self.sm.add_state(name='hit', statetimer=0,
                               transitions={'Tup':'reward'},
-                              outputsOff=['centerLED','rightLED','leftLED'])            
+                              outputsOff=['centerLED','rightLED','leftLED']+stimOutput)            
             self.sm.add_state(name='error', statetimer=0,
                               transitions={'Tup':'lickingPeriod'},
-                              outputsOff=['centerLED','rightLED','leftLED'])            
+                              outputsOff=['centerLED','rightLED','leftLED']+stimOutput)            
             self.sm.add_state(name='miss', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
             self.sm.add_state(name='falseAlarmL', statetimer=0,
