@@ -190,8 +190,8 @@ class Paradigm(QtGui.QMainWindow):
         # -- Connect the save data button --
         self.saveData.buttonSaveData.clicked.connect(self.save_to_file)
 
-        print "Connecting to sound server"
-        print '***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****'
+        print("Connecting to sound server")
+        print('***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****')
         time.sleep(0.2)
         self.soundClient = soundclient.SoundClient()
         self.soundClient.start()
@@ -407,9 +407,9 @@ class Paradigm(QtGui.QMainWindow):
     def clear_tone_list(self):
         '''Allow the user to clear the list of tones and assign new tones from the GUI'''
 
-        print self.soundParamList
+        print(self.soundParamList)
         self.soundParamList = []
-        print self.soundParamList
+        print(self.soundParamList)
 
     def closeEvent(self, event):
         '''

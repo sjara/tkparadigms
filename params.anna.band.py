@@ -1,18 +1,19 @@
-subject = 'band037'
+subject = 'arch004'
+experimenter = 'anna'
 
 noisebursts = {'stimDur':0.1,
-               'isiMean':0.9,
-               'isiHalfRange': 0.01,
+               'isiMean':1.2,
+               'isiHalfRange': 0.2,
                'stimType' : 'Noise',
                'minInt':60,
                'maxInt':60,
                'numInt':1,
                'subject':subject,
-               'experimenter' : 'anna'}
+               'experimenter' : experimenter}
 
 lasernoisebursts = {'stimDur':0.1,
                'isiMean':0.9,
-               'isiHalfRange': 0.01,
+               'isiHalfRange': 0.1,
                'stimType' : 'laser_sound',
                'minAmp':60,
                'maxAmp':60,
@@ -20,7 +21,7 @@ lasernoisebursts = {'stimDur':0.1,
                'laserFrontOverhang':0.1,
                'laserBackOverhang':0.1,
                'subject':subject,
-               'experimenter' : 'anna'}
+               'experimenter' : experimenter}
 
 noiseAmps = {'stimDur':0.5,
            'isiMean':1.0,
@@ -33,17 +34,17 @@ noiseAmps = {'stimDur':0.5,
            'numInt':5,
            'stimType' : 'AM',
            'subject':subject,
-           'experimenter' : 'anna'}
+           'experimenter' : experimenter}
 
 tuningCurve = {'stimDur':0.1,
-           'isiMean':0.8,
-           'isiHalfRange':0.1,
-           'minInt':35,
-           'maxInt':55,
-	       'numInt':2,
+           'isiMean':1.2,
+           'isiHalfRange':0.2,
+           'minInt':70,
+           'maxInt':70,
+	       'numInt':1,
            'stimType' : 'Sine',
            'subject':subject,
-           'experimenter' : 'anna'}
+           'experimenter' : experimenter}
 
 AM = 	  {'stimDur':0.5,
            'isiMean':1.0,
@@ -56,10 +57,10 @@ AM = 	  {'stimDur':0.5,
            'numInt':1,
            'stimType' : 'AM',
            'subject':subject,
-           'experimenter' : 'anna'}
+           'experimenter' : experimenter}
 
 
-bandwidth = {'experimenter':'anna',
+bandwidth = {'experimenter':experimenter,
              'subject':subject,
              'minAmp':50,
              'maxAmp':70,
@@ -69,7 +70,7 @@ bandwidth = {'experimenter':'anna',
              'maxBand':4.0,
              'numBands':5}
 
-harmonics = {'experimenter':'anna',
+harmonics = {'experimenter':experimenter,
              'subject':subject,
              'minAmp':70,
              'maxAmp':70,
@@ -80,7 +81,7 @@ harmonics = {'experimenter':'anna',
              'maxBand':4.0,
              'numBands':2}
 
-laserBandwidth = {'experimenter':'anna',
+laserBandwidth = {'experimenter':experimenter,
              'subject':subject,
              'minAmp':70,
              'maxAmp':70,
@@ -94,17 +95,56 @@ laserBandwidth = {'experimenter':'anna',
              'laserBackOverhang':0.1,
              'stimType':'laser_band_AM'}
 
-laserPulse = {'experimenter':'anna',
+laserPulse = {'experimenter':experimenter,
              'subject':subject,
              'stimDur':0.1,
              'isiMean':0.9,
              'isiHalfRange': 0,
              'stimType' : 'Laser'}
 
-laserTrain = {'experimenter':'anna',
+laserTrain = {'experimenter':experimenter,
              'subject':subject,
              'stimDur':0.01,
              'isiMean':1,
              'isiHalfRange': 0,
              'noiseAmp':0.05,
              'stimType' : 'LaserTrain'}
+
+laserAM = {'stimDur':0.5,
+           'isiMean':2.0,
+           'isiHalfRange':0.4,
+           'minFreq':4,
+           'maxFreq':64,
+           'numTones':9,
+           'minInt':60,
+           'maxInt':60,
+           'numInt':1,
+           'stimType' : 'AM',
+           'laserTrialsFraction':0.5,
+           'subject':subject,
+           'experimenter' : experimenter}
+
+laserTuningCurve = {'stimDur':0.1,
+           'isiMean':1.2,
+           'isiHalfRange':0.2,
+           'minInt':50,
+           'maxInt':70,
+	       'numInt':2,
+           'stimType' : 'Sine',
+           'laserTrialsFraction':0.5,
+           'subject':subject,
+           'experimenter' : experimenter}
+
+laserLong = {'stimDur':0.5,
+           'isiMean':2.0,
+           'isiHalfRange':0.4,
+           'minFreq':4,
+           'maxFreq':64,
+           'numTones':9,
+           'minInt':-100,
+           'maxInt':-100,
+           'numInt':1,
+           'stimType' : 'AM',
+           'laserTrialsFraction':0.5,
+           'subject':subject,
+           'experimenter' : experimenter}

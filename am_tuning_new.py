@@ -37,7 +37,7 @@ if 'outBit0' in rigsettings.OUTPUTS:
 else:
     stimSync = []
 if 'outBit2' in rigsettings.OUTPUTS:
-    laserSync = ['outBit2','stim1'] # Sync signal for laser
+    laserSync = ['outBit2','stim2'] # Sync signal for laser
 else:
     laserSync = ['centerLED'] # Use center LED during emulation
 
@@ -73,7 +73,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Add parameters --
         self.params = paramgui.Container()
-        
+
         self.params['experimenter'] = paramgui.StringParam('Experimenter',
                                                             value='santiago',
                                                             group='Session Parameters')
@@ -81,7 +81,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                        group='Session Parameters')
 
         sessionParams = self.params.layout_group('Session Parameters')
-       
+
         self.params['minFreq'] = paramgui.NumericParam('Min Frequency (Hz)',
                                                         value=2000,
                                                         group='Stim Parameters')
@@ -348,7 +348,7 @@ class Paradigm(QtWidgets.QMainWindow):
         fractionLaserTrials = self.params['laserTrialsFraction'].get_value()
         laserTrial = np.random.rand(1)[0]<fractionLaserTrials
         self.params['laserTrial'].set_value(int(laserTrial))
-            
+
         if (stimType == 'Laser') or (stimType == 'LaserTrain'):
             stimOutput = stimSync+laserSync
             serialOutput = 0

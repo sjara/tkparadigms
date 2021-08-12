@@ -1,5 +1,5 @@
-subject = 'pals001'
-experimenter = 'Isabella'
+subject = 'pals002'
+experimenter = 'isabella'
 
 noiseburst = {'stimDur':0.1,
                'isiMean':0.9,
@@ -34,4 +34,16 @@ am = {'subject':subject,
       'isiMean':1,
       'isiHalfRange':0.1}
       
+chord = {'subject':subject,
+      'experimenter':experimenter,
+      'minFreq':6000,
+      'maxFreq':13000,
+      'numTones':8,
+      'minInt':60,
+      'maxInt':60,
+      'numInt':1,
+      'stimType':'Chord',
+      'stimDur':0.2,
+      'isiMean':2}
+            
 
