@@ -74,3 +74,8 @@ chad000 = {'subject':'test000', 'taskMode':'water_on_lick',
            'interTrialIntervalMean':2, 'minFreq':500, 'maxFreq':600,
            'postDuration':0.5, 'taskMode':'lick_after_change',
            'nFreqs':3, 'minFreqRatio':1.01 }
+
+fm000 = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialIntervalMean':1,
+         'lickingPeriod':0.2, 'interTrialIntervalHalfRange':0,
+         'targetDuration': 0.5,
+         'soundType':'FM_direction', 'highFreq':1300, 'lowFreq':600, 'rewardSideMode':'toggle'}

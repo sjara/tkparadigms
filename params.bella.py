@@ -1,5 +1,5 @@
 """
-Params for mice chad055-059 
+Params for mice chad055-059
 @author: isabe
 """
 
@@ -38,7 +38,7 @@ chad059 = {'taskMode':'discriminate_stim',
                'experimenter' : 'isabella'}
 
 pals001 = {'taskMode': 'discriminate_stim',
-                  'lickBeforeStimOffset': 'abort', 
+                  'lickBeforeStimOffset': 'abort',
                   'rewardSideMode': 'repeat_mistake',
                   'soundType': 'AM_depth',
                   'subject':'pals001',
@@ -49,10 +49,10 @@ pals002 = {'taskMode': 'discriminate_stim',
                 'rewardSideMode': 'repeat_mistake',
                 'soundType': 'AM_depth',
                 'subject':'pals002',
-                'experimenter': 'isabella'}               
+                'experimenter': 'isabella'}
 
 pals003 = {'taskMode': 'discriminate_stim',
-                  'lickBeforeStimOffset': 'abort', 
+                  'lickBeforeStimOffset': 'abort',
                   'rewardSideMode': 'repeat_mistake',
                   'soundType': 'AM_depth',
                   'subject':'pals003',
@@ -66,56 +66,56 @@ pals004 = {'taskMode': 'lick_on_stim',
                 'experimenter': 'isabella'}
 
 pals005 = {'taskMode': 'discriminate_stim',
-                  'lickBeforeStimOffset': 'abort', 
+                  'lickBeforeStimOffset': 'abort',
                   'rewardSideMode': 'repeat_mistake',
                   'soundType': 'AM_depth',
                   'subject':'pals005',
                   'experimenter': 'isabella'}
-           
+
 pals007 = {'taskMode': 'discriminate_stim',
-                  'lickBeforeStimOffset': 'abort', 
+                  'lickBeforeStimOffset': 'abort',
                   'rewardSideMode': 'repeat_mistake',
                   'soundType': 'AM_depth',
                   'subject':'pals007',
                   'experimenter': 'isabella'}
 
 pals008 = {'taskMode': 'discriminate_stim',
-                  'lickBeforeStimOffset': 'abort', 
+                  'lickBeforeStimOffset': 'abort',
                   'rewardSideMode': 'repeat_mistake',
                   'soundType': 'AM_depth',
                   'subject':'pals008',
                   'experimenter': 'isabella'}
 
 pals010 = {'taskMode': 'lick_on_stim',
-          'lickBeforeStimOffset': 'ignore', 
+          'lickBeforeStimOffset': 'ignore',
           'rewardSideMode': 'repeat_mistake',
           'soundType':'AM_depth',
           'experimenter': 'isabella',
            'subject':'pals010'}
 
 pals011 = {'taskMode': 'lick_on_stim',
-          'lickBeforeStimOffset': 'ignore', 
+          'lickBeforeStimOffset': 'ignore',
           'rewardSideMode': 'repeat_mistake',
           'soundType':'AM_depth',
           'experimenter': 'isabella',
            'subject':'pals011'}
 
 pals012 = {'taskMode': 'lick_on_stim',
-          'lickBeforeStimOffset': 'ignore', 
+          'lickBeforeStimOffset': 'ignore',
           'rewardSideMode': 'repeat_mistake',
           'soundType':'AM_depth',
           'experimenter': 'isabella',
           'subject':'pals012'}
-           
+
 pals013 = {'taskMode': 'lick_on_stim',
-          'lickBeforeStimOffset': 'ignore', 
+          'lickBeforeStimOffset': 'ignore',
           'rewardSideMode': 'repeat_mistake',
           'soundType':'AM_depth',
           'experimenter': 'isabella',
            'subject':'pals013'}
 
 pals014 = {'taskMode': 'lick_on_stim',
-          'lickBeforeStimOffset': 'ignore', 
+          'lickBeforeStimOffset': 'ignore',
           'rewardSideMode': 'repeat_mistake',
           'soundType':'AM_depth',
           'experimenter': 'isabella',
@@ -126,10 +126,27 @@ pals015 = {'taskMode': 'water_on_sound',
           'soundType':'chords',
           'subject':'pals015',
           'experimenter': 'isabella'}
-          
-          
+
+
+pals018 = {'taskMode':'water_on_sound',
+           'rewardSideMode': 'random',
+           'soundType':'chords',
+           'experimenter': 'isabella',
+           'subject': 'pals018'}
+
+pals019 = {'taskMode':'water_on_sound',
+           'rewardSideMode': 'random',
+           'soundType':'chords',
+           'experimenter': 'isabella',
+           'subject': 'pals019'}
+
+
+
+
+
+
 punish_stage_three = { 'taskMode': 'discriminate_stim',
-                       'lickBeforeStimOffset': 'punish', 
+                       'lickBeforeStimOffset': 'punish',
                        'rewardSideMode': 'repeat_mistake',
                        'soundType':'AM_depth',
                        'experimenter': 'isabella',
@@ -145,7 +162,7 @@ AM_stage_two = {'taskMode': 'lick_on_stim',
                 'rewardSideMode': 'repeat_mistake',
                 'soundType': 'AM_depth',
                 'experimenter': 'isabella'}
-                
+
 AM_stage_three = {'taskMode': 'discriminate_stim',
                   'lickBeforeStimOffset': 'ignore', #talk this over with santiago
                   'rewardSideMode': 'repeat_mistake',
