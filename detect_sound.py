@@ -2,30 +2,32 @@
 Detect sound and lick to obtain reward. Used in head-fixed configuration.
 '''
 
+import time
 import numpy as np
-import sys
-if sys.version_info.major==3:
-    #from taskontrol.core import dispatcher.QtWidgets as QtWidgets
-    from qtpy import QtWidgets
-else:
-    from PySide import QtGui as QtWidgets
-
-from taskontrol.core import dispatcher
-from taskontrol.core import statematrix
-from taskontrol.core import savedata
-from taskontrol.core import paramgui
-from taskontrol.core import messenger
-from taskontrol.core import arraycontainer
+from qtpy import QtWidgets
+from taskontrol import rigsettings
+from taskontrol import dispatcher
+from taskontrol import statematrix
+from taskontrol import savedata
+from taskontrol import paramgui
+from taskontrol import utils
 from taskontrol.plugins import manualcontrol
-from taskontrol.settings import rigsettings
-
+from taskontrol.plugins import performancedynamicsplot
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
-import time
 
 
 LONGTIME = 100
 MAX_N_TRIALS = 8000
+
+if 'outBit1' in rigsettings.OUTPUTS:
+    trialStartSync = ['outBit1'] # Sync signal for trial-start.
+else:
+    trialStartSync = []
+if 'outBit0' in rigsettings.OUTPUTS:
+    stimSync = ['outBit0'] # Sync signal for sound stimulus
+else:
+    stimSync = []
 
 class Paradigm(QtWidgets.QMainWindow):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
@@ -39,14 +41,13 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Create dispatcher --
         smServerType = rigsettings.STATE_MACHINE_TYPE
-        self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,interval=0.1)
-        self.dispatcherView = dispatcher.DispatcherGUI(model=self.dispatcherModel)
+        self.dispatcher = dispatcher.Dispatcher(serverType=smServerType,interval=0.1)
 
         # -- Module for saving data --
         self.saveData = savedata.SaveData(rigsettings.DATA_DIR, remotedir=rigsettings.REMOTE_DIR)
 
         # -- Manual control of outputs --
-        self.manualControl = manualcontrol.ManualControl(self.dispatcherModel.statemachine)
+        self.manualControl = manualcontrol.ManualControl(self.dispatcher.statemachine)
         
         # -- Define graphical parameters --
         self.params = paramgui.Container()
@@ -83,13 +84,15 @@ class Paradigm(QtWidgets.QMainWindow):
 
         self.params['targetDuration'] = paramgui.NumericParam('Target duration',value=0.2, units='s',
                                                               group='Sound parameters')
+        self.params['targetFrequency'] = paramgui.NumericParam('Target frequency',value=6000, units='Hz',
+                                                              group='Sound parameters')
         self.params['targetIntensity'] = paramgui.NumericParam('Target intensity',value=50, units='dB-SPL',
                                                         enabled=True, group='Sound parameters')
         self.params['targetAmplitude'] = paramgui.NumericParam('Target amplitude',value=0.0,units='[0-1]',
                                                         enabled=False,decimals=4,group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
         
-        self.params['taskMode'] = paramgui.MenuParam('Task mode', ['water_on_lick','detect_sound'], value=0,
+        self.params['taskMode'] = paramgui.MenuParam('Task mode', ['detect_sound','water_on_lick'], value=0,
                                                      group='General parameters')
         self.params['lightMode'] = paramgui.MenuParam('Light mode', ['center','all'], value=0,
                                                      group='General parameters')
@@ -116,7 +119,7 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.sessionInfo)
         layoutCol1.addWidget(reportInfo)
-        layoutCol1.addWidget(self.dispatcherView)
+        layoutCol1.addWidget(self.dispatcher.widget)
 
         layoutCol2.addWidget(self.manualControl)
         layoutCol2.addStretch()
@@ -133,7 +136,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Add variables for storing results --
         maxNtrials = MAX_N_TRIALS # Preallocating space for each vector makes things easier
-        self.results = arraycontainer.Container()
+        self.results = utils.EnumContainer()
         self.results.labels['outcome'] = {'hit':1,'falseAlarm':0, 'miss':2, 'none':-1}
         self.results['outcome'] = np.empty(maxNtrials,dtype=int)
         
@@ -141,27 +144,29 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params.from_file(paramfile,paramdictname)
 
         # -- Load speaker calibration --
-        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
+        self.sineCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_SINE)
+        self.chordCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
+        self.noiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
 
         # -- Connect to sound server and define sounds --
-        print('Conecting to soundserver...')
-        print('***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****') ### DEBUG
-        time.sleep(0.2)
+        #print('Conecting to soundserver...')
+        #print('***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****') ### DEBUG
+        #time.sleep(0.2)
         self.soundClient = soundclient.SoundClient()
         self.targetSoundID = 1
         self.soundClient.start()
       
         # -- Connect signals from dispatcher --
-        self.dispatcherModel.prepareNextTrial.connect(self.prepare_next_trial)
+        self.dispatcher.prepareNextTrial.connect(self.prepare_next_trial)
 
         # -- Connect messenger --
-        self.messagebar = messenger.Messenger()
+        self.messagebar = paramgui.Messenger()
         self.messagebar.timedMessage.connect(self._show_message)
         self.messagebar.collect('Created window')
 
         # -- Connect signals to messenger
         self.saveData.logMessage.connect(self.messagebar.collect)
-        self.dispatcherModel.logMessage.connect(self.messagebar.collect)
+        self.dispatcher.logMessage.connect(self.messagebar.collect)
 
         # -- Connect other signals --
         self.saveData.buttonSaveData.clicked.connect(self.save_to_file)
@@ -172,19 +177,19 @@ class Paradigm(QtWidgets.QMainWindow):
 
     def save_to_file(self):
         '''Triggered by button-clicked signal'''
-        self.saveData.to_file([self.params, self.dispatcherModel,
+        self.saveData.to_file([self.params, self.dispatcher,
                                self.sm, self.results],
-                              self.dispatcherModel.currentTrial,
+                              self.dispatcher.currentTrial,
                               experimenter='',
                               subject=self.params['subject'].get_value(),
                               paradigm=self.name)
 
     def prepare_target_sound(self):
-        targetFrequency = 6000
+        targetFrequency = self.params['targetFrequency'].get_value()
         targetIntensity = self.params['targetIntensity'].get_value()
         targetDuration = self.params['targetDuration'].get_value()
         # FIXME: currently I am averaging calibration from both speakers (not good)
-        targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
+        targetAmp = self.chordCal.find_amplitude(targetFrequency,targetIntensity).mean()
         self.params['targetAmplitude'].set_value(targetAmp)
         s1 = {'type':'chord', 'frequency':targetFrequency, 'duration':targetDuration,
               'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
@@ -263,12 +268,12 @@ class Paradigm(QtWidgets.QMainWindow):
 
         self.prepare_target_sound()
         
-        self.dispatcherModel.set_state_matrix(self.sm)
-        self.dispatcherModel.ready_to_start_trial()
+        self.dispatcher.set_state_matrix(self.sm)
+        self.dispatcher.ready_to_start_trial()
 
     def calculate_results(self,trialIndex):
         if self.params['taskMode'].get_string()=='detect_sound':
-            eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
+            eventsThisTrial = self.dispatcher.events_one_trial(trialIndex)
             statesThisTrial = eventsThisTrial[:,2]
             if self.sm.statesNameToIndex['hit'] in statesThisTrial:
                 self.params['nHits'].add(1)
@@ -290,7 +295,7 @@ class Paradigm(QtWidgets.QMainWindow):
         its camelCase naming.
         '''
         self.soundClient.shutdown()
-        self.dispatcherModel.die()
+        self.dispatcher.die()
         event.accept()
 
 if __name__ == '__main__':
