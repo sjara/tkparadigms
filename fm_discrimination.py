@@ -60,7 +60,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['fractionRewarded'] = paramgui.NumericParam('Fraction rewarded',
                                                         value=1, units='',group='Choice parameters')
         self.params['allowEarlyWithdrawal'] = paramgui.MenuParam('Allow early withdraw',
-                                                                 ['off','on'], enabled=False,
+                                                                 ['off','on'], enabled=True,
                                                                  value=1, group='Choice parameters')
         self.params['antibiasMode'] = paramgui.MenuParam('Anti-bias mode',
                                                         ['off','repeat_mistake'],
@@ -68,19 +68,19 @@ class Paradigm(templates.Paradigm2AFC):
         choiceParams = self.params.layout_group('Choice parameters')
 
         self.params['delayToTargetMean'] = paramgui.NumericParam('Mean delay to target',value=0.2,
-                                                        units='s',group='Timing parameters')
+                                                                 units='s',decimals=3, group='Timing parameters')
         self.params['delayToTargetHalfRange'] = paramgui.NumericParam('+/-',value=0.05,
                                                         units='s',group='Timing parameters')
         self.params['delayToTarget'] = paramgui.NumericParam('Delay to target',value=0.2,
                                                         units='s',group='Timing parameters',
                                                         enabled=False,decimals=3)
         self.params['targetDuration'] = paramgui.NumericParam('Target duration',value=0.2,
-                                                              units='s',group='Timing parameters',enabled=False,)
+                                                              units='s',group='Timing parameters',enabled=True)
         self.params['rewardAvailability'] = paramgui.NumericParam('Reward availability',value=4,
                                                         units='s',group='Timing parameters')
         self.params['punishTimeError'] = paramgui.NumericParam('Punishment (error)',value=0,
                                                         units='s',group='Timing parameters')
-        self.params['punishTimeEarly'] = paramgui.NumericParam('Punishment (early)',value=0,
+        self.params['punishTimeEarly'] = paramgui.NumericParam('Punishment (early)',value=0.5,
                                                         units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
 
@@ -113,9 +113,9 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['maxNtrials'] = paramgui.NumericParam('Max N trials',value=4000,decimals=0,
                                                              group='Automation',enabled=True)
         self.params['postSoundDelay'] = paramgui.NumericParam('Delay after sound',value=0.3,
-                                                              units='s',group='Automation')
+                                                              units='s',group='Automation', enabled=False)
         self.params['interTrialInterval'] = paramgui.NumericParam('Inter-trial interval',value=1.5,
-                                                        units='s',group='Automation')
+                                                        units='s',group='Automation', enabled=False)
         self.params['automationMode'] = paramgui.MenuParam('Automation Mode',
                                                            ['off','increase_delay'],
                                                            value=0,group='Automation')
@@ -283,10 +283,11 @@ class Paradigm(templates.Paradigm2AFC):
         #self.prepare_next_trial(0)
 
     def prepare_punish_sound(self):
+        punishTimeEarly = self.params['punishTimeEarly'].get_value()
         punishSoundIntensity = self.params['punishSoundIntensity'].get_value()
         punishSoundAmplitude = self.noiseCal.find_amplitude(punishSoundIntensity).mean()
         self.params['punishSoundAmplitude'].set_value(punishSoundAmplitude)
-        sNoise = {'type':'noise', 'duration':0.5, 'amplitude':punishSoundAmplitude}
+        sNoise = {'type':'noise', 'duration':punishTimeEarly, 'amplitude':punishSoundAmplitude}
         self.soundClient.set_sound(self.punishSoundID,sNoise)
 
     def prepare_target_sound(self):
@@ -447,7 +448,7 @@ class Paradigm(templates.Paradigm2AFC):
             '''
             #ledOutput = 'leftLED'
             fromChoiceL = 'reward'
-            fromChoiceR = 'punish'
+            fromChoiceR = 'punishError'
             rewardOutput = 'leftWater'
             correctSidePort = 'Lin'
         elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
@@ -461,7 +462,7 @@ class Paradigm(templates.Paradigm2AFC):
                 raise ValueError('Relevant feature for categorization not defined')
             '''
             #ledOutput = 'rightLED'
-            fromChoiceL = 'punish'
+            fromChoiceL = 'punishError'
             fromChoiceR = 'reward'
             rewardOutput = 'rightWater'
             correctSidePort = 'Rin'
@@ -625,7 +626,7 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[rewardOutput])
-            self.sm.add_state(name='punish', statetimer=punishTimeError,
+            self.sm.add_state(name='punishError', statetimer=punishTimeError,
                               transitions={'Tup':'readyForNextTrial'})
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
@@ -663,10 +664,10 @@ class Paradigm(templates.Paradigm2AFC):
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'reward'}, outputsOff=laserOutput)
                 self.sm.add_state(name='choiceRight', statetimer=0,
-                                  transitions={'Tup':'punish'}, outputsOff=laserOutput)
+                                  transitions={'Tup':'punishError'}, outputsOff=laserOutput)
             elif correctSidePort=='Rin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
-                                  transitions={'Tup':'punish'}, outputsOff=laserOutput)
+                                  transitions={'Tup':'punishError'}, outputsOff=laserOutput)
                 self.sm.add_state(name='choiceRight', statetimer=0,
                                   transitions={'Tup':'reward'}, outputsOff=laserOutput)
             self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
@@ -678,7 +679,7 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[rewardOutput]+stimOutput)
-            self.sm.add_state(name='punish', statetimer=punishTimeError,
+            self.sm.add_state(name='punishError', statetimer=punishTimeError,
                               transitions={'Tup':'readyForNextTrial'})
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
@@ -735,7 +736,7 @@ class Paradigm(templates.Paradigm2AFC):
 
 
 
-            ############# FIXME: create a state for Cout so it's easy to get timting ########
+            ############# FIXME: create a state for Cout so it's easy to get timing ########
 
 
 
@@ -810,7 +811,7 @@ class Paradigm(templates.Paradigm2AFC):
                     if self.sm.statesNameToIndex['earlyWithdrawal'] in eventsThisTrial[:,2]:
                         self.results['outcome'][trialIndex] = \
                             self.results.labels['outcome']['invalid']
-                    elif self.sm.statesNameToIndex['punish'] in eventsThisTrial[:,2]:
+                    elif self.sm.statesNameToIndex['punishError'] in eventsThisTrial[:,2]:
                         self.results['outcome'][trialIndex] = \
                             self.results.labels['outcome']['error']
                 # -- Check if it was a valid trial --
