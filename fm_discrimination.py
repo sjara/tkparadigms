@@ -95,10 +95,10 @@ class Paradigm(templates.Paradigm2AFC):
         '''
 
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
-                                                         ['off','uniform','extreme80pc'],
-                                                         value=0,group='Psychometric parameters', enabled=False)
-        self.params['psycurveNsteps'] = paramgui.NumericParam('N steps',value=6,decimals=0,
-                                                             group='Psychometric parameters',enabled=False)
+                                                         ['off','uniform'],
+                                                         value=0,group='Psychometric parameters')
+        self.params['psycurveNsteps'] = paramgui.NumericParam('N steps',value=6, decimals=0,
+                                                             group='Psychometric parameters')
         psychometricParams = self.params.layout_group('Psychometric parameters')
 
 
@@ -146,6 +146,8 @@ class Paradigm(templates.Paradigm2AFC):
                                                         group='Sound parameters')
         self.params['lowFreq'] = paramgui.NumericParam('Low frequency', value=6000, units='Hz',
                                                         group='Sound parameters')
+        self.params['startFreq'] = paramgui.NumericParam('Start frequency', value=0, units='Hz', decimals=0,
+                                                         enabled=False, group='Sound parameters')
         self.params['targetFMslope'] = paramgui.NumericParam('Target FM slope', value=1,
                                                              decimals=2, units='', enabled=False,
                                                              group='Sound parameters')
@@ -290,29 +292,47 @@ class Paradigm(templates.Paradigm2AFC):
         sNoise = {'type':'noise', 'duration':punishTimeEarly, 'amplitude':punishSoundAmplitude}
         self.soundClient.set_sound(self.punishSoundID,sNoise)
 
-    def prepare_target_sound(self):
+    def prepare_target_sound(self, targetFMslope):
         if self.params['targetIntensityMode'].get_string() == 'randMinus20':
             possibleIntensities = self.params['targetMaxIntensity'].get_value()+\
                                   np.array([-20,-15,-10,-5,0])
             targetIntensity = possibleIntensities[np.random.randint(len(possibleIntensities))]
         else:
             targetIntensity = self.params['targetMaxIntensity'].get_value()
+        self.params['targetFMslope'].set_value(targetFMslope)
         self.params['targetIntensity'].set_value(targetIntensity)
         #targetIntensity = self.params['targetIntensity'].get_value()
         targetDuration = self.params['targetDuration'].get_value()
         #elif soundType == 'FM_direction':
-        FMslope = self.params['targetFMslope'].get_value()  # [-1,1]
+        #FMslope = self.params['targetFMslope'].get_value()  # [-1,1]
+        
         highFreq = self.params['highFreq'].get_value()
         lowFreq = self.params['lowFreq'].get_value()
         midFreq = np.sqrt(lowFreq*highFreq)
-        if FMslope==1:
+        halfRange = highFreq/midFreq
+        # -- Find starting frequency given slope --
+        '''
+        highFreq = 13000
+        lowFreq = 6000
+        midFreq = np.sqrt(lowFreq*highFreq)
+        halfRange = highFreq/midFreq
+        possibleFreq = np.logspace(np.log10(6000), np.log10(13000), 6)
+        possibleFMslopes = np.linspace(1, -1, nSteps)
+        targetFMslope = 1
+        frequencyStart = np.exp( np.log(midFreq) - targetFMslope*np.log(halfRange) )
+        '''
+        frequencyStart = np.exp( np.log(midFreq) - targetFMslope*np.log(halfRange) )
+        frequencyEnd = np.exp( np.log(midFreq) + targetFMslope*np.log(halfRange) )
+            
+        '''
+        if targetFMslope>0:
             frequencyStart = lowFreq
             frequencyEnd = highFreq
-        elif FMslope==-1:
+        else:
             frequencyStart = highFreq
             frequencyEnd = lowFreq
-        else:
-            raise ValueError('FMslope value is not valid.')
+        '''
+        self.params['startFreq'].set_value(frequencyStart)
         targetAmp = self.sineCal.find_amplitude(midFreq, targetIntensity).mean()
         s1 = {'type':'FM', 'frequencyStart':frequencyStart, 'frequencyEnd':frequencyEnd,
               'duration':targetDuration, 'amplitude':targetAmp}
@@ -365,19 +385,24 @@ class Paradigm(templates.Paradigm2AFC):
         # -- Prepare sound --
         relevantFeature = self.params['relevantFeature'].get_string()
         psycurveMode = self.params['psycurveMode'].get_string()
-        '''
         if psycurveMode=='off':
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
-                targetPercentage = 0
+                targetFMslope = 1
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
-                targetPercentage = 100
+                targetFMslope = -1
+            else:
+                raise ValueError('Value of nextCorrectChoice is not appropriate')
         elif psycurveMode=='uniform':
-            # -- It assumes 6 possible values --
-            randIndex = np.random.randint(3)
+            nSteps = self.params['psycurveNsteps'].get_value()
+            possibleFMslopes = np.linspace(1, -1, nSteps)
+            randIndex = np.random.randint(nSteps//2) # WARNING: nSteps needs to be even
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
-                targetPercentage = randIndex*20
+                targetFMslope = possibleFMslopes[randIndex]
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
-                targetPercentage = (5-randIndex)*20
+                targetFMslope = possibleFMslopes[randIndex + (nSteps//2)]
+            else:
+                raise ValueError('Value of nextCorrectChoice is not appropriate')
+        '''
         elif psycurveMode=='extreme80pc':
             # -- It assumes 6 possible values. 80% trials on extremes, 20% on the rest --
             randIndex = np.flatnonzero(np.random.multinomial(1,[0.8, 0.1, 0.1]))[0]
@@ -386,14 +411,7 @@ class Paradigm(templates.Paradigm2AFC):
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
                 targetPercentage = (5-randIndex)*20
         '''
-        if nextCorrectChoice==self.results.labels['rewardSide']['left']:
-            targetFMslope = 1
-        elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
-            targetFMslope = -1
-        else:
-            raise ValueError('Value of nextCorrectChoice is not appropriate')
-        self.params['targetFMslope'].set_value(targetFMslope)
-        self.prepare_target_sound()
+        self.prepare_target_sound(targetFMslope)
         self.prepare_punish_sound()
 
 
