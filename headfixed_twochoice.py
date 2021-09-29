@@ -121,6 +121,8 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['targetFMslope'] = paramgui.NumericParam('Target FM slope', value=0,
                                                              decimals=2, units='', enabled=False,
                                                              group='Sound parameters')
+        self.params['startFreq'] = paramgui.NumericParam('FM start frequency', value=0, units='Hz', decimals=0,
+                                                         enabled=False, group='Sound parameters')
         self.params['targetDuration'] = paramgui.NumericParam('Target duration', value=0.2, units='s',
                                                               group='Sound parameters')
         self.params['targetIntensity'] = paramgui.NumericParam('Target intensity', value=50,
@@ -353,10 +355,14 @@ class Paradigm(QtWidgets.QMainWindow):
             s1.update({'amplitude':1, 'calibration':calibArray})
             targetAmp = 0 # Set to zero since it doesn't mean anything in this case
         elif soundType == 'FM_direction':
-            FMslope = soundParam  # [-1,1]
+            targetFMslope = soundParam  # [-1,1]
             highFreq = self.params['highFreq'].get_value()
             lowFreq = self.params['lowFreq'].get_value()
             midFreq = np.sqrt(lowFreq*highFreq)
+            halfRange = highFreq/midFreq
+            frequencyStart = np.exp( np.log(midFreq) - targetFMslope*np.log(halfRange) )
+            frequencyEnd = np.exp( np.log(midFreq) + targetFMslope*np.log(halfRange) )
+            '''
             if FMslope==1:
                 frequencyStart = lowFreq
                 frequencyEnd = highFreq
@@ -365,6 +371,8 @@ class Paradigm(QtWidgets.QMainWindow):
                 frequencyEnd = lowFreq
             else:
                 raise ValueError('FMslope value is not valid.')
+            '''
+            self.params['startFreq'].set_value(frequencyStart)
             targetAmp = self.sineCal.find_amplitude(midFreq, targetIntensity).mean()
             s1 = {'type':'FM', 'frequencyStart':frequencyStart, 'frequencyEnd':frequencyEnd,
                   'duration':targetDuration, 'amplitude':targetAmp}
@@ -440,6 +448,11 @@ class Paradigm(QtWidgets.QMainWindow):
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(leftFreqInds))
                 strengthIndex = np.random.randint(int(nSteps/2))
+                # FIXME: temporary hack to enable psychometric during FM
+                if self.params['soundType'].get_string()=='FM_direction':
+                    possibleFMslopes = np.linspace(1, -1, nSteps)
+                    randIndex = np.random.randint(nSteps//2) # WARNING: nSteps needs to be even
+                    targetFMslope = possibleFMslopes[randIndex]
             elif psycurveMode=='mid_and_extreme':
                 freqSubset = [0, nSteps//2-1] 
                 freqIndex = freqSubset[np.random.randint(len(freqSubset))]
@@ -457,6 +470,11 @@ class Paradigm(QtWidgets.QMainWindow):
             if psycurveMode=='uniform':
                 freqIndex = np.random.randint(len(rightFreqInds))+len(leftFreqInds)
                 strengthIndex = np.random.randint(int(nSteps/2)) + int(nSteps/2)
+                # FIXME: temporary hack to enable psychometric during FM
+                if self.params['soundType'].get_string()=='FM_direction':
+                    possibleFMslopes = np.linspace(1, -1, nSteps)
+                    randIndex = np.random.randint(nSteps//2) # WARNING: nSteps needs to be even
+                    targetFMslope = possibleFMslopes[randIndex + (nSteps//2)]
             elif psycurveMode=='mid_and_extreme':
                 freqSubset = [nSteps//2, nSteps-1] 
                 freqIndex = freqSubset[np.random.randint(len(freqSubset))]
