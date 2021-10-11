@@ -1,5 +1,9 @@
 '''
-Speech sounds categorization task.
+Frequency-modulation categorization task.
+
+TO DO:
+- Increase delay automatically.
+- Test that FM sound stops after punishment sound.
 '''
 
 import time
@@ -51,8 +55,8 @@ class Paradigm(templates.Paradigm2AFC):
         waterDelivery = self.params.layout_group('Water delivery')
 
         self.params['outcomeMode'] = paramgui.MenuParam('Outcome mode',
-                                                        ['sides_direct','direct','on_next_correct',
-                                                         'only_if_correct','on_any_poke'],
+                                                        ['sides_direct', 'direct', 'on_next_correct',
+                                                         'only_if_correct', 'on_any_poke', 'passive_exposure'],
                                                          value=3,group='Choice parameters')
         self.params['activePort'] = paramgui.MenuParam('Active port',
                                                         ['both','left','right'],
@@ -498,24 +502,19 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Set state matrix --
         outcomeMode = self.params['outcomeMode'].get_string()
-        if outcomeMode=='simulated':
-            stimOutput.append(ledOutput)
+        if outcomeMode=='passive_exposure':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
                               outputsOn=trialStartSync)
-            self.sm.add_state(name='waitForCenterPoke', statetimer=1,
+            self.sm.add_state(name='waitForCenterPoke', statetimer=delayToTarget,
                               transitions={'Tup':'playStimulus'})
             self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                              transitions={'Tup':'reward'},
+                              transitions={'Tup':'iti'},
                               outputsOn=stimOutput,serialOut=self.targetSoundID,
                               outputsOff=trialStartSync)
-            self.sm.add_state(name='reward', statetimer=rewardDuration,
-                              transitions={'Tup':'stopReward'},
-                              outputsOn=[rewardOutput],
-                              outputsOff=stimOutput)
-            self.sm.add_state(name='stopReward', statetimer=0,
+            self.sm.add_state(name='iti', statetimer=rewardAvailability,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=[rewardOutput])
+                              outputsOff=stimOutput)
         elif outcomeMode=='on_any_poke':
             rewardedTrial = np.random.random(1)[0] < self.params['fractionRewarded'].get_value()
             if rewardedTrial:
@@ -738,11 +737,11 @@ class Paradigm(templates.Paradigm2AFC):
             self.results['timeTarget'][trialIndex] = eventsThisTrial[targetEventInd,0]
 
             # -- Find center poke-in time --
-            if outcomeModeString in ['on_next_correct','only_if_correct','on_any_poke']:
+            if outcomeModeString in ['on_next_correct', 'only_if_correct', 'on_any_poke']:
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
                           self.sm.statesNameToIndex['delayPeriod'],
                           self.sm.statesNameToIndex['playStimulus']]
-            elif outcomeModeString in ['simulated','sides_direct','direct']:
+            elif outcomeModeString in ['simulated', 'sides_direct', 'direct', 'passive_exposure']:
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
                           self.sm.statesNameToIndex['playStimulus']]
             else:
