@@ -2,7 +2,6 @@
 Frequency-modulation categorization task.
 
 TO DO:
-- Increase delay automatically.
 - Test that FM sound stops after punishment sound.
 '''
 
@@ -629,14 +628,12 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Tup':'keepWaitForSide'})
                 self.sm.add_state(name='choiceRight', statetimer=0,
                                   transitions={'Tup':'reward'})
-            if allowEarlyWithdrawal=='on':
-                self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
-                                  transitions={'Tup':'readyForNextTrial'},
-                                  outputsOff=stimOutput)
-            else:
-                self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
-                                  transitions={'Tup':'readyForNextTrial'},
-                                  outputsOff=stimOutput,serialOut=self.punishSoundID)
+            self.sm.add_state(name='earlyWithdrawal', statetimer=0,
+                              transitions={'Tup':'playPunishment'},
+                              outputsOff=stimOutput, serialOut=soundclient.STOP_ALL_SOUNDS)
+            self.sm.add_state(name='playPunishment', statetimer=punishTimeEarly,
+                              transitions={'Tup':'readyForNextTrial'},
+                              serialOut=self.punishSoundID)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
@@ -665,7 +662,6 @@ class Paradigm(templates.Paradigm2AFC):
                                   outputsOff=trialStartSync,
                                   trigger=['laserTimer'])
             else:
-                ### NOT IMPLEMENTED ###
                 self.sm.add_state(name='playStimulus', statetimer=targetDuration,
                                   transitions={'Tup':'waitForSidePoke','Cout':'earlyWithdrawal'},
                                   outputsOn=stimOutput, serialOut=self.targetSoundID,
@@ -687,9 +683,12 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Tup':'punishError'}, outputsOff=laserOutput)
                 self.sm.add_state(name='choiceRight', statetimer=0,
                                   transitions={'Tup':'reward'}, outputsOff=laserOutput)
-            self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
+            self.sm.add_state(name='earlyWithdrawal', statetimer=0,
+                              transitions={'Tup':'playPunishment'},
+                              outputsOff=stimOutput, serialOut=soundclient.STOP_ALL_SOUNDS)
+            self.sm.add_state(name='playPunishment', statetimer=punishTimeEarly,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=stimOutput,serialOut=self.punishSoundID)
+                              serialOut=self.punishSoundID)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput])
