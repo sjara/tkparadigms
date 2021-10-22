@@ -450,7 +450,8 @@ class Paradigm(QtWidgets.QMainWindow):
                 strengthIndex = np.random.randint(int(nSteps/2))
                 # FIXME: temporary hack to enable psychometric during FM
                 if self.params['soundType'].get_string()=='FM_direction':
-                    possibleFMslopes = np.linspace(1, -1, nSteps)
+                    #possibleFMslopes = np.linspace(1, -1, nSteps) # This was used until 2021-10-21
+                    possibleFMslopes = np.linspace(-1, 1, nSteps) # This was enabled on 2021-10-22
                     randIndex = np.random.randint(nSteps//2) # WARNING: nSteps needs to be even
                     targetFMslope = possibleFMslopes[randIndex]
             elif psycurveMode=='mid_and_extreme':
@@ -472,7 +473,8 @@ class Paradigm(QtWidgets.QMainWindow):
                 strengthIndex = np.random.randint(int(nSteps/2)) + int(nSteps/2)
                 # FIXME: temporary hack to enable psychometric during FM
                 if self.params['soundType'].get_string()=='FM_direction':
-                    possibleFMslopes = np.linspace(1, -1, nSteps)
+                    #possibleFMslopes = np.linspace(1, -1, nSteps) # This was used until 2021-10-21
+                    possibleFMslopes = np.linspace(-1, 1, nSteps) # This was enabled on 2021-10-22
                     randIndex = np.random.randint(nSteps//2) # WARNING: nSteps needs to be even
                     targetFMslope = possibleFMslopes[randIndex + (nSteps//2)]
             elif psycurveMode=='mid_and_extreme':
