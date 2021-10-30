@@ -1,13 +1,7 @@
 '''
-Create a modulation frequency discrimination 2AFC paradigm.
+AM rate discrimination 2AC paradigm.
 
-
-* TO DO:
-- Check that all parameters are saved
-- Check that all times are saved
-- Note that outcomeMode (menu) is saved different from labels (e.g., outcome)
-- Verify that the choice of last trial is saved properly
-
+This paradigm is based on modulation_discrimination.py (by N. Ponvert around 2017)
 '''
 
 import time
