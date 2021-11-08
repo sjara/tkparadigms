@@ -2,34 +2,27 @@
 Speech sounds categorization task.
 '''
 
-#from __future__ import division
-from __future__ import print_function
 import time
 import os
+import glob
 import numpy as np
-from PySide import QtGui
-
-from taskontrol.core import paramgui
-from taskontrol.core import arraycontainer
-from taskontrol.core import utils
-from taskontrol.core import statematrix
+from qtpy import QtWidgets
+from taskontrol import rigsettings
+from taskontrol import dispatcher
+from taskontrol import statematrix
+from taskontrol import savedata
+from taskontrol import paramgui
+from taskontrol import utils
 from taskontrol.plugins import templates
 from taskontrol.plugins import performancedynamicsplot
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
-from taskontrol.settings import rigsettings
-
 
 LONGTIME = 100
 
-#leftSoundFile = './left.wav'
-#rightSoundFile = './right.wav'
 SOUND_DIR = '../jarasounds/'
-#soundFilesSpectral = {'left':'ba_8x.wav', 'right':'da_8x.wav'}
-#soundFilesTemporal = {'left':'ba_8x.wav', 'right':'pa_8x.wav'}
-#soundFilesSpectral = {'left':'ba_1x.wav', 'right':'da_1x.wav'}
-#soundFilesTemporal = {'left':'ba_1x.wav', 'right':'pa_1x.wav'}
 
+'''
 soundFiles = {'spectral000':'bada_8x_000.wav', 'spectral020':'bada_8x_020.wav',
               'spectral040':'bada_8x_040.wav', 'spectral060':'bada_8x_060.wav',
               'spectral080':'bada_8x_080.wav', 'spectral100':'bada_8x_100.wav',
@@ -43,8 +36,30 @@ soundFiles = {'spectral000':'bada_1x_000.wav', 'spectral020':'bada_1x_020.wav',
               'temporal000':'bapa_1x_000.wav', 'temporal020':'bapa_1x_020.wav',
               'temporal040':'bapa_1x_040.wav', 'temporal060':'bapa_1x_060.wav',
               'temporal080':'bapa_1x_080.wav', 'temporal100':'bapa_1x_100.wav'}
+
 '''
-                           
+SOUND_DIR = '/tmp/speechsounds'
+soundFiles = glob.glob(os.path.join(SOUND_DIR,'*.wav'))
+nFiles = len(soundFiles)
+eachVOT = np.empty(nFiles, dtype=int)
+eachFT = np.empty(nFiles, dtype=int)
+for indsf, oneFile in enumerate(soundFiles):
+    eachVOT[indsf] = int(oneFile.split('vot')[1][:3])
+    eachFT[indsf] = int(oneFile.split('ft')[1][:3])
+possibleVOT = np.unique(eachVOT)
+possibleFT = np.unique(eachFT)
+'''             
+
+if 'outBit1' in rigsettings.OUTPUTS:
+    trialStartSync = ['outBit1'] # Sync signal for trial-start.
+else:
+    trialStartSync = []
+if 'outBit0' in rigsettings.OUTPUTS:
+    stimSync = ['outBit0'] # Sync signal for sound stimulus
+else:
+    stimSync = []
+
+
 class Paradigm(templates.Paradigm2AFC):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(Paradigm, self).__init__(parent)
@@ -63,8 +78,8 @@ class Paradigm(templates.Paradigm2AFC):
         waterDelivery = self.params.layout_group('Water delivery')
 
         self.params['outcomeMode'] = paramgui.MenuParam('Outcome mode',
-                                                        ['sides_direct','direct','on_next_correct',
-                                                         'only_if_correct','simulated'],
+                                                        ['sides_direct', 'direct', 'on_next_correct',
+                                                         'only_if_correct', 'on_any_poke', 'passive_exposure'],
                                                          value=3,group='Choice parameters')
         self.params['allowEarlyWithdrawal'] = paramgui.MenuParam('Allow early withdraw',
                                                                  ['off','on'], enabled=False,
@@ -184,14 +199,14 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['subject'].set_value('test')
 
         # -- Add graphical widgets to main window --
-        self.centralWidget = QtGui.QWidget()
-        layoutMain = QtGui.QVBoxLayout()
-        layoutTop = QtGui.QVBoxLayout()
-        layoutBottom = QtGui.QHBoxLayout()
-        layoutCol1 = QtGui.QVBoxLayout()
-        layoutCol2 = QtGui.QVBoxLayout()
-        layoutCol3 = QtGui.QVBoxLayout()
-        layoutCol4 = QtGui.QVBoxLayout()
+        self.centralWidget = QtWidgets.QWidget()
+        layoutMain = QtWidgets.QVBoxLayout()
+        layoutTop = QtWidgets.QVBoxLayout()
+        layoutBottom = QtWidgets.QHBoxLayout()
+        layoutCol1 = QtWidgets.QVBoxLayout()
+        layoutCol2 = QtWidgets.QVBoxLayout()
+        layoutCol3 = QtWidgets.QVBoxLayout()
+        layoutCol4 = QtWidgets.QVBoxLayout()
 
         layoutMain.addLayout(layoutTop)
         layoutMain.addSpacing(0)
@@ -207,7 +222,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.sessionInfo)
-        layoutCol1.addWidget(self.dispatcherView)
+        layoutCol1.addWidget(self.dispatcher.widget)
 
         layoutCol2.addWidget(self.manualControl)
         layoutCol2.addStretch()
@@ -224,7 +239,7 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol3.addStretch()
         layoutCol3.addWidget(automationParams)
         layoutCol3.addStretch()
-        
+
         layoutCol4.addWidget(photostimParams)
         layoutCol4.addStretch()
         layoutCol4.addWidget(soundParams)
@@ -237,7 +252,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Add variables for storing results --
         maxNtrials = 4000 # Preallocating space for each vector makes things easier
-        self.results = arraycontainer.Container()
+        self.results = utils.EnumContainer()
         self.results.labels['rewardSide'] = {'left':0,'right':1}
         self.results['rewardSide'] = np.random.randint(2,size=maxNtrials)
         self.results.labels['choice'] = {'left':0,'right':1,'none':2}
@@ -281,7 +296,7 @@ class Paradigm(templates.Paradigm2AFC):
                                           outputs=rigsettings.OUTPUTS,
                                           readystate='readyForNextTrial',
                                           extratimers=['laserTimer'])
-        
+
         # -- Prepare first trial --
         #self.prepare_next_trial(0)
 
@@ -305,28 +320,6 @@ class Paradigm(templates.Paradigm2AFC):
         targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
         self.params['targetAmplitude'].set_value(targetAmp)
 
-        '''
-        sLeft = {'type':'fromfile', 'filename':leftSoundFile,
-                 'channel':'left', 'amplitude':targetAmp}
-        sRight = {'type':'fromfile', 'filename':rightSoundFile,
-                  'channel':'right', 'amplitude':targetAmp}
-        self.soundClient.set_sound(self.targetSoundID[0],sLeft)
-        self.soundClient.set_sound(self.targetSoundID[1],sRight)
-        '''
-        '''
-        sLeftSpectral = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilesSpectral['left']),
-                         'channel':'both', 'amplitude':targetAmp}
-        sRightSpectral = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilesSpectral['right']),
-                         'channel':'both', 'amplitude':targetAmp}
-        sLeftTemporal = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilesTemporal['left']),
-                         'channel':'both', 'amplitude':targetAmp}
-        sRightTemporal = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFilesTemporal['right']),
-                         'channel':'both', 'amplitude':targetAmp}
-        self.soundClient.set_sound(self.targetSoundID['leftSpectral'],sLeftSpectral)
-        self.soundClient.set_sound(self.targetSoundID['rightSpectral'],sRightSpectral)
-        self.soundClient.set_sound(self.targetSoundID['leftTemporal'],sLeftTemporal)
-        self.soundClient.set_sound(self.targetSoundID['rightTemporal'],sRightTemporal)
-        '''
         for thisFeature in ['spectral','temporal']:
             for inds in range(6):
                 soundKey = '{0}{1:03}'.format(thisFeature,inds*20)
@@ -334,29 +327,12 @@ class Paradigm(templates.Paradigm2AFC):
                              'channel':'both', 'amplitude':targetAmp}
                 self.soundClient.set_sound(self.targetSoundID[soundKey],soundDict)
 
-        '''
-        if self.params['targetIntensityMode'].get_string() == 'randMinus20':
-            possibleIntensities = self.params['targetMaxIntensity'].get_value()+\
-                                  np.array([-20,-15,-10,-5,0])
-            targetIntensity = possibleIntensities[np.random.randint(len(possibleIntensities))]
-        else:
-            targetIntensity = self.params['targetMaxIntensity'].get_value()
-        self.params['targetIntensity'].set_value(targetIntensity)
-        # FIXME: currently I am averaging calibration from both speakers (not good)
-        targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
-        self.params['targetAmplitude'].set_value(targetAmp)
-
-        stimDur = self.params['targetDuration'].get_value()
-        s1 = {'type':'chord', 'frequency':targetFrequency, 'duration':stimDur,
-              'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
-        self.soundClient.set_sound(self.targetSoundID,s1)
-        '''
     
     def prepare_next_trial(self, nextTrial):
         #  TicTime = time.time() ### DEBUG
         # -- Calculate results from last trial (update outcome, choice, etc) --
         if nextTrial>0:
-            self.params.update_history()
+            self.params.update_history(nextTrial-1)
             self.calculate_results(nextTrial-1)
             # -- Apply anti-bias --
             if self.params['antibiasMode'].get_string()=='repeat_mistake':
@@ -408,7 +384,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Prepare state matrix --
         self.set_state_matrix(nextCorrectChoice)
-        self.dispatcherModel.ready_to_start_trial()
+        self.dispatcher.ready_to_start_trial()
         ###print('Elapsed Time (preparing next trial): ' + str(time.time()-TicTime)) ### DEBUG
 
         # -- Update sides plot --
@@ -432,15 +408,8 @@ class Paradigm(templates.Paradigm2AFC):
        
         targetDuration = self.params['targetDuration'].get_value()
         relevantFeature = self.params['relevantFeature'].get_string()
-        if rigsettings.OUTPUTS.has_key('outBit1'):
-            trialStartOutput = ['outBit1'] # Sync signal for trial-start.
-        else:
-            trialStartOutput = []
-        if rigsettings.OUTPUTS.has_key('outBit0'):
-            syncOutput = ['outBit0'] # Sync signal for stimulus
-        else:
-            syncOutput = []
-        stimOutput = syncOutput+laserOutput
+
+        stimOutput = stimSync+laserOutput
         if nextCorrectChoice==self.results.labels['rewardSide']['left']:
             rewardDuration = self.params['timeWaterValveL'].get_value()
             '''
@@ -485,17 +454,29 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Set state matrix --
         outcomeMode = self.params['outcomeMode'].get_string()
-        if outcomeMode=='simulated':
-            stimOutput.append(ledOutput)
+        if outcomeMode=='passive_exposure':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
-                              outputsOn=trialStartOutput)
+                              outputsOn=trialStartSync)
+            self.sm.add_state(name='waitForCenterPoke', statetimer=0,
+                              transitions={'Tup':'playStimulus'})
+            self.sm.add_state(name='playStimulus', statetimer=targetDuration,
+                              transitions={'Tup':'ITI'},
+                              outputsOn=stimOutput,serialOut=self.currentSoundID,
+                              outputsOff=trialStartSync)
+            self.sm.add_state(name='ITI', statetimer=rewardAvailability,
+                              transitions={'Tup':'readyForNextTrial'})
+        elif outcomeMode=='simulated':
+            #stimOutput.append(ledOutput)
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'waitForCenterPoke'},
+                              outputsOn=trialStartSync)
             self.sm.add_state(name='waitForCenterPoke', statetimer=1,
                               transitions={'Tup':'playStimulus'})
             self.sm.add_state(name='playStimulus', statetimer=targetDuration,
                               transitions={'Tup':'reward'},
                               outputsOn=stimOutput,serialOut=self.currentSoundID,
-                              outputsOff=trialStartOutput)
+                              outputsOff=trialStartSync)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput],
@@ -506,13 +487,13 @@ class Paradigm(templates.Paradigm2AFC):
         elif outcomeMode=='sides_direct':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
-                              outputsOn=trialStartOutput)
+                              outputsOn=trialStartSync)
             self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
                               transitions={'Cin':'playStimulus',correctSidePort:'playStimulus'})
             self.sm.add_state(name='playStimulus', statetimer=targetDuration,
                               transitions={'Tup':'reward'},
                               outputsOn=stimOutput,serialOut=self.currentSoundID,
-                              outputsOff=trialStartOutput)
+                              outputsOff=trialStartSync)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput],
@@ -523,13 +504,13 @@ class Paradigm(templates.Paradigm2AFC):
         elif outcomeMode=='direct':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
-                              outputsOn=trialStartOutput)
+                              outputsOn=trialStartSync)
             self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
                               transitions={'Cin':'playStimulus'})
             self.sm.add_state(name='playStimulus', statetimer=targetDuration,
                               transitions={'Tup':'reward'},
                               outputsOn=stimOutput,serialOut=self.currentSoundID,
-                              outputsOff=trialStartOutput)
+                              outputsOff=trialStartSync)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput],
@@ -540,7 +521,7 @@ class Paradigm(templates.Paradigm2AFC):
         elif outcomeMode=='on_next_correct':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
-                              outputsOn=trialStartOutput)
+                              outputsOn=trialStartSync)
             self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
                               transitions={'Cin':'delayPeriod'})
             self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
@@ -550,12 +531,12 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Tup':'waitForSidePoke','Cout':'waitForSidePoke',
                                                'laserTimer':'turnOffLaserAndWaitForPoke'},
                                   outputsOn=stimOutput, serialOut=self.currentSoundID,
-                                  outputsOff=trialStartOutput)
+                                  outputsOff=trialStartSync)
             else:
                 self.sm.add_state(name='playStimulus', statetimer=targetDuration,
                                   transitions={'Tup':'waitForSidePoke','Cout':'earlyWithdrawal'},
                                   outputsOn=stimOutput, serialOut=self.currentSoundID,
-                                  outputsOff=trialStartOutput)
+                                  outputsOff=trialStartSync)
             # NOTE: this is not ideal because it sends the system out of playStimulus
             #       onto waitForSidePoke (even if stim has not finished.
             self.sm.add_state(name='turnOffLaserAndWaitForPoke', statetimer=0,
@@ -564,7 +545,7 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                            'Tup':'noChoice','laserTimer':'turnOffLaserAndWaitForPoke'},
-                              outputsOff=syncOutput)
+                              outputsOff=stimSync)
             self.sm.add_state(name='keepWaitForSide', statetimer=rewardAvailability,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                            'Tup':'noChoice'},
@@ -600,33 +581,33 @@ class Paradigm(templates.Paradigm2AFC):
         elif outcomeMode=='only_if_correct':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
-                              outputsOn=trialStartOutput)
+                              outputsOn=trialStartSync)
             self.sm.add_state(name='waitForCenterPoke', statetimer=LONGTIME,
                               transitions={'Cin':'delayPeriod'})
             self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
                               transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
             # Note that 'delayPeriod' may happen several times in a trial, so
-            # trialStartOutput going off would only meaningful for the first time in the trial.
+            # trialStartSync going off would only meaningful for the first time in the trial.
             if allowEarlyWithdrawal=='on':
                 self.sm.add_state(name='playStimulus', statetimer=targetDuration,
                                   transitions={'Tup':'waitForSidePoke','Cout':'waitForSidePoke',
                                                'laserTimer':'turnOffLaserAndWaitForPoke'},
                                   outputsOn=stimOutput, serialOut=self.currentSoundID,
-                                  outputsOff=trialStartOutput,
+                                  outputsOff=trialStartSync,
                                   trigger=['laserTimer'])
             else:
                 ### NOT IMPLEMENTED ###
                 self.sm.add_state(name='playStimulus', statetimer=targetDuration,
                                   transitions={'Tup':'waitForSidePoke','Cout':'earlyWithdrawal'},
                                   outputsOn=stimOutput, serialOut=self.currentSoundID,
-                                  outputsOff=trialStartOutput)
+                                  outputsOff=trialStartSync)
             self.sm.add_state(name='turnOffLaserAndWaitForPoke', statetimer=0,
                               transitions={'Tup':'waitForSidePoke'},
                               outputsOff=laserOutput)
             self.sm.add_state(name='waitForSidePoke', statetimer=rewardAvailability,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                            'Tup':'noChoice','laserTimer':'turnOffLaserAndWaitForPoke'},
-                              outputsOff=syncOutput)
+                              outputsOff=stimSync)
             if correctSidePort=='Lin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'reward'}, outputsOff=laserOutput)
@@ -654,14 +635,14 @@ class Paradigm(templates.Paradigm2AFC):
         else:
             raise TypeError('outcomeMode={0} has not been implemented'.format(outcomeMode))
         ###print(self.sm) ### DEBUG
-        self.dispatcherModel.set_state_matrix(self.sm)
+        self.dispatcher.set_state_matrix(self.sm)
 
     def calculate_results(self,trialIndex):
         # -- Find outcomeMode for this trial --
         outcomeModeID = self.params.history['outcomeMode'][trialIndex]
         outcomeModeString = self.params['outcomeMode'].get_items()[outcomeModeID]
 
-        eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
+        eventsThisTrial = self.dispatcher.events_one_trial(trialIndex)
         statesThisTrial = eventsThisTrial[:,2]
         #print(eventsThisTrial)
 
@@ -691,7 +672,7 @@ class Paradigm(templates.Paradigm2AFC):
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
                           self.sm.statesNameToIndex['delayPeriod'],
                           self.sm.statesNameToIndex['playStimulus']]
-            elif outcomeModeString in ['simulated','sides_direct','direct']:
+            elif outcomeModeString in ['passive_exposure','sides_direct','direct']:
                 seqCin = [self.sm.statesNameToIndex['waitForCenterPoke'],
                           self.sm.statesNameToIndex['playStimulus']]
             else:
@@ -730,7 +711,7 @@ class Paradigm(templates.Paradigm2AFC):
                     timeValue = eventsThisTrial[rightInInd[0],0]
                 else:
                     timeValue = np.nan
-            elif outcomeModeString in ['simulated','sides_direct','direct']:
+            elif outcomeModeString in ['passive_exposure','sides_direct','direct']:
                 timeValue = np.nan
             self.results['timeSideIn'][trialIndex] = timeValue
 
@@ -742,7 +723,7 @@ class Paradigm(templates.Paradigm2AFC):
             self.results['choice'][trialIndex] = self.results.labels['choice']['none']
         # -- Otherwise evaluate 'choice' and 'outcome' --
         else:
-            if outcomeModeString in ['simulated','sides_direct','direct']:
+            if outcomeModeString in ['passive_exposure','sides_direct','direct']:
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['free']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
                 self.params['nValid'].add(1)
@@ -772,10 +753,10 @@ class Paradigm(templates.Paradigm2AFC):
                     elif self.sm.statesNameToIndex['punish'] in eventsThisTrial[:,2]:
                         self.results['outcome'][trialIndex] = \
                             self.results.labels['outcome']['error']
-            	# -- Check if it was a valid trial --
-            	if self.sm.statesNameToIndex['waitForSidePoke'] in eventsThisTrial[:,2]:
-                	self.params['nValid'].add(1)
-                        self.results['valid'][trialIndex] = 1
+                # -- Check if it was a valid trial --
+                if self.sm.statesNameToIndex['waitForSidePoke'] in eventsThisTrial[:,2]:
+                    self.params['nValid'].add(1)
+                    self.results['valid'][trialIndex] = 1
 
     def execute_automation(self,nextTrial):
         automationMode = self.params['automationMode'].get_string()
@@ -787,11 +768,11 @@ class Paradigm(templates.Paradigm2AFC):
     def closeEvent(self, event):
         '''
         Executed when closing the main window.
-        This method is inherited from QtGui.QMainWindow, which explains
+        This method is inherited from QtWidgets.QMainWindow, which explains
         its camelCase naming.
         '''
         self.soundClient.shutdown()
-        self.dispatcherModel.die()
+        self.dispatcher.die()
         event.accept()
 
 if __name__ == '__main__':
