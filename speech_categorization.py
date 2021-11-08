@@ -20,35 +20,12 @@ from taskontrol.plugins import speakercalibration
 
 LONGTIME = 100
 
-SOUND_DIR = '../jarasounds/'
+SOUND_DIR = '../jarasounds/ft_vot_1x'
 
-'''
-soundFiles = {'spectral000':'bada_8x_000.wav', 'spectral020':'bada_8x_020.wav',
-              'spectral040':'bada_8x_040.wav', 'spectral060':'bada_8x_060.wav',
-              'spectral080':'bada_8x_080.wav', 'spectral100':'bada_8x_100.wav',
-              'temporal000':'bapa_8x_000.wav', 'temporal020':'bapa_8x_020.wav',
-              'temporal040':'bapa_8x_040.wav', 'temporal060':'bapa_8x_060.wav',
-              'temporal080':'bapa_8x_080.wav', 'temporal100':'bapa_8x_100.wav'}
-'''
-soundFiles = {'spectral000':'bada_1x_000.wav', 'spectral020':'bada_1x_020.wav',
-              'spectral040':'bada_1x_040.wav', 'spectral060':'bada_1x_060.wav',
-              'spectral080':'bada_1x_080.wav', 'spectral100':'bada_1x_100.wav',
-              'temporal000':'bapa_1x_000.wav', 'temporal020':'bapa_1x_020.wav',
-              'temporal040':'bapa_1x_040.wav', 'temporal060':'bapa_1x_060.wav',
-              'temporal080':'bapa_1x_080.wav', 'temporal100':'bapa_1x_100.wav'}
-
-'''
-SOUND_DIR = '/tmp/speechsounds'
-soundFiles = glob.glob(os.path.join(SOUND_DIR,'*.wav'))
-nFiles = len(soundFiles)
-eachVOT = np.empty(nFiles, dtype=int)
-eachFT = np.empty(nFiles, dtype=int)
-for indsf, oneFile in enumerate(soundFiles):
-    eachVOT[indsf] = int(oneFile.split('vot')[1][:3])
-    eachFT[indsf] = int(oneFile.split('ft')[1][:3])
-possibleVOT = np.unique(eachVOT)
-possibleFT = np.unique(eachFT)
-'''             
+SOUND_FILENAME_FORMAT = 'syllable_{0}x_vot{1:03.0f}_ft{2:03.0f}.wav'  # From speechsynth.py
+FREQFACTOR_PATTERN = r'_(\d{1})x_'
+VOT_PATTERN = r'_vot(\d{3})_'
+FT_PATTERN = r'_ft(\d{3}).'
 
 if 'outBit1' in rigsettings.OUTPUTS:
     trialStartSync = ['outBit1'] # Sync signal for trial-start.
@@ -64,6 +41,13 @@ class Paradigm(templates.Paradigm2AFC):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(Paradigm, self).__init__(parent)
 
+        self.soundFiles = []
+        self.targetSoundID = {}  # Keys are filenames, items are integers to be used as soundID
+        self.freqFactor = 0
+        self.possibleVOT = 0
+        self.possibleFT = 0
+        self.get_sound_files()  # Defines self.soundFiles, self.possibleVOT and self.possibleFT
+        
         # -- Performance dynamics plot --
         performancedynamicsplot.set_pg_colors(self)
         self.myPerformancePlot = performancedynamicsplot.PerformanceDynamicsPlot(nTrials=400,winsize=10)
@@ -166,7 +150,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['targetFrequency'] = paramgui.NumericParam('Target freq',value=0,decimals=0,
                                                                units='Hz',enabled=False,group='Sound parameters')
         '''
-        self.params['targetFrequency'] = paramgui.NumericParam('Target percentage',value=0,decimals=0,
+        self.params['targetPercentage'] = paramgui.NumericParam('Target percentage',value=0,decimals=0,
                                                                units='percentage',enabled=False,group='Sound parameters')
         self.params['targetIntensityMode'] = paramgui.MenuParam('Intensity mode',
                                                                 ['fixed','randMinus20'],
@@ -283,12 +267,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Prepare sounds --
         self.punishSoundID = 100
-        #self.targetSoundID = {'leftSpectral':1, 'rightSpectral':2,
-        #                      'leftTemporal':3, 'rightTemporal':4}
-        self.targetSoundID = {'spectral000':1, 'spectral020':2, 'spectral040':3,
-                              'spectral060':4, 'spectral080':5, 'spectral100':6,
-                              'temporal000':11, 'temporal020':12, 'temporal040':13,
-                              'temporal060':14, 'temporal080':15, 'temporal100':16}
+        #self.prepare_target_sound()
         self.currentSoundID = None
 
         # -- Specify state matrix with extratimer --
@@ -307,7 +286,25 @@ class Paradigm(templates.Paradigm2AFC):
         sNoise = {'type':'noise', 'duration':0.5, 'amplitude':punishSoundAmplitude}
         self.soundClient.set_sound(self.punishSoundID,sNoise)
 
-    def prepare_target_sound(self):
+    def get_sound_files(self):
+        import re
+        self.soundFiles = glob.glob(os.path.join(SOUND_DIR,'*.wav'))
+        nFiles = len(self.soundFiles)
+        eachVOT = np.empty(nFiles, dtype=int)
+        eachFT = np.empty(nFiles, dtype=int)
+        self.soundIDdict = {}
+        for indsf, oneFile in enumerate(self.soundFiles):
+            ###filename = os.path.basename(oneFile)
+            self.soundIDdict[oneFile] = indsf+1
+            self.soundIDdict[indsf] = oneFile
+            eachVOT[indsf] = re.search(VOT_PATTERN, oneFile).group(1)
+            eachFT[indsf] = re.search(FT_PATTERN, oneFile).group(1)
+        self.possibleVOT = np.unique(eachVOT)
+        self.possibleFT = np.unique(eachFT)
+        self.freqFactor = re.search(FREQFACTOR_PATTERN, oneFile).group(1)
+
+        
+    def prepare_target_sound(self, soundFilename):
         targetFrequency = 10000
         if self.params['targetIntensityMode'].get_string() == 'randMinus20':
             possibleIntensities = self.params['targetMaxIntensity'].get_value()+\
@@ -319,14 +316,9 @@ class Paradigm(templates.Paradigm2AFC):
         # FIXME: currently I am averaging calibration from both speakers (not good)
         targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
         self.params['targetAmplitude'].set_value(targetAmp)
-
-        for thisFeature in ['spectral','temporal']:
-            for inds in range(6):
-                soundKey = '{0}{1:03}'.format(thisFeature,inds*20)
-                soundDict = {'type':'fromfile', 'filename':os.path.join(SOUND_DIR,soundFiles[soundKey]),
-                             'channel':'both', 'amplitude':targetAmp}
-                self.soundClient.set_sound(self.targetSoundID[soundKey],soundDict)
-
+        soundDict = {'type':'fromfile', 'filename':soundFilename,
+                     'channel':'both', 'amplitude':targetAmp}
+        self.soundClient.set_sound(1, soundDict)
     
     def prepare_next_trial(self, nextTrial):
         #  TicTime = time.time() ### DEBUG
@@ -366,9 +358,16 @@ class Paradigm(templates.Paradigm2AFC):
                 targetPercentage = randIndex*20
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
                 targetPercentage = (5-randIndex)*20
-        soundKey = '{0}{1:03}'.format(relevantFeature,targetPercentage)
-        self.currentSoundID = self.targetSoundID[soundKey]
-        self.params['targetFrequency'].set_value(targetPercentage)
+        if relevantFeature=='spectral':
+            # Fix VOT
+            filename = SOUND_FILENAME_FORMAT.format(self.freqFactor, 0, targetPercentage)
+        elif relevantFeature=='temporal':
+            # Fix FT
+            filename = SOUND_FILENAME_FORMAT.format(self.freqFactor, targetPercentage, 0)
+        #soundKey = '{0}{1:03}'.format(relevantFeature,targetPercentage)
+        soundKey = os.path.join(SOUND_DIR, filename)
+        self.currentSoundID = 1 #self.targetSoundID[soundKey]
+        self.params['targetPercentage'].set_value(targetPercentage)
 
         # -- Check if it will be a laser trial --
         if self.params['laserMode'].get_string()=='bilateral':
@@ -379,7 +378,7 @@ class Paradigm(templates.Paradigm2AFC):
             trialTypeInd=0
         self.params['laserTrial'].set_value(trialTypeInd)
 
-        self.prepare_target_sound()
+        self.prepare_target_sound(soundKey)
         self.prepare_punish_sound()
 
         # -- Prepare state matrix --
@@ -412,14 +411,6 @@ class Paradigm(templates.Paradigm2AFC):
         stimOutput = stimSync+laserOutput
         if nextCorrectChoice==self.results.labels['rewardSide']['left']:
             rewardDuration = self.params['timeWaterValveL'].get_value()
-            '''
-            if relevantFeature=='spectral':
-                thisTargetID = self.targetSoundID['leftSpectral']
-            elif relevantFeature=='temporal':
-                thisTargetID = self.targetSoundID['leftTemporal']
-            else:
-                raise ValueError('Relevant feature for categorization not defined')
-            '''
             #ledOutput = 'leftLED'
             fromChoiceL = 'reward'
             fromChoiceR = 'punish'
@@ -427,14 +418,6 @@ class Paradigm(templates.Paradigm2AFC):
             correctSidePort = 'Lin'
         elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
             rewardDuration = self.params['timeWaterValveR'].get_value()
-            '''
-            if relevantFeature=='spectral':
-                thisTargetID = self.targetSoundID['rightSpectral']
-            elif relevantFeature=='temporal':
-                thisTargetID = self.targetSoundID['rightTemporal']
-            else:
-                raise ValueError('Relevant feature for categorization not defined')
-            '''
             #ledOutput = 'rightLED'
             fromChoiceL = 'punish'
             fromChoiceR = 'reward'
@@ -459,12 +442,14 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'waitForCenterPoke'},
                               outputsOn=trialStartSync)
             self.sm.add_state(name='waitForCenterPoke', statetimer=0,
+                              transitions={'Tup':'delayPeriod'})
+            self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
                               transitions={'Tup':'playStimulus'})
             self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                              transitions={'Tup':'ITI'},
+                              transitions={'Tup':'noChoice'},
                               outputsOn=stimOutput,serialOut=self.currentSoundID,
                               outputsOff=trialStartSync)
-            self.sm.add_state(name='ITI', statetimer=rewardAvailability,
+            self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
         elif outcomeMode=='simulated':
             #stimOutput.append(ledOutput)
