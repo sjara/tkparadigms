@@ -32,5 +32,9 @@ pals015 = {'subject':'pals015',
            'soundType':'chords',
            }
 
+amod015 = {'subject':'amod015',
+           'experimenter': 'angelica',
+          }
+amod015.update(AM_stage_one)
 
-
+# python am_discrimination.py params.angelica.py amod015
