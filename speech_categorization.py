@@ -80,8 +80,9 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['delayToTarget'] = paramgui.NumericParam('Delay to target',value=0.3,
                                                         units='s',group='Timing parameters',
                                                         enabled=False,decimals=3)
-        self.params['targetDuration'] = paramgui.NumericParam('Target duration',value=0.1,
-                                                        units='s',group='Timing parameters')
+        self.params['targetDuration'] = paramgui.NumericParam('Target duration',value=0,
+                                                              decimals=3, enabled=False,
+                                                              units='s',group='Timing parameters')
         self.params['rewardAvailability'] = paramgui.NumericParam('Reward availability',value=4,
                                                         units='s',group='Timing parameters')
         self.params['punishTimeError'] = paramgui.NumericParam('Punishment (error)',value=0,
@@ -163,11 +164,11 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['targetAmplitude'] = paramgui.NumericParam('Target amplitude',value=0.0,units='[0-1]',
                                                         enabled=False,decimals=4,group='Sound parameters')
         self.params['punishSoundIntensity'] = paramgui.NumericParam('Punish intensity',value=50,
-                                                              units='dB-SPL',enabled=True,
-                                                              group='Sound parameters')
+                                                                    units='dB-SPL',enabled=True,
+                                                                    group='Sound parameters')
         self.params['punishSoundAmplitude'] = paramgui.NumericParam('Punish amplitude',value=0.01,
-                                                              units='[0-1]',enabled=False,
-                                                              group='Sound parameters')
+                                                                    units='[0-1]',enabled=False, decimals=4,
+                                                                    group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
         self.params['nValid'] = paramgui.NumericParam('N valid',value=0,
@@ -318,7 +319,8 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['targetAmplitude'].set_value(targetAmp)
         soundDict = {'type':'fromfile', 'filename':soundFilename,
                      'channel':'both', 'amplitude':targetAmp}
-        self.soundClient.set_sound(1, soundDict)
+        thisSound = self.soundClient.set_sound(1, soundDict)
+        self.params['targetDuration'].set_value(thisSound.get_duration())
     
     def prepare_next_trial(self, nextTrial):
         #  TicTime = time.time() ### DEBUG
