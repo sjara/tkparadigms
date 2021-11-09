@@ -20,7 +20,7 @@ from taskontrol.plugins import speakercalibration
 
 LONGTIME = 100
 
-SOUND_DIR = '../jarasounds/ft_vot_1x'
+SOUND_DIR = '../jarasounds/ft_vot/'
 
 SOUND_FILENAME_FORMAT = 'syllable_{0}x_vot{1:03.0f}_ft{2:03.0f}.wav'  # From speechsynth.py
 FREQFACTOR_PATTERN = r'_(\d{1})x_'
@@ -447,10 +447,11 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'playStimulus'})
             self.sm.add_state(name='playStimulus', statetimer=targetDuration,
                               transitions={'Tup':'noChoice'},
-                              outputsOn=stimOutput,serialOut=self.currentSoundID,
+                              outputsOn=stimOutput, serialOut=self.currentSoundID,
                               outputsOff=trialStartSync)
             self.sm.add_state(name='noChoice', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'})
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=stimOutput)
         elif outcomeMode=='simulated':
             #stimOutput.append(ledOutput)
             self.sm.add_state(name='startTrial', statetimer=0,
