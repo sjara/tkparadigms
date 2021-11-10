@@ -4,35 +4,35 @@ Params for Angelica.
 
 AM_stage_zero = {'outcomeMode':'sides_direct',
                 'delayToTargetMean':0,
-                'delayToTargetHalfRange':0
+                'delayToTargetHalfRange':0,
                 'experimenter': 'angelica'
                }
 
 AM_stage_one = {'outcomeMode':'direct',
                 'delayToTargetMean':0,
-                'delayToTargetHalfRange':0
+                'delayToTargetHalfRange':0,
                 'experimenter': 'angelica'}
 
 AM_stage_two = {'outcomeMode':'on_next_correct',
                 'delayToTargetMean':0,
-                'delayToTargetHalfRange':0
-                'automationMode': 'increase_delay'
+                'delayToTargetHalfRange':0,
+                'automationMode': 'increase_delay',
                 'experimenter': 'angelica'}
 
 AM_stage_three = {'outcomeMode':'only_if_correct',
                 'delayToTargetMean':2,
-                'delayToTargetHalfRange':0.05
+                'delayToTargetHalfRange':0.05,
                 'experimenter': 'angelica'}
 
 bias_correction_stage = {'outcomeMode':'only_if_correct',
                 'delayToTargetMean':2,
-                'delayToTargetHalfRange':0.05
+                'delayToTargetHalfRange':0.05,
                 'experimenter': 'angelica'}
 
 AM_stage_four = {'outcomeMode':'only_if_correct',
                 'delayToTargetMean':2,
-                'delayToTargetHalfRange':0.05
-                 'psycurveMode': 'uniform'
+                'delayToTargetHalfRange':0.05,
+                 'psycurveMode': 'uniform',
                 'experimenter': 'angelica'}
 
 
