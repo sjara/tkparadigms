@@ -46,19 +46,19 @@ pals015 = {'subject':'pals015',
 amod015 = {'subject':'amod015',
           }
 
-amod016 = {'subject':'amod015',
+amod016 = {'subject':'amod016',
           }
 
-amod017 = {'subject':'amod015',
+amod017 = {'subject':'amod017',
           }
 
-amod018 = {'subject':'amod015',
+amod018 = {'subject':'amod018',
           }
 
-amod019 = {'subject':'amod015',
+amod019 = {'subject':'amod019',
           }
 
-amod019 = {'subject':'amod015',
+amod020 = {'subject':'amod020',
           }
 
 amod015.update(AM_stage_three)
