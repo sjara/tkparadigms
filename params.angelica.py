@@ -20,17 +20,17 @@ AM_stage_two = {'outcomeMode':'on_next_correct',
                 'experimenter': 'angelica'}
 
 AM_stage_three = {'outcomeMode':'only_if_correct',
-                'delayToTargetMean':2.0,
+                'delayToTargetMean':0.2,
                 'delayToTargetHalfRange':0.05,
                 'experimenter': 'angelica'}
 
 bias_correction_stage = {'outcomeMode':'only_if_correct',
-                'delayToTargetMean':2.0,
+                'delayToTargetMean':0.2,
                 'delayToTargetHalfRange':0.05,
                 'experimenter': 'angelica'}
 
 AM_stage_four = {'outcomeMode':'only_if_correct',
-                'delayToTargetMean':2.0,
+                'delayToTargetMean':0.2,
                 'delayToTargetHalfRange':0.05,
                  'psycurveMode': 'uniform',
                 'experimenter': 'angelica'}
