@@ -9,28 +9,28 @@ AM_stage_zero = {'outcomeMode':'sides_direct',
                }
 
 AM_stage_one = {'outcomeMode':'direct',
-                'delayToTargetMean':0,
-                'delayToTargetHalfRange':0,
+                'delayToTargetMean':0.0,
+                'delayToTargetHalfRange':0.0,
                 'experimenter': 'angelica'}
 
 AM_stage_two = {'outcomeMode':'on_next_correct',
-                'delayToTargetMean':0,
-                'delayToTargetHalfRange':0,
+                'delayToTargetMean':0.0,
+                'delayToTargetHalfRange':0.0,
                 'automationMode': 'increase_delay',
                 'experimenter': 'angelica'}
 
 AM_stage_three = {'outcomeMode':'only_if_correct',
-                'delayToTargetMean':2,
+                'delayToTargetMean':2.0,
                 'delayToTargetHalfRange':0.05,
                 'experimenter': 'angelica'}
 
 bias_correction_stage = {'outcomeMode':'only_if_correct',
-                'delayToTargetMean':2,
+                'delayToTargetMean':2.0,
                 'delayToTargetHalfRange':0.05,
                 'experimenter': 'angelica'}
 
 AM_stage_four = {'outcomeMode':'only_if_correct',
-                'delayToTargetMean':2,
+                'delayToTargetMean':2.0,
                 'delayToTargetHalfRange':0.05,
                  'psycurveMode': 'uniform',
                 'experimenter': 'angelica'}
