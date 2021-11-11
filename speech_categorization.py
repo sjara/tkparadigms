@@ -41,6 +41,8 @@ class Paradigm(templates.Paradigm2AFC):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(Paradigm, self).__init__(parent)
 
+        self.name = '2afc_speech'
+
         self.soundFiles = []
         self.targetSoundID = {}  # Keys are filenames, items are integers to be used as soundID
         self.freqFactor = 0
