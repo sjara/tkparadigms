@@ -27,6 +27,7 @@ AM_stage_three = {'outcomeMode':'only_if_correct',
 bias_correction_stage = {'outcomeMode':'only_if_correct',
                 'delayToTargetMean':0.2,
                 'delayToTargetHalfRange':0.05,
+                'antibiasMode': 'repeat_mistake',
                 'experimenter': 'angelica'}
 
 AM_stage_four = {'outcomeMode':'only_if_correct',
@@ -61,11 +62,11 @@ amod019 = {'subject':'amod019',
 amod020 = {'subject':'amod020',
           }
 
-amod015.update(AM_stage_three)
+amod015.update(bias_correction_stage)
 amod016.update(AM_stage_three)
 amod017.update(AM_stage_three)
 amod018.update(AM_stage_three)
 amod019.update(AM_stage_three)
-amod020.update(AM_stage_three)
+amod020.update(AM_stage_four)
 
 # python am_discrimination.py params.angelica.py amod015
