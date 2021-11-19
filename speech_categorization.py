@@ -106,8 +106,8 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
                                                          ['off','uniform','extreme80pc'],
                                                          value=0,group='Psychometric parameters')
-        #self.params['psycurveNfreq'] = paramgui.NumericParam('N frequencies',value=8,decimals=0,
-        #                                                     group='Psychometric parameters')
+        self.params['psycurveNsteps'] = paramgui.MenuParam('PsyCurve N steps', ['4','6'],
+                                                           value=0,group='Psychometric parameters')
         psychometricParams = self.params.layout_group('Psychometric parameters')
 
 
@@ -343,18 +343,19 @@ class Paradigm(templates.Paradigm2AFC):
         # -- Prepare sound --
         relevantFeature = self.params['relevantFeature'].get_string()
         psycurveMode = self.params['psycurveMode'].get_string()
+        psycurveNsteps = int(self.params['psycurveNsteps'].get_string())
         if psycurveMode=='off':
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
                 targetPercentage = 0
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
                 targetPercentage = 100
         elif psycurveMode=='uniform':
-            # -- It assumes 6 possible values --
-            randIndex = np.random.randint(3)
+            randIndex = np.random.randint(psycurveNsteps//2)
+            possibleValues = np.round(np.linspace(0, 100, psycurveNsteps)).astype(int)
             if nextCorrectChoice==self.results.labels['rewardSide']['left']:
-                targetPercentage = randIndex*20
+                targetPercentage = possibleValues[randIndex]
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
-                targetPercentage = (5-randIndex)*20
+                targetPercentage = possibleValues[randIndex+psycurveNsteps//2]
         elif psycurveMode=='extreme80pc':
             # -- It assumes 6 possible values. 80% trials on extremes, 20% on the rest --
             randIndex = np.flatnonzero(np.random.multinomial(1,[0.8, 0.1, 0.1]))[0]
