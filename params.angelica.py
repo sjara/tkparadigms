@@ -62,9 +62,9 @@ amod019 = {'subject':'amod019',
 amod020 = {'subject':'amod020',
           }
 
-amod015.update(AM_stage_three)
+amod015.update(AM_stage_four)
 amod016.update(AM_stage_three)
-amod017.update(AM_stage_three)
+amod017.update(bias_correction_stage)
 amod018.update(AM_stage_three)
 amod019.update(AM_stage_four)
 amod020.update(AM_stage_four)
