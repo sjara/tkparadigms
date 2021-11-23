@@ -1,7 +1,6 @@
 """
 Params for Sean.
 """
-"""Params for Sean"""
 
 FM_stage_one = {'outcomeMode': 'sides_direct',
                 'activePort': 'both',
@@ -47,7 +46,7 @@ FM_stage_five = {'outcomeMode': 'only_if_correct',
                 'activePort': 'both',
                 'allowEarlyWithdrawal': 'off',
                 'antibiasMode': 'on',
-                'delayToTargetmean':0.3,
+                'delayToTargetMean':0.3,
                 'automationMode': 'off',
                 'psycurveMode': 'off',
                 'experimenter': 'sean'}
@@ -56,7 +55,7 @@ FM_stage_six = {'outcomeMode': 'only_if_correct',
                 'activePort': 'both',
                 'allowEarlyWithdrawal': 'off',
                 'antibiasMode': 'off',
-                'delayToTargetmean':0.3,
+                'delayToTargetMean':0.3,
                 'automationMode': 'off',
                 'psycurveMode': 'off',
                 'experimenter': 'sean'}
@@ -65,7 +64,7 @@ FM_stage_seven = {'outcomeMode': 'only_if_correct',
                 'activePort': 'both',
                 'allowEarlyWithdrawal': 'off',
                 'antibiasMode': 'off',
-                'delayToTargetmean':0.3,
+                'delayToTargetMean':0.3,
                 'automationMode': 'off',
                 'psycurveMode': 'uniform',
                 'experimenter': 'sean'}
@@ -74,7 +73,7 @@ FM_stage_eight = {'outcomeMode': 'only_if_correct',
                   'activePort': 'both',
                   'allowEarlyWithdrawal':'off',
                   'antibiasMode': 'off',
-                  'delayToTargetmean':0.3,
+                  'delayToTargetMean':0.3,
                   'automationMode': 'off',
                   'psycurveMode': 'controls',
                   'experimenter': 'sean'}
@@ -107,3 +106,5 @@ frem002.update(FM_stage_eight)
 frem003.update(FM_stage_eight)
 frem004.update(FM_stage_eight)
 frem005.update(FM_stage_eight)
+
+#python fm_discrimination.py params.sean.py frem001
