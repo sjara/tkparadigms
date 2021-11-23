@@ -79,12 +79,18 @@ FM_stage_eight = {'outcomeMode': 'only_if_correct',
                   'experimenter': 'sean'}
 
 
+FM_six = {'lickBeforeStimOffset': 'ignore',
+          'rewardSideMode': 'random',
+          'soundType': 'FM_direction',
+          'psycurveMode': 'uniform',
+          'taskMode': 'discriminate_stim',
+          'experimenter': 'sean'}
+
 pals020 = {'subject':'pals020',
-           'experimenter': 'angelica',
-           'taskMode': 'water_on_sound',
-           'rewardSideMode': 'random',
-           'soundType':'chords',
-           }
+          }
+
+pals022 = {'subject':'pals022',
+          }
 
 frem001 = {'subject':'frem001',
           }
@@ -101,10 +107,13 @@ frem004 = {'subject':'frem004',
 frem005 = {'subject':'frem005',
           }
 
+pals020.update(FM_six)
+pals022.update(FM_six)
 frem001.update(FM_stage_seven)
 frem002.update(FM_stage_eight)
 frem003.update(FM_stage_eight)
 frem004.update(FM_stage_eight)
 frem005.update(FM_stage_eight)
 
-#python fm_discrimination.py params.sean.py frem001
+#python fm_discrimination.py params.sean.py frem001 (for frem mice, freely moving)
+#python headfixed_twochoice.py params.sean.py pals020 (for pals mice, headfixed)
