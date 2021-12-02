@@ -63,7 +63,7 @@ amod020 = {'subject':'amod020',
           }
 
 amod015.update(AM_stage_four)
-amod016.update(AM_stage_three)
+amod016.update(bias_correction_stage)
 amod017.update(AM_stage_three)
 amod018.update(AM_stage_three)
 amod019.update(AM_stage_four)
