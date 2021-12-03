@@ -109,7 +109,7 @@ frem005 = {'subject':'frem005',
 
 pals020.update(FM_six)
 pals022.update(FM_six)
-frem001.update(FM_stage_seven)
+frem001.update(FM_stage_eight)
 frem002.update(FM_stage_eight)
 frem003.update(FM_stage_eight)
 frem004.update(FM_stage_eight)
