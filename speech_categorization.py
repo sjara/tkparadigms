@@ -171,6 +171,9 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['punishSoundAmplitude'] = paramgui.NumericParam('Punish amplitude',value=0.01,
                                                                     units='[0-1]',enabled=False, decimals=4,
                                                                     group='Sound parameters')
+        self.params['soundLocation'] = paramgui.MenuParam('Sound location',
+                                                          ['binaural', 'left', 'right'],
+                                                          value=0, group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
         self.params['nValid'] = paramgui.NumericParam('N valid',value=0,
@@ -309,6 +312,7 @@ class Paradigm(templates.Paradigm2AFC):
         
     def prepare_target_sound(self, soundFilename):
         targetFrequency = 10000
+        soundLocation = self.params['soundLocation'].get_string()
         if self.params['targetIntensityMode'].get_string() == 'randMinus20':
             possibleIntensities = self.params['targetMaxIntensity'].get_value()+\
                                   np.array([-20,-15,-10,-5,0])
@@ -319,8 +323,12 @@ class Paradigm(templates.Paradigm2AFC):
         # FIXME: currently I am averaging calibration from both speakers (not good)
         targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
         self.params['targetAmplitude'].set_value(targetAmp)
-        soundDict = {'type':'fromfile', 'filename':soundFilename,
-                     'channel':'both', 'amplitude':targetAmp}
+        if soundLocation == 'left':
+            soundDict = {'type':'fromfile', 'filename':soundFilename, 'amplitude':[targetAmp, 0]}
+        elif soundLocation == 'right':
+            soundDict = {'type':'fromfile', 'filename':soundFilename, 'amplitude':[0, targetAmp]}
+        else:
+            soundDict = {'type':'fromfile', 'filename':soundFilename, 'amplitude':targetAmp}
         thisSound = self.soundClient.set_sound(1, soundDict)
         self.params['targetDuration'].set_value(thisSound.get_duration())
     

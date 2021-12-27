@@ -79,3 +79,5 @@ fm000 = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialInterva
          'lickingPeriod':0.2, 'interTrialIntervalHalfRange':0,
          'targetDuration': 0.5,
          'soundType':'FM_direction', 'highFreq':1300, 'lowFreq':600, 'rewardSideMode':'toggle'}
+
+speech000 = {'subject':'test000', 'outcomeMode':'passive_exposure'}
