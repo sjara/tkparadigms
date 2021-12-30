@@ -264,6 +264,14 @@ class Paradigm(templates.Paradigm2AFC):
         # -- Load speaker calibration --
         self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
         self.spkNoiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
+        try:
+            self.spkVowelCal = speakercalibration.VowelCalibration(rigsettings.SPEAKER_CALIBRATION_VOWEL)
+            self.VOWEL_CALIBRATION = True
+        except Exception as e:
+            print(e)
+            QtWidgets.QMessageBox.warning(self, "WARNING!",
+                                          "This rig has not been calibrated for speech sounds.")
+            self.VOWEL_CALIBRATION = False
 
         # -- Connect to sound server and define sounds --
         print('Conecting to soundserver (waiting for 200ms) ...')
@@ -311,7 +319,6 @@ class Paradigm(templates.Paradigm2AFC):
 
         
     def prepare_target_sound(self, soundFilename):
-        targetFrequency = 10000
         soundLocation = self.params['soundLocation'].get_string()
         if self.params['targetIntensityMode'].get_string() == 'randMinus20':
             possibleIntensities = self.params['targetMaxIntensity'].get_value()+\
@@ -320,8 +327,12 @@ class Paradigm(templates.Paradigm2AFC):
         else:
             targetIntensity = self.params['targetMaxIntensity'].get_value()
         self.params['targetIntensity'].set_value(targetIntensity)
-        # FIXME: currently I am averaging calibration from both speakers (not good)
-        targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
+        if self.VOWEL_CALIBRATION:
+            targetAmp = self.spkVowelCal.find_amplitude(targetIntensity).mean()
+        else:
+            # FIXME: currently I am averaging calibration from both speakers (not good)
+            targetFrequency = 10000
+            targetAmp = self.spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
         self.params['targetAmplitude'].set_value(targetAmp)
         if soundLocation == 'left':
             soundDict = {'type':'fromfile', 'filename':soundFilename, 'amplitude':[targetAmp, 0]}
