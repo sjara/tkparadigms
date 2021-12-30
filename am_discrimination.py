@@ -131,7 +131,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                         units='Hz',group='Sound parameters')
         self.params['lowSoundFreq'] = paramgui.NumericParam('Low sound freq',value=5000,
                                                         units='Hz',group='Sound parameters')
-        self.params['targetFrequency'] = paramgui.NumericParam('Target rate or freq',value=0,decimals=0,
+        self.params['targetFrequency'] = paramgui.NumericParam('Target rate or freq',value=0, decimals=1,
                                                         units='Hz',enabled=False,group='Sound parameters')
         self.params['targetIntensityMode'] = paramgui.MenuParam('Intensity mode',
                                                                ['fixed','randMinus20'],
