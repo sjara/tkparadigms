@@ -4,25 +4,14 @@ Two-alternative choice for head-fixed with two lick ports (right/left).
 
 import numpy as np
 import sys
-if sys.version_info.major==3:
-    from qtpy import QtWidgets
-    from taskontrol import rigsettings
-    from taskontrol import dispatcher
-    from taskontrol import statematrix
-    from taskontrol import savedata
-    from taskontrol import paramgui
-    from taskontrol import paramgui as messenger
-    from taskontrol import utils as arraycontainer
-    arraycontainer.Container = arraycontainer.EnumContainer
-else:
-    from PySide import QtGui as QtWidgets
-    from taskontrol.settings import rigsettings
-    from taskontrol.core import dispatcher
-    from taskontrol.core import statematrix
-    from taskontrol.core import savedata
-    from taskontrol.core import paramgui
-    from taskontrol.core import messenger
-    from taskontrol.core import arraycontainer
+from qtpy import QtWidgets
+from taskontrol import rigsettings
+from taskontrol import dispatcher
+from taskontrol import statematrix
+from taskontrol import savedata
+from taskontrol import paramgui
+from taskontrol import paramgui as messenger
+from taskontrol import utils
 from taskontrol.plugins import manualcontrol
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
@@ -53,16 +42,16 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Create dispatcher --
         smServerType = rigsettings.STATE_MACHINE_TYPE
-        self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,interval=0.1)
-        self.dispatcherView = dispatcher.DispatcherGUI(model=self.dispatcherModel)
+        self.dispatcher = dispatcher.Dispatcher(serverType=smServerType,interval=0.1)
+        #self.dispatcherView = dispatcher.DispatcherGUI(model=self.dispatcherModel)
 
         # -- Module for saving data --
         self.saveData = savedata.SaveData(rigsettings.DATA_DIR, remotedir=rigsettings.REMOTE_DIR)
 
         # -- Manual control of outputs --
-        self.manualControl = manualcontrol.ManualControl(self.dispatcherModel.statemachine)
+        self.manualControl = manualcontrol.ManualControl(self.dispatcher.statemachine)
         timeWaterValve = 0.03
-        self.singleDrop = manualcontrol.SingleDrop(self.dispatcherModel.statemachine, timeWaterValve)
+        self.singleDrop = manualcontrol.SingleDrop(self.dispatcher.statemachine, timeWaterValve)
         
         # -- Define graphical parameters --
         self.params = paramgui.Container()
@@ -108,6 +97,13 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['targetFrequency'] = paramgui.NumericParam('Target frequency', value=0,
                                                                decimals=0, units='Hz', enabled=False,
                                                                group='Sound parameters')
+        self.params['highAMrate'] = paramgui.NumericParam('High mod rate',value=32,
+                                                        units='Hz',group='Sound parameters')
+        self.params['lowAMrate'] = paramgui.NumericParam('Low mod rate',value=8,
+                                                        units='Hz',group='Sound parameters')
+        self.params['targetAMrate'] = paramgui.NumericParam('Target AM rate', value=0,
+                                                               decimals=1, units='Hz', enabled=False,
+                                                               group='Sound parameters')
         self.params['targetCloudStrength'] = paramgui.NumericParam('Target cloud strength', value=0,
                                                                decimals=0, units='[-100,100]', enabled=False,
                                                                group='Sound parameters')
@@ -123,7 +119,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                              group='Sound parameters')
         self.params['startFreq'] = paramgui.NumericParam('FM start frequency', value=0, units='Hz', decimals=0,
                                                          enabled=False, group='Sound parameters')
-        self.params['targetDuration'] = paramgui.NumericParam('Target duration', value=0.2, units='s',
+        self.params['targetDuration'] = paramgui.NumericParam('Target duration', value=0.5, units='s',
                                                               group='Sound parameters')
         self.params['targetIntensity'] = paramgui.NumericParam('Target intensity', value=50,
                                                                units='dB-SPL', enabled=True,
@@ -161,7 +157,8 @@ class Paradigm(QtWidgets.QMainWindow):
                                                      ['sound_and_light', 'sound_only', 'light_only'],
                                                      value=1, group='General parameters')
         self.params['soundType'] = paramgui.MenuParam('Sound type',
-                                                      ['chords', 'AM_depth','AM_vs_chord', 'tone_cloud', 'FM_direction'],
+                                                      ['chords', 'AM_rate','AM_depth','AM_vs_chord',
+                                                       'tone_cloud', 'FM_direction'],
                                                       value=0,group='General parameters')
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
                                                          ['off', 'uniform', 'mid_and_extreme'],
@@ -218,18 +215,18 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutMain.addLayout(layoutCol3)
         layoutMain.addLayout(layoutCol4)
 
+        layoutCol1.addWidget(self.singleDrop)
+        layoutCol1.addStretch()
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addStretch()
         layoutCol1.addWidget(self.sessionInfo)
         layoutCol1.addStretch()
-        layoutCol1.addWidget(self.dispatcherView)
+        layoutCol1.addWidget(self.dispatcher.widget)
 
         layoutCol2.addWidget(self.manualControl)
         layoutCol2.addStretch()
         layoutCol2.addWidget(reportInfo)
  
-        layoutCol3.addWidget(self.singleDrop)
-        layoutCol3.addStretch()
         layoutCol3.addWidget(soundParams)
         layoutCol3.addStretch()
         layoutCol3.addWidget(punishmentParams)
@@ -246,7 +243,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Add variables for storing results --
         maxNtrials = MAX_N_TRIALS # Preallocating space for each vector makes things easier
-        self.results = arraycontainer.Container()
+        self.results = utils.EnumContainer()
         self.results.labels['outcome'] = {'hit':1, 'error':0,'falseAlarm':3, 'miss':2, 'none':-1, 'punishments': 4}
         self.results['outcome'] = np.empty(maxNtrials,dtype=int)
         self.results.labels['choice'] = {'left':0,'right':1,'none':2}
@@ -270,16 +267,16 @@ class Paradigm(QtWidgets.QMainWindow):
         self.soundClient.start()
       
         # -- Connect signals from dispatcher --
-        self.dispatcherModel.prepareNextTrial.connect(self.prepare_next_trial)
+        self.dispatcher.prepareNextTrial.connect(self.prepare_next_trial)
 
         # -- Connect messenger --
-        self.messagebar = messenger.Messenger()
+        self.messagebar = paramgui.Messenger()
         self.messagebar.timedMessage.connect(self._show_message)
         self.messagebar.collect('Created window')
 
         # -- Connect signals to messenger
         self.saveData.logMessage.connect(self.messagebar.collect)
-        self.dispatcherModel.logMessage.connect(self.messagebar.collect)
+        self.dispatcher.logMessage.connect(self.messagebar.collect)
 
         # -- Connect other signals --
         self.saveData.buttonSaveData.clicked.connect(self.save_to_file)
@@ -290,9 +287,9 @@ class Paradigm(QtWidgets.QMainWindow):
 
     def save_to_file(self):
         '''Triggered by button-clicked signal'''
-        self.saveData.to_file([self.params, self.dispatcherModel,
+        self.saveData.to_file([self.params, self.dispatcher,
                                self.sm, self.results],
-                              self.dispatcherModel.currentTrial,
+                              self.dispatcher.currentTrial,
                               experimenter='',
                               subject=self.params['subject'].get_value(),
                               paradigm=self.name)
@@ -327,10 +324,18 @@ class Paradigm(QtWidgets.QMainWindow):
             targetAmp = self.chordCal.find_amplitude(targetFrequency,targetIntensity).mean()
             s1 = {'type':'chord', 'frequency':targetFrequency, 'duration':targetDuration,
                   'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
+        elif soundType == 'AM_rate':
+            targetRate = soundParam
+            modDepth = 100
+            self.params['targetAMdepth'].set_value(modDepth)
+            targetAmp = self.noiseCal.find_amplitude(targetIntensity).mean()
+            s1 = {'type':'AM', 'modFrequency':targetRate, 'duration':targetDuration,
+                  'modDepth':modDepth, 'amplitude':targetAmp}
         elif soundType == 'AM_depth':
             modDepth = soundParam
             targetAmp = self.noiseCal.find_amplitude(targetIntensity).mean()
             modFrequency = 10
+            self.params['targetAMrate'].set_value(modFrequency)
             s1 = {'type':'AM', 'modFrequency':modFrequency, 'duration':targetDuration,
                   'modDepth':modDepth, 'amplitude':targetAmp}
         if soundType == 'tone_cloud':
@@ -383,7 +388,7 @@ class Paradigm(QtWidgets.QMainWindow):
     def prepare_next_trial(self, nextTrial):
         # -- Calculate results from last trial (update outcome, choice, etc) --
         if nextTrial>0:
-            self.params.update_history()
+            self.params.update_history(nextTrial-1)
             self.calculate_results(nextTrial-1)
             lastTrialWasRewarded = self.results['outcome'][nextTrial-1] == \
                                    self.results.labels['outcome']['hit']
@@ -430,8 +435,11 @@ class Paradigm(QtWidgets.QMainWindow):
         psycurveMode = self.params['psycurveMode'].get_string()
         lowFreq = self.params['lowFreq'].get_value()
         highFreq = self.params['highFreq'].get_value()
+        lowAMrate = self.params['lowAMrate'].get_value()
+        highAMrate = self.params['highAMrate'].get_value()
         nSteps = self.params['psycurveNsteps'].get_value()
         possibleFreqs = np.logspace(np.log10(lowFreq), np.log10(highFreq), nSteps)
+        possibleAMrates = np.logspace(np.log10(lowAMrate), np.log10(highAMrate), nSteps)
         possibleStrengths = np.linspace(-100, 100, nSteps)
         freqBoundary = np.sqrt(lowFreq*highFreq)
         leftFreqInds = np.flatnonzero(possibleFreqs<freqBoundary)
@@ -485,11 +493,15 @@ class Paradigm(QtWidgets.QMainWindow):
                 strengthIndex = -1  # strength=100 (100% high)
 
         targetFrequency = possibleFreqs[freqIndex]
+        targetAMrate = possibleAMrates[freqIndex]
         targetCloudStrength = possibleStrengths[strengthIndex]
         soundType = self.params['soundType'].get_string()
         if soundType == 'chords':
             self.params['targetFrequency'].set_value(targetFrequency)
             self.prepare_target_sound(soundType, targetFrequency)
+        elif soundType == 'AM_rate':
+            self.params['targetAMrate'].set_value(targetAMrate)
+            self.prepare_target_sound(soundType, targetAMrate)
         elif soundType == 'AM_depth':
             self.params['targetAMdepth'].set_value(targetAMdepth)
             self.prepare_target_sound(soundType, targetAMdepth)
@@ -714,8 +726,8 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'readyForNextTrial'})
 
         #print(self.sm) ### DEBUG
-        self.dispatcherModel.set_state_matrix(self.sm)
-        self.dispatcherModel.ready_to_start_trial()
+        self.dispatcher.set_state_matrix(self.sm)
+        self.dispatcher.ready_to_start_trial()
 
     def calculate_results(self,trialIndex):
         # NOTE: Changes to graphical parameters (like nHits) are saved before calling
@@ -727,7 +739,7 @@ class Paradigm(QtWidgets.QMainWindow):
         #    self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
 
         lastRewardSide = self.params['rewardSide'].get_string()
-        eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
+        eventsThisTrial = self.dispatcher.events_one_trial(trialIndex)
         statesThisTrial = eventsThisTrial[:,2]
         if self.params['taskMode'].get_string() in ['lick_on_stim', 'discriminate_stim', 'water_after_sound']:
             if self.sm.statesNameToIndex['hit'] in statesThisTrial:
@@ -801,7 +813,7 @@ class Paradigm(QtWidgets.QMainWindow):
         its camelCase naming.
         '''
         self.soundClient.shutdown()
-        self.dispatcherModel.die()
+        self.dispatcher.die()
         event.accept()
 
 if __name__ == '__main__':
