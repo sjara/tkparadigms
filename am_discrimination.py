@@ -123,25 +123,27 @@ class Paradigm(templates.Paradigm2AFC):
         automationParams = self.params.layout_group('Automation')
 
         # 5000, 7000, 9800 (until 2014-03-19)
-        self.params['highModRate'] = paramgui.NumericParam('High mod rate',value=32,
+        self.params['highAMrate'] = paramgui.NumericParam('High AM rate',value=32,
                                                         units='Hz',group='Sound parameters')
-        self.params['lowModRate'] = paramgui.NumericParam('Low mod rate',value=8,
+        self.params['lowAMrate'] = paramgui.NumericParam('Low AM rate',value=8,
                                                         units='Hz',group='Sound parameters')
+        self.params['targetAMrate'] = paramgui.NumericParam('Target AM rate',value=0, decimals=1,
+                                                        units='Hz',enabled=False,group='Sound parameters')
         self.params['highSoundFreq'] = paramgui.NumericParam('High sound freq',value=16000,
                                                         units='Hz',group='Sound parameters')
         self.params['lowSoundFreq'] = paramgui.NumericParam('Low sound freq',value=5000,
                                                         units='Hz',group='Sound parameters')
-        self.params['targetFrequency'] = paramgui.NumericParam('Target rate or freq',value=0, decimals=1,
+        self.params['targetFrequency'] = paramgui.NumericParam('Target frequency',value=0, decimals=0,
                                                         units='Hz',enabled=False,group='Sound parameters')
         self.params['targetIntensityMode'] = paramgui.MenuParam('Intensity mode',
                                                                ['fixed','randMinus20'],
                                                                value=0,group='Sound parameters')
         self.params['soundTypeMode'] = paramgui.MenuParam('Sound mode',
-                                                          ['amp_mod','tones', 'chords', 'mixed_tones', 'mixed_chords'],
+                                                          ['AM','tones', 'chords', 'mixed_tones', 'mixed_chords'],
                                                           value=0,group='Sound parameters')
-        self.params['soundType'] = paramgui.MenuParam('Sound type',
-                                                      ['amp_mod','tones', 'chords'],
-                                                      value=0,group='Sound parameters')
+        self.params['soundType'] = paramgui.MenuParam('Sound type', ['AM','tones', 'chords'],
+                                                      enabled=False,
+                                                      value=0, group='Sound parameters')
         # This intensity corresponds to the intensity of each component of the chord
         self.params['targetMaxIntensity'] = paramgui.NumericParam('Max intensity',value=50,
                                                         units='dB-SPL',group='Sound parameters')
@@ -279,7 +281,7 @@ class Paradigm(templates.Paradigm2AFC):
         sNoise = {'type':'noise', 'duration':0.5, 'amplitude':punishSoundAmplitude}
         self.soundClient.set_sound(self.punishSoundID,sNoise)
 
-    def prepare_target_sound(self,targetFrequency):
+    def prepare_target_sound(self, soundParam):
         if self.params['targetIntensityMode'].get_string() == 'randMinus20':
             possibleIntensities = self.params['targetMaxIntensity'].get_value()+\
                                   np.array([-20,-15,-10,-5,0])
@@ -294,22 +296,22 @@ class Paradigm(templates.Paradigm2AFC):
         # FIXME: currently I am averaging calibration from both speakers (not good)
         #targetAmp = spkCal.find_amplitude(targetFrequency,targetIntensity).mean()
 
-        if self.params['soundType'].get_string() == 'amp_mod':
+        if self.params['soundType'].get_string() == 'AM':
             targetAmp = spkCalNoise.find_amplitude(targetIntensity).mean()
             self.params['targetAmplitude'].set_value(targetAmp)
             stimDur = self.params['targetDuration'].get_value()
-            s1 = {'type':'AM', 'modFrequency':targetFrequency, 'duration':stimDur,
+            s1 = {'type':'AM', 'modFrequency':soundParam, 'duration':stimDur,
                 'amplitude':targetAmp}
         elif self.params['soundType'].get_string() == 'tones':
-            targetAmp = spkCalSine.find_amplitude(targetFrequency,targetIntensity).mean()
+            targetAmp = spkCalSine.find_amplitude(soundParam,targetIntensity).mean()
             self.params['targetAmplitude'].set_value(targetAmp)
             stimDur = self.params['targetDuration'].get_value()
-            s1 = {'type':'tone', 'frequency':targetFrequency, 'duration':stimDur, 'amplitude':targetAmp}
+            s1 = {'type':'tone', 'frequency':soundParam, 'duration':stimDur, 'amplitude':targetAmp}
         elif self.params['soundType'].get_string() == 'chords':
-            targetAmp = spkCalChords.find_amplitude(targetFrequency,targetIntensity).mean()
+            targetAmp = spkCalChords.find_amplitude(soundParam,targetIntensity).mean()
             self.params['targetAmplitude'].set_value(targetAmp)
             stimDur = self.params['targetDuration'].get_value()
-            s1 = {'type':'chord', 'frequency':targetFrequency, 'duration':stimDur,
+            s1 = {'type':'chord', 'frequency':soundParam, 'duration':stimDur,
                 'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
         self.soundClient.set_sound(1,s1)
 
@@ -369,8 +371,8 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['timeWaterValveR'].set_value(factorR*self.params['baseWaterValveR'].get_value())
 
         # -- Set the sound type --
-        if self.params['soundTypeMode'].get_string() == 'amp_mod':
-            self.params['soundType'].set_string('amp_mod')
+        if self.params['soundTypeMode'].get_string() == 'AM':
+            self.params['soundType'].set_string('AM')
         elif self.params['soundTypeMode'].get_string() == 'tones':
             self.params['soundType'].set_string('tones')
         elif self.params['soundTypeMode'].get_string() == 'chords':
@@ -380,18 +382,18 @@ class Paradigm(templates.Paradigm2AFC):
             if nextTrial%2:
                 self.params['soundType'].set_string('tones')
             else:
-                self.params['soundType'].set_string('amp_mod')
+                self.params['soundType'].set_string('AM')
         elif self.params['soundTypeMode'].get_string() == 'mixed_chords':
             #Switching the sound type every other trial
             if nextTrial%2:
                 self.params['soundType'].set_string('chords')
             else:
-                self.params['soundType'].set_string('amp_mod')
+                self.params['soundType'].set_string('AM')
 
         # -- Prepare sound --
-        if self.params['soundType'].get_string() == 'amp_mod':
-            highFreq = self.params['highModRate'].get_value()
-            lowFreq = self.params['lowModRate'].get_value()
+        if self.params['soundType'].get_string() == 'AM':
+            highFreq = self.params['highAMrate'].get_value()
+            lowFreq = self.params['lowAMrate'].get_value()
         elif self.params['soundType'].get_string() == 'tones':
             highFreq = self.params['highSoundFreq'].get_value()
             lowFreq = self.params['lowSoundFreq'].get_value()
@@ -419,7 +421,12 @@ class Paradigm(templates.Paradigm2AFC):
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
                 randindex = np.random.randint(len(freqsAll[rightFreqInds]))
                 targetFrequency = freqsAll[rightFreqInds][randindex]
-        self.params['targetFrequency'].set_value(targetFrequency)
+        if self.params['soundType'].get_string() == 'AM':
+            self.params['targetAMrate'].set_value(targetFrequency)
+            self.params['targetFrequency'].set_value(0)
+        else:
+             self.params['targetFrequency'].set_value(targetFrequency)
+             self.params['targetAMrate'].set_value(0)
         self.prepare_target_sound(targetFrequency)
         self.prepare_punish_sound()
 
