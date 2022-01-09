@@ -93,9 +93,9 @@ class Paradigm(QtWidgets.QMainWindow):
                                                         group='Sound parameters')
         self.params['minFreq'] = paramgui.NumericParam('Min frequency', value=6000, units='Hz',
                                                         group='Sound parameters')
-        self.params['nFreqs'] = paramgui.NumericParam('N frequencies', value=6, units='',
+        self.params['nFreqs'] = paramgui.NumericParam('N frequencies', value=2, units='',
                                                         group='Sound parameters')
-        self.params['minFreqRatio'] = paramgui.NumericParam('Min freq ratio', value=1.2, units='',
+        self.params['minFreqRatio'] = paramgui.NumericParam('Min freq ratio', value=1.01, units='',
                                                         group='Sound parameters')
         self.params['preFreq'] = paramgui.NumericParam('Pre frequency', value=0,
                                                                decimals=0, units='Hz', enabled=False,
@@ -122,15 +122,18 @@ class Paradigm(QtWidgets.QMainWindow):
         choiceParams = self.params.layout_group('Choice parameters')
         '''
         
-        self.params['activePort'] = paramgui.MenuParam('Active port',
+        self.params['syncLight'] = paramgui.MenuParam('Sync light port',
+                                                       ['off', 'leftLED', 'centerLED', 'rightLED'],
+                                                       value=2, group='General parameters')
+        self.params['activeLickPort'] = paramgui.MenuParam('Active lick port',
                                                        ['left', 'center', 'right'],
-                                                       value=0,group='General parameters')
+                                                       value=0, group='General parameters')
         self.params['punishMode'] = paramgui.MenuParam('Punishment',
                                                        ['none', 'noise'], enabled=False,
-                                                       value=0,group='General parameters')
+                                                       value=0, group='General parameters')
         self.params['punishIntensity'] = paramgui.NumericParam('Noise intensity',
                                                                value=60, units='dB-SPL',
-                                                        group='General parameters')
+                                                               group='General parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim type',
                                                      ['sound_only', 'light_only','sound_and_light'],
                                                      value=0,group='General parameters',
@@ -146,7 +149,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                      ['water_on_lick','water_on_change',
                                                       'wait_for_change',
                                                       'lick_after_change'],
-                                                     value=0, group='General parameters')
+                                                     value=3, group='General parameters')
         generalParams = self.params.layout_group('General parameters')
 
         self.params['nHits'] = paramgui.NumericParam('Hits',value=0, enabled=False,
@@ -325,20 +328,25 @@ class Paradigm(QtWidgets.QMainWindow):
         #print('=======================================')
         #print(possiblePostInds)
         if len(possiblePostInds)==0:
-            self.dispatcherView.stop()
-            raise ValueError('There are no frequencies in the range far enough'+\
-                             ' from {:0.0f} Hz.'.format(allFreq[randPre]))
+            self.dispatcher.widget.stop()
+            raise ValueError('There are no frequencies in the set range far enough'+\
+                             ' from {:0.0f} Hz given the min freq ratio.'.format(allFreq[randPre]))
         randPost = np.random.choice(possiblePostInds)
         #allFreq = [minFreq, maxFreq]
         #randPre = np.random.randint(2)  # Which sound will be the "pre" sound
 
-        activePort = self.params['activePort'].get_string()
+        activePort = self.params['activeLickPort'].get_string()
         activeInput = activePort[0].upper()+'in'  # To produce Cin, Lin, Rin
         activeValve = activePort+'Water'
         activeLED = activePort+'LED'
 
+        syncLightPortStr = self.params['syncLight'].get_string()
+        if syncLightPortStr=='off':
+            syncLightPort = []
+        else:
+            syncLightPort = [syncLightPortStr]
+
         catchTrial = False
-        
         if catchTrial:
             postFreq = preFreq
             stateAfterPre = 'morePre'
@@ -405,6 +413,7 @@ class Paradigm(QtWidgets.QMainWindow):
                               serialOut=self.preSoundID)
             self.sm.add_state(name='playPost', statetimer=timeInPost,
                               transitions={'Tup':stateAfterPost},
+                              outputsOn = syncLightPort,
                               serialOut=self.postSoundID)
             self.sm.add_state(name='morePost', statetimer=timeInMorePost,
                               transitions={'Tup':'readyForNextTrial'},
@@ -434,6 +443,7 @@ class Paradigm(QtWidgets.QMainWindow):
                               serialOut=self.preSoundID)
             self.sm.add_state(name='playPost', statetimer=timeInPost,
                               transitions={'Tup':stateAfterPost},
+                              outputsOn = syncLightPort,
                               serialOut=self.postSoundID)
             self.sm.add_state(name='morePost', statetimer=timeInMorePost,
                               transitions={'Tup':'miss'},
@@ -473,10 +483,11 @@ class Paradigm(QtWidgets.QMainWindow):
                               serialOut=self.postSoundID)
             self.sm.add_state(name='playPost', statetimer=timeInPost,
                               transitions={activeInput:'hit', 'Tup':stateAfterPost},
+                              outputsOn = syncLightPort,
                               serialOut=self.postSoundID)
             self.sm.add_state(name='morePost', statetimer=timeInMorePost,
-                              transitions={'Tup':'miss'},
-                              outputsOff=['centerLED','rightLED','leftLED'])
+                              outputsOff=['centerLED','rightLED','leftLED'],
+                              transitions={'Tup':'miss'})
             self.sm.add_state(name='waitForLick', statetimer=timeInWaitForLick,
                               transitions={activeInput:'hit', 'Tup':'miss'},
                               outputsOff=['centerLED','rightLED','leftLED'])
@@ -530,7 +541,7 @@ class Paradigm(QtWidgets.QMainWindow):
             
         # -- Estimate number of licks --
         eventCodesThisTrial = eventsThisTrial[:,1]
-        activePort = self.params['activePort'].get_string()
+        activePort = self.params['activeLickPort'].get_string()
         activeInput = activePort[0].upper()+'in'  # To produce Cin, Lin, Rin
         nLicksThisTrial = np.sum(eventCodesThisTrial==self.sm.eventsDict[activeInput])
         self.params['nLicks'].add(nLicksThisTrial)
