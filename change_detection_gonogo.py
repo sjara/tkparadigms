@@ -122,7 +122,7 @@ class Paradigm(QtWidgets.QMainWindow):
         choiceParams = self.params.layout_group('Choice parameters')
         '''
         
-        self.params['syncLight'] = paramgui.MenuParam('Sync light port',
+        self.params['syncLight'] = paramgui.MenuParam('Sync light',
                                                        ['off', 'leftLED', 'centerLED', 'rightLED'],
                                                        value=2, group='General parameters')
         self.params['activeLickPort'] = paramgui.MenuParam('Active lick port',
