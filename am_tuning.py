@@ -92,6 +92,9 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['isiHalfRange'] = paramgui.NumericParam('+/-',
                                                       value=1,
                                                       group='Stim parameters')
+        self.params['isi'] = paramgui.NumericParam('Interstimulus interval (s)',
+                                                   value=2, enabled=False, decimals=3,
+                                                   group='Stim parameters')
         self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
                                                          ['Ordered','Random'],
                                                          value=1,group='Stim parameters')
@@ -119,7 +122,16 @@ class Paradigm(QtWidgets.QMainWindow):
                                                           ['binaural', 'left', 'right'],
                                                           value=0, group='Stim parameters')
         stimParams = self.params.layout_group('Stim parameters')
-        
+
+        self.params['syncLight'] = paramgui.MenuParam('Sync light',
+                                                       ['off', 'leftLED', 'centerLED', 'rightLED'],
+                                                       value=0, group='Sync parameters')
+        self.params['delayToSyncLight'] = paramgui.NumericParam('Delay to sync light',value=0,
+                                                        units='s',group='Sync parameters')
+        self.params['syncLightDuration'] = paramgui.NumericParam('Sync light duration',value=0,
+                                                        units='s',group='Sync parameters')
+        syncParams = self.params.layout_group('Sync parameters')
+
         self.params['laserTrialsFraction'] = paramgui.NumericParam('Fraction of trials with laser',
                                                                    value=0,
                                                                    group='Laser parameters')
@@ -150,13 +162,15 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Add graphical widgets to main window --
         self.centralWidget = QtWidgets.QWidget()
-        layoutMain = QtWidgets.QHBoxLayout() #Create a main layout and two columns
+        layoutMain = QtWidgets.QHBoxLayout()
         layoutCol1 = QtWidgets.QVBoxLayout()
         layoutCol2 = QtWidgets.QVBoxLayout()
 
-        layoutMain.addLayout(layoutCol1) #Add the columns to the main layout
+        layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
 
+        layoutCol1.addWidget(sessionParams)
+        layoutCol1.addStretch()
         layoutCol1.addWidget(self.dispatcher.widget)
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.manualControl)
@@ -165,13 +179,13 @@ class Paradigm(QtWidgets.QMainWindow):
         self.clearButton.clicked.connect(self.clear_tone_list)
         layoutCol1.addWidget(self.clearButton)
 
-        layoutCol2.addWidget(sessionParams)
+        layoutCol2.addWidget(stimParams)
         layoutCol2.addStretch()
-        layoutCol2.addWidget(stimParams)  #Add the parameter GUI to column 2
+        layoutCol2.addWidget(syncParams)
         layoutCol2.addStretch()
-        layoutCol2.addWidget(laserParams)  #Add the parameter GUI to column 2
+        layoutCol2.addWidget(laserParams)
 
-        self.centralWidget.setLayout(layoutMain) #Assign the layouts to the main window
+        self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
 
         # -- Connect signals from dispatcher --
@@ -244,6 +258,7 @@ class Paradigm(QtWidgets.QMainWindow):
         randNum = (2*np.random.random(1)[0]-1) # In range [-1,1)
         isi = self.params['isiMean'].get_value() + \
               self.params['isiHalfRange'].get_value()*randNum
+        self.params['isi'].set_value(isi)
 
         # Get the sound parameters (frequency, intensity) from the parameter list
         # If the parameter list is empty, populate it  --
@@ -267,8 +282,6 @@ class Paradigm(QtWidgets.QMainWindow):
             targetAmp = [targetAmp[0], 0]
         elif soundLocation == 'right':
             targetAmp = [0, targetAmp[1]]
-        else:
-            pass
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
         if stimType == 'Sine':
@@ -302,6 +315,16 @@ class Paradigm(QtWidgets.QMainWindow):
                 stimOutput = stimOutput + laserSync
             serialOutput = 1
             self.soundClient.set_sound(1,sound)
+
+        delayToSyncLight = self.params['delayToSyncLight'].get_value()
+        syncLightDuration = self.params['syncLightDuration'].get_value()
+        if isi-delayToSyncLight-syncLightDuration < 0:
+            raise ValueError('ISI needs to be longer to have time for the sync light.')
+        syncLightPortStr = self.params['syncLight'].get_string()
+        if syncLightPortStr=='off':
+            syncLightPort = []
+        else:
+            syncLightPort = [syncLightPortStr]
 
         self.params['currentFreq'].set_value(self.trialParams[0])
         self.params['currentIntensity'].set_value(self.trialParams[1])
@@ -350,15 +373,20 @@ class Paradigm(QtWidgets.QMainWindow):
                               outputsOff=stimOutput)
         else:
             self.sm.add_state(name='startTrial', statetimer = 0,
-                              transitions={'Tup':'output1On'})
-            self.sm.add_state(name='output1On', statetimer=stimDur,
-                              transitions={'Tup':'output1Off'},
+                              transitions={'Tup':'outputOn'})
+            self.sm.add_state(name='outputOn', statetimer=stimDur,
+                              transitions={'Tup':'outputOff'},
                               outputsOn=stimOutput,
                               serialOut=serialOutput)
-            self.sm.add_state(name='output1Off', statetimer = isi,
-                              transitions={'Tup':'readyForNextTrial'},
+            self.sm.add_state(name='outputOff', statetimer=delayToSyncLight,
+                              transitions={'Tup':'syncLightOn'},
                               outputsOff=stimOutput)
-
+            self.sm.add_state(name='syncLightOn', statetimer=syncLightDuration,
+                              transitions={'Tup':'syncLightOff'},
+                              outputsOn=syncLightPort)
+            self.sm.add_state(name='syncLightOff', statetimer=isi-delayToSyncLight-syncLightDuration,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=syncLightPort)
 
         self.dispatcher.set_state_matrix(self.sm)
         self.dispatcher.ready_to_start_trial()
