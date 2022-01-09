@@ -65,7 +65,8 @@ class Paradigm(templates.Paradigm2AFC):
 
         self.params['outcomeMode'] = paramgui.MenuParam('Outcome mode',
                                                         ['sides_direct', 'direct', 'on_next_correct',
-                                                         'only_if_correct', 'on_any_poke', 'passive_exposure'],
+                                                         'only_if_correct', 'on_any_poke',
+                                                         'passive_exposure'],
                                                          value=3,group='Choice parameters')
         self.params['allowEarlyWithdrawal'] = paramgui.MenuParam('Allow early withdraw',
                                                                  ['off','on'], enabled=False,
@@ -90,6 +91,13 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['punishTimeError'] = paramgui.NumericParam('Punishment (error)',value=0,
                                                         units='s',group='Timing parameters')
         self.params['punishTimeEarly'] = paramgui.NumericParam('Punishment (early)',value=0,
+                                                        units='s',group='Timing parameters')
+        self.params['syncLight'] = paramgui.MenuParam('Sync light',
+                                                       ['off', 'leftLED', 'centerLED', 'rightLED'],
+                                                       value=0, group='Timing parameters')
+        self.params['delayToSyncLight'] = paramgui.NumericParam('Delay to sync light',value=0,
+                                                        units='s',group='Timing parameters')
+        self.params['syncLightDuration'] = paramgui.NumericParam('Sync light duration',value=0,
                                                         units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
 
@@ -143,18 +151,9 @@ class Paradigm(templates.Paradigm2AFC):
         photostimParams = self.params.layout_group('Photostimulation parameters')
         
 
-        
-        # 5000, 7000, 9800 (until 2014-03-19)
-        '''
-        self.params['highFreq'] = paramgui.NumericParam('High freq',value=5000,
-                                                        units='Hz',group='Sound parameters')
-        self.params['lowFreq'] = paramgui.NumericParam('Low freq',value=3000,
-                                                        units='Hz',group='Sound parameters')
-        self.params['targetFrequency'] = paramgui.NumericParam('Target freq',value=0,decimals=0,
-                                                               units='Hz',enabled=False,group='Sound parameters')
-        '''
-        self.params['targetPercentage'] = paramgui.NumericParam('Target percentage',value=0,decimals=0,
-                                                               units='percentage',enabled=False,group='Sound parameters')
+        self.params['targetPercentage'] = paramgui.NumericParam('Target percentage', value=0, decimals=0,
+                                                                units='percentage', enabled=False,
+                                                                group='Sound parameters')
         self.params['targetIntensityMode'] = paramgui.MenuParam('Intensity mode',
                                                                 ['fixed','randMinus20'],
                                                                 value=0,group='Sound parameters')
@@ -220,14 +219,14 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol2.addStretch()
         layoutCol2.addWidget(choiceParams)
         layoutCol2.addStretch()
+        layoutCol2.addWidget(automationParams)
+        layoutCol2.addStretch()
 
         layoutCol3.addWidget(timingParams)
         layoutCol3.addStretch()
         layoutCol3.addWidget(psychometricParams)
         layoutCol3.addStretch()
         layoutCol3.addWidget(categorizationParams)
-        layoutCol3.addStretch()
-        layoutCol3.addWidget(automationParams)
         layoutCol3.addStretch()
 
         layoutCol4.addWidget(photostimParams)
@@ -459,6 +458,14 @@ class Paradigm(templates.Paradigm2AFC):
         punishTimeEarly = self.params['punishTimeEarly'].get_value()
         allowEarlyWithdrawal = self.params['allowEarlyWithdrawal'].get_string()
 
+        delayToSyncLight = self.params['delayToSyncLight'].get_value()
+        syncLightDuration = self.params['syncLightDuration'].get_value()
+        syncLightPortStr = self.params['syncLight'].get_string()
+        if syncLightPortStr=='off':
+            syncLightPort = []
+        else:
+            syncLightPort = [syncLightPortStr]
+            
         # -- Set state matrix --
         outcomeMode = self.params['outcomeMode'].get_string()
         if outcomeMode=='passive_exposure':
@@ -473,9 +480,15 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Tup':'noChoice'},
                               outputsOn=stimOutput, serialOut=self.currentSoundID,
                               outputsOff=trialStartSync)
-            self.sm.add_state(name='noChoice', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+            self.sm.add_state(name='noChoice', statetimer=delayToSyncLight,
+                              transitions={'Tup':'syncLightOn'},
                               outputsOff=stimOutput)
+            self.sm.add_state(name='syncLightOn', statetimer=syncLightDuration,
+                              transitions={'Tup':'syncLightOff'},
+                              outputsOn=syncLightPort)
+            self.sm.add_state(name='syncLightOff', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=syncLightPort)
         elif outcomeMode=='simulated':
             #stimOutput.append(ledOutput)
             self.sm.add_state(name='startTrial', statetimer=0,
