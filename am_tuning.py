@@ -1,57 +1,44 @@
 '''
-Tuning curve presentation paradigm: allows presentation of tones at different
-magnitudes, and will send triggers to electrophysiology recording software.
-
-
-Nick Ponvert and Santiago Jaramillo
-
+Present a range of stimuli (either pure tones or AM noise) logarithmically space
+and at different intensities.
 '''
 
-from PySide import QtGui
-from taskontrol.core import dispatcher
-from taskontrol.core import paramgui
-from taskontrol.core import savedata
-from taskontrol.settings import rigsettings
-from taskontrol.core import statematrix
-from taskontrol.plugins import speakercalibration
-from taskontrol.plugins import manualcontrol
-from numpy import log
 import numpy as np
 import itertools
 import random
-from taskontrol.plugins import soundclient
 import time
+from qtpy import QtWidgets
+from taskontrol import dispatcher
+from taskontrol import paramgui
+from taskontrol import savedata
+from taskontrol import statematrix
+from taskontrol.plugins import speakercalibration
+from taskontrol.plugins import manualcontrol
+from taskontrol.plugins import soundclient
+from taskontrol import rigsettings
 
-# class clearButton(QtGui.QPushButton):
-#    def __init__(self, parent=None):
-#        super(OutputButton, self).__init__('Clear Tone List')
-#        self.clicked.connect(self.clear_tone_list)
 
-if rigsettings.OUTPUTS.has_key('outBit1'):
+if 'outBit1' in rigsettings.OUTPUTS:
     trialStartSync = ['outBit1'] # Sync signal for trial-start.
 else:
     trialStartSync = []
-if rigsettings.OUTPUTS.has_key('outBit0'):
+if 'outBit0' in rigsettings.OUTPUTS:
     stimSync = ['outBit0'] # Sync signal for sound stimulus
 else:
     stimSync = []
-if rigsettings.OUTPUTS.has_key('outBit2'):
-    laserSync = ['outBit2','stim1'] # Sync signal for laser
+if 'outBit2' in rigsettings.OUTPUTS:
+    laserSync = ['outBit2','stim2'] # Sync signal for laser
 else:
     laserSync = ['centerLED'] # Use center LED during emulation
 
 
-
-class Paradigm(QtGui.QMainWindow):
+class Paradigm(QtWidgets.QMainWindow):
     def __init__(self, parent=None, paramfile=None, paramdictname=None):
-
-        '''
+        """
         Set up the taskontrol core modules, add parameters to the GUI, and
         initialize the sound server.
-        '''
-
+        """
         super(Paradigm, self).__init__(parent)
-
         self.name = 'am_tuning_curve'
 
         # -- Read settings --
@@ -62,89 +49,94 @@ class Paradigm(QtGui.QMainWindow):
         self.noiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
 
         # -- Create dispatcher --
-        self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,
+        self.dispatcher = dispatcher.Dispatcher(serverType=smServerType,
                                                      interval=0.1)
 
-        self.dispatcherView = dispatcher.DispatcherGUI(model=self.dispatcherModel)
-
         # -- Manual control of outputs --
-        self.manualControl = manualcontrol.ManualControl(self.dispatcherModel.statemachine)
+        self.manualControl = manualcontrol.ManualControl(self.dispatcher.statemachine)
 
         # -- Add parameters --
         self.params = paramgui.Container()
+
         self.params['experimenter'] = paramgui.StringParam('Experimenter',
-                                                            value='santiago',
-                                                            group='Parameters')
-        self.params['subject'] = paramgui.StringParam('Subject',value='test030',
-                                                       group='Parameters')
+                                                            value='experimenter',
+                                                            group='Session parameters')
+        self.params['subject'] = paramgui.StringParam('Subject',value='test000',
+                                                       group='Session parameters')
+        sessionParams = self.params.layout_group('Session parameters')
+
         self.params['minFreq'] = paramgui.NumericParam('Min Frequency (Hz)',
                                                         value=2000,
-                                                        group='Parameters')
+                                                        group='Stim parameters')
         self.params['maxFreq'] = paramgui.NumericParam('Max Frequency (Hz)',
                                                         value=40000,
-                                                        group='Parameters')
+                                                        group='Stim parameters')
         self.params['numTones'] = paramgui.NumericParam('Number of Frequencies',
                                                          value=16,
-                                                         group='Parameters')
+                                                         group='Stim parameters')
         self.params['minInt'] = paramgui.NumericParam('Min Intensity (dB SPL)',
                                                        value=60,
-                                                       group='Parameters')
+                                                       group='Stim parameters')
         self.params['maxInt'] = paramgui.NumericParam('Max Intensity (dB SPL)',
                                                        value=60,
-                                                       group='Parameters')
+                                                       group='Stim parameters')
         self.params['numInt'] = paramgui.NumericParam('Number of Intensities',
                                                        value=1,
-                                                       group='Parameters')
+                                                       group='Stim parameters')
         self.params['stimDur'] = paramgui.NumericParam('Stimulus Duration (s)',
-                                                        value=0.01,
-                                                        group='Parameters')
-        '''
-        self.params['isiMin'] = paramgui.NumericParam('Minimum Interstimulus Interval (s)',
-                                                       value=1,
-                                                       group='Parameters')
-        self.params['isiMax'] = paramgui.NumericParam('Maximum Interstimulus Interval',
-                                                      value=3,
-                                                      group='Parameters')
-        '''
+                                                        value=0.1,
+                                                        group='Stim parameters')
         self.params['isiMean'] = paramgui.NumericParam('Interstimulus interval mean (s)',
                                                        value=2,
-                                                       group='Parameters')
+                                                       group='Stim parameters')
         self.params['isiHalfRange'] = paramgui.NumericParam('+/-',
                                                       value=1,
-                                                      group='Parameters')
-        # self.params['noiseAmp'] = paramgui.NumericParam('Amplitude in Noise-Mode',
-        #                                                value=0.3,
-        #                                                group='Parameters')
+                                                      group='Stim parameters')
         self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
                                                          ['Ordered','Random'],
-                                                         value=1,group='Parameters')
+                                                         value=1,group='Stim parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
-                                                         ['Sine','Chord', 'Noise', 'AM', 'Laser', 'LaserTrain', 'Light'],
-                                                         value=2,group='Parameters')
+                                                         ['Sine','Chord', 'Noise', 'AM',
+                                                          'Laser', 'LaserTrain', 'Light'],
+                                                         value=2,group='Stim parameters')
         self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
                                                             value=0, units='Hz',
-                                                            enabled=False,
-                                                            group='Parameters')
-
+                                                            enabled=False, decimals=3,
+                                                            group='Stim parameters')
         self.params['currentIntensity'] = paramgui.NumericParam('Target Intensity',
                                                                  value=0,
                                                                  enabled=False,
-                                                                 group='Parameters')
+                                                                 group='Stim parameters')
         self.params['currentAmpL'] = paramgui.NumericParam('Current Amplitude - L',value=0,
                                                            enabled=False,
-                                                           group='Parameters',
+                                                           group='Stim parameters',
                                                            decimals=4)
         self.params['currentAmpR'] = paramgui.NumericParam('Current Amplitude - R',value=0,
                                                            enabled=False,
-                                                           group='Parameters',
+                                                           group='Stim parameters',
                                                            decimals=4)
-
-
-        timingParams = self.params.layout_group('Parameters')
+        self.params['soundLocation'] = paramgui.MenuParam('Sound location',
+                                                          ['binaural', 'left', 'right'],
+                                                          value=0, group='Stim parameters')
+        stimParams = self.params.layout_group('Stim parameters')
+        
+        self.params['laserTrialsFraction'] = paramgui.NumericParam('Fraction of trials with laser',
+                                                                   value=0,
+                                                                   group='Laser parameters')
+        self.params['laserFrontOverhang'] = paramgui.NumericParam('Laser Front Overhang',value=0,
+                                                                  group='Laser parameters', enabled=False,
+                                                                  decimals=1)
+        self.params['laserBackOverhang'] = paramgui.NumericParam('Laser Back Overhang',value=0,
+                                                                 group='Laser parameters', enabled=False,
+                                                                 decimals=1)
+        self.params['laserTrial'] = paramgui.NumericParam('Laser Trial?',value=0,
+                                                           enabled=False,
+                                                           group='Laser parameters',
+                                                           decimals=0)
+        laserParams = self.params.layout_group('Laser parameters')
 
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
-
 
         # -- Create an empty state matrix --
         self.sm = statematrix.StateMatrix(inputs=rigsettings.INPUTS,
@@ -152,40 +144,38 @@ class Paradigm(QtGui.QMainWindow):
                                           readystate='readyForNextTrial')
 
         # -- Module for savng the data --
-
         self.saveData = savedata.SaveData(rigsettings.DATA_DIR,
                                           remotedir=rigsettings.REMOTE_DIR)
         self.saveData.checkInteractive.setChecked(True)
 
         # -- Add graphical widgets to main window --
-        self.centralWidget = QtGui.QWidget()
-        layoutMain = QtGui.QHBoxLayout() #Create a main layout and two columns
-        layoutCol1 = QtGui.QVBoxLayout()
-        layoutCol2 = QtGui.QVBoxLayout()
-
+        self.centralWidget = QtWidgets.QWidget()
+        layoutMain = QtWidgets.QHBoxLayout() #Create a main layout and two columns
+        layoutCol1 = QtWidgets.QVBoxLayout()
+        layoutCol2 = QtWidgets.QVBoxLayout()
 
         layoutMain.addLayout(layoutCol1) #Add the columns to the main layout
         layoutMain.addLayout(layoutCol2)
 
-        layoutCol1.addWidget(self.dispatcherView) #Add the dispatcher to col1
+        layoutCol1.addWidget(self.dispatcher.widget)
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.manualControl)
 
-        self.clearButton = QtGui.QPushButton('Clear Stim List', self)
+        self.clearButton = QtWidgets.QPushButton('Clear Stim List', self)
         self.clearButton.clicked.connect(self.clear_tone_list)
         layoutCol1.addWidget(self.clearButton)
 
-
-        layoutCol2.addWidget(timingParams)  #Add the parameter GUI to column 2
+        layoutCol2.addWidget(sessionParams)
+        layoutCol2.addStretch()
+        layoutCol2.addWidget(stimParams)  #Add the parameter GUI to column 2
+        layoutCol2.addStretch()
+        layoutCol2.addWidget(laserParams)  #Add the parameter GUI to column 2
 
         self.centralWidget.setLayout(layoutMain) #Assign the layouts to the main window
         self.setCentralWidget(self.centralWidget)
 
         # -- Connect signals from dispatcher --
-
-        #prepare_next_trial is sent whenever the dispatcher reaches the end of
-        #the current trial.
-        self.dispatcherModel.prepareNextTrial.connect(self.prepare_next_trial)
+        self.dispatcher.prepareNextTrial.connect(self.prepare_next_trial)
 
         # -- Connect the save data button --
         self.saveData.buttonSaveData.clicked.connect(self.save_to_file)
@@ -195,7 +185,6 @@ class Paradigm(QtGui.QMainWindow):
         time.sleep(0.2)
         self.soundClient = soundclient.SoundClient()
         self.soundClient.start()
-        #soundFreq = self.params['soundFreq'].get_value()
 
         # -- Initialize the list of trial parameters --
         self.trialParams = []
@@ -208,14 +197,12 @@ class Paradigm(QtGui.QMainWindow):
         called by prepare_next_trial at the beginning of the experiment and whenever
         we run out of combinations of sounds to present'''
 
-        ## -- Get the parameters --
-
+        # -- Get the parameters --
         maxFreq = self.params['maxFreq'].get_value()
         minFreq = self.params['minFreq'].get_value()
         numFreqs = self.params['numTones'].get_value()
 
         # -- Create a list of frequencies --
-        # toneList = self.logscale(minFreq, maxFreq, numFreqs)
         toneList = np.logspace(np.log10(minFreq), np.log10(maxFreq),num = numFreqs)
 
 
@@ -240,19 +227,6 @@ class Paradigm(QtGui.QMainWindow):
         self.soundParamList = productList
 
 
-
-
-    def logscale(self, minFreq, maxFreq, numFreqs):
-        '''This function returns a specified number of frequencies
-        scaled logarithmically between a minimum and maximum val'''
-
-        slope=(log(maxFreq)-log(minFreq))/(numFreqs-1)
-        xVals=range(numFreqs)
-        logs=[slope * x + log(minFreq) for x in xVals]
-        logs=np.array(logs)
-        vals=np.exp(logs)
-        return vals
-
     def prepare_next_trial(self, nextTrial):
 
         '''
@@ -261,52 +235,42 @@ class Paradigm(QtGui.QMainWindow):
         frequency, intensity, and amplitude parameters for each trial.
         '''
 
-        if nextTrial > 0:  ## Do not update the history before the first trial
-            self.params.update_history()
+        if nextTrial > 0:  # Do not update the history before the first trial
+            self.params.update_history(nextTrial-1)
 
         self.sm.reset_transitions()
 
-        ## -- Choose an ISI randomly
-        '''
-        minIsi = self.params['isiMin'].get_value()
-        maxIsi = self.params['isiMax'].get_value()
-        isi=np.random.random() * (maxIsi - minIsi) + minIsi
-        '''
+        # -- Choose an ISI randomly
         randNum = (2*np.random.random(1)[0]-1) # In range [-1,1)
         isi = self.params['isiMean'].get_value() + \
               self.params['isiHalfRange'].get_value()*randNum
 
-
-        # -- Get the sound parameters from the parameter list --
-        # -- If the parameter list is empty, populate it  --
-        # -- returns a tuple with (frequency, intensity)
+        # Get the sound parameters (frequency, intensity) from the parameter list
+        # If the parameter list is empty, populate it  --
         try:
             self.trialParams = self.soundParamList.pop(0) #pop(0) pops from the left
         except IndexError:
             self.populate_sound_params()
             self.trialParams = self.soundParamList.pop(0)
 
-
-
         # -- Prepare the sound using randomly chosen parameters from parameter lists --
-
         stimType = self.params['stimType'].get_string()
         stimDur = self.params['stimDur'].get_value()
 
-        #We used this until 2016-08-04, then changed it to the thing below
-        # targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
-        #                                        self.trialParams[1])[1]
-        #                                        #Only calibrated right speaker
         if stimType in ['Noise', 'AM']:
             targetAmp = self.noiseCal.find_amplitude(self.trialParams[1])
         else:
             targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
                                                    self.trialParams[1])
-            #Now returning a list instead of a single val
-
+        soundLocation = self.params['soundLocation'].get_string()
+        if soundLocation == 'left':
+            targetAmp = [targetAmp[0], 0]
+        elif soundLocation == 'right':
+            targetAmp = [0, targetAmp[1]]
+        else:
+            pass
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
-
         if stimType == 'Sine':
             sound = {'type':'tone', 'duration':stimDur,
                      'amplitude':targetAmp, 'frequency':self.trialParams[0]}
@@ -320,14 +284,22 @@ class Paradigm(QtGui.QMainWindow):
             sound = {'type':'AM', 'duration':stimDur,
                      'amplitude':targetAmp,'modFrequency':self.trialParams[0]}
 
+        fractionLaserTrials = self.params['laserTrialsFraction'].get_value()
+        laserTrial = np.random.rand(1)[0]<fractionLaserTrials
+        self.params['laserTrial'].set_value(int(laserTrial))
+
         if (stimType == 'Laser') or (stimType == 'LaserTrain'):
             stimOutput = stimSync+laserSync
             serialOutput = 0
         elif stimType=='Light':
             stimOutput = stimSync + ['leftLED', 'centerLED', 'rightLED']
+            if laserTrial:
+                stimOutput = stimOutput + laserSync
             serialOutput = 0
         else:
             stimOutput = stimSync
+            if laserTrial:
+                stimOutput = stimOutput + laserSync
             serialOutput = 1
             self.soundClient.set_sound(1,sound)
 
@@ -388,8 +360,8 @@ class Paradigm(QtGui.QMainWindow):
                               outputsOff=stimOutput)
 
 
-        self.dispatcherModel.set_state_matrix(self.sm)
-        self.dispatcherModel.ready_to_start_trial()
+        self.dispatcher.set_state_matrix(self.sm)
+        self.dispatcher.ready_to_start_trial()
 
     #def _timer_tic(self, etime, lastEvents):
     #    #timer_tic is sent whenever the dispatcher gets information from the Arduino
@@ -397,9 +369,9 @@ class Paradigm(QtGui.QMainWindow):
 
     def save_to_file(self):
         '''Triggered by button-clicked signal'''
-        self.saveData.to_file([self.params, self.dispatcherModel,
+        self.saveData.to_file([self.params, self.dispatcher,
                                self.sm],
-                              self.dispatcherModel.currentTrial,
+                              self.dispatcher.currentTrial,
                               experimenter='',
                               subject=self.params['subject'].get_value(),
                               paradigm=self.name)
@@ -414,10 +386,10 @@ class Paradigm(QtGui.QMainWindow):
     def closeEvent(self, event):
         '''
         Executed when closing the main window.
-        This method is inherited from QtGui.QMainWindow, which explains
+        This method is inherited from QtWidgets.QMainWindow, which explains
         its camelCase naming.
         '''
-        self.dispatcherModel.die()
+        self.dispatcher.die()
         event.accept()
 
 if __name__ == "__main__":
