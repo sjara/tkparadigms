@@ -38,13 +38,13 @@ bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTstage0}
 
 bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTstage0}
 
-bili036 = {'subject':'bili036', 'soundActionMode':'low_left', **VOTstage0}
+bili036 = {'subject':'bili036', 'soundActionMode':'low_left', **VOTstage1}
 
-bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTstage0}
+bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTstage1}
 
 bili038 = {'subject':'bili038', 'soundActionMode':'low_left', **VOTstage0}
 
-bili039 = {'subject':'bili039', 'soundActionMode':'high_left', **VOTstage0}
+bili039 = {'subject':'bili039', 'soundActionMode':'high_left', **VOTstage1}
 
 bili040 = {'subject':'bili040', 'soundActionMode':'high_left', **VOTstage0}
 
