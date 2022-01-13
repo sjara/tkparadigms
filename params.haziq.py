@@ -11,5 +11,5 @@ pamo002 = {'subject':'test000', 'experimenter':'haziq',
 pamo003 = {'subject':'test000', 'experimenter':'haziq', 
            'outcomeMode':'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange':0.05, 'psycurveMode':'off', 'maxNtrials':500}
            
-pamo003 = {'subject':'test000', 'experimenter':'haziq', 
+pamo004 = {'subject':'test000', 'experimenter':'haziq', 
            'outcomeMode':'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange':0.05, 'psycurveMode':'uniform', 'maxNtrials':500}                                  
