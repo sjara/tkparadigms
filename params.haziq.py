@@ -1,12 +1,12 @@
 
-test000 = {'subject':'test000','experimenter':'haziq', 
+#pamo000 = {'subject':'test000','experimenter':'haziq', 
            'outcomeMode':'sides_direct', 'delayToTargetMean':0.2}
            
-test001 = {'subject':'test000','experimenter':'haziq', 
-           'outcomeMode':'direct', 'delayToTargetMean':0.2, 'psycurveMode':'uniform'}
+#pamo001 = {'subject':'test000','experimenter':'haziq', 
+           'outcomeMode':'direct', 'delayToTargetMean':0.2,}
            
-test002 = {'subject':'test000','experimenter':'haziq', 
-           'outcomeMode':'on_next_correct', 'delayToTargetMean': 0.01,'delayToTargetHalfRange':0.0, 'automationMode':'increase_delay'}
+pamo002 = {'subject':'test000','experimenter':'haziq', 
+           'outcomeMode':'on_next_correct', 'delayToTargetMean': 0.01,'delayToTargetHalfRange':0.0, 'automationMode':'increase_delay','maxNtrials':500}
            
-stage02 = {'subject':'test000','experimenter':'haziq', 
-           'outcomeMode':'on_next_correct', 'delayToTargetMean': 0.01,'delayToTargetHalfRange':0.0, 'psycurveMode':'uniform'}                               
+pamo003 = {'subject':'test000','experimenter':'haziq', 
+           'outcomeMode':'only_if_correct', 'delayToTargetMean': 0.2,'delayToTargetHalfRange':0.05, 'psycurveMode':'off'}                               
