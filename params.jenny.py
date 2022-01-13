@@ -69,15 +69,15 @@ FTBiasCorr = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevant
 
 bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTstage1}
 
-bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTstage0}
+bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTstage1}
 
-bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTstage0}
+bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTstage1}
 
 bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTstage1}
 
 bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTstage1}
 
-bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage0}
+bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage1}
 
 bili049 = {'subject':'bili049', 'soundActionMode':'high_left', **FTstage1}
 
