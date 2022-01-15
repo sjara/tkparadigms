@@ -50,7 +50,7 @@ bili040 = {'subject':'bili040', 'soundActionMode':'high_left', **VOTstage1}
 
 bili041 = {'subject':'bili041', 'soundActionMode':'high_left', **VOTstage1}
 
-bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTstage1}
+bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTstage2}
 
 
 ## FT ##
@@ -73,7 +73,7 @@ bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTstage1}
 
 bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTstage1}
 
-bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTstage1}
+bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTstage2}
 
 bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTstage1}
 
@@ -81,6 +81,6 @@ bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage1}
 
 bili049 = {'subject':'bili049', 'soundActionMode':'high_left', **FTstage1}
 
-bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTstage1}
+bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTstage2}
 
-bili051 = {'subject':'bili051', 'soundActionMode':'high_left', **FTstage1}
+bili051 = {'subject':'bili051', 'soundActionMode':'high_left', **FTstage2}
