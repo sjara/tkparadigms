@@ -20,7 +20,7 @@ from taskontrol.plugins import speakercalibration
 
 LONGTIME = 100
 
-SOUND_DIR = '../jarasounds/ft_vot/'
+SOUND_DIR = rigsettings.SPEECH_SOUNDS_PATH
 
 SOUND_FILENAME_FORMAT = 'syllable_{0}x_vot{1:03.0f}_ft{2:03.0f}.wav'  # From speechsynth.py
 FREQFACTOR_PATTERN = r'_(\d{1})x_'
@@ -48,13 +48,18 @@ class Paradigm(templates.Paradigm2AFC):
         self.freqFactor = 0
         self.possibleVOT = 0
         self.possibleFT = 0
-        self.get_sound_files()  # Defines self.soundFiles, self.possibleVOT and self.possibleFT
         
         # -- Performance dynamics plot --
         performancedynamicsplot.set_pg_colors(self)
         self.myPerformancePlot = performancedynamicsplot.PerformanceDynamicsPlot(nTrials=400,winsize=10)
 
-         # -- Add parameters --
+        # -- Add soundsFolder parameter to Session info --
+        self.params['soundsFolder'] = paramgui.StringParam('Sounds folder', value=SOUND_DIR,
+                                                           enabled=False, group='Session info')
+        self.sessionInfo = self.params.layout_group('Session info')
+        self.get_sound_files()  # Defines self.soundFiles, self.possibleVOT and self.possibleFT
+
+        # -- Add parameters --
         self.params['timeWaterValveL'] = paramgui.NumericParam('Time valve left',value=0.03,
                                                                units='s',group='Water delivery')
         self.params['timeWaterValveC'] = paramgui.NumericParam('Time valve center',value=0.03,
@@ -122,6 +127,9 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['relevantFeature'] = paramgui.MenuParam('Relevant feature',
                                                          ['spectral','temporal'],
                                                          value=0,group='Categorization parameters')
+        self.params['irrelevantFeatureMode'] = paramgui.MenuParam('Irrelevant feature mode',
+                                                                  ['fix_to_min', 'fix_to_max', 'random'],
+                                                                  value=0,group='Categorization parameters')
         self.params['soundActionMode'] = paramgui.MenuParam('Sound-action mode',
                                                             ['low_left','high_left'],
                                                             value=0,group='Categorization parameters')
@@ -151,7 +159,10 @@ class Paradigm(templates.Paradigm2AFC):
         photostimParams = self.params.layout_group('Photostimulation parameters')
         
 
-        self.params['targetPercentage'] = paramgui.NumericParam('Target percentage', value=0, decimals=0,
+        self.params['targetVOTpercent'] = paramgui.NumericParam('Target VOT percent', value=0, decimals=0,
+                                                                units='percentage', enabled=False,
+                                                                group='Sound parameters')
+        self.params['targetFTpercent'] = paramgui.NumericParam('Target FT percent', value=0, decimals=0,
                                                                 units='percentage', enabled=False,
                                                                 group='Sound parameters')
         self.params['targetIntensityMode'] = paramgui.MenuParam('Intensity mode',
@@ -289,9 +300,6 @@ class Paradigm(templates.Paradigm2AFC):
                                           readystate='readyForNextTrial',
                                           extratimers=['laserTimer'])
 
-        # -- Prepare first trial --
-        #self.prepare_next_trial(0)
-
     def prepare_punish_sound(self):
         punishSoundIntensity = self.params['punishSoundIntensity'].get_value()
         punishSoundAmplitude = self.spkNoiseCal.find_amplitude(punishSoundIntensity).mean()
@@ -301,7 +309,8 @@ class Paradigm(templates.Paradigm2AFC):
 
     def get_sound_files(self):
         import re
-        self.soundFiles = glob.glob(os.path.join(SOUND_DIR,'*.wav'))
+        soundFolder = self.params['soundsFolder'].get_value()
+        self.soundFiles = glob.glob(os.path.join(soundFolder,'*.wav'))
         nFiles = len(self.soundFiles)
         eachVOT = np.empty(nFiles, dtype=int)
         eachFT = np.empty(nFiles, dtype=int)
@@ -360,6 +369,15 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Prepare sound --
         relevantFeature = self.params['relevantFeature'].get_string()
+        if relevantFeature == 'spectral':
+            targetPercentageParam = self.params['targetFTpercent']
+            irrelevantParam = self.params['targetVOTpercent']
+        elif relevantFeature == 'temporal':
+            targetPercentageParam = self.params['targetVOTpercent']
+            irrelevantParam = self.params['targetFTpercent']
+        else:
+            raise ValueError(f'Relevant feature "{relevantFeature}" not implemented')
+
         psycurveMode = self.params['psycurveMode'].get_string()
         psycurveNsteps = int(self.params['psycurveNsteps'].get_string())
         if psycurveMode=='off':
@@ -381,16 +399,27 @@ class Paradigm(templates.Paradigm2AFC):
                 targetPercentage = randIndex*20
             elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
                 targetPercentage = (5-randIndex)*20
-        if relevantFeature=='spectral':
-            # Fix VOT
-            filename = SOUND_FILENAME_FORMAT.format(self.freqFactor, 0, targetPercentage)
-        elif relevantFeature=='temporal':
-            # Fix FT
-            filename = SOUND_FILENAME_FORMAT.format(self.freqFactor, targetPercentage, 0)
-        #soundKey = '{0}{1:03}'.format(relevantFeature,targetPercentage)
-        soundKey = os.path.join(SOUND_DIR, filename)
+        targetPercentageParam.set_value(targetPercentage)
+
+        irrelevantFeatureMode = self.params['irrelevantFeatureMode'].get_string()
+        if irrelevantFeatureMode=='fix_to_min':
+            irrelevantParam.set_value(0)
+        elif irrelevantFeatureMode=='fix_to_max':
+            irrelevantParam.set_value(100)
+        elif irrelevantFeatureMode=='random':
+            if psycurveMode=='off':
+                psycurveNsteps = 2
+            possibleIrrelValues = np.round(np.linspace(0, 100, psycurveNsteps)).astype(int)
+            irrelevantFeaturePercent = np.random.choice(possibleIrrelValues, 1)[0]
+            irrelevantParam.set_value(irrelevantFeaturePercent)
+
+        VOTpc = self.params['targetVOTpercent'].get_value()
+        FTpc = self.params['targetFTpercent'].get_value()
+        filename = SOUND_FILENAME_FORMAT.format(self.freqFactor, VOTpc, FTpc)
+
+        soundFolder = self.params['soundsFolder'].get_value()
+        soundKey = os.path.join(soundFolder, filename)
         self.currentSoundID = 1 #self.targetSoundID[soundKey]
-        self.params['targetPercentage'].set_value(targetPercentage)
 
         # -- Check if it will be a laser trial --
         if self.params['laserMode'].get_string()=='bilateral':
