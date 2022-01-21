@@ -13,9 +13,9 @@ tuningAM = {'subject':'feat004','experimenter':'jenny', 'minFreq':4, 'maxFreq':1
 
 speechPilot = {'subject':'feat004', 'experimenter':'jenny','outcomeMode':'passive_exposure','delayToTargetMean':3.0,'delayToTargetHalfRange':1,'psycurveMode':'uniform', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1}
 
-speechFT = {'subject':'feat004', 'experimenter':'jenny','outcomeMode':'passive_exposure','delayToTargetMean':3.0,'delayToTargetHalfRange':1,'psycurveMode':'uniform', 'relevantFeature':'spectral', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1}
+speechFT = {'subject':'feat004', 'experimenter':'jenny','outcomeMode':'passive_exposure','delayToTargetMean':3.0,'delayToTargetHalfRange':1,'psycurveMode':'uniform', 'relevantFeature':'spectral', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1, 'targetMaxIntensity':60}
 
-speechVOT = {'subject':'feat004', 'experimenter':'jenny', 'outcomeMode':'passive_exposure', 'delayToTargetMean':3.0, 'delayToTargetHalfRange':1, 'psycurveMode':'uniform', 'relevantFeature':'temporal', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1}
+speechVOT = {'subject':'feat004', 'experimenter':'jenny', 'outcomeMode':'passive_exposure', 'delayToTargetMean':3.0, 'delayToTargetHalfRange':1, 'psycurveMode':'uniform', 'relevantFeature':'temporal', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1, 'targetMaxIntensity':60}
 
 speechTest = {'subject':'feat003', 'experimenter':'jenny','outcomeMode':'passive_exposure','delayToTargetMean':1.0,'delayToTargetHalfRange':0,'psycurveMode':'uniform', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1}
 
@@ -34,7 +34,7 @@ VOTstage4 = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantF
 VOTBiasCorr = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'temporal', 'antibiasMode':'repeat_mistake', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':60}
 
 
-bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTBiasCorr}
+bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTstage3}
 
 bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTBiasCorr}
 
@@ -44,13 +44,13 @@ bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTBiasCorr}
 
 bili038 = {'subject':'bili038', 'soundActionMode':'low_left', **VOTstage2}
 
-bili039 = {'subject':'bili039', 'soundActionMode':'high_left', **VOTstage2}
+bili039 = {'subject':'bili039', 'soundActionMode':'high_left', **VOTstage3}
 
 bili040 = {'subject':'bili040', 'soundActionMode':'high_left', **VOTstage2}
 
-bili041 = {'subject':'bili041', 'soundActionMode':'high_left', **VOTstage2}
+bili041 = {'subject':'bili041', 'soundActionMode':'high_left', **VOTstage3}
 
-bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTBiasCorr}
+bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTstage3}
 
 
 ## FT ##
@@ -69,13 +69,13 @@ FTBiasCorr = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevant
 
 bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTstage3}
 
-bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTBiasCorr}
+bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTstage3}
 
 bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTstage3}
 
 bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTstage3}
 
-bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTBiasCorr}
+bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTstage3}
 
 bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage2}
 
