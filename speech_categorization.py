@@ -1,6 +1,6 @@
-'''
+"""
 Speech sounds categorization task.
-'''
+"""
 
 import time
 import os
@@ -125,10 +125,11 @@ class Paradigm(templates.Paradigm2AFC):
 
 
         self.params['relevantFeature'] = paramgui.MenuParam('Relevant feature',
-                                                         ['spectral','temporal'],
-                                                         value=0,group='Categorization parameters')
+                                                            ['spectral', 'temporal', 'none'],
+                                                            value=0,group='Categorization parameters')
         self.params['irrelevantFeatureMode'] = paramgui.MenuParam('Irrelevant feature mode',
-                                                                  ['fix_to_min', 'fix_to_max', 'random'],
+                                                                  ['fix_to_min', 'fix_to_max',
+                                                                   'random', 'matrix_border'],
                                                                   value=0,group='Categorization parameters')
         self.params['soundActionMode'] = paramgui.MenuParam('Sound-action mode',
                                                             ['low_left','high_left'],
@@ -375,6 +376,10 @@ class Paradigm(templates.Paradigm2AFC):
         elif relevantFeature == 'temporal':
             targetPercentageParam = self.params['targetVOTpercent']
             irrelevantParam = self.params['targetFTpercent']
+        elif relevantFeature == 'none':
+            self.params['irrelevantFeatureMode'].set_string('matrix_border')
+            targetPercentageParam = self.params['targetFTpercent']
+            irrelevantParam = self.params['targetVOTpercent']
         else:
             raise ValueError(f'Relevant feature "{relevantFeature}" not implemented')
 
@@ -412,6 +417,20 @@ class Paradigm(templates.Paradigm2AFC):
             possibleIrrelValues = np.round(np.linspace(0, 100, psycurveNsteps)).astype(int)
             irrelevantFeaturePercent = np.random.choice(possibleIrrelValues, 1)[0]
             irrelevantParam.set_value(irrelevantFeaturePercent)
+        elif irrelevantFeatureMode=='matrix_border':
+            # NOTE: this mode overwrites values for targetPercentage
+            self.params['relevantFeature'].set_string('none')
+            if psycurveMode=='off':
+                psycurveNsteps = 2
+            possibleValuesEither = np.round(np.linspace(0, 100, psycurveNsteps)).astype(int)
+            valsVOT, valsFT = np.meshgrid(possibleValuesEither, possibleValuesEither)
+            border = lambda arr: np.concatenate([arr[0,:-1], arr[:-1,-1],
+                                                 arr[-1,::-1], arr[-2:0:-1,0]])
+            borderVOT = border(valsVOT)
+            borderFT = border(valsFT)
+            pairInd = np.random.randint(len(borderVOT))
+            self.params['targetVOTpercent'].set_value(borderVOT[pairInd])
+            self.params['targetFTpercent'].set_value(borderFT[pairInd])
 
         VOTpc = self.params['targetVOTpercent'].get_value()
         FTpc = self.params['targetFTpercent'].get_value()
