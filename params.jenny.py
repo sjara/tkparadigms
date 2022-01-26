@@ -34,7 +34,7 @@ VOTstage4 = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantF
 VOTBiasCorr = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'temporal', 'antibiasMode':'repeat_mistake', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':60}
 
 
-bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTstage3}
+bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTBiasCorr}
 
 bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTBiasCorr}
 
