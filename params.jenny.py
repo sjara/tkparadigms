@@ -33,24 +33,25 @@ VOTstage4 = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantF
 
 VOTBiasCorr = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'temporal', 'antibiasMode':'repeat_mistake', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':60}
 
+#'timeWaterValveR' 'timeWaterValveL' = 0.02
 
-bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTBiasCorr}
+bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTBiasCorr, 'timeWaterValveL' = 0.02} #AM
 
-bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTBiasCorr}
+bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTBiasCorr, , 'timeWaterValveR' = 0.02} #AM
 
-bili036 = {'subject':'bili036', 'soundActionMode':'low_left', **VOTBiasCorr}
+bili036 = {'subject':'bili036', 'soundActionMode':'low_left', **VOTBiasCorr, 'timeWaterValveR' = 0.02} #AM
 
-bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTBiasCorr}
+bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTBiasCorr, 'timeWaterValveR' = 0.02} #AM
 
-bili038 = {'subject':'bili038', 'soundActionMode':'low_left', **VOTstage3}
+bili038 = {'subject':'bili038', 'soundActionMode':'low_left', **VOTstage3} #AM
 
-bili039 = {'subject':'bili039', 'soundActionMode':'high_left', **VOTBiasCorr}
+bili039 = {'subject':'bili039', 'soundActionMode':'high_left', **VOTBiasCorr, 'timeWaterValveL' = 0.02} #PM
 
-bili040 = {'subject':'bili040', 'soundActionMode':'high_left', **VOTstage3}
+bili040 = {'subject':'bili040', 'soundActionMode':'high_left', **VOTstage3} #PM
 
-bili041 = {'subject':'bili041', 'soundActionMode':'high_left', **VOTBiasCorr}
+bili041 = {'subject':'bili041', 'soundActionMode':'high_left', **VOTBiasCorr, 'timeWaterValveR' = 0.02} #PM
 
-bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTstage3}
+bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTstage3, 'timeWaterValveL' = 0.02} #PM
 
 
 ## FT ##
@@ -67,20 +68,20 @@ FTstage4 = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFe
 FTBiasCorr = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'spectral', 'antibiasMode':'repeat_mistake', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':60}
 
 
-bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTstage3}
+bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTstage3, 'timeWaterValveL' = 0.02} #PM
 
-bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTBiasCorr}
+bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTBiasCorr, 'timeWaterValveR' = 0.02} #PM
 
-bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTBiasCorr}
+bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTBiasCorr, 'timeWaterValveR' = 0.02} #PM
 
-bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTBiasCorr}
+bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTBiasCorr, 'timeWaterValveR' = 0.02} #PM
 
-bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTstage3}
+bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTstage3, 'timeWaterValveL' = 0.02} #PM
 
-bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTBiasCorr}
+bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTBiasCorr} #AM
 
-bili049 = {'subject':'bili049', 'soundActionMode':'high_left', **FTstage3}
+bili049 = {'subject':'bili049', 'soundActionMode':'high_left', **FTstage3} #AM
 
-bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTBiasCorr}
+bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTBiasCorr, 'timeWaterValveL' = 0.02} #AM
 
-bili051 = {'subject':'bili051', 'soundActionMode':'high_left', **FTBiasCorr}
+bili051 = {'subject':'bili051', 'soundActionMode':'high_left', **FTBiasCorr, 'timeWaterValveL' = 0.02} #AM
