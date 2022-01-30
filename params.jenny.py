@@ -44,17 +44,17 @@ bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTstage3} #AM
 
 bili036 = {'subject':'bili036', 'soundActionMode':'low_left', **VOTstage3} #AM
 
-bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTstage3} #AM rightBiased
+bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTstage3, **RightBias} #AM
 
 bili038 = {'subject':'bili038', 'soundActionMode':'low_left', **VOTstage3} #AM
 
-bili039 = {'subject':'bili039', 'soundActionMode':'high_left', **VOTstage3} #PM
+bili039 = {'subject':'bili039', 'soundActionMode':'high_left', **VOTstage3, **LeftBias} #PM
 
-bili040 = {'subject':'bili040', 'soundActionMode':'high_left', **VOTstage3} #PM
+bili040 = {'subject':'bili040', 'soundActionMode':'high_left', **VOTstage3, **LeftBias} #PM
 
 bili041 = {'subject':'bili041', 'soundActionMode':'high_left', **VOTstage3, **RightBias} #PM
 
-bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTstage3, **LeftBias} #PM
+bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTBiasCorr, **LeftBias} #PM
 
 
 ## FT ##
@@ -75,16 +75,16 @@ bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTstage3} #PM
 
 bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTstage3} #PM
 
-bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTstage3} #PM
+bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTBiasCorr, **RightBias} #PM
 
 bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTstage3} #PM
 
-bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTBiasCorr, **RightBias} #PM
+bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTstage3, **RightBias} #PM
 
 bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage3} #AM
 
-bili049 = {'subject':'bili049', 'soundActionMode':'high_left', **FTBiasCorr, **LeftBias} #AM
+bili049 = {'subject':'bili049', 'soundActionMode':'high_left', **FTstage3} #AM
 
-bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTstage3} #AM
+bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTBiasCorr} #AM
 
 bili051 = {'subject':'bili051', 'soundActionMode':'high_left', **FTstage3} #AM
