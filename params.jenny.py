@@ -48,13 +48,13 @@ bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTstage3, **Rig
 
 bili038 = {'subject':'bili038', 'soundActionMode':'low_left', **VOTstage3} #AM
 
-bili039 = {'subject':'bili039', 'soundActionMode':'high_left', **VOTBiasCorr, **LeftBias} #PM
+bili039 = {'subject':'bili039', 'soundActionMode':'high_left', **VOTstage3} #PM
 
-bili040 = {'subject':'bili040', 'soundActionMode':'high_left', **VOTBiasCorr, **LeftBias} #PM
+bili040 = {'subject':'bili040', 'soundActionMode':'high_left', **VOTstage3} #PM
 
 bili041 = {'subject':'bili041', 'soundActionMode':'high_left', **VOTstage3} #PM
 
-bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTBiasCorr, **LeftBias} #PM
+bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTstage3} #PM
 
 
 ## FT ##
@@ -71,17 +71,17 @@ FTstage4 = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFe
 FTBiasCorr = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'spectral', 'antibiasMode':'repeat_mistake', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':60}
 
 
-bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTBiasCorr, **RightBias} #PM
+bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTstage3} #PM
 
-bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTBiasCorr, **RightBias} #PM
+bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTstage3} #PM
 
-bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTBiasCorr, **RightBias} #PM
+bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTstage3, **RightBias} #PM
 
-bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTBiasCorr, **RightBias} #PM
+bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTstage3} #PM
 
 bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTstage3} #PM
 
-bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage3} #AM
+bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage3, **LeftBias} #AM
 
 bili049 = {'subject':'bili049', 'soundActionMode':'high_left', **FTstage3} #AM
 
