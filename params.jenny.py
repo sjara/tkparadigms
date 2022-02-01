@@ -38,15 +38,15 @@ LeftBias = {'timeWaterValveL':0.02}
 RightBias = {'timeWaterValveR':0.02}
 #'timeWaterValveR' 'timeWaterValveL' = 0.02
 
-bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTstage3, **LeftBias} #AM
+bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTstage3} #AM
 
-bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTstage3} #AM
+bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTBiasCorr} #AM
 
-bili036 = {'subject':'bili036', 'soundActionMode':'low_left', **VOTstage3} #AM
+bili036 = {'subject':'bili036', 'soundActionMode':'low_left', **VOTBiasCorr} #AM
 
-bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTstage3, **RightBias} #AM
+bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTstage3} #AM
 
-bili038 = {'subject':'bili038', 'soundActionMode':'low_left', **VOTstage3} #AM
+bili038 = {'subject':'bili038', 'soundActionMode':'low_left', **VOTBiasCorr} #AM
 
 bili039 = {'subject':'bili039', 'soundActionMode':'high_left', **VOTstage3} #PM
 
@@ -81,10 +81,10 @@ bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTstage3} #PM
 
 bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTstage3} #PM
 
-bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage3, **LeftBias} #AM
+bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage3} #AM
 
 bili049 = {'subject':'bili049', 'soundActionMode':'high_left', **FTstage3} #AM
 
-bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTBiasCorr} #AM
+bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTstage3} #AM
 
-bili051 = {'subject':'bili051', 'soundActionMode':'high_left', **FTstage3} #AM
+bili051 = {'subject':'bili051', 'soundActionMode':'high_left', **FTBiasCorr} #AM
