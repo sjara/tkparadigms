@@ -55,7 +55,7 @@ bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTstage3} #AM
 
 bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTBiasCorr, **LeftBias} #AM
 
-bili036 = {'subject':'bili036', 'soundActionMode':'low_left', **VOTstage3 #AM
+bili036 = {'subject':'bili036', 'soundActionMode':'low_left', **VOTstage3} #AM
 
 bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTstage3} #AM
 
