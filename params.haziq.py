@@ -71,7 +71,7 @@ pamo020.update(stage2)
 pamo021.update(stage3)
 pamo022.update(stage3)
 pamo023.update(stage3)
-pamo024.update(stage2)
+pamo024.update(stage3)
 pamo025.update(stage3) 
 pamo026.update(stage3)
 
