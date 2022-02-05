@@ -77,12 +77,12 @@ bili041 = {'subject':'bili041', 'soundActionMode':'high_left', **VOTstage3} #PM
 
 bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTstage3} #PM
 
-bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTBiasCorr} #PM
+bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTstage3} #PM
 
-bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTstage3} #PM
+bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTBiasCorr} #PM
 
-bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTBiasCorr} #PM
+bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTstage3} #PM
 
 bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTstage3} #PM
 
-bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTstage3} #PM
+bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTBiasCorr} #PM
