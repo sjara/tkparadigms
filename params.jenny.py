@@ -48,6 +48,9 @@ FTstage4 = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFe
 
 FTBiasCorr = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'spectral', 'antibiasMode':'repeat_mistake', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':60}
 
+leftBias = {'timeWaterValveL':0.025}
+
+rightBias = {'timeWaterValveR':0.025}
 #AM
 
 bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTstage3}
@@ -60,11 +63,11 @@ bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTstage3}
 
 bili038 = {'subject':'bili038', 'soundActionMode':'low_left', **VOTstage3}
 
-bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage3}
+bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTBiasCorr, **leftBias}
 
 bili049 = {'subject':'bili049', 'soundActionMode':'high_left', **FTstage3}
 
-bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTstage3}
+bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTBiasCorr, **leftBias}
 
 bili051 = {'subject':'bili051', 'soundActionMode':'high_left', **FTstage3}
 
