@@ -33,6 +33,8 @@ VOTstage3 = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantF
 
 VOTstage4 = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'temporal', 'psycurveMode':'extreme80pc', 'psycurveNsteps':'6', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':70}
 
+VOTstage5 = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'temporal', 'psycurveMode':'uniform', 'psycurveNsteps':'6', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':70}
+
 VOTBiasCorr = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'temporal', 'antibiasMode':'repeat_mistake', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':70}
 
 ## FT ##
@@ -45,6 +47,8 @@ FTstage2 = {'experimenter':'jenny', 'outcomeMode':'on_next_correct', 'relevantFe
 FTstage3 = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'spectral', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':70}
 
 FTstage4 = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'spectral', 'psycurveMode':'uniform', 'psycurveNsteps':'6', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':70}
+
+FTstage4 = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'spectral', 'psycurveMode':'extreme80pc', 'psycurveNsteps':'6', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':70}
 
 FTBiasCorr = {'experimenter':'jenny', 'outcomeMode':'only_if_correct', 'relevantFeature':'spectral', 'antibiasMode':'repeat_mistake', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange':0.05, 'targetMaxIntensity':70}
 
@@ -67,7 +71,7 @@ bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage3}
 
 bili049 = {'subject':'bili049', 'soundActionMode':'high_left', **FTstage3}
 
-bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTBiasCorr, **leftBias}
+bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTstage3}
 
 bili051 = {'subject':'bili051', 'soundActionMode':'high_left', **FTstage3}
 
@@ -77,16 +81,16 @@ bili039 = {'subject':'bili039', 'soundActionMode':'high_left', **VOTstage4}
 
 bili040 = {'subject':'bili040', 'soundActionMode':'high_left', **VOTstage3}
 
-bili041 = {'subject':'bili041', 'soundActionMode':'high_left', **VOTstage4}
+bili041 = {'subject':'bili041', 'soundActionMode':'high_left', **VOTstage3}
 
-bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTstage4}
+bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTstage3}
 
-bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTBiasCorr, **rightBias}
+bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTstage3, **rightBias}
 
 bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTstage3}
 
-bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTstage3}
+bili045 = {'subject':'bili045', 'soundActionMode':'low_left', **FTBiasCorr, **leftBias}
 
-bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTstage3}
+bili046 = {'subject':'bili046', 'soundActionMode':'low_left', **FTBiasCorr, **leftBias}
 
 bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTstage3}
