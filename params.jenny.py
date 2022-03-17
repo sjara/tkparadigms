@@ -59,13 +59,13 @@ rightBias = {'timeWaterValveR':0.025}
 
 bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTstage5}
 
-bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTstage4}
+bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTstage5}
 
 bili036 = {'subject':'bili036', 'soundActionMode':'low_left', **VOTstage5}
 
 bili037 = {'subject':'bili037', 'soundActionMode':'low_left', **VOTstage5}
 
-bili038 = {'subject':'bili038', 'soundActionMode':'low_left', **VOTstage4}
+bili038 = {'subject':'bili038', 'soundActionMode':'low_left', **VOTstage5}
 
 bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage3}
 
@@ -98,3 +98,13 @@ bili047 = {'subject':'bili047', 'soundActionMode':'low_left', **FTstage4}
 ## Headfixed
 
 headfix_habituation = {'rewardSideMode':'toggle'}
+
+febeStage1 = {'experimenter':'jenny', 'relevantFeature':'temporal',  'psycurveMode':'off', 'taskMode':'water_after_sound', 'rewardSideMode':'random', 'lickingPeriod':1.5, 'rewardAvailability':1, 'delayToTargetMean':2.5,'delayToTargetHalfRange':1,'targetMaxIntensity':70, 'timeWaterValve':0.03, 'stimType':'sound_only'}
+
+febeStage2 = {'experimenter':'jenny', 'relevantFeature':'temporal',  'psycurveMode':'off', 'taskMode':'lick_on_stim', 'rewardSideMode':'repeat_mistake', 'lickBeforeStimOffset':'ignore', 'lickingPeriod':1.5, 'rewardAvailability':1, 'delayToTargetMean':2.5,'delayToTargetHalfRange':1,'targetMaxIntensity':70, 'timeWaterValve':0.03, 'stimType':'sound_only'}
+
+febeStage3 = {'experimenter':'jenny', 'relevantFeature':'temporal',  'psycurveMode':'off', 'taskMode':'discriminate_stim', 'rewardSideMode':'repeat_mistake', 'lickBeforeStimOffset':'ignore', 'lickingPeriod':1.5, 'rewardAvailability':1, 'delayToTargetMean':2.5,'delayToTargetHalfRange':1,'targetMaxIntensity':70, 'timeWaterValve':0.03, 'stimType':'sound_only'}
+
+febeStage4 = {'experimenter':'jenny', 'relevantFeature':'temporal',  'psycurveMode':'off', 'taskMode':'discriminate_stim', 'rewardSideMode':'random', 'lickBeforeStimOffset':'ignore', 'lickingPeriod':1.5, 'rewardAvailability':1, 'delayToTargetMean':2.5,'delayToTargetHalfRange':1,'targetMaxIntensity':70, 'timeWaterValve':0.03, 'stimType':'sound_only'}
+
+febe001 = {'subject':'febe001', **febeStage1}
