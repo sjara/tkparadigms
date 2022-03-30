@@ -432,6 +432,7 @@ class Paradigm(QtWidgets.QMainWindow):
         This method is inherited from QtWidgets.QMainWindow, which explains
         its camelCase naming.
         '''
+        self.soundClient.shutdown()
         self.dispatcher.die()
         event.accept()
 
