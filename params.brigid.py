@@ -12,4 +12,4 @@ febeStage4 = {'experimenter':'jenny', 'relevantFeature':'temporal',  'psycurveMo
 
 febe001 = {'subject':'febe001', **febeStage1}
 febe007 = {'subject':'febe007', **febeStage2}
-febe008 = {'subject':'febe008', **febeStage2}
+febe008 = {'subject':'febe008', **febeStage3}
