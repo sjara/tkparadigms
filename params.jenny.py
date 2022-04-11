@@ -4,12 +4,12 @@ tuningFRA = {'subject':'pals027','experimenter':'jenny', 'minFreq':2000, 'maxFre
 
 tuningFreq = {'subject':'feat004','experimenter':'jenny', 'minFreq':2000, 'maxFreq':40000,
               'numTones':16, 'stimType':'Sine', 'stimDur':0.1, 'isiMean':1.2, 'isiHalfRange':0.2,
-              'minInt':60, 'maxInt':70, 'numInt':2, 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1 }
+              'minInt':60, 'maxInt':70, 'numInt':2, 'syncLightMode':'from_stim_offset', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1 }
 
 
 tuningAM = {'subject':'feat004','experimenter':'jenny', 'minFreq':4, 'maxFreq':128, 'numTones':11,
             'stimType':'AM', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2, 'minInt':60,
-            'maxInt':60, 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1}
+            'maxInt':60, 'syncLightMode':'from_stim_offset', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1}
 
 speechPilot = {'subject':'feat004', 'experimenter':'jenny','outcomeMode':'passive_exposure','delayToTargetMean':3.0,'delayToTargetHalfRange':1,'psycurveMode':'uniform', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1}
 
@@ -71,7 +71,7 @@ bili048 = {'subject':'bili048', 'soundActionMode':'high_left', **FTstage3}
 
 bili049 = {'subject':'bili049', 'soundActionMode':'high_left', **FTstage3}
 
-bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTBiasCorr}
+bili050 = {'subject':'bili050', 'soundActionMode':'high_left', **FTstage3}
 
 bili051 = {'subject':'bili051', 'soundActionMode':'high_left', **FTstage4}
 
@@ -85,7 +85,7 @@ bili041 = {'subject':'bili041', 'soundActionMode':'high_left', **VOTstage5}
 
 bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTstage5}
 
-bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTstage4}
+bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTstage3}
 
 bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTstage5}
 

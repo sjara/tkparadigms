@@ -18,6 +18,11 @@ stage4 = {'experimenter':'haziq',
            'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
            'delayToTargetHalfRange':0.05, 'psycurveMode':'uniform',
            'maxNtrials':500}
+           
+stage5 = {'experimenter':'haziq', 
+           'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
+           'delayToTargetHalfRange':0.05, 'psycurveMode':'controls',
+           'maxNtrials':500}
 
 pamo009 = {'subject':'pamo009',
           }
@@ -56,22 +61,22 @@ pamo025 = {'subject':'pamo025',
 pamo026 = {'subject':'pamo026',
           }          
 
-pamo009.update(stage4)
-pamo010.update(stage4)
-pamo011.update(stage4)
-pamo012.update(stage4)
-pamo013.update(stage4)
-pamo014.update(stage4)
-pamo015.update(stage4)
-pamo016.update(stage4)
-pamo017.update(stage4)
-pamo018.update(stage4)
-pamo019.update(stage4)
-pamo020.update(stage4)
-pamo021.update(stage4)
-pamo022.update(stage4)
-pamo023.update(stage4)
-pamo024.update(stage4)
-pamo025.update(stage4) 
-pamo026.update(stage4)
+pamo009.update(stage5)
+pamo010.update(stage5)
+pamo011.update(stage5)
+pamo012.update(stage5)
+pamo013.update(stage5)
+pamo014.update(stage5)
+pamo015.update(stage5)
+pamo016.update(stage5)
+pamo017.update(stage5)
+pamo018.update(stage5)
+pamo019.update(stage5)
+pamo020.update(stage5)
+pamo021.update(stage5)
+pamo022.update(stage5)
+pamo023.update(stage5)
+pamo024.update(stage5)
+pamo025.update(stage5) 
+pamo026.update(stage5)
 
