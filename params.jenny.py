@@ -87,7 +87,7 @@ bili041 = {'subject':'bili041', 'soundActionMode':'high_left', **VOTstage6}
 
 bili042 = {'subject':'bili042', 'soundActionMode':'high_left', **VOTstage6}
 
-bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTstage4}
+bili043 = {'subject':'bili043', 'soundActionMode':'low_left', **FTstage3}
 
 bili044 = {'subject':'bili044', 'soundActionMode':'low_left', **FTstage5}
 
