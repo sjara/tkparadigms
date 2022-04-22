@@ -60,23 +60,68 @@ pamo025 = {'subject':'pamo025',
           }
 pamo026 = {'subject':'pamo026',
           }          
-
-pamo009.update(stage5)
-pamo010.update(stage5)
-pamo011.update(stage5)
-pamo012.update(stage5)
-pamo013.update(stage5)
-pamo014.update(stage5)
-pamo015.update(stage5)
-pamo016.update(stage5)
+pamo027 = {'subject':'pamo027',
+          }
+pamo028 = {'subject':'pamo028',
+          }
+pamo029 = {'subject':'pamo029',
+          }
+pamo030 = {'subject':'pamo030',
+          }
+pamo031 = {'subject':'pamo031',
+          }                    
+pamo032 = {'subject':'pamo032',
+          }
+pamo033 = {'subject':'pamo033',
+          }
+pamo034 = {'subject':'pamo034',
+          }
+pamo035 = {'subject':'pamo035',
+          }
+pamo036 = {'subject':'pamo036',
+          }
+pamo037 = {'subject':'pamo037',
+          }
+pamo038 = {'subject':'pamo038',
+          }
+pamo039 = {'subject':'pamo039',
+          }
+pamo040 = {'subject':'pamo040',
+          }
+pamo041 = {'subject':'pamo041',
+          }                                                                                
+          
+#pamo009.update(stage5)
+#pamo010.update(stage5)
+#pamo011.update(stage5)
+#pamo012.update(stage5)
+#pamo013.update(stage5)
+#pamo014.update(stage5)
+#pamo015.update(stage5)
+#pamo016.update(stage5)
 pamo017.update(stage5)
 pamo018.update(stage5)
-pamo019.update(stage5)
-pamo020.update(stage5)
-pamo021.update(stage5)
-pamo022.update(stage5)
-pamo023.update(stage5)
+#pamo019.update(stage5)
+#pamo020.update(stage5)
+#pamo021.update(stage5)
+#pamo022.update(stage5)
+#pamo023.update(stage5)
 pamo024.update(stage5)
-pamo025.update(stage5) 
-pamo026.update(stage5)
+#pamo025.update(stage5) 
+#pamo026.update(stage5)
+pamo027.update(stage0)
+pamo028.update(stage0)
+pamo029.update(stage0)
+pamo030.update(stage0)
+pamo031.update(stage0)
+pamo032.update(stage0)
+pamo033.update(stage0)
+pamo034.update(stage0)
+pamo035.update(stage0)
+pamo036.update(stage0)
+pamo037.update(stage0)
+pamo038.update(stage0)
+pamo039.update(stage0)
+pamo040.update(stage0)
+pamo041.update(stage0)
 
