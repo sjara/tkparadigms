@@ -61,7 +61,7 @@ rightBias = {'timeWaterValveR':0.025}
 
 bili034 = {'subject':'bili034', 'soundActionMode':'low_left', **VOTstage6}
 
-bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTstage5}
+bili035 = {'subject':'bili035', 'soundActionMode':'low_left', **VOTstage6}
 
 bili036 = {'subject':'bili036', 'soundActionMode':'low_left', **VOTstage6}
 
