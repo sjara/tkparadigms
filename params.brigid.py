@@ -19,4 +19,4 @@ febe001 = {'subject':'febe001', **febeStage1}
 febe007 = {'subject':'febe007', **febeStage3}
 febe008 = {'subject':'febe008', **febeStage5}
 febe009 = {'subject':'febe009', **febeStage5}
-febe012 = {'subject':'febe012', **febeStage2}
+febe012 = {'subject':'febe012', **febeStage2, 'timeWaterValve':0.04}
