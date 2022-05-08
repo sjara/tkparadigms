@@ -25,6 +25,8 @@ stage5 = {'experimenter':'haziq',
            'delayToTargetHalfRange':0.05, 'psycurveMode':'controls',
            'maxNtrials':500}
 
+antibias = {'antibiasMode':'repeat_mistake'}
+
 pamo009 = {'subject':'pamo009',
           }
 pamo010 = {'subject':'pamo010',
@@ -110,19 +112,20 @@ pamo018.update(stage5)
 pamo024.update(stage5)
 #pamo025.update(stage5) 
 #pamo026.update(stage5)
-pamo027.update(stage3)
+
+pamo027.update(stage3); pamo027.update(antibias)
 pamo028.update(stage3)
 pamo029.update(stage3)
-pamo030.update(stage3)
-pamo031.update(stage3)
-pamo032.update(stage3)
+pamo030.update(stage3); pamo030.update(antibias)
+pamo031.update(stage3); pamo031.update(antibias)
+pamo032.update(stage3); pamo032.update(antibias)
 pamo033.update(stage3)
 pamo034.update(stage3)
-pamo035.update(stage3)
-pamo036.update(stage3)
-pamo037.update(stage3)
+pamo035.update(stage3); pamo035.update(antibias)
+pamo036.update(stage3); pamo036.update(antibias)
+pamo037.update(stage3); pamo037.update(antibias)
 pamo038.update(stage3)
-pamo039.update(stage3)
-pamo040.update(stage3)
+pamo039.update(stage3); pamo039.update(antibias)
+pamo040.update(stage3); pamo040.update(antibias)
 pamo041.update(stage3)
 
