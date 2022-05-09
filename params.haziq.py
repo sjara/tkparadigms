@@ -113,19 +113,19 @@ pamo024.update(stage5)
 #pamo025.update(stage5) 
 #pamo026.update(stage5)
 
-pamo027.update(stage3); pamo027.update(antibias)
+pamo027.update(stage3);
 pamo028.update(stage3)
 pamo029.update(stage3)
-pamo030.update(stage3); pamo030.update(antibias)
-pamo031.update(stage3); pamo031.update(antibias)
-pamo032.update(stage3); pamo032.update(antibias)
-pamo033.update(stage3)
-pamo034.update(stage3)
-pamo035.update(stage3); pamo035.update(antibias)
-pamo036.update(stage3); pamo036.update(antibias)
-pamo037.update(stage3); pamo037.update(antibias)
+pamo030.update(stage3); pamo030.update(antibias) # Second day
+pamo031.update(stage3); pamo031.update(antibias) # Second day? after 20% bias
+pamo032.update(stage3); pamo032.update(antibias) # Second day
+pamo033.update(stage3); pamo033.update(antibias)
+pamo034.update(stage3); pamo034.update(antibias)
+pamo035.update(stage3); 
+pamo036.update(stage3); 
+pamo037.update(stage3); 
 pamo038.update(stage3)
-pamo039.update(stage3); pamo039.update(antibias)
-pamo040.update(stage3); pamo040.update(antibias)
+pamo039.update(stage3); pamo039.update(antibias) # Second day? after 25% bias
+pamo040.update(stage3); pamo040.update(antibias) # Second day
 pamo041.update(stage3)
 
