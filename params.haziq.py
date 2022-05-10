@@ -116,16 +116,16 @@ pamo024.update(stage5)
 pamo027.update(stage3);
 pamo028.update(stage3)
 pamo029.update(stage3)
-pamo030.update(stage3); pamo030.update(antibias) # Second day
-pamo031.update(stage3); pamo031.update(antibias) # Second day? after 20% bias
-pamo032.update(stage3); pamo032.update(antibias) # Second day
-pamo033.update(stage3); pamo033.update(antibias)
-pamo034.update(stage3); pamo034.update(antibias)
+pamo030.update(stage3); pamo030.update(antibias) # Third day
+pamo031.update(stage3); 
+pamo032.update(stage3); 
+pamo033.update(stage3); 
+pamo034.update(stage3); # Just above 30%
 pamo035.update(stage3); 
 pamo036.update(stage3); 
-pamo037.update(stage3); 
-pamo038.update(stage3)
-pamo039.update(stage3); pamo039.update(antibias) # Second day? after 25% bias
-pamo040.update(stage3); pamo040.update(antibias) # Second day
-pamo041.update(stage3)
+pamo037.update(stage3); pamo037.update(antibias) # Just below 20%
+pamo038.update(stage3)  # Run on antibias by mistake?
+pamo039.update(stage3); pamo039.update(antibias) # Did not run on antibias (by mistake)?
+pamo040.update(stage3); pamo040.update(antibias) # Did not run on antibias (by mistake)?
+pamo041.update(stage3)  # Run on antibias by mistake?
 
