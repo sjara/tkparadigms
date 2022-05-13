@@ -117,13 +117,13 @@ pamo027.update(stage3);
 pamo028.update(stage3)
 pamo029.update(stage3)
 pamo030.update(stage3) 
-pamo031.update(stage3); pamo031.update(antibias) # Fifth day 
-pamo032.update(stage3); pamo032.update(antibias) # Fifth day
-pamo033.update(stage3) # performed more than 30% with antibias mode on (Fifth day)
-pamo034.update(stage3) # performed more than 30% with antibias mode on (Fifth day)
-pamo035.update(stage3); 
+pamo031.update(stage3) # performed more than 30% with antibias mode on (Sixth day)
+pamo032.update(stage3) # performed more than 30% with antibias mode on (Sixth day)
+pamo033.update(stage3); pamo033.update(antibias) # Sixth day 
+pamo034.update(stage3); pamo034.update(antibias) # Sixth day
+pamo035.update(stage3); # just above 20% 
 pamo036.update(stage3); 
-pamo037.update(stage3) 
+pamo037.update(stage3)  # Just above 20%
 pamo038.update(stage3) 
 pamo039.update(stage3) 
 pamo040.update(stage3) 
