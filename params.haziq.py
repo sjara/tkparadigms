@@ -1,5 +1,10 @@
 
 stage0 = { 'experimenter':'haziq', 
+           
+stage3 = { 'experimenter':'haziq', 
+           'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
+           'delayToTargetHalfRange':0.05, 'psycurveMode':'off',
+           'maxNtrials':500}
            'outcomeMode':'sides_direct', 'delayToTargetMean':0}
            
 stage1 = { 'experimenter':'haziq', 
@@ -9,11 +14,6 @@ stage2 = { 'experimenter':'haziq',
            'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01,
            'delayToTargetHalfRange':0.0, 'automationMode':'increase_delay',
            'maxNtrials':400}
-           
-stage3 = { 'experimenter':'haziq', 
-           'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
-           'delayToTargetHalfRange':0.05, 'psycurveMode':'off',
-           'maxNtrials':500}
 
 stage4 = {'experimenter':'haziq', 
            'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
@@ -119,11 +119,11 @@ pamo029.update(stage3)
 pamo030.update(stage3)# performed more than 30% with antibias mode on (twenty one day) 
 pamo031.update(stage3) 
 pamo032.update(stage3) 
-pamo033.update(stage3); pamo033.update(antibias) # twenty one day 
-pamo034.update(stage3)# performed more than 30% with antibias mode on (twentieth day)  
+pamo033.update(stage3); # performed more than 30% with antibias mode on (twenty two day)
+pamo034.update(stage3); pamo034.update(antibias) # twenty two day  
 pamo035.update(stage3); # performed more than 30% with antibias mode on (eightteen day)
-pamo036.update(stage3); pamo036.update(antibias) # twenty one day 
-pamo037.update(stage3); pamo037.update(antibias) # twenty one day
+pamo036.update(stage3); # performed more than 30% with antibias mode on (twenty two day) 
+pamo037.update(stage3); pamo037.update(antibias) # twenty two day
 pamo038.update(stage3) 
 pamo039.update(stage3) 
 pamo040.update(stage3) 
