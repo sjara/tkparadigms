@@ -1,5 +1,6 @@
 
 stage0 = { 'experimenter':'haziq', 
+           'outcomeMode':'sides_direct', 'delayToTargetMean':0}
            
 stage3 = { 'experimenter':'haziq', 
            'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
