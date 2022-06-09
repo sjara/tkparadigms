@@ -17,8 +17,8 @@ febeStage6 = {'experimenter':'jenny', 'relevantFeature':'temporal',  'psycurveMo
 febeStage7 = {'experimenter':'jenny', 'relevantFeature':'temporal', 'irrelevantFeatureMode':'random', 'psycurveMode':'uniform', 'psycurveNsteps':'6', 'taskMode':'discriminate_stim', 'rewardSideMode':'random', 'lickBeforeStimOffset':'ignore', 'lickingPeriod':1.5, 'rewardAvailability':1, 'delayToTargetMean':2.5,'delayToTargetHalfRange':1,'targetMaxIntensity':60, 'timeWaterValve':0.03, 'stimType':'sound_only'}
 
 
-febe001 = {'subject':'febe001', **febeStage1}
-febe007 = {'subject':'febe007', **febeStage6}
+#febe001 = {'subject':'febe001', **febeStage1}
+febe007 = {'subject':'febe007', **febeStage5}
 febe008 = {'subject':'febe008', **febeStage7}
-febe009 = {'subject':'febe009', **febeStage7}
+febe009 = {'subject':'febe009', **febeStage6}
 febe012 = {'subject':'febe012', **febeStage7}
