@@ -109,6 +109,14 @@ class Paradigm(QtWidgets.QMainWindow):
         #                                                units='s',group='Timing parameters')
         #self.params['timeLEDon'] = paramgui.NumericParam('Time LED on',value=1,
         #                                                units='s',group='Timing parameters')
+        self.params['syncLight'] = paramgui.MenuParam('Sync light',
+                                                       ['off', 'leftLED', 'centerLED', 'rightLED'],
+                                                       value=0, group='Timing parameters')
+        self.params['syncLightDuration'] = paramgui.NumericParam('Sync light duration',value=0,
+                                                        units='s',group='Timing parameters')
+        self.params['delayFromSyncLightOnset'] = paramgui.NumericParam('Delay from sync light on',value=0,
+                                                                units='s',group='Timing parameters',
+                                                                decimals=3, enabled=False)
         timingParams = self.params.layout_group('Timing parameters')
 
 
@@ -726,6 +734,15 @@ class Paradigm(QtWidgets.QMainWindow):
             self.prepare_punish_sound(punishmentSound, None)
         punishsoundOutput = self.punishSoundID
 
+        #delayToSyncLight = self.params['delayToSyncLight'].get_value()
+        syncLightDuration = self.params['syncLightDuration'].get_value()
+        syncLightPortStr = self.params['syncLight'].get_string()
+        if syncLightPortStr=='off':
+            syncLightPort = []
+        else:
+            syncLightPort = [syncLightPortStr]
+        self.params['delayFromSyncLightOnset'].set_value(interTrialInterval)
+        
         '''
         stimType = self.params['stimType'].get_string()
         if (stimType=='sound_and_light') | (stimType=='sound_only'):
@@ -809,9 +826,15 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='falseAlarmR')            
         elif taskMode == 'lick_on_stim':
             self.sm.add_state(name='startTrial', statetimer=0,
-                              transitions={'Tup':'delayPeriod'},
+                              transitions={'Tup':'syncLightOn'},
                               outputsOff=['centerLED','rightLED','leftLED'])
-            self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval,
+            self.sm.add_state(name='syncLightOn', statetimer=syncLightDuration,
+                              transitions={'Tup':'syncLightOff'},
+                              outputsOn=syncLightPort)
+            self.sm.add_state(name='syncLightOff', statetimer=0,
+                              transitions={'Tup':'delayPeriod'},
+                              outputsOff=syncLightPort)
+            self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval-syncLightDuration,
                               transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR',
                                            'Tup':'playTarget'})
             if lickBeforeStimOffset=='reward':
@@ -870,9 +893,15 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'readyForNextTrial'})
         elif taskMode == 'discriminate_stim':
             self.sm.add_state(name='startTrial', statetimer=0,
-                              transitions={'Tup':'delayPeriod'},
+                              transitions={'Tup':'syncLightOn'},
                               outputsOff=['centerLED','rightLED','leftLED'])
-            self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval,
+            self.sm.add_state(name='syncLightOn', statetimer=syncLightDuration,
+                              transitions={'Tup':'syncLightOff'},
+                              outputsOn=syncLightPort)
+            self.sm.add_state(name='syncLightOff', statetimer=0,
+                              transitions={'Tup':'delayPeriod'},
+                              outputsOff=syncLightPort)
+            self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval-syncLightDuration,
                               transitions={'Lin':'falseAlarmL', 'Rin':'falseAlarmR','Tup':'playTarget'})
             if lickBeforeStimOffset=='reward':
                 self.sm.add_state(name='playTarget', statetimer=targetDuration,
