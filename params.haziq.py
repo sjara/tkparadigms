@@ -27,105 +27,57 @@ stage5 = {'experimenter':'haziq',
 
 antibias = {'antibiasMode':'repeat_mistake'}
 
-pamo009 = {'subject':'pamo009',
-          }
-pamo010 = {'subject':'pamo010',
-          }
-pamo011 = {'subject':'pamo011',
-          }
-pamo012 = {'subject':'pamo012',
-          }
-pamo013 = {'subject':'pamo013',
-          }
-pamo014 = {'subject':'pamo014',
-          }
-pamo015 = {'subject':'pamo015',
-          }
-pamo016 = {'subject':'pamo016',
-          }    
-pamo017 = {'subject':'pamo017',
-          }
-pamo018 = {'subject':'pamo018',
-          }
-pamo019 = {'subject':'pamo019',
-          }
-pamo020 = {'subject':'pamo020',
-          }
-pamo021 = {'subject':'pamo021',
-          }
-pamo022 = {'subject':'pamo022',
-          }
-pamo023 = {'subject':'pamo023',
-          }
-pamo024 = {'subject':'pamo024',
-          }
-pamo025 = {'subject':'pamo025',
-          }
-pamo026 = {'subject':'pamo026',
-          }          
-pamo027 = {'subject':'pamo027',
-          }
-pamo028 = {'subject':'pamo028',
-          }
-pamo029 = {'subject':'pamo029',
-          }
-pamo030 = {'subject':'pamo030',
-          }
-pamo031 = {'subject':'pamo031',
-          }                    
-pamo032 = {'subject':'pamo032',
-          }
-pamo033 = {'subject':'pamo033',
-          }
-pamo034 = {'subject':'pamo034',
-          }
-pamo035 = {'subject':'pamo035',
-          }
-pamo036 = {'subject':'pamo036',
-          }
-pamo037 = {'subject':'pamo037',
-          }
-pamo038 = {'subject':'pamo038',
-          }
-pamo039 = {'subject':'pamo039',
-          }
-pamo040 = {'subject':'pamo040',
-          }
-pamo041 = {'subject':'pamo041',
-          }                                                                                
-          
-#pamo009.update(stage5)
-#pamo010.update(stage5)
-#pamo011.update(stage5)
-#pamo012.update(stage5)
-#pamo013.update(stage5)
-#pamo014.update(stage5)
-#pamo015.update(stage5)
-#pamo016.update(stage5)
-pamo017.update(stage5)
-pamo018.update(stage5)
-#pamo019.update(stage5)
-#pamo020.update(stage5)
-#pamo021.update(stage5)
-#pamo022.update(stage5)
-#pamo023.update(stage5)
-pamo024.update(stage5)
-#pamo025.update(stage5) 
-#pamo026.update(stage5)
+pamo009 = {'subject':'pamo009', **stage5}
+pamo010 = {'subject':'pamo010', **stage5}
+pamo011 = {'subject':'pamo011', **stage5}
+pamo012 = {'subject':'pamo012', **stage5}
+pamo013 = {'subject':'pamo013', **stage5}
+pamo014 = {'subject':'pamo014', **stage5}
+pamo015 = {'subject':'pamo015', **stage5}
+pamo016 = {'subject':'pamo016', **stage5}
+pamo017 = {'subject':'pamo017', **stage5}
+pamo018 = {'subject':'pamo018', **stage5}
+pamo019 = {'subject':'pamo019', **stage5}
+pamo020 = {'subject':'pamo020', **stage5}
+pamo021 = {'subject':'pamo021', **stage5}
+pamo022 = {'subject':'pamo022', **stage5}
+pamo023 = {'subject':'pamo023', **stage5}
+pamo024 = {'subject':'pamo024', **stage5}
+pamo025 = {'subject':'pamo025', **stage5}
+pamo026 = {'subject':'pamo026', **stage5}
 
-pamo027.update(stage4);
-pamo028.update(stage4)
-pamo029.update(stage4)
-pamo030.update(stage4)# performed more than 30% with antibias mode on (twenty one day) 
-pamo031.update(stage4) 
-pamo032.update(stage4) 
-pamo033.update(stage4); # performed more than 30% with antibias mode on (twenty two day)
-pamo034.update(stage4); # performed more than 30% with antibias mode on (twenty three day)  
-pamo035.update(stage4); # performed more than 30% with antibias mode on (eightteen day)
-pamo036.update(stage4); # performed more than 30% with antibias mode on (twenty two day) 
-pamo037.update(stage4); # performed more than 30% with antibias mode on (twenty three day)
-pamo038.update(stage4) 
-pamo039.update(stage4) 
-pamo040.update(stage4) 
-pamo041.update(stage4) 
-#; pamo031.update(antibias) # Thirteen day
+pamo027 = {'subject':'pamo027', **stage4}
+pamo028 = {'subject':'pamo028', **stage4}
+pamo029 = {'subject':'pamo029', **stage4}
+pamo030 = {'subject':'pamo030', **stage4}
+pamo031 = {'subject':'pamo031', **stage4}
+pamo032 = {'subject':'pamo032', **stage4}
+pamo033 = {'subject':'pamo033', **stage4}
+pamo034 = {'subject':'pamo034', **stage4}
+pamo035 = {'subject':'pamo035', **stage4}
+pamo036 = {'subject':'pamo036', **stage4}
+pamo037 = {'subject':'pamo037', **stage4}
+pamo038 = {'subject':'pamo038', **stage4}
+pamo039 = {'subject':'pamo039', **stage4}
+pamo040 = {'subject':'pamo040', **stage4}
+pamo041 = {'subject':'pamo041', **stage4}
+
+pamo042 = {'subject':'pamo042', **stage0}
+pamo043 = {'subject':'pamo043', **stage0}
+pamo044 = {'subject':'pamo044', **stage0}
+pamo045 = {'subject':'pamo045', **stage0}
+pamo046 = {'subject':'pamo046', **stage0}
+pamo047 = {'subject':'pamo047', **stage0}
+pamo048 = {'subject':'pamo048', **stage0}
+pamo049 = {'subject':'pamo049', **stage0}
+pamo050 = {'subject':'pamo050', **stage0}
+pamo051 = {'subject':'pamo051', **stage0}
+pamo052 = {'subject':'pamo052', **stage0}
+pamo053 = {'subject':'pamo053', **stage0}
+pamo054 = {'subject':'pamo054', **stage0}
+pamo055 = {'subject':'pamo055', **stage0}
+pamo056 = {'subject':'pamo056', **stage0}
+pamo057 = {'subject':'pamo057', **stage0}
+pamo058 = {'subject':'pamo058', **stage0}
+pamo059 = {'subject':'pamo059', **stage0}
+
