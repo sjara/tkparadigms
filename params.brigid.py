@@ -20,5 +20,5 @@ febeStage7 = {'experimenter':'jenny', 'relevantFeature':'temporal', 'irrelevantF
 febe001 = {'subject':'febe001', **febeStage1}
 febe007 = {'subject':'febe007', **febeStage6}
 febe008 = {'subject':'febe008', **febeStage4}
-febe009 = {'subject':'febe009', **febeStage1,'timeWaterValve':0.04}
+febe009 = {'subject':'febe009', **febeStage2}
 febe012 = {'subject':'febe012', **febeStage7}
