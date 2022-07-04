@@ -1,6 +1,6 @@
 
-stage0 = { 'experimenter':'haziq', 
-           'outcomeMode':'sides_direct', 'delayToTargetMean':0}
+stage0 = {'experimenter':'haziq', 
+          'outcomeMode':'sides_direct', 'delayToTargetMean':0}
            
 stage1 = { 'experimenter':'haziq', 
            'outcomeMode':'direct', 'delayToTargetMean':0}
