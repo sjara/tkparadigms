@@ -8,7 +8,7 @@ stage1 = { 'experimenter':'haziq',
 stage2 = { 'experimenter':'haziq', 
            'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01,
            'delayToTargetHalfRange':0.0, 'automationMode':'increase_delay',
-           'maxNtrials':4000}
+           'maxNtrials':400}
 
 stage3 = { 'experimenter':'haziq', 
            'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
