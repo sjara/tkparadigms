@@ -48,6 +48,8 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Manual control of outputs --
         self.manualControl = manualcontrol.ManualControl(self.dispatcher.statemachine)
+        timeWaterValve = 0.03
+        self.singleDrop = manualcontrol.SingleDrop(self.dispatcher.statemachine, timeWaterValve)
         
         # -- Define graphical parameters --
         self.params = paramgui.Container()
@@ -125,6 +127,7 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
 
+        layoutCol1.addWidget(self.singleDrop)
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.sessionInfo)
         layoutCol1.addWidget(reportInfo)
