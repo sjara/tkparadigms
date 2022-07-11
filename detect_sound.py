@@ -67,6 +67,8 @@ class Paradigm(QtWidgets.QMainWindow):
         #                                                        units='s',group='Water delivery')
         waterDelivery = self.params.layout_group('Water delivery')
        
+        self.params['lickingPeriod'] = paramgui.NumericParam('Licking period',value=1.5,
+                                                        units='s',group='Timing parameters')
         self.params['rewardAvailability'] = paramgui.NumericParam('Reward availability',value=1,
                                                         units='s',group='Timing parameters')
         self.params['interTrialInterval'] = paramgui.NumericParam('Inter trial interval (ITI)',value=0,
@@ -84,7 +86,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         self.params['targetDuration'] = paramgui.NumericParam('Target duration',value=0.2, units='s',
                                                               group='Sound parameters')
-        self.params['targetFrequency'] = paramgui.NumericParam('Target frequency',value=6000, units='Hz',
+        self.params['targetFrequency'] = paramgui.NumericParam('Target frequency',value=9000, units='Hz',
                                                               group='Sound parameters')
         self.params['targetIntensity'] = paramgui.NumericParam('Target intensity',value=50, units='dB-SPL',
                                                         enabled=True, group='Sound parameters')
@@ -92,10 +94,17 @@ class Paradigm(QtWidgets.QMainWindow):
                                                         enabled=False,decimals=4,group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
         
-        self.params['taskMode'] = paramgui.MenuParam('Task mode', ['detect_sound','water_on_lick'], value=0,
-                                                     group='General parameters')
-        self.params['lightMode'] = paramgui.MenuParam('Light mode', ['center','all'], value=0,
-                                                     group='General parameters')
+        self.params['taskMode'] = paramgui.MenuParam('Task mode', ['water_after_sound', 'detect_single_sound',
+                                                                   'detect_with_distractors',
+                                                                   'water_on_lick'],
+                                                     value=0, group='General parameters')
+        self.params['activeLickPort'] = paramgui.MenuParam('Active lick port',
+                                                           ['left', 'center', 'right'],
+                                                           value=0, group='General parameters')
+        self.params['lightMode'] = paramgui.MenuParam('Light mode', ['none','center','all'], value=0,
+                                                      group='General parameters', enabled=False)
+        self.params['soundType'] = paramgui.MenuParam('Sound type', ['chord'], enabled=False, 
+                                                      value=0,group='General parameters')
         generalParams = self.params.layout_group('General parameters')
 
         self.params['nHits'] = paramgui.NumericParam('N hits',value=0, enabled=False,
@@ -199,7 +208,7 @@ class Paradigm(QtWidgets.QMainWindow):
     def prepare_next_trial(self, nextTrial):
         # -- Calculate results from last trial (update outcome, choice, etc) --
         if nextTrial>0:
-            self.params.update_history()
+            self.params.update_history(nextTrial-1)
             self.calculate_results(nextTrial-1)
             
         # -- Prepare next trial --
@@ -211,33 +220,49 @@ class Paradigm(QtWidgets.QMainWindow):
         interTrialIntervalHalfRange = self.params['interTrialIntervalHalfRange'].get_value()
         randNum = (2*np.random.random(1)[0]-1)
         interTrialInterval = interTrialIntervalMean + randNum*interTrialIntervalHalfRange
+        lickingPeriod = self.params['lickingPeriod'].get_value()
         self.params['interTrialInterval'].set_value(interTrialInterval)
+
+        activePort = self.params['activeLickPort'].get_string()
+        self.activeInput = activePort[0].upper()+'in'  # To produce Cin, Lin, Rin
+        activeValve = activePort+'Water'
+        activeLED = activePort+'LED'
+
         lightMode = self.params['lightMode'].get_string()
+        if lightMode=='none':
+            lightOutput = ['']
         if lightMode=='center':
             lightOutput = ['centerLED']
         elif lightMode=='all':
             lightOutput = ['centerLED', 'leftLED','rightLED']
-            
+        '''
+        '''
+        
+        soundOutput = self.targetSoundID
+        
         self.sm.reset_transitions()
 
-
-        if taskMode == 'water_on_lick':
+        if taskMode == 'water_after_sound':
             self.sm.add_state(name='startTrial', statetimer=0,
-                              transitions={'Tup':'waitForLick'},
-                              outputsOff=['centerLED'])
-            self.sm.add_state(name='waitForLick', statetimer=LONGTIME,
-                              transitions={'Cin':'reward'})
+                              transitions={'Tup':'delayPeriod'})
+            self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval,
+                              transitions={self.activeInput: 'falseAlarm', 'Tup':'playTarget'})
+            self.sm.add_state(name='playTarget', statetimer=targetDuration,
+                              transitions={'Tup':'reward'},
+                              serialOut=soundOutput)            
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
-                              outputsOn=['centerWater','centerLED'],
-                              serialOut=self.targetSoundID)
-            self.sm.add_state(name='stopReward', statetimer=interTrialInterval,
-                              transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=['centerWater','centerLED'])
+                              outputsOn=[activeValve])
+            self.sm.add_state(name='stopReward', statetimer=0,
+                              transitions={'Tup':'lickingPeriod'},
+                              outputsOff=[activeValve])
+            self.sm.add_state(name='lickingPeriod', statetimer=lickingPeriod,
+                              transitions={'Tup':'readyForNextTrial'})
+            self.sm.add_state(name='falseAlarm', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'})            
             # -- A few empty states necessary to avoid errors when changing taskMode --
             self.sm.add_state(name='hit')            
             self.sm.add_state(name='miss')            
-            self.sm.add_state(name='falseAlarm')            
         elif taskMode == 'detect_sound':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'delayPeriod'},
@@ -247,7 +272,7 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='playTarget', statetimer=targetDuration,
                               transitions={'Cin':'hit', 'Tup':'waitForLick'},
                               outputsOn=lightOutput,
-                              serialOut=self.targetSoundID)
+                              serialOut=soundOutput)
             self.sm.add_state(name='waitForLick', statetimer=rewardAvailability,
                               transitions={'Cin':'hit', 'Tup':'miss'},
                               outputsOff=lightOutput)
@@ -260,10 +285,27 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'readyForNextTrial'})            
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
-                              outputsOn=['centerWater'])
+                              outputsOn=[activeValve])
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=['centerWater'])
+                              outputsOff=[activeValve])
+        if taskMode == 'water_on_lick':
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'waitForLick'},
+                              outputsOff=['centerLED'])
+            self.sm.add_state(name='waitForLick', statetimer=LONGTIME,
+                              transitions={'Cin':'reward'})
+            self.sm.add_state(name='reward', statetimer=timeWaterValve,
+                              transitions={'Tup':'stopReward'},
+                              outputsOn=[activeValve],
+                              serialOut=soundOutput)
+            self.sm.add_state(name='stopReward', statetimer=interTrialInterval,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=[activeValve])
+            # -- A few empty states necessary to avoid errors when changing taskMode --
+            self.sm.add_state(name='hit')            
+            self.sm.add_state(name='miss')            
+            self.sm.add_state(name='falseAlarm')            
 
 
         self.prepare_target_sound()
@@ -272,7 +314,23 @@ class Paradigm(QtWidgets.QMainWindow):
         self.dispatcher.ready_to_start_trial()
 
     def calculate_results(self,trialIndex):
-        if self.params['taskMode'].get_string()=='detect_sound':
+        if self.params['taskMode'].get_string()=='water_after_sound':
+            eventsThisTrial = self.dispatcher.events_one_trial(trialIndex)
+            statesThisTrial = eventsThisTrial[:,2]
+            if (self.sm.statesNameToIndex['reward'] in statesThisTrial):
+               if self.sm.eventsDict[self.activeInput] in eventsThisTrial[:,1]:
+                   self.params['nHits'].add(1)
+                   self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
+               else:
+                   self.params['nMisses'].add(1)
+                   self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
+            elif self.sm.statesNameToIndex['falseAlarm'] in statesThisTrial:
+                self.params['nFalseAlarms'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
+            else:
+                # This should not happen
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
+        elif self.params['taskMode'].get_string()=='detect_sound':
             eventsThisTrial = self.dispatcher.events_one_trial(trialIndex)
             statesThisTrial = eventsThisTrial[:,2]
             if self.sm.statesNameToIndex['hit'] in statesThisTrial:
