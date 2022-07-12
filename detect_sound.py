@@ -115,6 +115,10 @@ class Paradigm(QtWidgets.QMainWindow):
                                                       units='trials',group='Report')
         self.params['nFalseAlarms'] = paramgui.NumericParam('N false alarms',value=0, enabled=False,
                                                       units='trials',group='Report')
+        self.params['nCorrectRejects'] = paramgui.NumericParam('N correct rejects',value=0, enabled=False,
+                                                      units='trials',group='Report')
+        self.params['nEarlyLicks'] = paramgui.NumericParam('N early licks',value=0, enabled=False,
+                                                      units='trials',group='Report')
         reportInfo = self.params.layout_group('Report')
 
 
@@ -149,8 +153,11 @@ class Paradigm(QtWidgets.QMainWindow):
         # -- Add variables for storing results --
         maxNtrials = MAX_N_TRIALS # Preallocating space for each vector makes things easier
         self.results = utils.EnumContainer()
-        self.results.labels['outcome'] = {'hit':1,'falseAlarm':0, 'miss':2, 'none':-1}
-        self.results['outcome'] = np.empty(maxNtrials,dtype=int)
+        self.results.labels['outcome'] = {'hit':1, 'falseAlarm':0, 'miss':2, 'correctReject':3,
+                                          'earlyLick':4, 'none':-1}
+        self.results['outcome'] = np.empty(maxNtrials, dtype=int)
+        self.results['timeTrialStart'] = np.empty(maxNtrials, dtype=float)
+        self.results['timeTarget'] = np.empty(maxNtrials, dtype=float)
         
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
@@ -249,7 +256,7 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'delayPeriod'})
             self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval,
-                              transitions={self.activeInput: 'falseAlarm', 'Tup':'playTarget'})
+                              transitions={self.activeInput: 'earlyLick', 'Tup':'playTarget'})
             self.sm.add_state(name='playTarget', statetimer=targetDuration,
                               transitions={'Tup':'reward'},
                               serialOut=soundOutput)            
@@ -261,37 +268,39 @@ class Paradigm(QtWidgets.QMainWindow):
                               outputsOff=[activeValve])
             self.sm.add_state(name='lickingPeriod', statetimer=lickingPeriod,
                               transitions={'Tup':'readyForNextTrial'})
-            self.sm.add_state(name='falseAlarm', statetimer=0,
+            self.sm.add_state(name='earlyLick', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
             # -- A few empty states necessary to avoid errors when changing taskMode --
             self.sm.add_state(name='hit')            
             self.sm.add_state(name='miss')            
-        elif taskMode == 'detect_sound':
+            self.sm.add_state(name='falseAlarm')            
+            self.sm.add_state(name='correctReject')            
+        elif taskMode == 'detect_single_sound':
             self.sm.add_state(name='startTrial', statetimer=0,
-                              transitions={'Tup':'delayPeriod'},
-                              outputsOff=lightOutput)
+                              transitions={'Tup':'delayPeriod'})
             self.sm.add_state(name='delayPeriod', statetimer=interTrialInterval,
-                              transitions={'Cin':'falseAlarm', 'Tup':'playTarget'})
+                              transitions={self.activeInput:'earlyLick', 'Tup':'playTarget'})
             self.sm.add_state(name='playTarget', statetimer=targetDuration,
-                              transitions={'Cin':'hit', 'Tup':'waitForLick'},
-                              outputsOn=lightOutput,
+                              transitions={self.activeInput:'hit', 'Tup':'waitForLick'},
                               serialOut=soundOutput)
             self.sm.add_state(name='waitForLick', statetimer=rewardAvailability,
-                              transitions={'Cin':'hit', 'Tup':'miss'},
-                              outputsOff=lightOutput)
+                              transitions={self.activeInput:'hit', 'Tup':'miss'})
             self.sm.add_state(name='hit', statetimer=0,
-                              transitions={'Tup':'reward'},
-                              outputsOff=lightOutput)            
+                              transitions={'Tup':'reward'})            
             self.sm.add_state(name='miss', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
-            self.sm.add_state(name='falseAlarm', statetimer=0,
+            self.sm.add_state(name='earlyLick', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})            
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[activeValve])
             self.sm.add_state(name='stopReward', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':'lickingPeriod'},
                               outputsOff=[activeValve])
+            self.sm.add_state(name='lickingPeriod', statetimer=lickingPeriod,
+                              transitions={'Tup':'readyForNextTrial'})
+            self.sm.add_state(name='falseAlarm')            
+            self.sm.add_state(name='correctReject')            
         if taskMode == 'water_on_lick':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForLick'},
@@ -317,19 +326,50 @@ class Paradigm(QtWidgets.QMainWindow):
         self.dispatcher.ready_to_start_trial()
 
     def calculate_results(self,trialIndex):
-        if self.params['taskMode'].get_string()=='water_after_sound':
-            eventsThisTrial = self.dispatcher.events_one_trial(trialIndex)
-            statesThisTrial = eventsThisTrial[:,2]
-            if (self.sm.statesNameToIndex['reward'] in statesThisTrial):
+        taskMode = self.params['taskMode'].get_string()
+        eventsThisTrial = self.dispatcher.events_one_trial(trialIndex)
+        statesThisTrial = eventsThisTrial[:,2]
+
+        # -- Find beginning of trial --
+        startTrialStateID = self.sm.statesNameToIndex['startTrial']
+        startTrialInd = np.flatnonzero(statesThisTrial==startTrialStateID)[0]
+        self.results['timeTrialStart'][trialIndex] = eventsThisTrial[startTrialInd,0]
+        # -- Find time of target --
+        lastEvent = eventsThisTrial[-1,:]
+        if lastEvent[1]==-1 and lastEvent[2]==0: # Check if aborted trial
+            self.results['timeTarget'][trialIndex] = np.nan
+        else:
+            targetStateID = self.sm.statesNameToIndex['playTarget']
+            if targetStateID in statesThisTrial:
+                targetEventInd = np.flatnonzero(statesThisTrial==targetStateID)[0]
+                self.results['timeTarget'][trialIndex] = eventsThisTrial[targetEventInd,0]
+            else:
+                self.results['timeTarget'][trialIndex] = np.nan
+        
+        if taskMode == 'water_after_sound':
+            if self.sm.statesNameToIndex['reward'] in statesThisTrial:
                if self.sm.eventsDict[self.activeInput] in eventsThisTrial[:,1]:
                    self.params['nHits'].add(1)
                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
                else:
                    self.params['nMisses'].add(1)
                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
-            elif self.sm.statesNameToIndex['falseAlarm'] in statesThisTrial:
-                self.params['nFalseAlarms'].add(1)
-                self.results['outcome'][trialIndex] = self.results.labels['outcome']['falseAlarm']
+            elif self.sm.statesNameToIndex['earlyLick'] in statesThisTrial:
+                self.params['nEarlyLicks'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['earlyLick']
+            else:
+                # This should not happen
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
+        elif taskMode == 'detect_single_sound':
+            if self.sm.statesNameToIndex['hit'] in statesThisTrial:
+                self.params['nHits'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['hit']
+            elif self.sm.statesNameToIndex['miss'] in statesThisTrial:
+                self.params['nMisses'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['miss']
+            elif self.sm.statesNameToIndex['earlyLick'] in statesThisTrial:
+                self.params['nEarlyLicks'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['earlyLick']
             else:
                 # This should not happen
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
