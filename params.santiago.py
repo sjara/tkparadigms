@@ -88,6 +88,6 @@ quicktrials = {'interTrialIntervalMean':2, 'interTrialIntervalHalfRange':0}
 detect_sound_stage1 = {'experimenter':'santiago', 'taskMode':'water_after_sound'}
 detect_sound_stage2 = {'experimenter':'santiago', 'taskMode':'detect_single_sound'}
 
-pure000 = {'subject': 'pure000', **detect_sound_stage1, **quicktrials}
-pure014 = {'subject': 'pure014', **detect_sound_stage1}
-pure015 = {'subject': 'pure015', **detect_sound_stage1}
+pure000 = {'subject': 'pure000', **detect_sound_stage2, **quicktrials}
+pure014 = {'subject': 'pure014', **detect_sound_stage2}
+pure015 = {'subject': 'pure015', **detect_sound_stage2}
