@@ -83,11 +83,14 @@ fm000 = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialInterva
 speech000 = {'subject':'test000', 'outcomeMode':'passive_exposure'}
 
 
-quicktrials = {'interTrialIntervalMean':2, 'interTrialIntervalHalfRange':0}
+quicktrials = {'interTrialIntervalMean':1, 'interTrialIntervalHalfRange':0}
 
 detect_sound_stage1 = {'experimenter':'santiago', 'taskMode':'water_after_sound'}
 detect_sound_stage2 = {'experimenter':'santiago', 'taskMode':'detect_single_sound'}
+detect_sound_stage3 = {'experimenter':'santiago', 'taskMode':'detect_with_distractors',
+                       'punishmentType':'noise', 'punishmentIntensity':50,
+                       'interTrialIntervalMean':2, 'interTrialIntervalHalfRange':0.5}
 
-pure000 = {'subject': 'pure000', **detect_sound_stage2, **quicktrials}
-pure014 = {'subject': 'pure014', **detect_sound_stage2}
-pure015 = {'subject': 'pure015', **detect_sound_stage2}
+pure000 = {'subject': 'pure000', **detect_sound_stage3, **quicktrials}
+pure014 = {'subject': 'pure014', **detect_sound_stage3}
+pure015 = {'subject': 'pure015', **detect_sound_stage3}
