@@ -126,7 +126,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                            value=0, group='General parameters')
         self.params['lightMode'] = paramgui.MenuParam('Light mode', ['none','center','all'], value=0,
                                                       group='General parameters', enabled=False)
-        self.params['soundType'] = paramgui.MenuParam('Sound type', ['chord'], enabled=False, 
+        self.params['soundType'] = paramgui.MenuParam('Sound type', ['chord', 'tone'], enabled=True, 
                                                       value=0,group='General parameters')
         generalParams = self.params.layout_group('General parameters')
 
@@ -238,11 +238,18 @@ class Paradigm(QtWidgets.QMainWindow):
         stimFrequency = self.params['stimFrequency'].get_value()
         stimIntensity = self.params['stimIntensity'].get_value()
         stimDuration = self.params['stimDuration'].get_value()
+        soundType = self.params['soundType'].get_string()
         # FIXME: currently I am averaging calibration from both speakers (not good)
-        stimAmp = self.chordCal.find_amplitude(stimFrequency,stimIntensity).mean()
-        self.params['stimAmplitude'].set_value(stimAmp)
-        s1 = {'type':'chord', 'frequency':stimFrequency, 'duration':stimDuration,
-              'amplitude':stimAmp, 'ntones':12, 'factor':1.2}
+        if soundType == 'chord':
+            stimAmp = self.chordCal.find_amplitude(stimFrequency,stimIntensity).mean()
+            self.params['stimAmplitude'].set_value(stimAmp)
+            s1 = {'type':'chord', 'frequency':stimFrequency, 'duration':stimDuration,
+                  'amplitude':stimAmp, 'ntones':12, 'factor':1.2}
+        elif soundType == 'tone':    
+            stimAmp = self.sineCal.find_amplitude(stimFrequency,stimIntensity).mean()
+            self.params['stimAmplitude'].set_value(stimAmp)
+            s1 = {'type':'tone', 'frequency':stimFrequency, 'duration':stimDuration,
+                  'amplitude':stimAmp}
         self.soundClient.set_sound(self.stimSoundID,s1)
 
         # -- Prepare punishment sound --
