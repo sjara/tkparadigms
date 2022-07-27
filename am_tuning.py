@@ -126,6 +126,9 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['syncLight'] = paramgui.MenuParam('Sync light',
                                                        ['off', 'leftLED', 'centerLED', 'rightLED'],
                                                        value=0, group='Sync parameters')
+        self.params['syncLightMode'] = paramgui.MenuParam('Sync light mode',
+                                                          ['from_stim_offset', 'overlap_with_stim'],
+                                                          value=0, group='Sync parameters')
         self.params['delayToSyncLight'] = paramgui.NumericParam('Delay to sync light',value=0,
                                                         units='s',group='Sync parameters')
         self.params['syncLightDuration'] = paramgui.NumericParam('Sync light duration',value=0,
@@ -316,6 +319,7 @@ class Paradigm(QtWidgets.QMainWindow):
             serialOutput = 1
             self.soundClient.set_sound(1,sound)
 
+        syncLightMode = self.params['syncLightMode'].get_string()
         delayToSyncLight = self.params['delayToSyncLight'].get_value()
         syncLightDuration = self.params['syncLightDuration'].get_value()
         if isi-delayToSyncLight-syncLightDuration < 0:
@@ -372,21 +376,32 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=stimOutput)
         else:
-            self.sm.add_state(name='startTrial', statetimer = 0,
-                              transitions={'Tup':'outputOn'})
-            self.sm.add_state(name='outputOn', statetimer=stimDur,
-                              transitions={'Tup':'outputOff'},
-                              outputsOn=stimOutput,
-                              serialOut=serialOutput)
-            self.sm.add_state(name='outputOff', statetimer=delayToSyncLight,
-                              transitions={'Tup':'syncLightOn'},
-                              outputsOff=stimOutput)
-            self.sm.add_state(name='syncLightOn', statetimer=syncLightDuration,
-                              transitions={'Tup':'syncLightOff'},
-                              outputsOn=syncLightPort)
-            self.sm.add_state(name='syncLightOff', statetimer=isi-delayToSyncLight-syncLightDuration,
-                              transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=syncLightPort)
+            if syncLightMode=='from_stim_offset':
+                self.sm.add_state(name='startTrial', statetimer = 0,
+                                  transitions={'Tup':'outputOn'})
+                self.sm.add_state(name='outputOn', statetimer=stimDur,
+                                  transitions={'Tup':'outputOff'},
+                                  outputsOn=stimOutput,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='outputOff', statetimer=delayToSyncLight,
+                                  transitions={'Tup':'syncLightOn'},
+                                  outputsOff=stimOutput)
+                self.sm.add_state(name='syncLightOn', statetimer=syncLightDuration,
+                                  transitions={'Tup':'syncLightOff'},
+                                  outputsOn=syncLightPort)
+                self.sm.add_state(name='syncLightOff', statetimer=isi-delayToSyncLight-syncLightDuration,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=syncLightPort)
+            elif syncLightMode=='overlap_with_stim':
+                self.sm.add_state(name='startTrial', statetimer = 0,
+                                  transitions={'Tup':'outputOn'})
+                self.sm.add_state(name='outputOn', statetimer=stimDur,
+                                  transitions={'Tup':'outputOff'},
+                                  outputsOn=stimOutput+syncLightPort,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='outputOff', statetimer=isi,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=stimOutput+syncLightPort)
 
         self.dispatcher.set_state_matrix(self.sm)
         self.dispatcher.ready_to_start_trial()
@@ -417,6 +432,7 @@ class Paradigm(QtWidgets.QMainWindow):
         This method is inherited from QtWidgets.QMainWindow, which explains
         its camelCase naming.
         '''
+        self.soundClient.shutdown()
         self.dispatcher.die()
         event.accept()
 

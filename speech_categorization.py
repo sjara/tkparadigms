@@ -44,6 +44,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.name = '2afc_speech'
 
         self.soundFiles = []
+        # FIXME: targetSoundID does not seem necessary
         self.targetSoundID = {}  # Keys are filenames, items are integers to be used as soundID
         self.freqFactor = 0
         self.possibleVOT = 0

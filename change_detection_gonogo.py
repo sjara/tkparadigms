@@ -89,6 +89,9 @@ class Paradigm(QtWidgets.QMainWindow):
         timingParams = self.params.layout_group('Timing parameters')
 
         
+        self.params['soundSetMode'] = paramgui.MenuParam('Sound set mode',
+                                                         ['random', 'pre_extreme'],
+                                                         value=0, group='Sound parameters')
         self.params['maxFreq'] = paramgui.NumericParam('Max frequency', value=13000, units='Hz',
                                                         group='Sound parameters')
         self.params['minFreq'] = paramgui.NumericParam('Min frequency', value=6000, units='Hz',
@@ -176,7 +179,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addStretch()
-        layoutCol1.addWidget(self.singleDrop)
+        layoutCol1.addWidget(self.manualControl)
         layoutCol1.addStretch()
         layoutCol1.addWidget(waterDelivery)
         layoutCol1.addStretch()
@@ -186,7 +189,7 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1.addStretch()
         layoutCol1.addWidget(self.dispatcher.widget)
 
-        layoutCol2.addWidget(self.manualControl)
+        layoutCol2.addWidget(self.singleDrop)
         layoutCol2.addStretch()
         layoutCol2.addWidget(timingParams)
         layoutCol2.addStretch()
@@ -316,11 +319,15 @@ class Paradigm(QtWidgets.QMainWindow):
         rightFreqInds = np.flatnonzero(freqsAll>freqBoundary)
         '''
 
+        soundSetMode = self.params['soundSetMode'].get_string()
         maxFreq = self.params['maxFreq'].get_value()
         minFreq = self.params['minFreq'].get_value()
         nFreqs = self.params['nFreqs'].get_value()
         allFreq = np.logspace(np.log10(minFreq),np.log10(maxFreq),nFreqs)
-        randPre = np.random.randint(nFreqs)  # Which sound will be the "pre" sound
+        if soundSetMode == 'random':
+            randPre = np.random.randint(nFreqs)  # Freq of pre sound will be random
+        elif soundSetMode == 'pre_extreme':
+            randPre = [0, nFreqs-1][np.random.randint(2)] # Pre sounds will be one the min or max freq
         preFreq = allFreq[randPre]
         minRatio = self.params['minFreqRatio'].get_value() # Min ratio between pre and post frequency
         possiblePostBool = np.logical_or( (preFreq/allFreq)>=minRatio, (allFreq/preFreq)>=minRatio )
