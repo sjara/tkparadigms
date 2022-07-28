@@ -95,7 +95,8 @@ detect_sound_stage4 = {'experimenter':'santiago', 'taskMode':'detect_with_distra
                        'punishmentIntensity':50,
                        'interTrialIntervalMean':2, 'interTrialIntervalHalfRange':0.5}
 detect_tones = {'soundType':'tone', 'stimIntensity':60}
+target_7k = {'targetFrequency':7000, 'distractorFreqDelta':0.8}
 
-pure000 = {'subject': 'pure000', **detect_sound_stage4, **quicktrials, **detect_tones}
-pure014 = {'subject': 'pure014', **detect_sound_stage4, **detect_tones}
-pure015 = {'subject': 'pure015', **detect_sound_stage4, **detect_tones}
+pure000 = {'subject': 'pure000', **detect_sound_stage4, **quicktrials, **detect_tones, **target_7k}
+pure014 = {'subject': 'pure014', **detect_sound_stage4, **detect_tones, **target_7k}
+pure015 = {'subject': 'pure015', **detect_sound_stage4, **detect_tones, **target_7k}
