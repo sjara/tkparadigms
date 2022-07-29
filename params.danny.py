@@ -18,3 +18,5 @@ dbtest3 = {'experimenter':'danny', 'interTrialIntervalMean':10,
 dbtest4 = {'experimenter':'danny', 'maxFreq':15000, 'minFreq':4000, 'numTones':6,
            'minInt':70, 'maxInt':70, 'numInt':1, 'stimDur':5,'isiMean':10, 'isiHalfRange':1,
            'randomMode':'Random', 'stimType':'Chord'} 
+           
+# adding this test for GitHub testing.
