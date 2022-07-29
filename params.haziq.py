@@ -64,7 +64,7 @@ pamo041 = {'subject':'pamo041', **stage4}
 
 pamo042 = {'subject':'pamo042', **stage3}
 pamo043 = {'subject':'pamo043', **stage3}
-pamo044 = {'subject':'pamo044', **stage3}
+pamo044 = {'subject':'pamo044', **stage3, **antibias}
 pamo045 = {'subject':'pamo045', **stage3}
 pamo046 = {'subject':'pamo046', **stage3}
 pamo047 = {'subject':'pamo047', **stage3}
@@ -75,7 +75,7 @@ pamo051 = {'subject':'pamo051', **stage3}
 pamo052 = {'subject':'pamo052', **stage3}
 pamo053 = {'subject':'pamo053', **stage3}
 pamo054 = {'subject':'pamo054', **stage3}
-pamo055 = {'subject':'pamo055', **stage3, **antibias}
+pamo055 = {'subject':'pamo055', **stage3}
 pamo056 = {'subject':'pamo056', **stage3}
 pamo057 = {'subject':'pamo057', **stage3}
 pamo058 = {'subject':'pamo058', **stage3}
