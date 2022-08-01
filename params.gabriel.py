@@ -19,7 +19,7 @@ febeSpectralStage6 = {'experimenter':'gabriel', 'relevantFeature':'spectral', 'i
 
 
 febe013 = {'subject':'febe013', **febeSpectralStage3}
-febe019 = {'subject':'febe019', **febeSpectralStage3}
+febe019 = {'subject':'febe019', **febeSpectralStageBiasCorrect}
 febe020 = {'subject':'febe020', **febeSpectralStage4}
 febe021 = {'subject':'febe021', **febeSpectralStageBiasCorrect}
 febe007 = {'subject':'febe021', **febeSpectralStage3}
