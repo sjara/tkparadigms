@@ -64,7 +64,7 @@ pamo041 = {'subject':'pamo041', **stage4}
 
 pamo042 = {'subject':'pamo042', **stage3}
 pamo043 = {'subject':'pamo043', **stage3}
-pamo044 = {'subject':'pamo044', **stage3, **antibias}
+pamo044 = {'subject':'pamo044', **stage3}
 pamo045 = {'subject':'pamo045', **stage3}
 pamo046 = {'subject':'pamo046', **stage3}
 pamo047 = {'subject':'pamo047', **stage3}
