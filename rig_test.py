@@ -49,6 +49,8 @@ class RigTest(QtWidgets.QMainWindow):
 
         # -- Manual control of outputs --
         self.manualControl = manualcontrol.WaterControl(self.dispatcherModel.statemachine)
+        timeWaterValveSingle = 0.03
+        self.singleDrop = manualcontrol.SingleDrop(self.dispatcherModel.statemachine, timeWaterValveSingle)
        
         # -- Add parameters --
         self.params = paramgui.Container()
@@ -75,6 +77,7 @@ class RigTest(QtWidgets.QMainWindow):
         layoutCol2 = QtWidgets.QVBoxLayout()
         layoutCol3 = QtWidgets.QVBoxLayout()
 
+        layoutCol1.addWidget(self.singleDrop)
         layoutCol1.addWidget(self.dispatcherView)
         layoutCol2.addWidget(self.manualControl)
         layoutCol2.addWidget(scheduleGroup)
