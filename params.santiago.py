@@ -101,3 +101,5 @@ target_12k = {'targetFrequency':12188, 'distractorFreqDelta':0.8}
 pure000 = {'subject': 'pure000', **detect_sound_stage4, **quicktrials, **detect_tones, **target_12k}
 pure014 = {'subject': 'pure014', **detect_sound_stage4, **detect_tones, **target_12k}
 pure015 = {'subject': 'pure015', **detect_sound_stage4, **detect_tones, **target_12k}
+
+pupilAM = {'minFreq':4, 'maxFreq':12, 'soundType':'AM_rate', 'preDurationMean':3, 'totalStimDuration':5}

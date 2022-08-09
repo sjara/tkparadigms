@@ -134,13 +134,16 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['punishMode'] = paramgui.MenuParam('Punishment',
                                                        ['none', 'noise'], enabled=False,
                                                        value=0, group='General parameters')
-        self.params['punishIntensity'] = paramgui.NumericParam('Noise intensity',
+        self.params['punishIntensity'] = paramgui.NumericParam('Punishment intensity',
                                                                value=60, units='dB-SPL',
                                                                group='General parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim type',
                                                      ['sound_only', 'light_only','sound_and_light'],
                                                      value=0,group='General parameters',
                                                      enabled=False)
+        self.params['soundType'] = paramgui.MenuParam('Sound type',
+                                                     ['chord', 'AM_rate'],
+                                                     value=0,group='General parameters')
         '''
         self.params['psycurveMode'] = paramgui.MenuParam('PsyCurve Mode',
                                                          ['off','uniform'],
@@ -212,8 +215,8 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params.from_file(paramfile,paramdictname)
 
         # -- Load speaker calibration --
-        self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
-        self.noiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
+        self.spkCalChords = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
+        self.spkCalNoise = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
 
         # -- Connect to sound server and define sounds --
         print('Conecting to soundserver...')
@@ -259,23 +262,35 @@ class Paradigm(QtWidgets.QMainWindow):
         # FIXME: currently I am averaging calibration from both speakers (not good)
         preFreq = self.params['preFreq'].get_value()
         postFreq = self.params['postFreq'].get_value()
-        preSoundAmp = self.spkCal.find_amplitude(preFreq,soundIntensity).mean()
-        postSoundAmp = self.spkCal.find_amplitude(postFreq,soundIntensity).mean()
-        self.params['preSoundAmplitude'].set_value(preSoundAmp)
-        self.params['postSoundAmplitude'].set_value(postSoundAmp)
         preDuration = self.params['preDuration'].get_value()
         postDuration = self.params['postDuration'].get_value()
-        fadeIn = self.params['fadeIn'].get_value()
-        sPre = {'type':'chord', 'frequency':preFreq, 'ntones':12, 'factor':1.2,
-                'duration':preDuration, 'amplitude':preSoundAmp, 'fadein':fadeIn}
-        sPost = {'type':'chord', 'frequency':postFreq, 'ntones':12, 'factor':1.2,
-                 'duration':postDuration, 'amplitude':postSoundAmp} #, 'delay':preDuration}
+        soundType = self.params['soundType'].get_string()
+        if soundType == 'chord':
+            preSoundAmp = self.spkCalChords.find_amplitude(preFreq,soundIntensity).mean()
+            postSoundAmp = self.spkCalChords.find_amplitude(postFreq,soundIntensity).mean()
+            fadeIn = self.params['fadeIn'].get_value()
+            sPre = {'type':'chord', 'frequency':preFreq, 'ntones':12, 'factor':1.2,
+                    'duration':preDuration, 'amplitude':preSoundAmp, 'fadein':fadeIn}
+            sPost = {'type':'chord', 'frequency':postFreq, 'ntones':12, 'factor':1.2,
+                     'duration':postDuration, 'amplitude':postSoundAmp} #, 'delay':preDuration}
+        elif soundType == 'AM_rate':
+            preSoundAmp = self.spkCalNoise.find_amplitude(soundIntensity).mean()
+            postSoundAmp = self.spkCalNoise.find_amplitude(soundIntensity).mean()
+            fadeIn = self.params['fadeIn'].get_value()
+            modDepth = 100
+            sPre = {'type':'AM', 'modFrequency':preFreq, 'duration':preDuration,
+                    'amplitude':preSoundAmp, 'fadein':fadeIn}
+            sPost = {'type':'AM', 'modFrequency':postFreq, 'duration':postDuration,
+                     'amplitude':postSoundAmp} #, 'delay':preDuration}
+            
+        self.params['preSoundAmplitude'].set_value(preSoundAmp)
+        self.params['postSoundAmplitude'].set_value(postSoundAmp)
         self.soundClient.set_sound(self.preSoundID, sPre)
         self.soundClient.set_sound(self.postSoundID,sPost)
 
         # -- Prepare punishment noise --
         punishIntensity = self.params['punishIntensity'].get_value()
-        targetAmp = self.noiseCal.find_amplitude(punishIntensity).mean()
+        targetAmp = self.spkCalNoise.find_amplitude(punishIntensity).mean()
         sNoise = {'type':'noise', 'duration': PUNISHMENT_DURATION, 'amplitude':targetAmp}
         self.soundClient.set_sound(self.punishSoundID,sNoise)
         
