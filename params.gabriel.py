@@ -23,4 +23,4 @@ febe019 = {'subject':'febe019', **febeSpectralStage4}
 febe020 = {'subject':'febe020', **febeSpectralStage5}
 febe021 = {'subject':'febe021', **febeSpectralStage3}
 febe007 = {'subject':'febe007', **febeSpectralStage4}
-febe012 = {'subject':'febe012', **febeSpectralBiasCorrect}
+febe012 = {'subject':'febe012', **febeSpectralStageBiasCorrect}
