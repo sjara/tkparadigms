@@ -58,5 +58,11 @@ AM20secRandomIntensity = {'experimenter':'danny', 'maxFreq':12, 'minFreq':12, 'n
            'minInt':20, 'maxInt':85, 'numInt':4, 'stimDur':20,'isiMean':20, 'isiHalfRange':0,
            'randomMode':'Random', 'stimType':'AM', 'syncLight':'centerLED',
            'syncLightMode':'from_stim_offset', 'syncLightDuration':0.5,
+           'delayToSyncLight':0}
+           
+AM4sec10off = {'experimenter':'danny', 'maxFreq':12, 'minFreq':12, 'numTones':1,
+           'minInt':85, 'maxInt':85, 'numInt':1, 'stimDur':4,'isiMean':10, 'isiHalfRange':0,
+           'randomMode':'Random', 'stimType':'AM', 'syncLight':'centerLED',
+           'syncLightMode':'from_stim_offset', 'syncLightDuration':0.5,
            'delayToSyncLight':0}           
            
