@@ -1,28 +1,22 @@
 '''
-Cooperate four ports is a paradigm in which two animals must poke simultaneously to obtain reward.
+Cooperate_four_ports is a paradigm in which two animals must poke simultaneously to obtain reward.
 There are two lanes (one for each animal) with one port at each end.
 '''
 
 import numpy as np
-from PySide import QtGui 
-from taskontrol.core import dispatcher
-from taskontrol.core import statematrix
-from taskontrol.core import savedata
-from taskontrol.core import paramgui
-from taskontrol.core import messenger
-from taskontrol.core import arraycontainer
+from qtpy import QtWidgets
+from taskontrol import rigsettings
+from taskontrol import dispatcher
+from taskontrol import statematrix
+from taskontrol import savedata
+from taskontrol import paramgui
+from taskontrol import utils
 from taskontrol.plugins import manualcontrol
-from taskontrol.settings import rigsettings
-'''
-from taskontrol.plugins import soundclient
-from taskontrol.plugins import speakercalibration
-import time
-'''
 
 LONGTIME = 100
 MAX_N_TRIALS = 4000
 
-class Paradigm(QtGui.QMainWindow):
+class Paradigm(QtWidgets.QMainWindow):
     def __init__(self,parent=None, paramfile=None, paramdictname=None):
         super(Paradigm, self).__init__(parent)
 
@@ -34,14 +28,13 @@ class Paradigm(QtGui.QMainWindow):
 
         # -- Create dispatcher --
         smServerType = rigsettings.STATE_MACHINE_TYPE
-        self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,interval=0.1)
-        self.dispatcherView = dispatcher.DispatcherGUI(model=self.dispatcherModel)
+        self.dispatcher = dispatcher.Dispatcher(serverType=smServerType,interval=0.1)
 
         # -- Module for saving data --
         self.saveData = savedata.SaveData(rigsettings.DATA_DIR, remotedir=rigsettings.REMOTE_DIR)
 
         # -- Manual control of outputs --
-        self.manualControl = manualcontrol.ManualControl(self.dispatcherModel.statemachine)
+        self.manualControl = manualcontrol.ManualControl(self.dispatcher.statemachine)
         
         # -- Define graphical parameters --
         self.params = paramgui.Container()
@@ -66,6 +59,8 @@ class Paradigm(QtGui.QMainWindow):
         self.params['timeLEDon'] = paramgui.NumericParam('Time LED on',value=1,
                                                         units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
+        self.params['barrierType'] = paramgui.MenuParam('Barrier type', ['perforated','solid','transparent'],
+														value=0, group='General parameters')
         self.params['activeSide'] = paramgui.MenuParam('Active side', ['north','south'], value=0,
                                                         group='General parameters', enabled=False)
         self.params['taskMode'] = paramgui.MenuParam('Task mode', ['one_track','cooperate'], value=1,
@@ -78,17 +73,17 @@ class Paradigm(QtGui.QMainWindow):
 
 
         # -- Add graphical widgets to main window --
-        self.centralWidget = QtGui.QWidget()
-        layoutMain = QtGui.QHBoxLayout()
-        layoutCol1 = QtGui.QVBoxLayout()
-        layoutCol2 = QtGui.QVBoxLayout()
+        self.centralWidget = QtWidgets.QWidget()
+        layoutMain = QtWidgets.QHBoxLayout()
+        layoutCol1 = QtWidgets.QVBoxLayout()
+        layoutCol2 = QtWidgets.QVBoxLayout()
 
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
 
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.sessionInfo)
-        layoutCol1.addWidget(self.dispatcherView)
+        layoutCol1.addWidget(self.dispatcher.widget)
 
         layoutCol2.addWidget(self.manualControl)
         layoutCol2.addStretch()
@@ -103,7 +98,7 @@ class Paradigm(QtGui.QMainWindow):
 
         # -- Add variables for storing results --
         maxNtrials = MAX_N_TRIALS # Preallocating space for each vector makes things easier
-        self.results = arraycontainer.Container()
+        self.results = utils.EnumContainer()
         self.results.labels['outcome'] = {'aborted':0, 'rewarded':1, 'poke1only':2, 'poke2only':3, 'none':-1}
         self.results['outcome'] = np.empty(maxNtrials,dtype=int)
         #self.results.labels['activeSide'] = {'north':0,'south':1}
@@ -114,29 +109,29 @@ class Paradigm(QtGui.QMainWindow):
         self.params.from_file(paramfile,paramdictname)
 
         # -- Connect signals from dispatcher --
-        self.dispatcherModel.prepareNextTrial.connect(self.prepare_next_trial)
+        self.dispatcher.prepareNextTrial.connect(self.prepare_next_trial)
 
         # -- Connect messenger --
-        self.messagebar = messenger.Messenger()
+        self.messagebar = paramgui.Messenger()
         self.messagebar.timedMessage.connect(self._show_message)
         self.messagebar.collect('Created window')
 
         # -- Connect signals to messenger
         self.saveData.logMessage.connect(self.messagebar.collect)
-        self.dispatcherModel.logMessage.connect(self.messagebar.collect)
+        self.dispatcher.logMessage.connect(self.messagebar.collect)
 
         # -- Connect other signals --
         self.saveData.buttonSaveData.clicked.connect(self.save_to_file)
 
     def _show_message(self,msg):
         self.statusBar().showMessage(str(msg))
-        print msg
+        print(msg)
 
     def save_to_file(self):
         '''Triggered by button-clicked signal'''
-        self.saveData.to_file([self.params, self.dispatcherModel,
+        self.saveData.to_file([self.params, self.dispatcher,
                                self.sm, self.results],
-                              self.dispatcherModel.currentTrial,
+                              self.dispatcher.currentTrial,
                               experimenter='',
                               subject=self.params['subject'].get_value(),
                               paradigm=self.name)
@@ -144,7 +139,7 @@ class Paradigm(QtGui.QMainWindow):
     def prepare_next_trial(self, nextTrial):
         # -- Calculate results from last trial (update outcome, choice, etc) --
         if nextTrial>0:
-            self.params.update_history()
+            self.params.update_history(nextTrial-1)
             self.calculate_results(nextTrial-1)
             previousOutcome = self.results['outcome'][nextTrial-1]
         else:
@@ -220,12 +215,12 @@ class Paradigm(QtGui.QMainWindow):
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[LED1, LED2])
         
-        self.dispatcherModel.set_state_matrix(self.sm)
-        self.dispatcherModel.ready_to_start_trial()
+        self.dispatcher.set_state_matrix(self.sm)
+        self.dispatcher.ready_to_start_trial()
 
         
     def calculate_results(self,trialIndex):
-        eventsThisTrial = self.dispatcherModel.events_one_trial(trialIndex)
+        eventsThisTrial = self.dispatcher.events_one_trial(trialIndex)
         statesThisTrial = eventsThisTrial[:,2]
         if self.sm.statesNameToIndex['reward'] in statesThisTrial:
             self.params['nRewarded'].add(1)
@@ -241,11 +236,11 @@ class Paradigm(QtGui.QMainWindow):
     def closeEvent(self, event):
         '''
         Executed when closing the main window.
-        This method is inherited from QtGui.QMainWindow, which explains
+        This method is inherited from QtWidgets.QMainWindow, which explains
         its camelCase naming.
         '''
         #self.soundClient.shutdown()
-        self.dispatcherModel.die()
+        self.dispatcher.die()
         event.accept()
 
 if __name__ == '__main__':
