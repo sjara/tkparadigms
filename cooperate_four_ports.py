@@ -25,7 +25,7 @@ class Paradigm(QtWidgets.QMainWindow):
         # -- Create an empty statematrix --
         self.sm = statematrix.StateMatrix(inputs=rigsettings.INPUTS, outputs=rigsettings.OUTPUTS,
                                           readystate='readyForNextTrial',
-                                          extratimers=['lightTimer'])
+                                          extratimers=['lightTimer1','lightTimer2'])
 
         # -- Create dispatcher --
         smServerType = rigsettings.STATE_MACHINE_TYPE
@@ -62,14 +62,19 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['timeLEDon'] = paramgui.NumericParam('Time LED on',value=1,
                                                         units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
-        self.params['barrierType'] = paramgui.MenuParam('Barrier type', ['perforated','solid','transparent'],
-														value=0, group='General parameters')
+        self.params['barrierType'] = paramgui.MenuParam('Barrier type', ['perforated',
+                                                                         'solid','transparent'],
+                                                        value=0, group='General parameters')
         self.params['activeSide'] = paramgui.MenuParam('Active side', ['north','south'], value=0,
                                                         group='General parameters', enabled=False)
-        self.params['taskMode'] = paramgui.MenuParam('Task mode', ['one_track','auto_lights','cooperate'], value=1,
-                                                     group='General parameters')
-        self.params['nextPortAfterFail'] = paramgui.MenuParam('Next port after fail', ['same','opposite'], value=0,
-                                                     group='General parameters', enabled=False)
+        self.params['taskMode'] = paramgui.MenuParam('Task mode', ['one_track','auto_lights',
+                                                                   'reward_on_first_poke',
+                                                                   'reward_on_last_poke',
+                                                                   'cooperate'],
+                                                     value=1, group='General parameters')
+        self.params['nextPortAfterFail'] = paramgui.MenuParam('Next port after fail',
+                                                              ['same','opposite'], value=0,
+                                                              group='General parameters', enabled=False)
         generalParams = self.params.layout_group('General parameters')
 
         self.params['nRewarded1'] = paramgui.NumericParam('N trials rewarded T1',value=0, enabled=False,
@@ -196,7 +201,7 @@ class Paradigm(QtWidgets.QMainWindow):
         else:
             raise
         '''
-        
+
         if taskMode == 'one_track':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForPoke'},
@@ -212,44 +217,123 @@ class Paradigm(QtWidgets.QMainWindow):
                               outputsOff=[Water1, Water2])
         elif taskMode == 'auto_lights':
             self.params['timeLEDon'].set_value(waitTime)
-            self.sm.set_extratimer('lightTimer', duration=waitTime)
+            self.sm.set_extratimer('lightTimer1', duration=waitTime)
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForAnyPoke'},
                               outputsOff=[LED1,LED2])
             self.sm.add_state(name='waitForAnyPoke', statetimer=waitTime,
-                              transitions={port1in:'reward1', port2in:'reward2', 'lightTimer':'turnLEDoff'},
+                              transitions={port1in:'reward1', port2in:'reward2',
+                                           'lightTimer1':'turnLEDoff'},
                               outputsOn=[LED1,LED2],
-                              trigger=['lightTimer'])
+                              trigger=['lightTimer1'])
             self.sm.add_state(name='reward1', statetimer=timeWaterValves,
-                              transitions={'Tup':'stopReward1', 'lightTimer':'turnLEDoff'},
+                              transitions={'Tup':'stopReward1', 'lightTimer1':'turnLEDoff'},
                               outputsOn=[Water1])
             self.sm.add_state(name='stopReward1', statetimer=0,
-                              transitions={'Tup':'waitForPoke2', 'lightTimer':'turnLEDoff'},
+                              transitions={'Tup':'waitForPoke2', 'lightTimer1':'turnLEDoff'},
                               outputsOff=[Water1])
             self.sm.add_state(name='waitForPoke2', statetimer=waitTime,
-                              transitions={port2in:'reward2after1', 'lightTimer':'turnLEDoff'})
+                              transitions={port2in:'reward2after1', 'lightTimer1':'turnLEDoff'})
             self.sm.add_state(name='reward2after1', statetimer=timeWaterValves,
-                              transitions={'Tup':'stopReward2after1', 'lightTimer':'turnLEDoff'},
+                              transitions={'Tup':'stopReward2after1', 'lightTimer1':'turnLEDoff'},
                               outputsOn=[Water2])
             self.sm.add_state(name='stopReward2after1', statetimer=0,
-                              transitions={'Tup':'keepLEDon', 'lightTimer':'turnLEDoff'},
+                              transitions={'Tup':'keepLEDon', 'lightTimer1':'turnLEDoff'},
                               outputsOff=[Water2])
             self.sm.add_state(name='reward2', statetimer=timeWaterValves,
-                              transitions={'Tup':'stopReward2', 'lightTimer':'turnLEDoff'},
+                              transitions={'Tup':'stopReward2', 'lightTimer1':'turnLEDoff'},
                               outputsOn=[Water2])
             self.sm.add_state(name='stopReward2', statetimer=0,
-                              transitions={'Tup':'waitForPoke1', 'lightTimer':'turnLEDoff'},
+                              transitions={'Tup':'waitForPoke1', 'lightTimer1':'turnLEDoff'},
                               outputsOff=[Water2])
             self.sm.add_state(name='waitForPoke1', statetimer=waitTime,
-                              transitions={port1in:'reward1after2', 'lightTimer':'turnLEDoff'})
+                              transitions={port1in:'reward1after2', 'lightTimer1':'turnLEDoff'})
             self.sm.add_state(name='reward1after2', statetimer=timeWaterValves,
-                              transitions={'Tup':'stopReward1after2', 'lightTimer':'turnLEDoff'},
+                              transitions={'Tup':'stopReward1after2', 'lightTimer1':'turnLEDoff'},
                               outputsOn=[Water1])
             self.sm.add_state(name='stopReward1after2', statetimer=0,
-                              transitions={'Tup':'keepLEDon', 'lightTimer':'turnLEDoff'},
+                              transitions={'Tup':'keepLEDon', 'lightTimer1':'turnLEDoff'},
                               outputsOff=[Water1])
             self.sm.add_state(name='keepLEDon', statetimer=waitTime,
-                              transitions={'Tup':'turnLEDoff', 'lightTimer':'turnLEDoff'},
+                              transitions={'Tup':'turnLEDoff', 'lightTimer1':'turnLEDoff'},
+                              outputsOff=[Water1, Water2])
+            self.sm.add_state(name='turnLEDoff', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=[LED1, LED2, Water1, Water2])
+        elif taskMode == 'reward_on_first_poke':
+            self.params['timeLEDon'].set_value(waitTime)
+            self.sm.set_extratimer('lightTimer1', duration=waitTime)
+            self.sm.set_extratimer('lightTimer2', duration=waitTime)
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'waitForPoke'},
+                              outputsOff=[LED1,LED2])
+            self.sm.add_state(name='waitForPoke', statetimer=LONGTIME,
+                              transitions={port1in:'reward1', port2in:'reward2'})
+            self.sm.add_state(name='reward1', statetimer=timeWaterValves,
+                              transitions={'Tup':'stopReward1', 'lightTimer1':'turnLEDoff'},
+                              outputsOn=[Water1,LED1,LED2],
+                              trigger=['lightTimer1'])
+            self.sm.add_state(name='stopReward1', statetimer=0,
+                              transitions={'Tup':'waitForPoke2', 'lightTimer1':'turnLEDoff'},
+                              outputsOff=[Water1])
+            self.sm.add_state(name='waitForPoke2', statetimer=waitTime,
+                              transitions={port2in:'reward2after1', 'lightTimer1':'turnLEDoff'})
+            self.sm.add_state(name='reward2after1', statetimer=timeWaterValves,
+                              transitions={'Tup':'stopReward2after1', 'lightTimer1':'turnLEDoff'},
+                              outputsOn=[Water2])
+            self.sm.add_state(name='stopReward2after1', statetimer=0,
+                              transitions={'Tup':'keepLEDon', 'lightTimer1':'turnLEDoff'},
+                              outputsOff=[Water2])
+            self.sm.add_state(name='reward2', statetimer=timeWaterValves,
+                              transitions={'Tup':'stopReward2', 'lightTimer1':'turnLEDoff'},
+                              outputsOn=[Water2,LED1,LED2],
+                              trigger=['lightTimer2'])
+            self.sm.add_state(name='stopReward2', statetimer=0,
+                              transitions={'Tup':'waitForPoke1', 'lightTimer2':'turnLEDoff'},
+                              outputsOff=[Water2])
+            self.sm.add_state(name='waitForPoke1', statetimer=waitTime,
+                              transitions={port1in:'reward1after2', 'lightTimer2':'turnLEDoff'})
+            self.sm.add_state(name='reward1after2', statetimer=timeWaterValves,
+                              transitions={'Tup':'stopReward1after2', 'lightTimer2':'turnLEDoff'},
+                              outputsOn=[Water1])
+            self.sm.add_state(name='stopReward1after2', statetimer=0,
+                              transitions={'Tup':'keepLEDon', 'lightTimer2':'turnLEDoff'},
+                              outputsOff=[Water1])
+            self.sm.add_state(name='keepLEDon', statetimer=waitTime,
+                              transitions={'Tup':'turnLEDoff',
+                                           'lightTimer1':'turnLEDoff', 'lightTimer2':'turnLEDoff'},
+                              outputsOff=[Water1, Water2])
+            self.sm.add_state(name='turnLEDoff', statetimer=0,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=[LED1, LED2, Water1, Water2])
+        elif taskMode == 'reward_on_last_poke':
+            self.params['timeLEDon'].set_value(waitTime)
+            self.sm.set_extratimer('lightTimer1', duration=waitTime)
+            self.sm.set_extratimer('lightTimer2', duration=waitTime)
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'waitForPoke'},
+                              outputsOff=[LED1,LED2])
+            self.sm.add_state(name='waitForPoke', statetimer=LONGTIME,
+                              transitions={port1in:'waitForPoke2', port2in:'waitForPoke1'})
+            self.sm.add_state(name='waitForPoke2', statetimer=waitTime,
+                              transitions={port2in:'reward', 'lightTimer1':'turnLEDoff'},
+                              outputsOn=[LED1,LED2],
+                              trigger=['lightTimer1'])
+            self.sm.add_state(name='waitForPoke1', statetimer=waitTime,
+                              transitions={port1in:'reward', 'lightTimer2':'turnLEDoff'},
+                              outputsOn=[LED1,LED2],
+                              trigger=['lightTimer2'])
+            self.sm.add_state(name='reward', statetimer=timeWaterValves,
+                              transitions={'Tup':'stopReward', 'lightTimer1':'turnLEDoff',
+                                           'lightTimer2':'turnLEDoff'},
+                              outputsOn=[Water1,Water2])
+            self.sm.add_state(name='stopReward', statetimer=0,
+                              transitions={'Tup':'keepLEDon', 'lightTimer1':'turnLEDoff',
+                                           'lightTimer2':'turnLEDoff'},
+                              outputsOff=[Water1,Water2])
+            self.sm.add_state(name='keepLEDon', statetimer=waitTime,
+                              transitions={'Tup':'turnLEDoff',
+                                           'lightTimer1':'turnLEDoff', 'lightTimer2':'turnLEDoff'},
                               outputsOff=[Water1, Water2])
             self.sm.add_state(name='turnLEDoff', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
@@ -283,6 +367,8 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[LED1, LED2])
         
+        print(self.sm)
+        
         self.dispatcher.set_state_matrix(self.sm)
         self.dispatcher.ready_to_start_trial()
 
@@ -290,22 +376,30 @@ class Paradigm(QtWidgets.QMainWindow):
     def calculate_results(self,trialIndex):
         eventsThisTrial = self.dispatcher.events_one_trial(trialIndex)
         statesThisTrial = eventsThisTrial[:,2]
-        if ((self.sm.statesNameToIndex['reward1'] in statesThisTrial) or
-            (self.sm.statesNameToIndex['reward1after2'] in statesThisTrial)):
-            self.params['nRewarded1'].add(1)
-            self.results['outcome'][trialIndex] = self.results.labels['outcome']['rewarded']
-        if ((self.sm.statesNameToIndex['reward2'] in statesThisTrial) or
-              (self.sm.statesNameToIndex['reward2after1'] in statesThisTrial)):
-            self.params['nRewarded2'].add(1)
-            self.results['outcome'][trialIndex] = self.results.labels['outcome']['rewarded']
-        if self.sm.statesNameToIndex['waitForPoke2'] in statesThisTrial:
-            self.results['outcome'][trialIndex] = self.results.labels['outcome']['poke1only']
-        if self.sm.statesNameToIndex['waitForPoke1'] in statesThisTrial:
-            self.results['outcome'][trialIndex] = self.results.labels['outcome']['poke2only']
+        taskMode = self.params['taskMode'].get_string()
+        if taskMode in ['auto_lights', 'reward_on_first_poke']:
+            if ((self.sm.statesNameToIndex['reward1'] in statesThisTrial) or
+                (self.sm.statesNameToIndex['reward1after2'] in statesThisTrial)):
+                self.params['nRewarded1'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['rewarded']
+            if ((self.sm.statesNameToIndex['reward2'] in statesThisTrial) or
+                  (self.sm.statesNameToIndex['reward2after1'] in statesThisTrial)):
+                self.params['nRewarded2'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['rewarded']
         else:
-            # This should not happen
-            self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
-        '''    
+            if self.sm.statesNameToIndex['reward'] in statesThisTrial:
+                self.params['nRewarded1'].add(1)
+                self.params['nRewarded2'].add(1)
+                self.results['outcome'][trialIndex] = self.results.labels['outcome']['rewarded']
+        #if self.sm.statesNameToIndex['waitForPoke2'] in statesThisTrial:
+        #    self.results['outcome'][trialIndex] = self.results.labels['outcome']['poke1only']
+        #if self.sm.statesNameToIndex['waitForPoke1'] in statesThisTrial:
+        #    self.results['outcome'][trialIndex] = self.results.labels['outcome']['poke2only']
+        self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
+        #else:
+        #    # This should not happen
+        #    self.results['outcome'][trialIndex] = self.results.labels['outcome']['none']
+        '''
         if self.sm.statesNameToIndex['reward'] in statesThisTrial:
             self.params['nRewarded1'].add(1)
             self.params['nRewarded2'].add(1)
