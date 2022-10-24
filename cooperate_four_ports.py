@@ -367,8 +367,7 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[LED1, LED2])
         
-        print(self.sm)
-        
+        #print(self.sm)
         self.dispatcher.set_state_matrix(self.sm)
         self.dispatcher.ready_to_start_trial()
 
