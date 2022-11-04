@@ -1,4 +1,19 @@
-## Headfixed
+"""
+This file defines the parameters to use for each subject.
+"""
+
+# --- Cooperation task ---
+
+coopStage1 = {'experimenter':'brigid', 'taskMode':'auto_lights', 'waitTime':3}
+coopStage2 = {'experimenter':'brigid', 'taskMode':'reward_on_first_poke', 'waitTime':3}
+coopStage3 = {'experimenter':'brigid', 'taskMode':'reward_on_last_poke', 'waitTime':3}
+coopStage4 = {'experimenter':'brigid', 'taskMode':'cooperate', 'waitTime':3}
+
+coop006x007 = {'subject':'coop006x007', **coopStage3}
+coop008x009 = {'subject':'coop008x009', **coopStage3}
+
+
+# --- Headfixed ---
 
 headfix_habituation = {'rewardSideMode':'toggle'}
 
