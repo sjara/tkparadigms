@@ -59,8 +59,12 @@ class Paradigm(QtWidgets.QMainWindow):
        
         self.params['waitTime'] = paramgui.NumericParam('Wait time',value=3,
                                                         units='s',group='Timing parameters')
-        self.params['timeLEDon'] = paramgui.NumericParam('Time LED on',value=1,
-                                                        units='s',group='Timing parameters')
+        self.params['timeLEDon'] = paramgui.NumericParam('Time LED on',value=3,
+                                                         units='s',group='Timing parameters',
+                                                         enabled=False)
+        self.params['ITI'] = paramgui.NumericParam('Inter-trial interval',value=0,
+                                                   units='s',group='Timing parameters',
+                                                   enabled=True)
         timingParams = self.params.layout_group('Timing parameters')
         self.params['barrierType'] = paramgui.MenuParam('Barrier type', ['perforated',
                                                                          'solid','transparent'],
@@ -163,6 +167,7 @@ class Paradigm(QtWidgets.QMainWindow):
         nextPortAfterFail = self.params['nextPortAfterFail'].get_string()
         waitTime = self.params['waitTime'].get_value()
         timeLEDon = self.params['timeLEDon'].get_value()
+        interTrialInterval = self.params['ITI'].get_value()
         timeWaterValves = self.params['timeWaterValves'].get_value()
         #timeWaterValvesN = self.params['timeWaterValvesN'].get_value()
         #timeWaterValvesS = self.params['timeWaterValvesS'].get_value()
@@ -205,7 +210,7 @@ class Paradigm(QtWidgets.QMainWindow):
         if taskMode == 'one_track':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForPoke'},
-                              outputsOff=[LED1,LED2])
+                              outputsOff=[LED1, LED2])
             self.sm.add_state(name='waitForPoke', statetimer=LONGTIME,
                               transitions={port1in:'reward', port2in:'reward'})
             self.sm.add_state(name='reward', statetimer=timeWaterValves,
@@ -220,11 +225,11 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.set_extratimer('lightTimer1', duration=waitTime)
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForAnyPoke'},
-                              outputsOff=[LED1,LED2])
+                              outputsOff=[LED1, LED2])
             self.sm.add_state(name='waitForAnyPoke', statetimer=waitTime,
                               transitions={port1in:'reward1', port2in:'reward2',
                                            'lightTimer1':'turnLEDoff'},
-                              outputsOn=[LED1,LED2],
+                              outputsOn=[LED1, LED2],
                               trigger=['lightTimer1'])
             self.sm.add_state(name='reward1', statetimer=timeWaterValves,
                               transitions={'Tup':'stopReward1', 'lightTimer1':'turnLEDoff'},
@@ -258,6 +263,9 @@ class Paradigm(QtWidgets.QMainWindow):
                               transitions={'Tup':'turnLEDoff', 'lightTimer1':'turnLEDoff'},
                               outputsOff=[Water1, Water2])
             self.sm.add_state(name='turnLEDoff', statetimer=0,
+                              transitions={'Tup':'iti'},
+                              outputsOff=[LED1, LED2, Water1, Water2])
+            self.sm.add_state(name='iti', statetimer=interTrialInterval,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[LED1, LED2, Water1, Water2])
         elif taskMode == 'reward_on_first_poke':
@@ -266,12 +274,12 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.set_extratimer('lightTimer2', duration=waitTime)
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForPoke'},
-                              outputsOff=[LED1,LED2])
+                              outputsOff=[LED1, LED2])
             self.sm.add_state(name='waitForPoke', statetimer=LONGTIME,
                               transitions={port1in:'reward1', port2in:'reward2'})
             self.sm.add_state(name='reward1', statetimer=timeWaterValves,
                               transitions={'Tup':'stopReward1', 'lightTimer1':'turnLEDoff'},
-                              outputsOn=[Water1,LED1,LED2],
+                              outputsOn=[Water1, LED1, LED2],
                               trigger=['lightTimer1'])
             self.sm.add_state(name='stopReward1', statetimer=0,
                               transitions={'Tup':'waitForPoke2', 'lightTimer1':'turnLEDoff'},
@@ -286,7 +294,7 @@ class Paradigm(QtWidgets.QMainWindow):
                               outputsOff=[Water2])
             self.sm.add_state(name='reward2', statetimer=timeWaterValves,
                               transitions={'Tup':'stopReward2', 'lightTimer1':'turnLEDoff'},
-                              outputsOn=[Water2,LED1,LED2],
+                              outputsOn=[Water2, LED1, LED2],
                               trigger=['lightTimer2'])
             self.sm.add_state(name='stopReward2', statetimer=0,
                               transitions={'Tup':'waitForPoke1', 'lightTimer2':'turnLEDoff'},
@@ -304,6 +312,9 @@ class Paradigm(QtWidgets.QMainWindow):
                                            'lightTimer1':'turnLEDoff', 'lightTimer2':'turnLEDoff'},
                               outputsOff=[Water1, Water2])
             self.sm.add_state(name='turnLEDoff', statetimer=0,
+                              transitions={'Tup':'iti'},
+                              outputsOff=[LED1, LED2, Water1, Water2])
+            self.sm.add_state(name='iti', statetimer=interTrialInterval,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[LED1, LED2, Water1, Water2])
         elif taskMode == 'reward_on_last_poke':
@@ -312,7 +323,7 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.set_extratimer('lightTimer2', duration=waitTime)
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForPoke'},
-                              outputsOff=[LED1,LED2])
+                              outputsOff=[LED1, LED2])
             self.sm.add_state(name='waitForPoke', statetimer=LONGTIME,
                               transitions={port1in:'waitForPoke2', port2in:'waitForPoke1'})
             self.sm.add_state(name='waitForPoke2', statetimer=waitTime,
@@ -321,7 +332,7 @@ class Paradigm(QtWidgets.QMainWindow):
                               trigger=['lightTimer1'])
             self.sm.add_state(name='waitForPoke1', statetimer=waitTime,
                               transitions={port1in:'reward', 'lightTimer2':'turnLEDoff'},
-                              outputsOn=[LED1,LED2],
+                              outputsOn=[LED1, LED2],
                               trigger=['lightTimer2'])
             self.sm.add_state(name='reward', statetimer=timeWaterValves,
                               transitions={'Tup':'stopReward', 'lightTimer1':'turnLEDoff',
@@ -330,15 +341,38 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'keepLEDon', 'lightTimer1':'turnLEDoff',
                                            'lightTimer2':'turnLEDoff'},
-                              outputsOff=[Water1,Water2])
+                              outputsOff=[Water1, Water2])
             self.sm.add_state(name='keepLEDon', statetimer=waitTime,
                               transitions={'Tup':'turnLEDoff',
                                            'lightTimer1':'turnLEDoff', 'lightTimer2':'turnLEDoff'},
                               outputsOff=[Water1, Water2])
             self.sm.add_state(name='turnLEDoff', statetimer=0,
+                              transitions={'Tup':'iti'},
+                              outputsOff=[LED1, LED2, Water1, Water2])
+            self.sm.add_state(name='iti', statetimer=interTrialInterval,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=[LED1, LED2, Water1, Water2])
         elif taskMode == 'cooperate':
+            self.params['timeLEDon'].set_value(self.params['timeWaterValves'].get_value())
+            self.sm.add_state(name='startTrial', statetimer=0,
+                              transitions={'Tup':'waitForPoke'},
+                              outputsOff=[LED1, LED2])
+            self.sm.add_state(name='waitForPoke', statetimer=LONGTIME,
+                              transitions={port1in:'waitForPoke2', port2in:'waitForPoke1'})
+            self.sm.add_state(name='waitForPoke2', statetimer=waitTime,
+                              transitions={port2in:'reward', 'Tup':'iti'})
+            self.sm.add_state(name='waitForPoke1', statetimer=waitTime,
+                              transitions={port1in:'reward', 'Tup':'iti'})
+            self.sm.add_state(name='reward', statetimer=timeWaterValves,
+                              transitions={'Tup':'stopReward'},
+                              outputsOn=[Water1, Water2, LED1, LED2])
+            self.sm.add_state(name='stopReward', statetimer=0,
+                              transitions={'Tup':'iti'},
+                              outputsOff=[Water1, Water2, LED1, LED2])
+            self.sm.add_state(name='iti', statetimer=interTrialInterval,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=[LED1, LED2, Water1, Water2])
+        elif taskMode == 'OLDcooperate':
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForPoke'},
                               outputsOff=[LED1,LED2])
