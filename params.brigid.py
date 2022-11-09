@@ -10,8 +10,8 @@ coopStage3 = {'taskMode':'reward_on_last_poke', 'waitTime':3}
 coopStage4 = {'taskMode':'cooperate', 'waitTime':3}
 coopStage5 = {'taskMode':'cooperate', 'waitTime':1}
 
-coop006x007 = {'subject':'coop006x007', 'experimenter':'brigid', **coopStage4}
-coop008x009 = {'subject':'coop008x009', 'experimenter':'brigid', **coopStage4}
+coop006x007 = {'subject':'coop006x007', 'experimenter':'brigid', **coopStage5}
+coop008x009 = {'subject':'coop008x009', 'experimenter':'brigid', **coopStage5}
 
 
 # --- Headfixed ---
