@@ -81,7 +81,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                                    'cooperate'],
                                                      value=1, group='General parameters')
         self.params['nextPortAfterFail'] = paramgui.MenuParam('Next port after fail',
-                                                              ['same','opposite'], value=0,
+                                                              ['same','opposite'], value=1,
                                                               group='General parameters', enabled=False)
         generalParams = self.params.layout_group('General parameters')
 
