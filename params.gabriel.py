@@ -30,7 +30,7 @@ bili056 = {'subject':'bili056', **FTstage1}
 bili057 = {'subject':'bili057', **FTstage1}
 bili058 = {'subject':'bili058', **FTstage2}
 bili059 = {'subject':'bili059', **FTstage2}
-bili060 = {'subject':'bili060', **FTstage3}
+bili060 = {'subject':'bili060', **FTstage2}
 
 
 ## Headfixed
