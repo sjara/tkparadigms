@@ -28,8 +28,8 @@ bili054 = {'subject':'bili054', **FTBiasCorr}
 bili055 = {'subject':'bili055', **FTstage2}
 bili056 = {'subject':'bili056', **FTstage2}
 bili057 = {'subject':'bili057', **FTstage2}
-bili058 = {'subject':'bili058', **FTstage2}
-bili059 = {'subject':'bili059', **FTstage3}
+bili058 = {'subject':'bili058', **FTstage3}
+bili059 = {'subject':'bili059', **FTBiasCorr}
 bili060 = {'subject':'bili060', **FTBiasCorr}
 
 
