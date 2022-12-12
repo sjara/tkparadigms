@@ -65,9 +65,9 @@ class Paradigm(QtWidgets.QMainWindow):
         # -- Add parameters --
         self.params = paramgui.Container()
         self.params['experimenter'] = paramgui.StringParam('Experimenter',
-                                                            value='santiago',
+                                                            value='',
                                                             group='Session info')
-        self.params['subject'] = paramgui.StringParam('Subject',value='test030',
+        self.params['subject'] = paramgui.StringParam('Subject',value='test000',
                                                        group='Session info')
         sessionInfo = self.params.layout_group('Session info')
 
