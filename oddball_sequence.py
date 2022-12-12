@@ -14,36 +14,31 @@ Sequence modes:
 --Santiago Jaramillo
 '''
 
-import numpy as np
-import itertools
-import random
 import time
-from PySide import QtGui
-from taskontrol.core import dispatcher
-from taskontrol.core import paramgui
-from taskontrol.core import savedata
-from taskontrol.settings import rigsettings
-from taskontrol.core import statematrix
+import numpy as np
+from qtpy import QtWidgets
+from taskontrol import rigsettings
+from taskontrol import dispatcher
+from taskontrol import statematrix
+from taskontrol import savedata
+from taskontrol import paramgui
+from taskontrol import utils
 from taskontrol.plugins import speakercalibration
 from taskontrol.plugins import manualcontrol
 from taskontrol.plugins import soundclient
 
 
-if rigsettings.OUTPUTS.has_key('outBit1'):
+if 'outBit1' in rigsettings.OUTPUTS:
     trialStartSync = ['outBit1'] # Sync signal for trial-start.
 else:
     trialStartSync = []
-if rigsettings.OUTPUTS.has_key('outBit0'):
+if 'outBit0' in rigsettings.OUTPUTS:
     stimSync = ['outBit0'] # Sync signal for sound stimulus
 else:
     stimSync = []
-if rigsettings.OUTPUTS.has_key('outBit2'):
-    laserSync = ['outBit2','stim1'] # Sync signal for laser
-else:
-    laserSync = ['centerLED'] # Use center LED during emulation
 
 
-class Paradigm(QtGui.QMainWindow):
+class Paradigm(QtWidgets.QMainWindow):
     def __init__(self, parent=None, paramfile=None, paramdictname=None):
         '''
         Set up the taskontrol core modules, add parameters to the GUI, and 
@@ -59,13 +54,13 @@ class Paradigm(QtGui.QMainWindow):
         # -- Create the speaker calibration object
         self.spkCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
         # -- Create dispatcher --
-        self.dispatcherModel = dispatcher.Dispatcher(serverType=smServerType,
+        self.dispatcher = dispatcher.Dispatcher(serverType=smServerType,
                                                      interval=0.1)
 
-        self.dispatcherView = dispatcher.DispatcherGUI(model=self.dispatcherModel)
+        ###self.dispatcherView = dispatcher.DispatcherGUI(model=self.dispatcherModel)
 
         # -- Manual control of outputs --
-        self.manualControl = manualcontrol.ManualControl(self.dispatcherModel.statemachine)
+        self.manualControl = manualcontrol.ManualControl(self.dispatcher.statemachine)
 
         # -- Add parameters --
         self.params = paramgui.Container()
@@ -84,7 +79,7 @@ class Paradigm(QtGui.QMainWindow):
                                                         value=2100,
                                                         group='Stimulus parameters')
         self.params['oddballProb'] = paramgui.NumericParam('Oddball probability',
-                                                        value=0.2,
+                                                        value=0.1,
                                                         group='Stimulus parameters')
         self.params['freqFactorFromOddball'] = paramgui.NumericParam('Freq factor from odd',
                                                         value=2,
@@ -115,13 +110,13 @@ class Paradigm(QtGui.QMainWindow):
                                                        value=60,
                                                        group='Stimulus parameters')
         self.params['stimDuration'] = paramgui.NumericParam('Sound duration (s)',
-                                                        value=0.01,
+                                                        value=0.05,
                                                         group='Stimulus parameters')
         self.params['isiMean'] = paramgui.NumericParam('Interstimulus mean (s)',
-                                                       value=2,
+                                                       value=0.5,
                                                        group='Stimulus parameters')
         self.params['isiHalfRange'] = paramgui.NumericParam('+/-',
-                                                      value=1,
+                                                      value=0,
                                                       group='Stimulus parameters')
         self.params['sequenceMode'] = paramgui.MenuParam('Sequence mode',
                                                          ['Oddball','Random','Ascending','Descending'],
@@ -165,15 +160,15 @@ class Paradigm(QtGui.QMainWindow):
         self.saveData.checkInteractive.setChecked(True)
 
         # -- Add graphical widgets to main window --
-        self.centralWidget = QtGui.QWidget()
-        layoutMain = QtGui.QHBoxLayout() #Create a main layout and two columns
-        layoutCol1 = QtGui.QVBoxLayout()
-        layoutCol2 = QtGui.QVBoxLayout()
+        self.centralWidget = QtWidgets.QWidget()
+        layoutMain = QtWidgets.QHBoxLayout() #Create a main layout and two columns
+        layoutCol1 = QtWidgets.QVBoxLayout()
+        layoutCol2 = QtWidgets.QVBoxLayout()
 
         layoutMain.addLayout(layoutCol1) #Add the columns to the main layout
         layoutMain.addLayout(layoutCol2)
 
-        layoutCol1.addWidget(self.dispatcherView) #Add the dispatcher to col1
+        layoutCol1.addWidget(self.dispatcher.widget) #Add the dispatcher to col1
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.manualControl)
         layoutCol2.addWidget(sessionInfo)  #Add the parameter GUI to column 2
@@ -184,13 +179,13 @@ class Paradigm(QtGui.QMainWindow):
 
         # -- Connect signals from dispatcher --
         # --- Sent when dispatcher reaches the end of the current trial ---
-        self.dispatcherModel.prepareNextTrial.connect(self.prepare_next_trial)
+        self.dispatcher.prepareNextTrial.connect(self.prepare_next_trial)
 
         # -- Connect the save data button --
         self.saveData.buttonSaveData.clicked.connect(self.save_to_file)
 
-        print "Connecting to sound server"
-        print '***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****'        
+        # -- Connect to sound server and define sounds --
+        print('Conecting to soundserver (waiting for 200ms) ...')
         time.sleep(0.2)
         self.soundClient = soundclient.SoundClient()
         self.soundClient.start()
@@ -212,7 +207,7 @@ class Paradigm(QtGui.QMainWindow):
         '''
 
         if nextTrial > 0:  # Do not update the history before the first trial
-            self.params.update_history()
+            self.params.update_history(nextTrial-1)
 
         # -- Choose an ISI randomly --
         randNum = (2*np.random.random(1)[0]-1) # In range [-1,1)
@@ -280,15 +275,15 @@ class Paradigm(QtGui.QMainWindow):
                           transitions={'Tup':'readyForNextTrial'},
                           outputsOff=stimSync) 
         
-        self.dispatcherModel.set_state_matrix(self.sm)
-        self.dispatcherModel.ready_to_start_trial()
+        self.dispatcher.set_state_matrix(self.sm)
+        self.dispatcher.ready_to_start_trial()
 
         
     def save_to_file(self):
         '''Triggered by button-clicked signal'''
-        self.saveData.to_file([self.params, self.dispatcherModel,
+        self.saveData.to_file([self.params, self.dispatcher,
                                self.sm],
-                              self.dispatcherModel.currentTrial,
+                              self.dispatcher.currentTrial,
                               experimenter='',
                               subject=self.params['subject'].get_value(),
                               paradigm=self.name)
@@ -301,11 +296,11 @@ class Paradigm(QtGui.QMainWindow):
     def closeEvent(self, event):
         '''
         Executed when closing the main window.
-        This method is inherited from QtGui.QMainWindow, which explains
+        This method is inherited from QtWidgets.QMainWindow, which explains
         its camelCase naming.
         '''
         self.soundClient.shutdown()
-        self.dispatcherModel.die()
+        self.dispatcher.die()
         event.accept()
 
 if __name__ == "__main__":
