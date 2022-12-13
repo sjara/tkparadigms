@@ -78,9 +78,17 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['oddballFreq'] = paramgui.NumericParam('Oddball freq (Hz)',
                                                         value=2100,
                                                         group='Stimulus parameters')
+        '''
         self.params['oddballProb'] = paramgui.NumericParam('Oddball probability',
                                                         value=0.1,
                                                         group='Stimulus parameters')
+        '''
+        self.params['oddballPeriod'] = paramgui.NumericParam('Oddball period',
+                                                        value=10,
+                                                        group='Stimulus parameters')
+        self.params['oddballPeriodHalfRange'] = paramgui.NumericParam('+/-',
+                                                        value=2,
+                                                        group='Stimulus parameters')        
         self.params['freqFactorFromOddball'] = paramgui.NumericParam('Freq factor from odd',
                                                         value=2,
                                                         group='Stimulus parameters')
@@ -190,7 +198,10 @@ class Paradigm(QtWidgets.QMainWindow):
         self.soundClient = soundclient.SoundClient()
         self.soundClient.start()
 
-        # -- Initialize the list of trial parameters --
+        # -- General variables --
+        self.nextOddballPeriod = self.params['oddballPeriod'].get_value()
+        self.nPatternsAfterOddball = 0
+        self.stepInSequence = 0
         self.sequence = []
 
     '''   
@@ -217,7 +228,7 @@ class Paradigm(QtWidgets.QMainWindow):
         # -- Determine freq of next sound --
         standardFreq = self.params['standardFreq'].get_value()
         oddballFreq = self.params['oddballFreq'].get_value()
-        oddballProb = self.params['oddballProb'].get_value()
+        #oddballProb = self.params['oddballProb'].get_value()
         freqFactorFromOddball = self.params['freqFactorFromOddball'].get_value()
         nFreq = self.params['nFreq'].get_value()
         sequenceMode = self.params['sequenceMode'].get_string()
@@ -235,6 +246,7 @@ class Paradigm(QtWidgets.QMainWindow):
             elif sequenceMode=='Descending':
                 self.sequence = np.arange(nFreq)[::-1]
 
+        '''
         if sequenceMode=='Oddball':
             if np.random.random(1)[0] < oddballProb:
                 currentFreq = oddballFreq
@@ -242,6 +254,19 @@ class Paradigm(QtWidgets.QMainWindow):
                 currentFreq = standardFreq
         else:
             currentFreq = possibleFreqs[self.sequence[stepInSequence]]
+        '''
+        if sequenceMode=='Oddball':
+            if self.nPatternsAfterOddball >= (self.nextOddballPeriod-1):
+                currentFreq = oddballFreq
+                self.nPatternsAfterOddball = 0
+                oddballPeriod = self.params['oddballPeriod'].get_value()
+                oddballPeriodHalfRange = self.params['oddballPeriodHalfRange'].get_value()
+                jitter = np.random.randint(2*oddballPeriodHalfRange+1)-oddballPeriodHalfRange
+                self.nextOddballPeriod = oddballPeriod + jitter
+                print(f'----------- self.nextOddballPeriod: {self.nextOddballPeriod} -------------')
+            else:
+                currentFreq = standardFreq
+                self.nPatternsAfterOddball += 1
         self.params['currentFreq'].set_value(currentFreq)
 
         # -- Prepare the sound  --
