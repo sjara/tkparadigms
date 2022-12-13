@@ -87,7 +87,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                         value=10,
                                                         group='Stimulus parameters')
         self.params['oddballPeriodHalfRange'] = paramgui.NumericParam('+/-',
-                                                        value=2,
+                                                        value=1,
                                                         group='Stimulus parameters')        
         self.params['freqFactorFromOddball'] = paramgui.NumericParam('Freq factor from odd',
                                                         value=2,
