@@ -72,13 +72,23 @@ class Paradigm(QtWidgets.QMainWindow):
         sessionInfo = self.params.layout_group('Session info')
 
         
+        self.params['stimType'] = paramgui.MenuParam('Stim type',
+                                                         ['Sine','Chord','FM'],
+                                                         value=0,group='Stimulus parameters')
+        self.params['highFreq'] = paramgui.NumericParam('High frequency', value=3500, units='Hz',
+                                                        group='Stimulus parameters')
+        self.params['lowFreq'] = paramgui.NumericParam('Low frequency', value=2000, units='Hz',
+                                                        group='Stimulus parameters')
+        self.params['oddballStim'] = paramgui.MenuParam('Oddball stim',
+                                                         ['high_freq','low_freq','FM_down','FM_up'],
+                                                         value=0,group='Stimulus parameters')
+        '''
         self.params['standardFreq'] = paramgui.NumericParam('Standard freq (Hz)',
                                                         value=2000,
                                                         group='Stimulus parameters')
         self.params['oddballFreq'] = paramgui.NumericParam('Oddball freq (Hz)',
                                                         value=2100,
                                                         group='Stimulus parameters')
-        '''
         self.params['oddballProb'] = paramgui.NumericParam('Oddball probability',
                                                         value=0.1,
                                                         group='Stimulus parameters')
@@ -91,10 +101,10 @@ class Paradigm(QtWidgets.QMainWindow):
                                                         group='Stimulus parameters')        
         self.params['freqFactorFromOddball'] = paramgui.NumericParam('Freq factor from odd',
                                                         value=2,
-                                                        group='Stimulus parameters')
+                                                        group='Stimulus parameters', enabled=False)
         self.params['nFreq'] = paramgui.NumericParam('Number of frequencies',
                                                          value=9,
-                                                         group='Stimulus parameters')
+                                                         group='Stimulus parameters', enabled=False)
         '''
         self.params['minFreq'] = paramgui.NumericParam('Min Frequency (Hz)',
                                                         value=2000,
@@ -128,11 +138,9 @@ class Paradigm(QtWidgets.QMainWindow):
                                                       group='Stimulus parameters')
         self.params['sequenceMode'] = paramgui.MenuParam('Sequence mode',
                                                          ['Oddball','Random','Ascending','Descending'],
-                                                         value=0,group='Stimulus parameters')
-        self.params['stimType'] = paramgui.MenuParam('Stim type',
-                                                         ['Sine','Chord'],
-                                                         value=0,group='Stimulus parameters')
-        self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
+                                                         value=0, group='Stimulus parameters',
+                                                         enabled=False)
+        self.params['currentStartFreq'] = paramgui.NumericParam('Current start freq (Hz)',
                                                             value=0, units='Hz', decimals=0,
                                                             enabled=False,
                                                             group='Stimulus parameters')
@@ -226,16 +234,22 @@ class Paradigm(QtWidgets.QMainWindow):
               self.params['isiHalfRange'].get_value()*randNum
 
         # -- Determine freq of next sound --
-        standardFreq = self.params['standardFreq'].get_value()
-        oddballFreq = self.params['oddballFreq'].get_value()
+        #standardFreq = self.params['standardFreq'].get_value()
+        #oddballFreq = self.params['oddballFreq'].get_value()
         #oddballProb = self.params['oddballProb'].get_value()
+        highFreq = self.params['highFreq'].get_value()
+        lowFreq = self.params['lowFreq'].get_value()
+        oddballStim =  self.params['oddballStim'].get_string()
+        sequenceMode = self.params['sequenceMode'].get_string()
+        '''
         freqFactorFromOddball = self.params['freqFactorFromOddball'].get_value()
         nFreq = self.params['nFreq'].get_value()
-        sequenceMode = self.params['sequenceMode'].get_string()
         minFreq = oddballFreq/freqFactorFromOddball
         maxFreq = oddballFreq*freqFactorFromOddball
         possibleFreqs = np.logspace(np.log10(minFreq), np.log10(maxFreq), nFreq)
+        '''
 
+        '''
         # -- Set the order of sounds for next batch of trials --
         stepInSequence = nextTrial%nFreq
         if stepInSequence==0 or not len(self.sequence):
@@ -245,19 +259,29 @@ class Paradigm(QtWidgets.QMainWindow):
                 self.sequence = np.arange(nFreq)
             elif sequenceMode=='Descending':
                 self.sequence = np.arange(nFreq)[::-1]
-
+        '''
         '''
         if sequenceMode=='Oddball':
             if np.random.random(1)[0] < oddballProb:
-                currentFreq = oddballFreq
+                currentStartFreq = oddballFreq
             else:
-                currentFreq = standardFreq
+                currentStartFreq = standardFreq
         else:
-            currentFreq = possibleFreqs[self.sequence[stepInSequence]]
+            currentStartFreq = possibleFreqs[self.sequence[stepInSequence]]
         '''
+        if (oddballStim == 'high_freq') or (oddballStim == 'FM_down'):
+            oddballFreq = highFreq
+            standardFreq = lowFreq
+        elif (oddballStim == 'low_freq') or (oddballStim == 'FM_up'):
+            oddballFreq = lowFreq
+            standardFreq = highFreq
+        else:
+            raise ValueError()
+            
         if sequenceMode=='Oddball':
             if self.nPatternsAfterOddball >= (self.nextOddballPeriod-1):
-                currentFreq = oddballFreq
+                currentStartFreq = oddballFreq
+                endFreq = standardFreq  # To be used if FM sounds
                 self.nPatternsAfterOddball = 0
                 oddballPeriod = self.params['oddballPeriod'].get_value()
                 oddballPeriodHalfRange = self.params['oddballPeriodHalfRange'].get_value()
@@ -265,14 +289,15 @@ class Paradigm(QtWidgets.QMainWindow):
                 self.nextOddballPeriod = oddballPeriod + jitter
                 print(f'----------- self.nextOddballPeriod: {self.nextOddballPeriod} -------------')
             else:
-                currentFreq = standardFreq
+                currentStartFreq = standardFreq
+                endFreq = oddballFreq  # To be used if FM sounds
                 self.nPatternsAfterOddball += 1
-        self.params['currentFreq'].set_value(currentFreq)
+        self.params['currentStartFreq'].set_value(currentStartFreq)
 
         # -- Prepare the sound  --
         stimDuration = self.params['stimDuration'].get_value()
         soundIntensity = self.params['soundIntensity'].get_value()
-        soundAmp = self.spkCal.find_amplitude(currentFreq,soundIntensity)
+        soundAmp = self.spkCal.find_amplitude(currentStartFreq, soundIntensity)
         self.params['currentAmpL'].set_value(soundAmp[0])
         self.params['currentAmpR'].set_value(soundAmp[1])
 
@@ -280,10 +305,13 @@ class Paradigm(QtWidgets.QMainWindow):
         stimType = self.params['stimType'].get_string()
         if stimType == 'Sine':
             sound = {'type':'tone', 'duration':stimDuration, 
-                     'amplitude':soundAmp, 'frequency':currentFreq}
+                     'amplitude':soundAmp, 'frequency':currentStartFreq}
         elif stimType == 'Chord':
-            sound = {'type':'chord', 'frequency':currentFreq, 'duration':stimDuration,
+            sound = {'type':'chord', 'frequency':currentStartFreq, 'duration':stimDuration,
                   'amplitude':soundAmp, 'ntones':12, 'factor':1.2}
+        elif stimType == 'FM':
+            sound = {'type':'FM', 'frequencyStart':currentStartFreq, 'frequencyEnd':endFreq,
+                     'duration':stimDuration, 'amplitude':soundAmp}
             
         soundID = 1
         self.soundClient.set_sound(soundID,sound)
