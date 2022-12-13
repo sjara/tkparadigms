@@ -103,3 +103,6 @@ pure014 = {'subject': 'pure014', **detect_sound_stage4, **detect_tones, **target
 pure015 = {'subject': 'pure015', **detect_sound_stage4, **detect_tones, **target_12k}
 
 pupilAM = {'minFreq':4, 'maxFreq':12, 'soundType':'AM_rate', 'preDurationMean':3, 'totalStimDuration':5}
+
+oddball = {'stimType':'FM', 'oddballStim':'FM_down', 'stimDuration':0.2,
+           'oddballPeriod':3}
