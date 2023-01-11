@@ -70,8 +70,8 @@ class Paradigm(QtWidgets.QMainWindow):
                                                    units='s',group='Timing parameters',
                                                    enabled=True)
         timingParams = self.params.layout_group('Timing parameters')
-        self.params['barrierType'] = paramgui.MenuParam('Barrier type', ['perforated',
-                                                                         'solid','transparent'],
+        self.params['barrierType'] = paramgui.MenuParam('Barrier type', ['perforated','solid',
+                                                                         'transparent','no_barrier'],
                                                         value=0, group='General parameters')
         self.params['activeSide'] = paramgui.MenuParam('Active side', ['north','south'], value=0,
                                                         group='General parameters', enabled=False)
