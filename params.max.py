@@ -5,6 +5,10 @@ tuningFRA = {'subject':'acid001','experimenter':'max', 'minFreq':2000, 'maxFreq'
 tuningFreq = {'subject':'acid001','experimenter':'max', 'minFreq':2000, 'maxFreq':40000,
               'numTones':16, 'stimType':'Sine', 'stimDur':0.1, 'isiMean':1.2, 'isiHalfRange':0.2,
               'minInt':70, 'maxInt':70, 'numInt':2, 'syncLightMode':'from_stim_offset', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1 }
+              
+tuningFreqHalf = {'subject':'acid001','experimenter':'max', 'minFreq':2000, 'maxFreq':40000,
+              'numTones':8, 'stimType':'Sine', 'stimDur':0.1, 'isiMean':1.2, 'isiHalfRange':0.2,
+              'minInt':70, 'maxInt':70, 'numInt':2, 'syncLightMode':'from_stim_offset', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1 }              
 
 
 tuningAM = {'subject':'feat004','experimenter':'jenny', 'minFreq':4, 'maxFreq':128, 'numTones':11,
