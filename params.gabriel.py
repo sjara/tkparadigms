@@ -23,7 +23,7 @@ rightBias = {'timeWaterValveR':0.025}
 
 # bili animals
 bili052 = {'subject':'bili052', **FTBiasCorr}
-bili053 = {'subject':'bili053', **FTstage3}
+bili053 = {'subject':'bili053', **FTBiasCorr}
 bili054 = {'subject':'bili054', **FTstage3}
 bili055 = {'subject':'bili055', **FTstage3}
 bili056 = {'subject':'bili056', **FTBiasCorr}
