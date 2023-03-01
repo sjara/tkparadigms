@@ -25,11 +25,11 @@ rightBias = {'timeWaterValveR':0.025}
 bili052 = {'subject':'bili052', **FTstage4}
 bili053 = {'subject':'bili053', **FTstage3}
 bili054 = {'subject':'bili054', **FTstage4}
-bili055 = {'subject':'bili055', **FTstage3}
+bili055 = {'subject':'bili055', **FTBiasCorr}
 bili056 = {'subject':'bili056', **FTstage4}
-bili057 = {'subject':'bili057', **FTstage3}
-bili058 = {'subject':'bili058', **FTstage3}
-bili059 = {'subject':'bili059', **FTstage3}
+bili057 = {'subject':'bili057', **FTBiasCorr}
+bili058 = {'subject':'bili058', **FTBiasCorr}
+bili059 = {'subject':'bili059', **FTstage4}
 bili060 = {'subject':'bili060', **FTstage4}
 
 
