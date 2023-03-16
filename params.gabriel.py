@@ -28,9 +28,9 @@ bili054 = {'subject':'bili054', **FTstage3}
 bili055 = {'subject':'bili055', **FTstage3}
 bili056 = {'subject':'bili056', **FTstage4}
 bili057 = {'subject':'bili057', **FTstage3}
-bili058 = {'subject':'bili058', **FTBiasCorr}
+bili058 = {'subject':'bili058', **FTstage3}
 bili059 = {'subject':'bili059', **FTstage3}
-bili060 = {'subject':'bili060', **FTBiasCorr}
+bili060 = {'subject':'bili060', **FTstage3}
 
 
 ## Headfixed
