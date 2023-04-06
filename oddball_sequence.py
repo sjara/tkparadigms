@@ -163,19 +163,18 @@ class Paradigm(QtWidgets.QMainWindow):
                                                           value=0, group='Stimulus parameters')
         stimParams = self.params.layout_group('Stimulus parameters')
 
-        '''
         self.params['syncLight'] = paramgui.MenuParam('Sync light',
                                                        ['off', 'leftLED', 'centerLED', 'rightLED'],
                                                        value=0, group='Sync parameters')
         self.params['syncLightMode'] = paramgui.MenuParam('Sync light mode',
                                                           ['from_stim_offset', 'overlap_with_stim'],
-                                                          value=0, group='Sync parameters')
-        self.params['delayToSyncLight'] = paramgui.NumericParam('Delay to sync light',value=0,
-                                                        units='s',group='Sync parameters')
-        self.params['syncLightDuration'] = paramgui.NumericParam('Sync light duration',value=0,
-                                                        units='s',group='Sync parameters')
+                                                          value=1, group='Sync parameters',
+                                                          enabled=False)
+        #self.params['delayToSyncLight'] = paramgui.NumericParam('Delay to sync light',value=0,
+        #                                                units='s',group='Sync parameters')
+        #self.params['syncLightDuration'] = paramgui.NumericParam('Sync light duration',value=0.1,
+        #                                                units='s',group='Sync parameters')
         syncParams = self.params.layout_group('Sync parameters')
-        '''
         
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
@@ -206,7 +205,7 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1.addWidget(self.manualControl)
         layoutCol2.addWidget(stimParams)
         layoutCol2.addStretch()
-        #layoutCol2.addWidget(syncParams)
+        layoutCol2.addWidget(syncParams)
 
         self.centralWidget.setLayout(layoutMain) #Assign the layouts to the main window
         self.setCentralWidget(self.centralWidget)
@@ -301,7 +300,20 @@ class Paradigm(QtWidgets.QMainWindow):
             standardFreq = highFreq
         else:
             raise ValueError()
-            
+
+        '''
+        syncLightMode = self.params['syncLightMode'].get_string()
+        delayToSyncLight = self.params['delayToSyncLight'].get_value()
+        syncLightDuration = self.params['syncLightDuration'].get_value()
+        if isi-delayToSyncLight-syncLightDuration < 0:
+            raise ValueError('ISI needs to be longer to have time for the sync light.')
+        '''
+        syncLightPortStr = self.params['syncLight'].get_string()
+        if syncLightPortStr=='off':
+            syncLightPort = []
+        else:
+            syncLightPort = [syncLightPortStr]
+        
         if sequenceMode=='Oddball':
             if self.nPatternsAfterOddball >= (self.nextOddballPeriod-1):
                 currentStartFreq = oddballFreq
@@ -352,11 +364,11 @@ class Paradigm(QtWidgets.QMainWindow):
                           transitions={'Tup':'output1On'})
         self.sm.add_state(name='output1On', statetimer=stimDuration, 
                           transitions={'Tup':'output1Off'},
-                          outputsOn=stimSync, 
+                          outputsOn=stimSync+syncLightPort, 
                           serialOut=soundID)
         self.sm.add_state(name='output1Off', statetimer = 0.5 * isi,
                           transitions={'Tup':'readyForNextTrial'},
-                          outputsOff=stimSync) 
+                          outputsOff=stimSync+syncLightPort) 
         
         self.dispatcher.set_state_matrix(self.sm)
         self.dispatcher.ready_to_start_trial()
