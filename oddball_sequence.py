@@ -158,8 +158,24 @@ class Paradigm(QtWidgets.QMainWindow):
                                                            enabled=False,
                                                            group='Stimulus parameters',
                                                            decimals=4)
+        self.params['soundLocation'] = paramgui.MenuParam('Sound location',
+                                                          ['binaural', 'left', 'right'],
+                                                          value=0, group='Stimulus parameters')
         stimParams = self.params.layout_group('Stimulus parameters')
 
+        '''
+        self.params['syncLight'] = paramgui.MenuParam('Sync light',
+                                                       ['off', 'leftLED', 'centerLED', 'rightLED'],
+                                                       value=0, group='Sync parameters')
+        self.params['syncLightMode'] = paramgui.MenuParam('Sync light mode',
+                                                          ['from_stim_offset', 'overlap_with_stim'],
+                                                          value=0, group='Sync parameters')
+        self.params['delayToSyncLight'] = paramgui.NumericParam('Delay to sync light',value=0,
+                                                        units='s',group='Sync parameters')
+        self.params['syncLightDuration'] = paramgui.NumericParam('Sync light duration',value=0,
+                                                        units='s',group='Sync parameters')
+        syncParams = self.params.layout_group('Sync parameters')
+        '''
         
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
@@ -184,11 +200,13 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutMain.addLayout(layoutCol1) #Add the columns to the main layout
         layoutMain.addLayout(layoutCol2)
 
-        layoutCol1.addWidget(self.dispatcher.widget) #Add the dispatcher to col1
+        layoutCol1.addWidget(sessionInfo)
+        layoutCol1.addWidget(self.dispatcher.widget)
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.manualControl)
-        layoutCol2.addWidget(sessionInfo)  #Add the parameter GUI to column 2
-        layoutCol2.addWidget(stimParams)  #Add the parameter GUI to column 2
+        layoutCol2.addWidget(stimParams)
+        layoutCol2.addStretch()
+        #layoutCol2.addWidget(syncParams)
 
         self.centralWidget.setLayout(layoutMain) #Assign the layouts to the main window
         self.setCentralWidget(self.centralWidget)
@@ -300,6 +318,12 @@ class Paradigm(QtWidgets.QMainWindow):
         soundAmp = self.spkCal.find_amplitude(currentStartFreq, soundIntensity)
         self.params['currentAmpL'].set_value(soundAmp[0])
         self.params['currentAmpR'].set_value(soundAmp[1])
+
+        soundLocation = self.params['soundLocation'].get_string()
+        if soundLocation == 'left':
+            soundAmp = [soundAmp[0], 0]
+        elif soundLocation == 'right':
+            soundAmp = [0, soundAmp[1]]
 
         # -- Determine the sound type --
         stimType = self.params['stimType'].get_string()
