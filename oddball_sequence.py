@@ -211,6 +211,11 @@ class Paradigm(QtWidgets.QMainWindow):
         self.centralWidget.setLayout(layoutMain) #Assign the layouts to the main window
         self.setCentralWidget(self.centralWidget)
 
+        # -- Add variables for storing results --
+        maxNtrials = 8000 # Preallocating space for each vector makes things easier
+        self.results = utils.EnumContainer()
+        self.results['timeTrialStart'] = np.empty(maxNtrials,dtype=float)
+
         # -- Connect signals from dispatcher --
         # --- Sent when dispatcher reaches the end of the current trial ---
         self.dispatcher.prepareNextTrial.connect(self.prepare_next_trial)
@@ -245,6 +250,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         if nextTrial > 0:  # Do not update the history before the first trial
             self.params.update_history(nextTrial-1)
+            self.calculate_results(nextTrial-1)
 
         # -- Choose an ISI randomly --
         randNum = (2*np.random.random(1)[0]-1) # In range [-1,1)
@@ -355,11 +361,20 @@ class Paradigm(QtWidgets.QMainWindow):
         self.dispatcher.set_state_matrix(self.sm)
         self.dispatcher.ready_to_start_trial()
 
+
+    def calculate_results(self,trialIndex):
+        # -- Find beginning of trial --
+        eventsThisTrial = self.dispatcher.events_one_trial(trialIndex)
+        statesThisTrial = eventsThisTrial[:,2]
+        startTrialStateID = self.sm.statesNameToIndex['startTrial']
+        startTrialInd = np.flatnonzero(statesThisTrial==startTrialStateID)[0]
+        self.results['timeTrialStart'][trialIndex] = eventsThisTrial[startTrialInd,0]
+
         
     def save_to_file(self):
         '''Triggered by button-clicked signal'''
         self.saveData.to_file([self.params, self.dispatcher,
-                               self.sm],
+                               self.sm, self.results],
                               self.dispatcher.currentTrial,
                               experimenter='',
                               subject=self.params['subject'].get_value(),
