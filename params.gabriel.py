@@ -1,4 +1,12 @@
-## Freely Moving
+# === Frequency discrimination (freely moving) ===
+freqDiscrimStage0 = {'experimenter':'gabriel', 'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70, 'targetIntensityMode':'randMinus20', 'currentBlock':'mid_boundary', 'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
+
+test000 = {'subject':'test000', **freqDiscrimStage0}
+
+
+
+
+# === Speech categorization (freely moving) ===
 ## FT ##
 FTstage0 = {'experimenter':'jenny', 'outcomeMode':'sides_direct', 'relevantFeature':'spectral', 'delayToTargetMean':0, 'delayToTargetHalfRange':0, 'targetMaxIntensity':60}
 
