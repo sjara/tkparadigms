@@ -9,6 +9,7 @@ Create a frequency discrimination 2AFC paradigm.
 - Verify that the choice of last trial is saved properly
 """
 
+import time
 import numpy as np
 import sys
 from qtpy import QtWidgets
@@ -22,25 +23,7 @@ from taskontrol.plugins import templates
 from taskontrol.plugins import performancedynamicsplot
 from taskontrol.plugins import soundclient
 from taskontrol.plugins import speakercalibration
-import time
 
-
-'''
-import numpy as np
-from taskontrol.settings import rigsettings
-from taskontrol.core import paramgui
-from PySide import QtGui
-from taskontrol.core import arraycontainer
-from taskontrol.core import utils
-
-from taskontrol.plugins import templates
-reload(templates)
-from taskontrol.plugins import performancedynamicsplot
-
-from taskontrol.plugins import soundclient
-from taskontrol.plugins import speakercalibration
-import time
-'''
 
 LONGTIME = 100
 
@@ -60,7 +43,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['timeWaterValveR'] = paramgui.NumericParam('Time valve right',value=0.03,
                                                                units='s',group='Water delivery')
         waterDelivery = self.params.layout_group('Water delivery')
-        
+
         self.params['outcomeMode'] = paramgui.MenuParam('Outcome mode',
                                                         ['sides_direct','direct','on_next_correct',
                                                          'only_if_correct','simulated'],
@@ -143,11 +126,11 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['targetAmplitude'] = paramgui.NumericParam('Target amplitude',value=0.0,units='[0-1]',
                                                         enabled=False,decimals=4,group='Sound parameters')
         self.params['punishSoundIntensity'] = paramgui.NumericParam('Punish intensity',value=50,
-                                                              units='dB-SPL',enabled=True,
-                                                              group='Sound parameters')
+                                                                    units='dB-SPL',enabled=True,
+                                                                    group='Sound parameters')
         self.params['punishSoundAmplitude'] = paramgui.NumericParam('Punish amplitude',value=0.01,
-                                                              units='[0-1]',enabled=False,
-                                                              group='Sound parameters')
+                                                                    units='[0-1]',enabled=False, decimals=4,
+                                                                    group='Sound parameters')
         
         '''
         self.params['highFreq'] = paramgui.NumericParam('High freq',value=500,
@@ -168,8 +151,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                          group='Report')
         reportParams = self.params.layout_group('Report')
 
-
-        # 
+        #
         #self.params['experimenter'].set_value('santiago')
         #self.params['subject'].set_value('test')
 
@@ -182,7 +164,7 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol2 = QtWidgets.QVBoxLayout()
         layoutCol3 = QtWidgets.QVBoxLayout()
         layoutCol4 = QtWidgets.QVBoxLayout()
-        
+
         layoutMain.addLayout(layoutTop)
         #layoutMain.addStretch()
         layoutMain.addSpacing(0)
@@ -199,7 +181,7 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.sessionInfo)
         layoutCol1.addWidget(self.dispatcher.widget)
-        
+
         layoutCol2.addWidget(self.manualControl)
         layoutCol2.addStretch()
         layoutCol2.addWidget(waterDelivery)
@@ -234,7 +216,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.results.labels['outcome'] = {'correct':1,'error':0,'invalid':2,
                                           'free':3,'nochoice':4,'aftererror':5,'aborted':6}
         self.results['outcome'] = np.empty(maxNtrials,dtype=int)
-        # Saving as bool creates an 'enum' vector, so I'm saving as 'int'
+        # Saving outcome as bool creates an 'enum' vector, so I'm saving as 'int'
         self.results['valid'] = np.zeros(maxNtrials,dtype='int8') # redundant but useful
         self.results['timeTrialStart'] = np.empty(maxNtrials,dtype=float)
         self.results['timeTarget'] = np.empty(maxNtrials,dtype=float)
@@ -287,7 +269,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Prepare first trial --
         #self.prepare_next_trial(0)
-       
+
     def prepare_punish_sound(self):
         punishSoundIntensity = self.params['punishSoundIntensity'].get_value()
         punishSoundAmplitude = self.spkNoiseCal.find_amplitude(punishSoundIntensity).mean()
@@ -587,7 +569,7 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'ready_next_trial'},
                               outputsOff=[rewardOutput])
-            self.sm.add_state(name='punish', statetimer=punishTimeError,
+            self.sm.add_state(name='punishError', statetimer=punishTimeError,
                               transitions={'Tup':'ready_next_trial'})
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'ready_next_trial'})
@@ -620,7 +602,7 @@ class Paradigm(templates.Paradigm2AFC):
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'reward'})
                 self.sm.add_state(name='choiceRight', statetimer=0,
-                                  transitions={'Tup':'punish'})
+                                  transitions={'Tup':'punishError'})
             elif correctSidePort=='Rin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'punish'})
@@ -635,7 +617,7 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'ready_next_trial'},
                               outputsOff=[rewardOutput]+stimOutput)
-            self.sm.add_state(name='punish', statetimer=punishTimeError,
+            self.sm.add_state(name='punishError', statetimer=punishTimeError,
                               transitions={'Tup':'ready_next_trial'})
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'ready_next_trial'})
@@ -753,7 +735,7 @@ class Paradigm(templates.Paradigm2AFC):
                     if self.sm.statesNameToIndex['earlyWithdrawal'] in eventsThisTrial[:,2]:
                         self.results['outcome'][trialIndex] = \
                             self.results.labels['outcome']['invalid']
-                    elif self.sm.statesNameToIndex['punish'] in eventsThisTrial[:,2]:
+                    elif self.sm.statesNameToIndex['punishError'] in eventsThisTrial[:,2]:
                         self.results['outcome'][trialIndex] = \
                             self.results.labels['outcome']['error']
                 # -- Check if it was a valid trial --
@@ -780,5 +762,4 @@ class Paradigm(templates.Paradigm2AFC):
 
 if __name__ == '__main__':
     (app,paradigm) = paramgui.create_app(Paradigm)
-
 
