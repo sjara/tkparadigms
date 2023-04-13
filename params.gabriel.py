@@ -5,7 +5,7 @@ freqDiscrimStage0 = {'experimenter':'gabriel', 'outcomeMode':'sides_direct', 'de
                      'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
 freqDiscrimStage1 = {'experimenter':'gabriel', 'outcomeMode':'direct', 'delayToTargetMean':0,
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
-                     'targetIntensityMode':'randMinus20', 'currentBlock':'mid_boundary', 
+                     'targetIntensityMode':'randMinus20', 'currentBlock':'midboundary', 
                      'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
 freqDiscrimStage2 = {'experimenter':'gabriel', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01,
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'automationMode':'increase_delay', 'targetMaxIntensity':60}
