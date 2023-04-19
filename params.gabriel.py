@@ -24,12 +24,12 @@ test000 = {'subject':'test000', **freqDiscrimStage0}
 sole001 = {'subject':'sole001', **freqDiscrimStage0}
 sole002 = {'subject':'sole002', **freqDiscrimStage0}
 sole003 = {'subject':'sole003', **freqDiscrimStage0}
-sole004 = {'subject':'sole004', **freqDiscrimStage0}
+sole004 = {'subject':'sole004', **freqDiscrimStage1}
 sole005 = {'subject':'sole005', **freqDiscrimStage0}
 sole006 = {'subject':'sole006', **freqDiscrimStage0}
-sole007 = {'subject':'sole007', **freqDiscrimStage0}
+sole007 = {'subject':'sole007', **freqDiscrimStage1}
 sole008 = {'subject':'sole008', **freqDiscrimStage0}
-sole009 = {'subject':'sole009', **freqDiscrimStage0}
+sole009 = {'subject':'sole009', **freqDiscrimStage1}
 
 
 
