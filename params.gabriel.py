@@ -21,7 +21,7 @@ freqDiscrimBiasCorr = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct'
                      'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
 
 test000 = {'subject':'test000', **freqDiscrimStage0}
-sole001 = {'subject':'sole001', **freqDiscrimStage1}
+sole001 = {'subject':'sole001', **freqDiscrimStage2}
 sole002 = {'subject':'sole002', **freqDiscrimStage2}
 sole003 = {'subject':'sole003', **freqDiscrimStage2}
 sole004 = {'subject':'sole004', **freqDiscrimStage3}
