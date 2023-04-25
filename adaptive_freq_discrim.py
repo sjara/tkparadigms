@@ -440,16 +440,16 @@ class Paradigm(templates.Paradigm2AFC):
         if nextCorrectChoice==self.results.labels['rewardSide']['left']:
             rewardDuration = self.params['timeWaterValveL'].get_value()
             ledOutput = 'leftLED'
-            fromChoiceL = 'reward'
-            fromChoiceR = 'punish'
+            #fromChoiceL = 'reward'
+            #fromChoiceR = 'punish'
             rewardOutput = 'leftWater'
             correctSidePort = 'Lin'
             #soundID = 1
         elif nextCorrectChoice==self.results.labels['rewardSide']['right']:
             rewardDuration = self.params['timeWaterValveR'].get_value()
             ledOutput = 'rightLED'
-            fromChoiceL = 'punish'
-            fromChoiceR = 'reward'
+            #fromChoiceL = 'punish'
+            #fromChoiceR = 'reward'
             rewardOutput = 'rightWater'
             correctSidePort = 'Rin'
             #soundID = 2
