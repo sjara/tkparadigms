@@ -8,7 +8,7 @@ freqDiscrimStage1 = {'experimenter':'gabriel', 'outcomeMode':'direct', 'delayToT
                      'targetIntensityMode':'randMinus20', 'currentBlock':'mid_boundary', 
                      'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
 freqDiscrimStage2 = {'experimenter':'gabriel', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01,
-                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'automationMode':'increase_delay', 'targetMaxIntensity':60,
+                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'automationMode':'increase_delay', 
                      'targetMaxIntensity':70,'targetIntensityMode':'randMinus20', 'currentBlock':'mid_boundary', 
                      'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
 freqDiscrimStage3 = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
