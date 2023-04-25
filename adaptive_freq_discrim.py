@@ -605,7 +605,7 @@ class Paradigm(templates.Paradigm2AFC):
                                   transitions={'Tup':'punishError'})
             elif correctSidePort=='Rin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
-                                  transitions={'Tup':'punish'})
+                                  transitions={'Tup':'punishError'})
                 self.sm.add_state(name='choiceRight', statetimer=0,
                                   transitions={'Tup':'reward'})
             self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
