@@ -29,7 +29,7 @@ sole005 = {'subject':'sole005', **freqDiscrimStage3}
 sole006 = {'subject':'sole006', **freqDiscrimStage3}
 sole007 = {'subject':'sole007', **freqDiscrimStage3}
 sole008 = {'subject':'sole008', **freqDiscrimStage3}
-sole009 = {'subject':'sole009', **freqDiscrimBiasCorr}
+sole009 = {'subject':'sole009', **freqDiscrimStage3}
 
 
 
