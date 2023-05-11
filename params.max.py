@@ -16,10 +16,10 @@ tuningAM = {'subject':'feat004','experimenter':'jenny', 'minFreq':4, 'maxFreq':1
             'maxInt':60, 'syncLightMode':'from_stim_offset', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1}
 
 
-oddballHighFreq = {'experimenter':'maxh', 'subject':'acid', 'stimType':'Chord', 'oddballStim':'high_freq', 'soundIntensity': 50, 'stimDuration':0.05, 'isiMean':0.5, 'isiHalfRange':0, 'oddballPeriod':10, 'oddballPeriodHalfRange':1, 'highFreq':13000, 'lowFreq':8000, 'syncLight':'centerLED', 'soundLocation':'right'}
+oddballHighFreq = {'experimenter':'maxh', 'subject':'acid', 'stimType':'Chord', 'oddballStim':'high_freq', 'soundIntensity': 50, 'stimDuration':0.05, 'isiMean':0.5, 'isiHalfRange':0, 'oddballPeriod':10, 'oddballPeriodHalfRange':1, 'highFreq':13000, 'lowFreq':8000, 'syncLight':'centerLED', 'soundLocation':'left'}
 
-oddballLowFreq = {'experimenter':'maxh', 'subject':'acid', 'stimType':'Chord', 'oddballStim':'low_freq', 'soundIntensity': 50, 'stimDuration':0.05, 'isiMean':0.5, 'isiHalfRange':0, 'oddballPeriod':10, 'oddballPeriodHalfRange':1, 'highFreq':13000, 'lowFreq':8000, 'syncLight':'centerLED', 'soundLocation':'right'}
+oddballLowFreq = {'experimenter':'maxh', 'subject':'acid', 'stimType':'Chord', 'oddballStim':'low_freq', 'soundIntensity': 50, 'stimDuration':0.05, 'isiMean':0.5, 'isiHalfRange':0, 'oddballPeriod':10, 'oddballPeriodHalfRange':1, 'highFreq':13000, 'lowFreq':8000, 'syncLight':'centerLED', 'soundLocation':'left'}
            
-oddballFMDown= {'experimenter':'maxh', 'subject':'acid', 'stimType':'FM', 'oddballStim':'FM_down', 'soundIntensity': 70, 'stimDuration':0.1, 'isiMean':0.5, 'isiHalfRange':0, 'oddballPeriod':10, 'oddballPeriodHalfRange':1, 'highFreq':13000, 'lowFreq':8000, 'syncLight':'centerLED', 'soundLocation':'right'}  
+oddballFMDown= {'experimenter':'maxh', 'subject':'acid', 'stimType':'FM', 'oddballStim':'FM_down', 'soundIntensity': 70, 'stimDuration':0.1, 'isiMean':0.5, 'isiHalfRange':0, 'oddballPeriod':10, 'oddballPeriodHalfRange':1, 'highFreq':13000, 'lowFreq':8000, 'syncLight':'centerLED', 'soundLocation':'left'}  
                     
-oddballFMUp= {'experimenter':'maxh', 'subject':'acid', 'stimType':'FM', 'oddballStim':'FM_up', 'soundIntensity': 70, 'stimDuration':0.1, 'isiMean':0.5, 'isiHalfRange':0, 'oddballPeriod':10, 'oddballPeriodHalfRange':1, 'highFreq':13000, 'lowFreq':8000, 'syncLight':'centerLED', 'soundLocation':'right'}
+oddballFMUp= {'experimenter':'maxh', 'subject':'acid', 'stimType':'FM', 'oddballStim':'FM_up', 'soundIntensity': 70, 'stimDuration':0.1, 'isiMean':0.5, 'isiHalfRange':0, 'oddballPeriod':10, 'oddballPeriodHalfRange':1, 'highFreq':13000, 'lowFreq':8000, 'syncLight':'centerLED', 'soundLocation':'left'}
