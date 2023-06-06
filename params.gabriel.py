@@ -20,6 +20,15 @@ AMDiscrimBiasCorr = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct','
                      'targetIntensityMode':'randMinus20', 'currentBlock':'mid_boundary', 
                      'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
 
+sole001 = {'subject':'sole001', **AMDiscrimStage3}
+sole002 = {'subject':'sole002', **AMDiscrimStage3}
+sole003 = {'subject':'sole003', **AMDiscrimStage3}
+sole004 = {'subject':'sole004', **AMDiscrimStage3}
+sole005 = {'subject':'sole005', **AMDiscrimStage3}
+sole006 = {'subject':'sole006', **AMDiscrimStage3}
+sole007 = {'subject':'sole007', **AMDiscrimStage3}
+sole008 = {'subject':'sole008', **AMDiscrimStage3}
+sole009 = {'subject':'sole009', **AMDiscrimStage3}
 
 
 # === Frequency discrimination (freely moving) ===
