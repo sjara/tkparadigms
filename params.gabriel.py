@@ -1,16 +1,4 @@
 # === Amplitude Modulation (freely moving) ===
-AMDiscrimStage0 = {'experimenter':'gabriel', 'outcomeMode':'sides_direct', 'delayToTargetMean':0,
-                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
-                     'targetIntensityMode':'randMinus20',  
-                     'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
-AMDiscrimStage1 = {'experimenter':'gabriel', 'outcomeMode':'direct', 'delayToTargetMean':0,
-                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
-                     'targetIntensityMode':'randMinus20', 
-                     'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
-AMDiscrimStage2 = {'experimenter':'gabriel', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01,
-                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'automationMode':'increase_delay', 
-                     'targetMaxIntensity':70,'targetIntensityMode':'randMinus20', 
-                     'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
 AMDiscrimStage3 = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20',
