@@ -7,7 +7,7 @@ This file defines the parameters to use for each subject.
 coopStage1 = {'taskMode':'auto_lights','barrierType': 'perforated_10_mm' ,'waitTime':3, 'pokesPerMouse': 1, 'rewardFrequency': 1}
 coopStage2 = {'taskMode':'cooperate_lights','barrierType': 'perforated_10_mm', 'waitTime':0.5, 'pokesPerMouse': 1, 'rewardFrequency': 3 }
 coopStage3 = {'taskMode':'cooperate_lights', 'barrierType': 'perforated_10_mm', 'waitTime':0.5, 'pokesPerMouse': 10, 'rewardFrequency': 3}
-coopStage4 = {'taskMode':'cooperate', 'barrierType': 'perforated_10_mm', 'waitTime':0.5, 'pokesPerMouse': 10,'rewardFrequency': 2}
+coopStage4 = {'taskMode':'cooperate', 'barrierType': 'perforated_10_mm', 'waitTime':0.5, 'pokesPerMouse': 10,'rewardFrequency': 3}
 
 coop016x017 = {'subject':'coop016x017', 'experimenter':'juan', **coopStage4}
 coop018x019 = {'subject':'coop018x019', 'experimenter':'juan', **coopStage4, 'rewardFrequency': 3, 'pokesPerMouse': 15}
