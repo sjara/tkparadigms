@@ -86,7 +86,7 @@ class Paradigm(QtWidgets.QMainWindow):
         ## This name is victim of my poor creativity, it may be changed :)
         self.params["thresholdForIncrementPoke"] = paramgui.NumericParam(
             "Threshold for increase poke",
-            value=20,
+            value=10,
             units="trials",
             group="Timing parameters",
         )
@@ -94,7 +94,7 @@ class Paradigm(QtWidgets.QMainWindow):
         ## This name is victim of my poor creativity, it may be changed :)
         self.params["numberOfPokeAddPerMouse"] = paramgui.NumericParam(
             "Pokes to add per mouse",
-            value=1,
+            value=3,
             units="pokes",
             enabled=True,
             group="Timing parameters",
