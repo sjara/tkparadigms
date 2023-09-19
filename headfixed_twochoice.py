@@ -326,7 +326,7 @@ class Paradigm(QtWidgets.QMainWindow):
                   'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
         elif soundType == 'AM_rate':
             targetRate = soundParam
-            modDepth = 100
+            modDepth = self.params['highAMdepth'].get_value()
             self.params['targetAMdepth'].set_value(modDepth)
             targetAmp = self.noiseCal.find_amplitude(targetIntensity).mean()
             s1 = {'type':'AM', 'modFrequency':targetRate, 'duration':targetDuration,
@@ -334,9 +334,11 @@ class Paradigm(QtWidgets.QMainWindow):
         elif soundType == 'AM_depth':
             modDepth = soundParam
             targetAmp = self.noiseCal.find_amplitude(targetIntensity).mean()
-            modFrequency = 10
-            self.params['targetAMrate'].set_value(modFrequency)
-            s1 = {'type':'AM', 'modFrequency':modFrequency, 'duration':targetDuration,
+            targetDuration = self.params['targetDuration'].get_value()
+            modRate = self.params['lowAMrate'].get_value()
+            #modFrequency = 10
+            self.params['targetAMrate'].set_value(modRate)
+            s1 = {'type':'AM', 'modFrequency':modRate, 'duration':targetDuration,
                   'modDepth':modDepth, 'amplitude':targetAmp}
         if soundType == 'tone_cloud':
             cloudStrength = soundParam  # A value bewteen -100 and 100
@@ -437,10 +439,15 @@ class Paradigm(QtWidgets.QMainWindow):
         highFreq = self.params['highFreq'].get_value()
         lowAMrate = self.params['lowAMrate'].get_value()
         highAMrate = self.params['highAMrate'].get_value()
+        lowAMdepth = self.params['lowAMdepth'].get_value()
+        highAMdepth = self.params['highAMdepth'].get_value()
         nSteps = self.params['psycurveNsteps'].get_value()
         possibleFreqs = np.logspace(np.log10(lowFreq), np.log10(highFreq), nSteps)
         possibleAMrates = np.logspace(np.log10(lowAMrate), np.log10(highAMrate), nSteps)
+        possibleAMdepths = np.linspace(lowAMdepth, highAMdepth, nSteps)
         possibleStrengths = np.linspace(-100, 100, nSteps)
+        # NOTE: this was originally done for freq but works for all types.
+        #       It would be better to just do it according to nSteps rather than freqBoundary
         freqBoundary = np.sqrt(lowFreq*highFreq)
         leftFreqInds = np.flatnonzero(possibleFreqs<freqBoundary)
         rightFreqInds = np.flatnonzero(possibleFreqs>freqBoundary)
@@ -494,6 +501,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         targetFrequency = possibleFreqs[freqIndex]
         targetAMrate = possibleAMrates[freqIndex]
+        targetAMdepth = possibleAMdepths[freqIndex]
         targetCloudStrength = possibleStrengths[strengthIndex]
         soundType = self.params['soundType'].get_string()
         if soundType == 'chords':
