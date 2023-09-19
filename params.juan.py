@@ -16,4 +16,4 @@ Barrier type:
 coop022x023 = {'subject':'coop022x023', 'experimenter':'juan', **coopStage4, 'barrierType': 'solid', 'rewardFrequency': 2, 'pokesPerMouse': 10}
 coop024x025 = {'subject':'coop024x025', 'experimenter':'juan', **coopStage4,'barrierType': 'perforated_10_mm','pokesPerMouse': 10,'rewardFrequency': 2 }
 coop026x027 = {'subject':'coop026x027', 'experimenter':'juan', **coopStage4,'barrierType': 'perforated_10_mm', 'pokesPerMouse': 10, 'rewardFrequency': 2} 
-coop028x029 = {'subject':'coop028x029', 'experimenter':'juan', **coopStage3, "activatePokeIncrement":"False", 'pokesPerMouse': 5, 'targetPokesPerMouse':5}
+coop028x029 = {'subject':'coop028x029', 'experimenter':'juan', **coopStage3, "activatePokeIncrement":"False", 'pokesPerMouse': 5, 'targetPokesPerMouse':5, 'rewardFrequency': 2}
