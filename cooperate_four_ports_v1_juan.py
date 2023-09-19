@@ -196,6 +196,16 @@ class Paradigm(QtWidgets.QMainWindow):
             group="General parameters",
             enabled=True,
         )
+
+        self.params["rigLight"] = paramgui.MenuParam(
+            "Rig light",
+            [
+                "on","off"
+            ],
+            value=0,
+            group="General parameters",
+        )
+
         generalParams = self.params.layout_group("General parameters")
 
         self.params["nRewarded1"] = paramgui.NumericParam(
