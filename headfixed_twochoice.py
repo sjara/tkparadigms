@@ -165,6 +165,13 @@ class Paradigm(QtWidgets.QMainWindow):
                                                          value=0,group='General parameters')
         self.params['psycurveNsteps'] = paramgui.NumericParam('N steps',value=6,decimals=0,
                                                               group='General parameters')
+        self.params['syncLight'] = paramgui.MenuParam('Sync light',
+                                                       ['off', 'leftLED', 'centerLED', 'rightLED'],
+                                                       value=0, group='General parameters')
+        self.params['syncLightMode'] = paramgui.MenuParam('Sync light mode',
+                                                          ['from_stim_offset', 'overlap_with_stim'],
+                                                          value=1, group='General parameters',
+                                                          enabled=False)
         self.params['taskMode'] = paramgui.MenuParam('Task mode',
                                                      ['water_after_sound','water_on_lick',
                                                       'lick_on_stim','discriminate_stim'],
@@ -499,6 +506,7 @@ class Paradigm(QtWidgets.QMainWindow):
                 freqIndex = -1 # Highest freq
                 strengthIndex = -1  # strength=100 (100% high)
 
+        # -- Prepare the sound  --
         targetFrequency = possibleFreqs[freqIndex]
         targetAMrate = possibleAMrates[freqIndex]
         targetAMdepth = possibleAMdepths[freqIndex]
@@ -536,6 +544,12 @@ class Paradigm(QtWidgets.QMainWindow):
             self.prepare_punish_sound(punishmentSound, None)
         punishsoundOutput = self.punishSoundID
 
+        syncLightPortStr = self.params['syncLight'].get_string()
+        if syncLightPortStr=='off':
+            syncLightPort = []
+        else:
+            syncLightPort = [syncLightPortStr]
+       
         stimType = self.params['stimType'].get_string()
         if (stimType=='sound_and_light') | (stimType=='sound_only'):
             soundOutput = self.targetSoundID
@@ -548,7 +562,9 @@ class Paradigm(QtWidgets.QMainWindow):
             stimOutput = stimSync + ['leftLED','rightLED']
         else:
             lightOutput = []
-
+        stimOutput += syncLightPort
+        print(stimOutput)
+            
         self.sm.reset_transitions()
 
         if taskMode == 'water_after_sound':
