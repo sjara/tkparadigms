@@ -41,18 +41,19 @@ AMstage2 = {'experimenter':'jenny', 'soundType':'AM_depth', 'taskMode':'lick_on_
 
 AMstage2b = {'experimenter':'jenny', 'soundType':'AM_depth', 'taskMode':'lick_on_stim', 'psycurveMode':'off', 'rewardSideMode':'random', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':1,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3}
 
-AMstage3 = {'experimenter':'jenny', 'soundType':'AM_depth', 'taskMode':'discriminate_stim', 'psycurveMode':'off', 'rewardSideMode':'random', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3}
+AMstage3 = {'experimenter':'jenny', 'soundType':'AM_depth', 'taskMode':'discriminate_stim', 'psycurveMode':'off', 'rewardSideMode':'random', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, 'syncLight':'centerLED'}
 
-AMstageBiasCorrect = {'experimenter':'jenny', 'soundType':'AM_depth', 'taskMode':'discriminate_stim', 'psycurveMode':'off', 'rewardSideMode':'repeat_mistake', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3}
+AMstageBiasCorrect = {'experimenter':'jenny', 'soundType':'AM_depth', 'taskMode':'discriminate_stim', 'psycurveMode':'off', 'rewardSideMode':'repeat_mistake', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, 'syncLight':'centerLED'}
 
-AMstage4 = {'experimenter':'jenny', 'soundType':'AM_depth', 'taskMode':'discriminate_stim', 'psycurveMode':'extreme80pc', 'psycurveNsteps':'6', 'rewardSideMode':'random', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3}
+#AMstage4 = {'experimenter':'jenny', 'soundType':'AM_depth', 'taskMode':'discriminate_stim', 'psycurveMode':'extreme80pc', 'psycurveNsteps':'6', 'rewardSideMode':'random', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, 'syncLight':'centerLED'}
 
 
-AMstage5 = {'experimenter':'jenny', 'soundType':'AM_depth', 'taskMode':'discriminate_stim', 'psycurveMode':'uniform', 'psycurveNsteps':'6', 'rewardSideMode':'random', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3}
+AMstage5 = {'experimenter':'jenny', 'soundType':'AM_depth', 'taskMode':'discriminate_stim', 'psycurveMode':'uniform', 'psycurveNsteps':'6', 'rewardSideMode':'random', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, sync, 'syncLight':'centerLED'}
 
 ## TEST AM DEPTH ANIMALS ##
 test133 = {'subject':'test133', **AMstage3}
 test134 = {'subject':'test134', **AMstage3}
+wifi001 = {'subject':'wifi001', **AMstage1}
 
 ## VOT ##
 VOTstage0 = {'experimenter':'jenny', 'outcomeMode':'sides_direct', 'relevantFeature':'temporal', 'delayToTargetMean':0, 'delayToTargetHalfRange':0, 'targetMaxIntensity':60}
