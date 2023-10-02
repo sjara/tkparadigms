@@ -52,7 +52,7 @@ AMstage5 = {'experimenter':'jenny', 'soundType':'AM_depth', 'taskMode':'discrimi
 
 ## TEST AM DEPTH ANIMALS ##
 test133 = {'subject':'test133', **AMstage3}
-test134 = {'subject':'test134', **AMstageBiasCorrect}
+test134 = {'subject':'test134', **AMstage3}
 
 ## VOT ##
 VOTstage0 = {'experimenter':'jenny', 'outcomeMode':'sides_direct', 'relevantFeature':'temporal', 'delayToTargetMean':0, 'delayToTargetHalfRange':0, 'targetMaxIntensity':60}

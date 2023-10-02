@@ -1,4 +1,6 @@
 
+depth000 = {'soundType':'AM_depth', 'interTrialIntervalMean':1, 'interTrialIntervalHalfRange':0, 'rewardSideMode':'toggle'}
+
 auto000 = {'subject':'auto000','experimenter':'santiago', 
            'delayToTargetMean':0, 'delayToTargetHalfRange':0,
            'lowFreq':1000,'midFreq':5000,'highFreq':10000,
