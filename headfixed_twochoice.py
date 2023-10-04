@@ -563,7 +563,7 @@ class Paradigm(QtWidgets.QMainWindow):
         else:
             lightOutput = []
         stimOutput += syncLightPort
-        print(stimOutput)
+        #print(stimOutput)
             
         self.sm.reset_transitions()
 
