@@ -1,10 +1,29 @@
 # === Amplitude Modulation (freely moving) ===
+amDiscrimStage0 = {'experimenter':'gabriel', 'outcomeMode':'sides_direct', 'delayToTargetMean':0,
+                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
+                     'targetIntensityMode':'randMinus20',}
+amDiscrimStage1 = {'experimenter':'gabriel', 'outcomeMode':'direct', 'delayToTargetMean':0,
+                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
+                     'targetIntensityMode':'randMinus20',}
+amDiscrimStage2 = {'experimenter':'gabriel', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01,
+                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'automationMode':'increase_delay', 
+                     'targetMaxIntensity':70,'targetIntensityMode':'randMinus20',}
 amDiscrimStage3 = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20',}
 amDiscrimBiasCorr = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct','antibiasMode':'repeat_mistake','delayToTargetMean':0.2,
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20',}
+
+sole010 = {'subject':'sole001', **amDiscrimStage0}
+sole011 = {'subject':'sole002', **amDiscrimStage0}
+sole012 = {'subject':'sole003', **amDiscrimStage0}
+sole013 = {'subject':'sole004', **amDiscrimStage0}
+sole014 = {'subject':'sole005', **amDiscrimStage0}
+sole015 = {'subject':'sole006', **amDiscrimStage0}
+sole016 = {'subject':'sole007', **amDiscrimStage0}
+sole017 = {'subject':'sole008', **amDiscrimStage0}
+sole018 = {'subject':'sole009', **amDiscrimStage0}
 
 sole001 = {'subject':'sole001', **amDiscrimStage3}
 sole002 = {'subject':'sole002', **amDiscrimStage3}
