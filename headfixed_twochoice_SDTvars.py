@@ -859,7 +859,7 @@ class Paradigm(QtWidgets.QMainWindow):
         automationMode = self.params['automationMode'].get_string()
         nHits = self.params['nHitsLeft'].get_value() + self.params['nHitsRight'].get_value()
         if automationMode=='increase_delay':
-            if nHits>0 and self.results['outcome'][nextTrial-1] and not nHits%10:
+            if nHits>0 and self.results['outcome'][nextTrial-1] == self.results.labels['outcome']['hit'] and not nHits%10:
                 self.params['interTrialIntervalMean'].add(0.050)
 
     def closeEvent(self, event):
