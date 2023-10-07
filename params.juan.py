@@ -5,7 +5,7 @@ This file defines the parameters to use for each subject.
 # --- Cooperation task ---
 
 coopStage1 = {'taskMode':'auto_lights','barrierType': 'perforated_10_mm' ,'waitTime':3, 'pokesPerMouse': 1, 'rewardFrequency': 1}
-coopStage2 = {'taskMode':'cooperate_lights','barrierType': 'perforated_10_mm', 'waitTime':0.5, 'pokesPerMouse': 1, 'rewardFrequency': 3, "activatePokeIncrement":"True", "numberOfPokeAddPerMouse":2, "thresholdForIncrementPoke":10}
+coopStage2 = {'taskMode':'cooperate_lights','barrierType': 'perforated_10_mm', 'waitTime':0.5, 'pokesPerMouse': 1, 'rewardFrequency': 3, "activatePokeIncrement":"True", "numberOfPokeAddPerMouse":3, "thresholdForIncrementPoke":10}
 coopStage3 = {'taskMode':'cooperate_lights', 'barrierType': 'perforated_10_mm', 'waitTime':0.5, 'pokesPerMouse': 10, 'rewardFrequency': 3}
 coopStage4 = {'taskMode':'cooperate', 'barrierType': 'perforated_10_mm', 'waitTime':0.5, 'pokesPerMouse': 10,'rewardFrequency': 3}
 
@@ -16,4 +16,4 @@ Barrier type:
 coop022x023 = {'subject':'coop022x023', 'experimenter':'juan', **coopStage4, 'barrierType': 'transparent_no_holes', 'rewardFrequency': 2, 'pokesPerMouse': 10, 'rigLight':'off'}
 coop024x025 = {'subject':'coop024x025', 'experimenter':'juan', **coopStage4,'barrierType': 'perforated_10_mm','pokesPerMouse': 10,'rewardFrequency': 2, 'rigLight':'on'}
 coop026x027 = {'subject':'coop026x027', 'experimenter':'juan', **coopStage4,'barrierType': 'perforated_10_mm', 'pokesPerMouse': 10, 'rewardFrequency': 2, 'rigLight':'on'} 
-coop028x029 = {'subject':'coop028x029', 'experimenter':'juan', **coopStage2, 'barrierType': 'perforated_10_mm', "activatePokeIncrement":"True", 'pokesPerMouse': 5, 'targetPokesPerMouse':7, 'rewardFrequency': 3}
+coop028x029 = {'subject':'coop028x029', 'experimenter':'juan', **coopStage2, 'barrierType': 'perforated_10_mm', "activatePokeIncrement":"True", 'pokesPerMouse': 7, 'targetPokesPerMouse':10, 'rewardFrequency': 3}
