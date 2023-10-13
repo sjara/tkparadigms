@@ -15,14 +15,14 @@ amDiscrimBiasCorr = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct','
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20',}
 
-sole010 = {'subject':'sole010', **amDiscrimStage0}
-sole011 = {'subject':'sole011', **amDiscrimStage0}
-sole012 = {'subject':'sole012', **amDiscrimStage0}
-sole013 = {'subject':'sole013', **amDiscrimStage1}
-sole014 = {'subject':'sole014', **amDiscrimStage1}
-sole015 = {'subject':'sole015', **amDiscrimStage1}
-sole016 = {'subject':'sole016', **amDiscrimStage0}
-sole017 = {'subject':'sole017', **amDiscrimStage0}
+sole010 = {'subject':'sole010', **amDiscrimStage1}
+sole011 = {'subject':'sole011', **amDiscrimStage1}
+sole012 = {'subject':'sole012', **amDiscrimStage1}
+sole013 = {'subject':'sole013', **amDiscrimStage2}
+sole014 = {'subject':'sole014', **amDiscrimStage2}
+sole015 = {'subject':'sole015', **amDiscrimStage2}
+sole016 = {'subject':'sole016', **amDiscrimStage1}
+sole017 = {'subject':'sole017', **amDiscrimStage1}
 sole018 = {'subject':'sole018', **amDiscrimStage0}
 
 sole001 = {'subject':'sole001', **amDiscrimStage3}
