@@ -584,20 +584,23 @@ class Paradigm(QtWidgets.QMainWindow):
             elif lickBeforeStimOffset=='ignore' or 'abort' or 'reward':
             	self.sm.add_state(name='playTarget', statetimer=targetDuration,
                                   transitions={'Tup':'reward'},
-                                  serialOut=soundOutput)
+                                  outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
             else:
                 raise ValueError(f'Lick mode: "{lickBeforeStimOffset}" has not been implemented')
             self.sm.add_state(name='interruptPunishL', statetimer=0,
-            		       transitions={'Tup': 'punishment'},
+            		      transitions={'Tup': 'punishment'},
+                              outputsOff=lightOutput+stimOutput,
                               serialOut=soundclient.STOP_ALL_SOUNDS)
             self.sm.add_state(name='interruptPunishR', statetimer=0,
-            		       transitions={'Tup': 'punishment'},
+            		      transitions={'Tup': 'punishment'},
+                              outputsOff=lightOutput+stimOutput,
                               serialOut=soundclient.STOP_ALL_SOUNDS)
             self.sm.add_state(name='punishment', statetimer=punishmentDuration,
                               transitions={'Tup': 'readyForNextTrial'},
-            		       serialOut= punishsoundOutput)
+            		      serialOut= punishsoundOutput)
             self.sm.add_state(name='reward', statetimer=timeWaterValve,
                               transitions={'Tup':'stopReward'},
+                              outputsOff=lightOutput+stimOutput,
                               outputsOn=[rewardOutput])
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'lickingPeriod'},
