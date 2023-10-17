@@ -13,6 +13,6 @@ coopStage4 = {'taskMode':'cooperate', 'barrierType': 'perforated_10_mm', 'waitTi
 Barrier type:
             ["perforated_5_mm","perforated_10_mm", "solid", "transparent_holes", "transparent_no_holes", "no_barrier"]
 '''
-coop024x025 = {'subject':'coop024x025', 'experimenter':'juan', **coopStage4,'barrierType': 'solid','pokesPerMouse': 10,'rewardFrequency': 2, 'rigLight':'on'}
-coop026x027 = {'subject':'coop026x027', 'experimenter':'juan', **coopStage4,'barrierType': 'solid', 'pokesPerMouse': 10, 'rewardFrequency': 2, 'rigLight':'on'} 
-coop028x029 = {'subject':'coop028x029', 'experimenter':'juan', **coopStage4, 'barrierType': 'perforated_10_mm', "activatePokeIncrement":"False", 'pokesPerMouse': 10, 'targetPokesPerMouse':10, 'rewardFrequency': 2}
+coop024x025 = {'subject':'coop024x025', 'experimenter':'juan', **coopStage4,'barrierType': 'perforated_10_mm','pokesPerMouse': 10,'rewardFrequency': 2, 'rigLight':'on'}
+coop026x027 = {'subject':'coop026x027', 'experimenter':'juan', **coopStage4,'barrierType': 'perforated_10_mm', 'pokesPerMouse': 10, 'rewardFrequency': 2, 'rigLight':'on'} 
+coop028x029 = {'subject':'coop028x029', 'experimenter':'juan', **coopStage4, 'barrierType': 'solid', "activatePokeIncrement":"False", 'pokesPerMouse': 10, 'targetPokesPerMouse':10, 'rewardFrequency': 2}
