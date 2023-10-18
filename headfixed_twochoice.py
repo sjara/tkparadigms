@@ -185,13 +185,13 @@ class Paradigm(QtWidgets.QMainWindow):
                                                              units='trials',group='Report')
         self.params['nHitsRight'] = paramgui.NumericParam('Hits R',value=0, enabled=False,
                                                              units='trials',group='Report')
-        self.params['nErrorsLeft'] = paramgui.NumericParam('Errors L',value=0, enabled=False,
+        self.params['nErrorsByLickLeft'] = paramgui.NumericParam('Errors by lick L',value=0, enabled=False,
                                                       units='trials',group='Report')
-        self.params['nErrorsRight'] = paramgui.NumericParam('Errors R',value=0, enabled=False,
+        self.params['nErrorsByLickRight'] = paramgui.NumericParam('Errors by lick R',value=0, enabled=False,
                                                       units='trials',group='Report')
-        self.params['nInterruptsLeft'] = paramgui.NumericParam('Interrupts L',value=0, enabled=False,
+        self.params['nInterruptsByLickL'] = paramgui.NumericParam('Interrupts by lick L',value=0, enabled=False,
                                                       units='trials',group='Report')
-        self.params['nInterruptsRight'] = paramgui.NumericParam('Interrupts R',value=0, enabled=False,
+        self.params['nInterruptsByLickR'] = paramgui.NumericParam('Interrupts by lick R',value=0, enabled=False,
                                                       units='trials',group='Report')
         self.params['nEarlyLicksLeft'] = paramgui.NumericParam('Early licks L',value=0, enabled=False,
                                                       units='trials',group='Report')
@@ -611,8 +611,8 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='hit')
             self.sm.add_state(name='error')
             self.sm.add_state(name='noResponse')
-            self.sm.add_state(name='interruptL')
-            self.sm.add_state(name='interruptR')
+            self.sm.add_state(name='interruptByLickL')
+            self.sm.add_state(name='interruptByLickR')
             self.sm.add_state(name='earlyLickL')
             self.sm.add_state(name='earlyLickR')
         elif taskMode == 'water_on_lick':
@@ -632,8 +632,8 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='hit')
             self.sm.add_state(name='error')
             self.sm.add_state(name='noResponse')
-            self.sm.add_state(name='interruptL')
-            self.sm.add_state(name='interruptR')
+            self.sm.add_state(name='interruptByLickL')
+            self.sm.add_state(name='interruptByLickR')
             self.sm.add_state(name='interruptPunishL')
             self.sm.add_state(name='interruptPunishR')
             self.sm.add_state(name='earlyLickL')
@@ -656,7 +656,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                   outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
             elif lickBeforeStimOffset=='abort':
                 self.sm.add_state(name='playTarget', statetimer=targetDuration,
-                                  transitions={'Lin':'interruptL', 'Rin':'interruptR',
+                                  transitions={'Lin':'interruptByLickL', 'Rin':'interruptByLickR',
                                                'Tup':'waitForLick'},
                                   outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
             elif lickBeforeStimOffset=='punish':
@@ -677,10 +677,10 @@ class Paradigm(QtWidgets.QMainWindow):
                               outputsOff=['centerLED','rightLED','leftLED']+stimOutput)
             self.sm.add_state(name='noResponse', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
-            self.sm.add_state(name='interruptL', statetimer=0,
+            self.sm.add_state(name='interruptByLickL', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
                               serialOut=soundclient.STOP_ALL_SOUNDS)
-            self.sm.add_state(name='interruptR', statetimer=0,
+            self.sm.add_state(name='interruptByLickR', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
                               serialOut=soundclient.STOP_ALL_SOUNDS)
             self.sm.add_state(name='interruptPunishL', statetimer=0,
@@ -723,7 +723,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                   outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
             elif lickBeforeStimOffset=='abort':
                 self.sm.add_state(name='playTarget', statetimer=targetDuration,
-                                  transitions={'Lin':'interruptL', 'Rin':'interruptR',
+                                  transitions={'Lin':'interruptByLickL', 'Rin':'interruptByLickR',
                                                'Tup':'waitForLick'},
                                   outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
             elif lickBeforeStimOffset=='punish':
@@ -745,10 +745,10 @@ class Paradigm(QtWidgets.QMainWindow):
                               outputsOff=['centerLED','rightLED','leftLED']+stimOutput)
             self.sm.add_state(name='noResponse', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
-            self.sm.add_state(name='interruptL', statetimer=0,
+            self.sm.add_state(name='interruptByLickL', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
                               serialOut=soundclient.STOP_ALL_SOUNDS)
-            self.sm.add_state(name='interruptR', statetimer=0,
+            self.sm.add_state(name='interruptByLickR', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
                               serialOut=soundclient.STOP_ALL_SOUNDS)
             self.sm.add_state(name='interruptPunishL', statetimer=0,
@@ -804,22 +804,22 @@ class Paradigm(QtWidgets.QMainWindow):
                     self.results['choice'][trialIndex] = self.results.labels['choice']['right']
             elif self.sm.statesNameToIndex['error'] in statesThisTrial:
                 self.params['addedITI'].set_value(self.params['lickingPeriod'].get_value())
-                if lastRewardSide=='left':
-                    self.params['nErrorsLeft'].add(1)
-                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['error']
-                    self.results['choice'][trialIndex] = self.results.labels['choice']['right']
-                else:
-                    self.params['nErrorsRight'].add(1)
+                if lastRewardSide=='right':
+                    self.params['nErrorsByLickLeft'].add(1)
                     self.results['outcome'][trialIndex] = self.results.labels['outcome']['error']
                     self.results['choice'][trialIndex] = self.results.labels['choice']['left']
-            elif self.sm.statesNameToIndex['interruptL'] in statesThisTrial:
+                else:
+                    self.params['nErrorsByLickRight'].add(1)
+                    self.results['outcome'][trialIndex] = self.results.labels['outcome']['error']
+                    self.results['choice'][trialIndex] = self.results.labels['choice']['right']
+            elif self.sm.statesNameToIndex['interruptByLickL'] in statesThisTrial:
                 self.params['addedITI'].set_value(self.params['lickingPeriod'].get_value())
-                self.params['nInterruptsLeft'].add(1)
+                self.params['nInterruptsByLickL'].add(1)
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['interrupt']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
-            elif self.sm.statesNameToIndex['interruptR'] in statesThisTrial:
+            elif self.sm.statesNameToIndex['interruptByLickR'] in statesThisTrial:
                 self.params['addedITI'].set_value(self.params['lickingPeriod'].get_value())
-                self.params['nInterruptsRight'].add(1)
+                self.params['nInterruptsByLickR'].add(1)
                 self.results['outcome'][trialIndex] = self.results.labels['outcome']['interrupt']
                 self.results['choice'][trialIndex] = self.results.labels['choice']['none']
             elif self.sm.statesNameToIndex['earlyLickL'] in statesThisTrial:
