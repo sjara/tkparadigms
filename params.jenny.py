@@ -55,7 +55,7 @@ test133 = {'subject':'test133', **AMstage3}
 test134 = {'subject':'test134', **AMstage3}
 wifi001 = {'subject':'wifi001', **AMstage3}
 sole018 = {'subject':'sole018', **AMstage2}
-sole019 = {'subject':'sole019', **AMstage2}
+sole019 = {'subject':'sole019', **AMstage2b}
 
 ## VOT ##
 VOTstage0 = {'experimenter':'jenny', 'outcomeMode':'sides_direct', 'relevantFeature':'temporal', 'delayToTargetMean':0, 'delayToTargetHalfRange':0, 'targetMaxIntensity':60}
