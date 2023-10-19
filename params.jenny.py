@@ -54,7 +54,7 @@ AMstage5 = {'experimenter':'jenny', 'soundType':'AM_depth', 'taskMode':'discrimi
 test133 = {'subject':'test133', **AMstage3}
 test134 = {'subject':'test134', **AMstage3}
 wifi001 = {'subject':'wifi001', **AMstage3}
-sole018 = {'subject':'sole018', **AMstage2}
+sole018 = {'subject':'sole018', **AMstage2b}
 sole019 = {'subject':'sole019', **AMstage2b}
 
 ## VOT ##
