@@ -19,9 +19,9 @@ sole011 = {'subject':'sole011', **amDiscrimStage3}
 sole012 = {'subject':'sole012', **amDiscrimStage3}
 sole013 = {'subject':'sole013', **amDiscrimStage3}
 sole014 = {'subject':'sole014', **amDiscrimStage3}
-sole015 = {'subject':'sole015', **amDiscrimBiasCorr}
-sole016 = {'subject':'sole016', **amDiscrimStage3}
-sole017 = {'subject':'sole017', **amDiscrimStage3}
+sole015 = {'subject':'sole015', **amDiscrimStage3}
+sole016 = {'subject':'sole016', **amDiscrimBiasCorr}
+sole017 = {'subject':'sole017', **amDiscrimBiasCorr}
 
 sole001 = {'subject':'sole001', **amDiscrimStage3}
 sole002 = {'subject':'sole002', **amDiscrimStage3}
