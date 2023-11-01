@@ -36,9 +36,9 @@ AMstageBiasCorrect = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode
 #AMstage5 = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode':'discriminate_stim', 'psycurveMode':'uniform', 'psycurveNsteps':'6', 'rewardSideMode':'random', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, 'syncLight':'centerLED'}
 
 ## TEST AM DEPTH ANIMALS ##
-test133 = {'subject':'test133', **AMstage3}
-test134 = {'subject':'test134', **AMstage3}
+#test133 = {'subject':'test133', **AMstage3}
+#test134 = {'subject':'test134', **AMstage3}
 wifi001 = {'subject':'wifi001', **AMstage1_onlyL}
-sole018 = {'subject':'sole018', **AMstage2b}
-sole019 = {'subject':'sole019', **AMstage2b}
+#sole018 = {'subject':'sole018', **AMstage2b}
+#sole019 = {'subject':'sole019', **AMstage2b}
 
