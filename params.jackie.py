@@ -16,6 +16,8 @@ tuningAM = {'subject':'feat004','experimenter':'jackie', 'minFreq':4, 'maxFreq':
 ## AM Depth
 AMstage1_onlyL = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode':'water_after_sound', 'psycurveMode':'off', 'rewardSideMode':'onlyL', 'lickingPeriod':1.5, 'rewardAvailability':1,'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, 'syncLight':'centerLED'} 
 
+AMstage1b_punish_onlyL = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode':'lick_on_stim', 'psycurveMode':'off', 'rewardSideMode':'onlyL', 'lickBeforeStimOffset':'punish', 'punishmentSound':'chord', 'punishmentDuration':5, 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, 'syncLight':'centerLED'} #only added punish here
+
 AMstage1b_onlyL = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode':'lick_on_stim', 'psycurveMode':'off', 'rewardSideMode':'onlyL', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, 'syncLight':'centerLED'}
 
 AMstage1_onlyR = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode':'water_after_sound', 'psycurveMode':'off', 'rewardSideMode':'onlyR', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, 'syncLight':'centerLED'} #May need to add 'automationMode':'increase_delay'
@@ -38,7 +40,7 @@ AMstageBiasCorrect = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode
 ## TEST AM DEPTH ANIMALS ##
 #test133 = {'subject':'test133', **AMstage3}
 test134 = {'subject':'test134', **AMstage1b_onlyR}
-wifi001 = {'subject':'wifi001', **AMstage1b_onlyL}
+wifi001 = {'subject':'wifi001', **AMstage1b_punish_onlyL}
 #sole018 = {'subject':'sole018', **AMstage2b}
 #sole019 = {'subject':'sole019', **AMstage2b}
 
