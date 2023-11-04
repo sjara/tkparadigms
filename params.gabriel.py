@@ -1,17 +1,17 @@
 # === Amplitude Modulation (freely moving) ===
-amDiscrimStage0 = {'experimenter':'gabriel', 'outcomeMode':'sides_direct', 'delayToTargetMean':0,
+amDiscrimStage0 = {'experimenter':'gabriel', 'outcomeMode':'sides_direct', 'relevantFeature':'spectral', 'delayToTargetMean':0,
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20',}
-amDiscrimStage1 = {'experimenter':'gabriel', 'outcomeMode':'direct', 'delayToTargetMean':0,
+amDiscrimStage1 = {'experimenter':'gabriel', 'outcomeMode':'direct', 'relevantFeature':'spectral', 'delayToTargetMean':0,
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20',}
-amDiscrimStage2 = {'experimenter':'gabriel', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01,
+amDiscrimStage2 = {'experimenter':'gabriel', 'outcomeMode':'on_next_correct', 'relevantFeature':'spectral', 'delayToTargetMean':0.01,
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'automationMode':'increase_delay', 
                      'targetMaxIntensity':70,'targetIntensityMode':'randMinus20',}
-amDiscrimStage3 = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
+amDiscrimStage3 = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 'relevantFeature':'spectral', 'delayToTargetMean':0.2,
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20',}
-amDiscrimBiasCorr = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct','antibiasMode':'repeat_mistake','delayToTargetMean':0.2,
+amDiscrimBiasCorr = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct','relevantFeature':'spectral', 'antibiasMode':'repeat_mistake','delayToTargetMean':0.2,
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20',}
 
