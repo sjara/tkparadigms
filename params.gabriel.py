@@ -12,7 +12,7 @@ amDiscrimStage3 = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 'd
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20',}
 amDiscrimStage4 = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 'psycurveMode':'uniform', 
-                   'psycurveNsteps':'8', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0, 'targetMaxIntensity':70}
+                   'psycurveNsteps':'8', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0, 'targetIntensityMode':'randMinus20', 'targetMaxIntensity':70}
 amDiscrimBiasCorr = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 'antibiasMode':'repeat_mistake','delayToTargetMean':0.2,
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20',}
