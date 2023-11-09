@@ -634,8 +634,8 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='noResponse')
             self.sm.add_state(name='interruptByLickL')
             self.sm.add_state(name='interruptByLickR')
-            self.sm.add_state(name='interruptPunishL')
-            self.sm.add_state(name='interruptPunishR')
+            #self.sm.add_state(name='interruptPunishL')
+            #self.sm.add_state(name='interruptPunishR')
             self.sm.add_state(name='earlyLickL')
             self.sm.add_state(name='earlyLickR')
 
@@ -721,15 +721,10 @@ class Paradigm(QtWidgets.QMainWindow):
                 self.sm.add_state(name='playTarget', statetimer=targetDuration,
                                   transitions={punishedEvent:'error', 'Tup':'waitForLick'},
                                   outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
-            elif lickBeforeStimOffset=='abort':
+            elif lickBeforeStimOffset in ['abort','punish']:
                 self.sm.add_state(name='playTarget', statetimer=targetDuration,
                                   transitions={'Lin':'interruptByLickL', 'Rin':'interruptByLickR',
                                                'Tup':'waitForLick'},
-                                  outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
-            elif lickBeforeStimOffset=='punish':
-                self.sm.add_state(name='playTarget', statetimer=targetDuration,
-                                  transitions={'Lin':'interruptPunishL', 'Rin': 'interruptPunishR',
-                                               'Tup': 'waitForLick'},
                                   outputsOn=lightOutput+stimOutput, serialOut=soundOutput)
             else:
                 raise ValueError(f'Lick mode: "{lickBeforeStimOffset}" has not been implemented')
@@ -745,17 +740,15 @@ class Paradigm(QtWidgets.QMainWindow):
                               outputsOff=['centerLED','rightLED','leftLED']+stimOutput)
             self.sm.add_state(name='noResponse', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'})
+            if lickBeforeStimOffset=='abort':
+                nextStateAfterInterrupt = 'readyForNextTrial'
+            elif lickBeforeStimOffset=='punish':
+                nextStateAfterInterrupt = 'punishment'
             self.sm.add_state(name='interruptByLickL', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
+                              transitions={'Tup':nextStateAfterInterrupt},
                               serialOut=soundclient.STOP_ALL_SOUNDS)
             self.sm.add_state(name='interruptByLickR', statetimer=0,
-                              transitions={'Tup':'readyForNextTrial'},
-                              serialOut=soundclient.STOP_ALL_SOUNDS)
-            self.sm.add_state(name='interruptPunishL', statetimer=0,
-            		       transitions={'Tup': 'punishment'},
-                              serialOut=soundclient.STOP_ALL_SOUNDS)
-            self.sm.add_state(name='interruptPunishR', statetimer=0,
-            		       transitions={'Tup': 'punishment'},
+                              transitions={'Tup':nextStateAfterInterrupt},
                               serialOut=soundclient.STOP_ALL_SOUNDS)
             self.sm.add_state(name='earlyLickL', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
