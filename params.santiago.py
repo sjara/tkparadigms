@@ -61,8 +61,9 @@ hfix003b = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialInte
 
 hfix003 = {'subject':'test000', 'taskMode':'discriminate_stim', 'interTrialIntervalMean':1,
            'lickingPeriod':0.5, 'interTrialIntervalHalfRange':0,
-           'targetIntensity':55, 'targetDuration': 0.5,
-           'soundType':'tone_cloud', 'highFreq':3200, 'lowFreq':400, 'rewardSideMode':'toggle'}
+           'targetIntensity':55, 'targetDuration': 1, 'lickBeforeStimOffset':'punish',
+           'punishmentSound':'white_noise', 'punishmentIntensity': 40,
+           'soundType':'tone_cloud', 'highFreq':3200, 'lowFreq':400, 'rewardSideMode':'onlyL'}
 
 #chad000 = {'subject':'test000', 'taskMode':'discriminate_change',
 #           'interTrialIntervalMean':2, 'maxFreq':600, 'minFreq':500}
