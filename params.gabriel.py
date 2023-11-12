@@ -23,7 +23,7 @@ sole013 = {'subject':'sole013', **amDiscrimStage3}
 sole014 = {'subject':'sole014', **amDiscrimStage3}
 sole015 = {'subject':'sole015', **amDiscrimStage3}
 sole016 = {'subject':'sole016', **amDiscrimStage3}
-sole017 = {'subject':'sole017', **amDiscrimStage4}
+#sole017 = {'subject':'sole017', **amDiscrimStage4}
 
 sole001 = {'subject':'sole001', **amDiscrimStage3}
 sole002 = {'subject':'sole002', **amDiscrimStage3}
@@ -57,6 +57,8 @@ freqDiscrimBiasCorr = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct'
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20', 'currentBlock':'mid_boundary', 
                      'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
+
+sole017 = {'subject':'sole017', **freqDiscrimStage3}
 
 test000 = {'subject':'test000', **freqDiscrimStage0}
 #sole001 = {'subject':'sole001', **freqDiscrimStage3}
