@@ -15,4 +15,4 @@ Barrier type:
 '''
 coop024x025 = {'subject':'coop024x025', 'experimenter':'juan', **coopStage4,'barrierType': 'transparent_no_holes','pokesPerMouse': 10,'rewardFrequency': 2, 'rigLight':'on'}
 coop026x027 = {'subject':'coop026x027', 'experimenter':'juan', **coopStage4,'barrierType': 'transparent_no_holes', 'pokesPerMouse': 10, 'rewardFrequency': 2, 'rigLight':'on'} 
-coop028x029 = {'subject':'coop028x029', 'experimenter':'juan', **coopStage4, 'barrierType': 'perforated_10_mm', 'rewardFrequency': 2}
+coop028x029 = {'subject':'coop028x029', 'experimenter':'juan', **coopStage4, 'barrierType': 'perforated_10_mm', 'rewardFrequency': 3}
