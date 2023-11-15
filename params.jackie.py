@@ -30,7 +30,7 @@ AMstage1bfull_onlyR = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMod
 
 AMstage1b_onlyR = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode':'discriminate_stim', 'psycurveMode':'off', 'rewardSideMode':'onlyR', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':2.5,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, 'syncLight':'centerLED'}
 
-AMstage2 = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode':'discriminate_stim', 'psycurveMode':'off', 'rewardSideMode':'random', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':1,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, 'syncLight':'centerLED'} #might want to skip
+AMstage2 = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode':'water_after_sound', 'psycurveMode':'off', 'rewardSideMode':'random', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'interTrialIntervalMean':1,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, 'syncLight':'centerLED'} #might want to skip
 #prob skip AMstage2 for now
 AMstage2b = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode':'discriminate_stim', 'psycurveMode':'off', 'rewardSideMode':'random', 'lickBeforeStimOffset':'abort', 'lickingPeriod':1.5, 'rewardAvailability':1, 'automationMode':'increase_delay', 'interTrialIntervalMean':1,'interTrialIntervalHalfRange':1,'targetIntensity':65, 'timeWaterValve':0.03, 'stimType':'sound_only', 'highAMrate':8, 'lowAMrate':8, 'highAMdepth':100, 'lowAMdepth':0, 'targetDuration':0.3, 'syncLight':'centerLED'} #this has the 'automationMode':'increase_delay'
 
@@ -48,7 +48,7 @@ AMstageBiasCorrect = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode
 ## TEST AM DEPTH ANIMALS ##
 #test133 = {'subject':'test133', **AMstage3}
 test134 = {'subject':'test134', **AMstage1b_onlyR}
-wifi001 = {'subject':'wifi001', **AMstage2b_punish}
+wifi001 = {'subject':'wifi001', **AMstage2}
 #sole018 = {'subject':'sole018', **AMstage2b}
 #sole019 = {'subject':'sole019', **AMstage2b}
 
