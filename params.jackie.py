@@ -47,7 +47,7 @@ AMstageBiasCorrect = {'experimenter':'jackie', 'soundType':'AM_depth', 'taskMode
 
 ## TEST AM DEPTH ANIMALS ##
 #test133 = {'subject':'test133', **AMstage3}
-sole020 = {'subject':'sole020', **AMstage1_onlyL}
+sole020 = {'subject':'sole020', **AMstage1b_punish_onlyL}
 test134 = {'subject':'test134', **AMstage1b_onlyR}
 wifi001 = {'subject':'wifi001', **AMstage2b_punish}
 #sole018 = {'subject':'sole018', **AMstage2b}
