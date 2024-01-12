@@ -5,6 +5,6 @@ puretones_AC = {'experimenter':'wendy',
                      'MinInt':70, 
                      'maxInt':70, 
                      'numInt':1, 
-                     'soundLocation':'lateral', 
+                     'soundLocation':'right', 
                      'stimDur':0.1, 
                      'isi':0.5}
