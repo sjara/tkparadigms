@@ -1,7 +1,4 @@
-'''
-Parameters for electrophysiological responses of AC neurons to features of speech (am_tuning.py)
-'''
-puretones_AC.1sec = {'experimenter':'wendy', 
+{'experimenter':'wendy', 
                      'minFreq':2000, 
                      'maxFreq':40000, 
                      'numTones':60, 
