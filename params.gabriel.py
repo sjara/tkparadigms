@@ -17,10 +17,10 @@ amDiscrimBiasCorr = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20',}
 
-sole021 = {'subject':'sole021', **amDiscrimStage1}
-sole022 = {'subject':'sole022', **amDiscrimStage0}
+sole021 = {'subject':'sole021', **amDiscrimStage2}
+sole022 = {'subject':'sole022', **amDiscrimStage1}
 sole023 = {'subject':'sole023', **amDiscrimStage1}
-sole024 = {'subject':'sole024', **amDiscrimStage0}
+sole024 = {'subject':'sole024', **amDiscrimStage1}
 sole025 = {'subject':'sole025', **amDiscrimStage1}
 sole026 = {'subject':'sole026', **amDiscrimStage0}
 sole027 = {'subject':'sole027', **amDiscrimStage1}
