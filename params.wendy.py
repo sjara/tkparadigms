@@ -1,4 +1,5 @@
 puretones_AC = {'experimenter':'wendy', 
+'numTones':16,
                      'minFreq':2000, 
                      'maxFreq':40000,
                      'minInt':70, 
