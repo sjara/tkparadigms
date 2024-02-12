@@ -1,1 +1,5 @@
-puretones_AS = {'numTones':16,'minFreq':2000,'maxFreq':40000,'minInt':70,'maxInt':70,'stimDur':0.1,'isi':0.5,'soundLocation':'binaural','stimType':'Sine','randomMode':'Random','numInt':1}
+tuningFreq = {'subject':'feat014','experimenter':'jacob', 'minFreq':2000, 'maxFreq':40000,'numTones':16, 'stimType':'Sine', 'stimDur':0.1, 'isiMean':1.2, 'isiHalfRange':0.2,'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1 }
+
+
+tuningAM = {'subject':'feat014','experimenter':'jacob', 'minFreq':4, 'maxFreq':128, 'numTones':11,'stimType':'AM', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2, 'minInt':60,'maxInt':60, 'syncLightMode':'from_stim_offset', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1}
+
