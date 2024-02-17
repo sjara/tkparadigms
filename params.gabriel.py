@@ -24,8 +24,8 @@ sole024 = {'subject':'sole024', **amDiscrimStage3}
 sole025 = {'subject':'sole025', **amDiscrimStage3}
 sole026 = {'subject':'sole026', **amDiscrimStage3}
 sole027 = {'subject':'sole027', **amDiscrimStage3}
-sole028 = {'subject':'sole028', **amDiscrimStage4}
-sole029 = {'subject':'sole029', **amDiscrimStage4}
+sole028 = {'subject':'sole028', **amDiscrimStage3}
+sole029 = {'subject':'sole029', **amDiscrimStage3}
 
 sole011 = {'subject':'sole011', **amDiscrimStage3}
 sole012 = {'subject':'sole012', **amDiscrimStage3}
