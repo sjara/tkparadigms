@@ -3,3 +3,5 @@ tuningFreq = {'subject':'feat014','experimenter':'jacob', 'minFreq':2000, 'maxFr
 
 tuningAM = {'subject':'feat014','experimenter':'jacob', 'minFreq':4, 'maxFreq':128, 'numTones':11,'stimType':'AM', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2, 'minInt':60,'maxInt':60, 'syncLightMode':'from_stim_offset', 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1}
 
+
+#edit
