@@ -71,13 +71,13 @@ freqDiscrimStage4 = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,'targetIntensityMode':'randMinus20', 'currentBlock':'mid_boundary', 
                      'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
 
-#sole021 = {'subject':'sole021', **freqDiscrimStage0}
-#sole022 = {'subject':'sole022', **freqDiscrimStage0}
-#sole023 = {'subject':'sole023', **freqDiscrimStage0}
+#lsole021 = {'subject':'sole021', **freqDiscrimStage0}
+#lsole022 = {'subject':'sole022', **freqDiscrimStage0}
+#lsole023 = {'subject':'sole023', **freqDiscrimStage0}
 sole024 = {'subject':'sole024', **freqDiscrimBiasCorr}
-#sole025 = {'subject':'sole025', **freqDiscrimStage0}
-#sole026 = {'subject':'sole026', **freqDiscrimStage0}
-#sole027 = {'subject':'sole027', **freqDiscrimStage0}
+#lsole025 = {'subject':'sole025', **freqDiscrimStage0}
+#lsole026 = {'subject':'sole026', **freqDiscrimStage0}
+#lsole027 = {'subject':'sole027', **freqDiscrimStage0}
 sole028 = {'subject':'sole028', **freqDiscrimStage3}
 sole029 = {'subject':'sole029', **freqDiscrimStage4}
 
