@@ -24,7 +24,7 @@ sole023 = {'subject':'sole023', **amDiscrimStage3}
 sole025 = {'subject':'sole025', **amDiscrimStage3}
 sole026 = {'subject':'sole026', **amDiscrimStage3}
 sole027 = {'subject':'sole027', **amDiscrimStage3}
-#lsole028 = {'subject':'sole028', **amDiscrimStage4}
+sole028 = {'subject':'sole028', **amDiscrimStage4}
 sole029 = {'subject':'sole029', **amDiscrimStage4}
 
 sole011 = {'subject':'sole011', **amDiscrimStage3}
@@ -78,7 +78,7 @@ sole024 = {'subject':'sole024', **freqDiscrimStage3}
 #lsole25 = {'subject':'sole025', **freqDiscrimStage0}
 #lsole26 = {'subject':'sole026', **freqDiscrimStage0}
 #lsole27 = {'subject':'sole027', **freqDiscrimStage0}
-sole028 = {'subject':'sole028', **freqDiscrimStage4}
+#lsole028 = {'subject':'sole028', **freqDiscrimStage4}
 #lsole029 = {'subject':'sole029', **freqDiscrimStage4}
 
 #lsole017 = {'subject':'sole017', **freqDiscrimStage4}
