@@ -72,7 +72,7 @@ freqDiscrimStage4 = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 
                      'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
 
 #lsole21 = {'subject':'sole021', **freqDiscrimStage0}
-sole22 = {'subject':'sole022', **freqDiscrimStage3}
+sole022 = {'subject':'sole022', **freqDiscrimStage3}
 #lsole23 = {'subject':'sole023', **freqDiscrimStage0}
 sole024 = {'subject':'sole024', **freqDiscrimStage3}
 #lsole25 = {'subject':'sole025', **freqDiscrimStage0}
