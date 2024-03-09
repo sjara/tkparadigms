@@ -24,8 +24,8 @@ sole021 = {'subject':'sole021', **amDiscrimStage3}
 sole025 = {'subject':'sole025', **amDiscrimStage3}
 sole026 = {'subject':'sole026', **amDiscrimStage3}
 #lsole027 = {'subject':'sole027', **amDiscrimStage4}
-#lsole028 = {'subject':'sole028', **amDiscrimStage4}
-sole029 = {'subject':'sole029', **amDiscrimStage4}
+sole028 = {'subject':'sole028', **amDiscrimStage4}
+#lsole029 = {'subject':'sole029', **amDiscrimStage4}
 
 sole011 = {'subject':'sole011', **amDiscrimStage3}
 sole012 = {'subject':'sole012', **amDiscrimStage3}
@@ -72,14 +72,14 @@ freqDiscrimStage4 = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 
                      'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
 
 #sole2 = {'subject':'sole021', **freqDiscrimStage0}
-sole022 = {'subject':'sole022', **freqDiscrimStage3}
+sole022 = {'subject':'sole022', **freqDiscrimStage4}
 sole023 = {'subject':'sole023', **freqDiscrimStage3}
 sole024 = {'subject':'sole024', **freqDiscrimStage4}
 #lsole2 = {'subject':'sole02', **freqDiscrimStage0}
 #lsole2 = {'subject':'sole02', **freqDiscrimStage0}
-sole027 = {'subject':'sole027', **freqDiscrimStage3}
-sole028 = {'subject':'sole028', **freqDiscrimStage4}
-#lsole029 = {'subject':'sole029', **freqDiscrimStage4}
+sole027 = {'subject':'sole027', **freqDiscrimBiasCorr}
+#lsole028 = {'subject':'sole028', **freqDiscrimStage4}
+sole029 = {'subject':'sole029', **freqDiscrimStage4}
 
 #lsole017 = {'subject':'sole017', **freqDiscrimStage4}
 
