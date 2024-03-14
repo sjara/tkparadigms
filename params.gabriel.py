@@ -18,7 +18,7 @@ amDiscrimBiasCorr = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 
                      'targetIntensityMode':'randMinus20',}
 
 sole021 = {'subject':'sole021', **amDiscrimStage3}
-#lsole022 = {'subject':'sole022', **amDiscrimStage4}
+sole022 = {'subject':'sole022', **amDiscrimStage4}
 #lsole023 = {'subject':'sole023', **amDiscrimStage4}
 #lsole024 = {'subject':'sole024', **amDiscrimStage4}
 sole025 = {'subject':'sole025', **amDiscrimStage3}
@@ -72,7 +72,7 @@ freqDiscrimStage4 = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 
                      'highFreq':16200, 'midFreq':9000, 'lowFreq':5000}
 
 #sole2 = {'subject':'sole021', **freqDiscrimStage0}
-sole022 = {'subject':'sole022', **freqDiscrimStage4}
+#lsole022 = {'subject':'sole022', **freqDiscrimStage4}
 sole023 = {'subject':'sole023', **freqDiscrimStage4}
 sole024 = {'subject':'sole024', **freqDiscrimStage4}
 #lsole2 = {'subject':'sole02', **freqDiscrimStage0}
