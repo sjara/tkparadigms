@@ -21,7 +21,8 @@ from taskontrol.plugins import speakercalibration
 LONGTIME = 100
 
 SOUND_DIR = rigsettings.NATURAL_SOUNDS_PATH
-ALL_SOUND_FILES = glob.glob(os.path.join(SOUND_DIR,'*.wav'))
+ALL_SOUND_FILE_PATHS = sorted(glob.glob(os.path.join(SOUND_DIR,'*.wav')))
+ALL_SOUND_FILE_NAMES = [os.path.basename(sfile) for sfile in ALL_SOUND_FILE_PATHS]
 
 '''
 SOUND_FILENAME_FORMAT = 'syllable_{0}x_vot{1:03.0f}_ft{2:03.0f}.wav'  # From speechsynth.py
@@ -47,6 +48,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.name = 'natural_sound_detection'
 
         self.soundFiles = []
+        self.soundOrder = []
         # FIXME: targetSoundID does not seem necessary
         #self.targetSoundID = {}  # Keys are filenames, items are integers to be used as soundID
         #self.freqFactor = 0
@@ -59,6 +61,8 @@ class Paradigm(templates.Paradigm2AFC):
 
         # -- Add soundsFolder parameter to Session info --
         self.params['soundsFolder'] = paramgui.StringParam('Sounds folder', value=SOUND_DIR,
+                                                           enabled=False, group='Session info')
+        self.params['soundsList'] = paramgui.StringParam('Sounds list', value=str(ALL_SOUND_FILE_NAMES),
                                                            enabled=False, group='Session info')
         self.sessionInfo = self.params.layout_group('Session info')
         #self.get_sound_files()  # Defines self.soundFiles, self.possibleVOT and self.possibleFT
@@ -85,9 +89,9 @@ class Paradigm(templates.Paradigm2AFC):
                                                         value=0,group='Choice parameters')
         choiceParams = self.params.layout_group('Choice parameters')
 
-        self.params['delayToTargetMean'] = paramgui.NumericParam('Mean delay to target',value=0.3,
+        self.params['delayToTargetMean'] = paramgui.NumericParam('Mean delay to target',value=2,
                                                         units='s',group='Timing parameters')
-        self.params['delayToTargetHalfRange'] = paramgui.NumericParam('+/-',value=0.05,
+        self.params['delayToTargetHalfRange'] = paramgui.NumericParam('+/-',value=0.5,
                                                         units='s',group='Timing parameters')
         self.params['delayToTarget'] = paramgui.NumericParam('Delay to target',value=0.3,
                                                         units='s',group='Timing parameters',
@@ -95,7 +99,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['targetDuration'] = paramgui.NumericParam('Target duration',value=0,
                                                               decimals=3, enabled=False,
                                                               units='s',group='Timing parameters')
-        self.params['rewardAvailability'] = paramgui.NumericParam('Reward availability',value=4,
+        self.params['rewardAvailability'] = paramgui.NumericParam('Reward availability',value=0,
                                                         units='s',group='Timing parameters')
         self.params['punishTimeError'] = paramgui.NumericParam('Punishment (error)',value=0,
                                                         units='s',group='Timing parameters')
@@ -103,10 +107,10 @@ class Paradigm(templates.Paradigm2AFC):
                                                         units='s',group='Timing parameters')
         self.params['syncLight'] = paramgui.MenuParam('Sync light',
                                                        ['off', 'leftLED', 'centerLED', 'rightLED'],
-                                                       value=0, group='Timing parameters')
+                                                       value=2, group='Timing parameters')
         self.params['delayToSyncLight'] = paramgui.NumericParam('Delay to sync light',value=0,
                                                         units='s',group='Timing parameters')
-        self.params['syncLightDuration'] = paramgui.NumericParam('Sync light duration',value=0,
+        self.params['syncLightDuration'] = paramgui.NumericParam('Sync light duration',value=0.1,
                                                         units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
 
@@ -363,6 +367,7 @@ class Paradigm(templates.Paradigm2AFC):
             soundDict = {'type':'fromfile', 'filename':soundFilename, 'amplitude':targetAmp}
         thisSound = self.soundClient.set_sound(1, soundDict)
         self.params['targetDuration'].set_value(thisSound.get_duration())
+        #self.params['targetDuration'].set_value(1)  ########## DEBUG #########
     
     def prepare_next_trial(self, nextTrial):
         #  TicTime = time.time() ### DEBUG
@@ -452,9 +457,16 @@ class Paradigm(templates.Paradigm2AFC):
         soundKey = os.path.join(soundFolder, filename)
         '''
 
-        nSounds = len(ALL_SOUND_FILES)
-        soundID = np.random.randint(nSounds)
-        soundFilepath = ALL_SOUND_FILES[soundID]
+        nSounds = len(ALL_SOUND_FILE_PATHS)
+        #nSounds = 4   ######### DEBUG ##########
+        # -- Present all sounds before repeating a specific sound --
+        trialIndexInSet = nextTrial%nSounds
+        if trialIndexInSet==0:
+            self.soundOrder = np.random.permutation(np.arange(nSounds))
+        print(self.soundOrder)
+        soundID = self.soundOrder[trialIndexInSet]
+        
+        soundFilepath = ALL_SOUND_FILE_PATHS[soundID]
         self.params['soundID'].set_value(soundID)
         self.params['soundFilename'].set_value(os.path.basename(soundFilepath))
         self.currentSoundID = 1 #self.targetSoundID[soundKey]
