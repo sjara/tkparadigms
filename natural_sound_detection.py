@@ -463,7 +463,7 @@ class Paradigm(templates.Paradigm2AFC):
         trialIndexInSet = nextTrial%nSounds
         if trialIndexInSet==0:
             self.soundOrder = np.random.permutation(np.arange(nSounds))
-        print(self.soundOrder)
+            print(self.soundOrder)
         soundID = self.soundOrder[trialIndexInSet]
         
         soundFilepath = ALL_SOUND_FILE_PATHS[soundID]
