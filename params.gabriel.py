@@ -77,7 +77,7 @@ sole023 = {'subject':'sole023', **freqDiscrimStage4}
 #lsole024 = {'subject':'sole024', **freqDiscrimStage4}
 #lsole2 = {'subject':'sole02', **freqDiscrimStage0}
 #lsole2 = {'subject':'sole02', **freqDiscrimStage0}
-sole027 = {'subject':'sole027', **freqDiscrimStage3}
+sole027 = {'subject':'sole027', **freqDiscrimStage4}
 sole028 = {'subject':'sole028', **freqDiscrimStage4}
 sole029 = {'subject':'sole029', **freqDiscrimStage4}
 
