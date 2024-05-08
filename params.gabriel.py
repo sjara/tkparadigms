@@ -19,7 +19,7 @@ amDiscrimBiasCorr = {'experimenter':'gabriel', 'outcomeMode':'only_if_correct', 
 
 sole021 = {'subject':'sole021', **amDiscrimStage3}
 sole022 = {'subject':'sole022', **amDiscrimStage3}
-sole023 = {'subject':'sole023', **amDiscrimBiasCorr}
+sole023 = {'subject':'sole023', **amDiscrimStage4}
 sole024 = {'subject':'sole024', **amDiscrimStage4}
 sole025 = {'subject':'sole025', **amDiscrimStage3}
 sole026 = {'subject':'sole026', **amDiscrimStage4}
