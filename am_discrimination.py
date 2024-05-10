@@ -603,13 +603,12 @@ class Paradigm(templates.Paradigm2AFC):
                 laserOutput=[]
             elif laserMode == 'random':
                 laserProbability = self.params['laserProbability'].get_value()
-                if random.random() <= laserProbability:
+                if np.random.random() <= laserProbability:
                     laserOutput=laserPin
                     self.params['laserOn'].set_value(1)
                 else:
                     laserOutput=[]
                     self.params['laserOn'].set_value(0)
-
 
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
