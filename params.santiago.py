@@ -1,4 +1,10 @@
 
+wifi000 = {'subject':'test000', 'experimenter':'santiago', 
+           'minFreq':3000, 'maxFreq':3200, 'numTones':3, 
+           'stimType':'ToneTrain', 'stimDur':1,
+           'isiMean':2, 'isiHalfRange':0,
+           'minInt':70, 'maxInt':70}
+
 depth000 = {'soundType':'AM_depth', 'interTrialIntervalMean':1, 'interTrialIntervalHalfRange':0, 'rewardSideMode':'toggle'}
 
 auto000 = {'subject':'auto000','experimenter':'santiago', 

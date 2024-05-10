@@ -100,6 +100,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                          value=1,group='Stim parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
                                                          ['Sine','Chord', 'Noise', 'AM',
+                                                          'ToneTrain',
                                                           'Laser', 'LaserTrain', 'Light'],
                                                          value=2,group='Stim parameters')
         self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
@@ -299,6 +300,10 @@ class Paradigm(QtWidgets.QMainWindow):
         elif stimType == 'AM':
             sound = {'type':'AM', 'duration':stimDur,
                      'amplitude':targetAmp,'modFrequency':self.trialParams[0]}
+        elif stimType == 'ToneTrain':
+            sound = {'type':'toneTrain', 'duration':stimDur,
+                     'amplitude':targetAmp, 'frequency':self.trialParams[0],
+                     'toneDuration':0.025, 'rate':20}
 
         fractionLaserTrials = self.params['laserTrialsFraction'].get_value()
         laserTrial = np.random.rand(1)[0]<fractionLaserTrials
