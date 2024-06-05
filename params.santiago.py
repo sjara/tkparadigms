@@ -1,7 +1,7 @@
 
 wifi000 = {'subject':'test000', 'experimenter':'santiago', 
-           'minFreq':3000, 'maxFreq':3200, 'numTones':3, 
-           'stimType':'ToneTrain', 'stimDur':1,
+           'minFreq':2000, 'maxFreq':3000, 'numTones':2, 
+           'stimType':'ToneTrain', 'stimDur':0.1,
            'isiMean':2, 'isiHalfRange':0,
            'minInt':70, 'maxInt':70}
 

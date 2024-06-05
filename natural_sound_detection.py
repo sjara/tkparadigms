@@ -89,7 +89,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                         value=0,group='Choice parameters')
         choiceParams = self.params.layout_group('Choice parameters')
 
-        self.params['delayToTargetMean'] = paramgui.NumericParam('Mean delay to target',value=2,
+        self.params['delayToTargetMean'] = paramgui.NumericParam('Mean delay to target',value=3.5,
                                                         units='s',group='Timing parameters')
         self.params['delayToTargetHalfRange'] = paramgui.NumericParam('+/-',value=0.5,
                                                         units='s',group='Timing parameters')
