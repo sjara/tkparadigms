@@ -23,6 +23,8 @@ LONGTIME = 100
 SOUND_DIR = rigsettings.NATURAL_SOUNDS_PATH
 ALL_SOUND_FILE_PATHS = sorted(glob.glob(os.path.join(SOUND_DIR,'*.wav')))
 ALL_SOUND_FILE_NAMES = [os.path.basename(sfile) for sfile in ALL_SOUND_FILE_PATHS]
+SINGLE_INSTANCE_ID = 0  # Which instance to use when onePerCateg
+CATEGORY_SUBSET = [1, 3] # Categories to use when threePerTwoCateg (Crickets, Bubbling) 
 
 '''
 SOUND_FILENAME_FORMAT = 'syllable_{0}x_vot{1:03.0f}_ft{2:03.0f}.wav'  # From speechsynth.py
@@ -168,15 +170,10 @@ class Paradigm(templates.Paradigm2AFC):
                                                             units='',group='Photostimulation parameters')
         photostimParams = self.params.layout_group('Photostimulation parameters')
         
-        '''
-        self.params['targetVOTpercent'] = paramgui.NumericParam('Target VOT percent', value=0, decimals=0,
-                                                                units='percentage', enabled=False,
-                                                                group='Sound parameters')
-        self.params['targetFTpercent'] = paramgui.NumericParam('Target FT percent', value=0, decimals=0,
-                                                                units='percentage', enabled=False,
-                                                                group='Sound parameters')
-        '''
-        self.params['soundFilename'] = paramgui.StringParam('Sounds file', value='',
+        self.params['soundsSubset'] = paramgui.MenuParam('Sounds subset',
+                                                         ['all','onePerCateg','twoPerTwoCateg'],
+                                                         value=0, enabled=True, group='Sound parameters')
+        self.params['soundFilename'] = paramgui.StringParam('Sound file', value='',
                                                             enabled=True, group='Sound parameters')
         self.params['soundID'] = paramgui.NumericParam('Sound ID', value=0, decimals=0,
                                                                 units='', enabled=False,
@@ -455,18 +452,47 @@ class Paradigm(templates.Paradigm2AFC):
         filename = SOUND_FILENAME_FORMAT.format(self.freqFactor, VOTpc, FTpc)
         soundFolder = self.params['soundsFolder'].get_value()
         soundKey = os.path.join(soundFolder, filename)
+
+ALL_SOUND_FILE_PATHS = sorted(glob.glob(os.path.join(SOUND_DIR,'*.wav')))
+ALL_SOUND_FILE_NAMES = [os.path.basename(sfile) for sfile in ALL_SOUND_FILE_PATHS]
+SINGLE_INSTANCE_ID = 0  # Which instance to use when onePerCateg
+CATEGORY_SUBSET = [1, 3] # Categories to use when threePerTwoCateg (Crickets, Bubbling) 
+
         '''
 
-        nSounds = len(ALL_SOUND_FILE_PATHS)
-        #nSounds = 4   ######### DEBUG ##########
+        # -- Select sounds according to soundsSubset --
+        soundsSubset = self.params['soundsSubset'].get_string()
+        if soundsSubset=='all':
+            #soundsList = ALL_SOUND_FILE_NAMES
+            soundsIDlist = np.arange(len(ALL_SOUND_FILE_NAMES))
+        elif soundsSubset=='onePerCateg':
+            # Select only the first instance of each category
+            instanceID = f'{SINGLE_INSTANCE_ID:02}'
+            #soundsList = [x for x in ALL_SOUND_FILE_NAMES if x.endswith(f'{instanceID}.wav')]
+            soundsIDlist = [ind for ind,x in enumerate(ALL_SOUND_FILE_NAMES)
+                            if x.endswith(f'{instanceID}.wav')]
+        elif soundsSubset=='twoPerTwoCateg':
+            # Select only the first two instances of two selected categories
+            categIDs = [f'{categ:03}' for categ in CATEGORY_SUBSET]
+            #soundsList = [x for x in ALL_SOUND_FILE_NAMES
+            #              if (x.startswith(categIDs[0]) or x.startswith(categIDs[1]))
+            #              and x.endswith(('_00.wav', '_01.wav'))]
+            soundsIDlist = [ind for ind,x in enumerate(ALL_SOUND_FILE_NAMES)
+                            if (x.startswith(categIDs[0]) or x.startswith(categIDs[1]))
+                            and x.endswith(('_00.wav', '_01.wav'))]
+
+        nSounds = len(soundsIDlist)
+       
         # -- Present all sounds before repeating a specific sound --
         trialIndexInSet = nextTrial%nSounds
         if trialIndexInSet==0:
-            self.soundOrder = np.random.permutation(np.arange(nSounds))
+            #self.soundOrder = np.random.permutation(np.arange(nSounds))
+            self.soundOrder = np.random.permutation(soundsIDlist)
             print(self.soundOrder)
         soundID = self.soundOrder[trialIndexInSet]
         
         soundFilepath = ALL_SOUND_FILE_PATHS[soundID]
+        #soundFilepath = os.path.join(SOUND_DIR, soundsList[soundID])
         self.params['soundID'].set_value(soundID)
         self.params['soundFilename'].set_value(os.path.basename(soundFilepath))
         self.currentSoundID = 1 #self.targetSoundID[soundKey]
