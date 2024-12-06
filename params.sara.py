@@ -19,4 +19,4 @@ amDiscrimBiasCorr = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'an
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':70,
                      'targetIntensityMode':'randMinus20',}
 
-test000 = {'subject':'sole030', **amDiscrimStage0}
+test000 = {'subject':'test000', **amDiscrimStage0}
