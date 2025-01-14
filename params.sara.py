@@ -19,12 +19,12 @@ amDiscrimBiasCorr = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'an
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
                      'targetIntensityMode':'fixed',}
 
-sole048 = {'subject':'sole048', **amDiscrimStage0}
-sole049 = {'subject':'sole049', **amDiscrimStage0}
-sole050 = {'subject':'sole050', **amDiscrimStage0}
-sole051 = {'subject':'sole051', **amDiscrimStage0}
-sole052 = {'subject':'sole052', **amDiscrimStage0}
-sole053 = {'subject':'sole053', **amDiscrimStage0}
+sole048 = {'subject':'sole048', **amDiscrimStage1}
+sole049 = {'subject':'sole049', **amDiscrimStage1}
+sole050 = {'subject':'sole050', **amDiscrimStage1}
+sole051 = {'subject':'sole051', **amDiscrimStage1}
+sole052 = {'subject':'sole052', **amDiscrimStage1}
+sole053 = {'subject':'sole053', **amDiscrimStage1}
 sole054 = {'subject':'sole054', **amDiscrimStage0}
-sole055 = {'subject':'sole055', **amDiscrimStage0}
+sole055 = {'subject':'sole055', **amDiscrimStage1}
 sole056 = {'subject':'sole056', **amDiscrimStage0}
