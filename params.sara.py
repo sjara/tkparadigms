@@ -25,6 +25,6 @@ sole050 = {'subject':'sole050', **amDiscrimStage1}
 sole051 = {'subject':'sole051', **amDiscrimStage2}
 sole052 = {'subject':'sole052', **amDiscrimStage2}
 sole053 = {'subject':'sole053', **amDiscrimStage2}
-sole054 = {'subject':'sole054', **amDiscrimStage2}
+sole054 = {'subject':'sole054', **amDiscrimStage3}
 sole055 = {'subject':'sole055', **amDiscrimStage2}
 sole056 = {'subject':'sole056', **amDiscrimStage2}
