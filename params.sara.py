@@ -19,7 +19,7 @@ amDiscrimBiasCorr = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'an
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
                      'targetIntensityMode':'fixed',}
 
-sole048 = {'subject':'sole048', **amDiscrimStageBiasCorr}
+sole048 = {'subject':'sole048', **amDiscrimBiasCorr}
 sole049 = {'subject':'sole049', **amDiscrimStage3}
 sole050 = {'subject':'sole050', **amDiscrimStage1}
 sole051 = {'subject':'sole051', **amDiscrimStage2}
