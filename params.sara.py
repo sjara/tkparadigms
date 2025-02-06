@@ -20,11 +20,11 @@ amDiscrimBiasCorr = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'an
                      'targetIntensityMode':'fixed',}
 
 sole048 = {'subject':'sole048', **amDiscrimStage3}
-sole049 = {'subject':'sole049', **amDiscrimStage3}
+sole049 = {'subject':'sole049', **amDiscrimBiasCorr}
 sole050 = {'subject':'sole050', **amDiscrimStage3}
 sole051 = {'subject':'sole051', **amDiscrimBiasCorr}
-sole052 = {'subject':'sole052', **amDiscrimStage3}
-sole053 = {'subject':'sole053', **amDiscrimBiasCorr}
+sole052 = {'subject':'sole052', **amDiscrimBiasCorr}
+sole053 = {'subject':'sole053', **amDiscrimStage3}
 sole054 = {'subject':'sole054', **amDiscrimBiasCorr}
-sole055 = {'subject':'sole055', **amDiscrimBiasCorr}
-sole056 = {'subject':'sole056', **amDiscrimBiasCorr}
+sole055 = {'subject':'sole055', **amDiscrimStage3}
+sole056 = {'subject':'sole056', **amDiscrimStage3}
