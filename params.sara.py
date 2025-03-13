@@ -27,10 +27,10 @@ sole052 = {'subject':'sole052', **amDiscrimStage3}
 sole053 = {'subject':'sole053', **amDiscrimStage3}
 sole054 = {'subject':'sole054', **amDiscrimStage3}
 sole055 = {'subject':'sole055', **amDiscrimStage3}
-sole056 = {'subject':'sole056', **amDiscrimStage3}
+sole056 = {'subject':'sole056', **amDiscrimBiasCorr}
 sole057 = {'subject':'sole057', **amDiscrimStage3}
 sole058 = {'subject':'sole058', **amDiscrimStage3}
-sole059 = {'subject':'sole059', **amDiscrimBiasCorr}
+sole059 = {'subject':'sole059', **amDiscrimStage3}
 sole060 = {'subject':'sole060', **amDiscrimStage3}
 sole061 = {'subject':'sole061', **amDiscrimStage3}
 
