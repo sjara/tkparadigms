@@ -23,14 +23,14 @@ sole048 = {'subject':'sole048', **amDiscrimStage4}
 sole049 = {'subject':'sole049', **amDiscrimStage3}
 sole050 = {'subject':'sole050', **amDiscrimStage4}
 sole051 = {'subject':'sole051', **amDiscrimStage4}
-sole052 = {'subject':'sole052', **amDiscrimStage3}
+sole052 = {'subject':'sole052', **amDiscrimBiasCorr}
 sole053 = {'subject':'sole053', **amDiscrimStage3}
 sole054 = {'subject':'sole054', **amDiscrimStage3}
 sole055 = {'subject':'sole055', **amDiscrimStage3}
 sole056 = {'subject':'sole056', **amDiscrimStage3}
 sole057 = {'subject':'sole057', **amDiscrimStage3}
 sole058 = {'subject':'sole058', **amDiscrimStage3}
-sole059 = {'subject':'sole059', **amDiscrimBiasCorr}
+sole059 = {'subject':'sole059', **amDiscrimStage3}
 sole060 = {'subject':'sole060', **amDiscrimStage3}
-sole061 = {'subject':'sole061', **amDiscrimStage3}
+sole061 = {'subject':'sole061', **amDiscrimBiasCorr}
 
