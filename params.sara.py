@@ -18,10 +18,18 @@ amDiscrimStage4 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'psyc
 amDiscrimBiasCorr = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'antibiasMode':'repeat_mistake','delayToTargetMean':0.2,
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
                      'targetIntensityMode':'fixed',}
+freqDiscrimStage3 = {{'experimenter':'sara','soundTypeMode': 'tones', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
+                     'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
+                     'targetIntensityMode':'fixed',}
+freqDiscrimBiasCorr = {'experimenter':'sara','soundTypeMode': 'tones', 'outcomeMode':'only_if_correct', 'antibiasMode':'repeat_mistake','delayToTargetMean':0.2,
+                     'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
+                     'targetIntensityMode':'fixed',}
+freqDiscrimStage4 = {'experimenter':'sara', 'soundTypeMode': 'tones', 'outcomeMode':'only_if_correct', 'psycurveMode':'uniform', 
+                   'psycurveNsteps':'6', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60}
 
-sole048 = {'subject':'sole048', **amDiscrimStage4}
+sole048 = {'subject':'sole048', **freqDiscrimStage3}
 sole049 = {'subject':'sole049', **amDiscrimStage4}
-sole050 = {'subject':'sole050', **amDiscrimStage4}
+sole050 = {'subject':'sole050', **freqDiscrimStage3}
 sole051 = {'subject':'sole051', **amDiscrimStage4}
 sole052 = {'subject':'sole052', **amDiscrimStage3}
 sole053 = {'subject':'sole053', **amDiscrimStage4}
