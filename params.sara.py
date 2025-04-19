@@ -29,7 +29,7 @@ freqDiscrimStage4 = {'experimenter':'sara', 'soundTypeMode': 'tones', 'outcomeMo
 
 sole048 = {'subject':'sole048', **freqDiscrimStage3}
 sole049 = {'subject':'sole049', **amDiscrimStage4}
-sole050 = {'subject':'sole050', **freqDiscrimStage4}
+sole050 = {'subject':'sole050', **freqDiscrimStage3}
 sole051 = {'subject':'sole051', **amDiscrimStage4}
 sole052 = {'subject':'sole052', **amDiscrimStage3}
 sole053 = {'subject':'sole053', **amDiscrimStage4}
