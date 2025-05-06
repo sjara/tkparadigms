@@ -79,12 +79,12 @@ class Paradigm(templates.Paradigm2AFC):
                                                         value=0,group='Choice parameters')
         choiceParams = self.params.layout_group('Choice parameters')
 
-        self.params['targetDuration'] = paramgui.NumericParam('Target duration',value=1.0,
+        self.params['targetDuration'] = paramgui.NumericParam('Target duration',value=0.5,
                                                               decimals=3, enabled=True,
                                                               units='s',group='Timing parameters')
-        self.params['delayToTargetMean'] = paramgui.NumericParam('Mean delay to target',value=1.0,
+        self.params['delayToTargetMean'] = paramgui.NumericParam('Mean delay to target',value=2.0,
                                                         units='s',group='Timing parameters')
-        self.params['delayToTargetHalfRange'] = paramgui.NumericParam('+/-',value=0.2,
+        self.params['delayToTargetHalfRange'] = paramgui.NumericParam('+/-',value=0.5,
                                                         units='s',group='Timing parameters')
         self.params['delayToTarget'] = paramgui.NumericParam('Delay to target',value=0.3,
                                                         units='s',group='Timing parameters',
@@ -168,12 +168,12 @@ class Paradigm(templates.Paradigm2AFC):
                                                                 units='', enabled=False,
                                                                 group='Sound parameters')
         self.params['targetLocationMode'] = paramgui.MenuParam('Location mode',
-                                                                ['LeftRightMiddle'],
+                                                                ['L2R3_L2R1_L1R2', 'LeftRightMiddle'],
                                                                 value=0,group='Sound parameters')
         # This intensity corresponds to the intensity of each component of the chord
         self.params['targetMaxIntensity'] = paramgui.NumericParam('Max intensity',value=70,
                                                                   units='dB-SPL',group='Sound parameters')
-        self.params['targetMinIntensity'] = paramgui.NumericParam('Min intensity',value=50,
+        self.params['targetMinIntensity'] = paramgui.NumericParam('Min intensity',value=60,
                                                                   units='dB-SPL',group='Sound parameters')
         self.params['targetIntensityL'] = paramgui.NumericParam('Intensity L',value=0.0,units='dB-SPL',
                                                                 enabled=False,group='Sound parameters')
@@ -190,7 +190,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                                     units='[0-1]',enabled=False, decimals=4,
                                                                     group='Sound parameters')
         self.params['soundLocation'] = paramgui.MenuParam('Sound location',
-                                                          ['middle', 'left', 'right'],
+                                                          ['middle', 'left', 'right', 'L2R3', 'L2R1', 'L1R2'],
                                                           value=0, enabled=False, group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
@@ -370,6 +370,7 @@ class Paradigm(templates.Paradigm2AFC):
         soundLocationMode = self.params['targetLocationMode'].get_string()
         maxIntensity = self.params['targetMaxIntensity'].get_value()
         minIntensity = self.params['targetMinIntensity'].get_value()
+        midIntensity = (maxIntensity + minIntensity) / 2
         if soundLocationMode == 'LeftRightMiddle':
             trialTypes = ['left', 'right', 'middle']
             trialTypeInd = np.random.randint(len(trialTypes))
@@ -382,6 +383,21 @@ class Paradigm(templates.Paradigm2AFC):
             elif trialTypes[trialTypeInd] == 'middle':
                 soundIntensity = [maxIntensity, maxIntensity]
                 soundLocation = 'middle'
+            else:
+                raise ValueError('Value of soundLocation is not appropriate')
+            self.params['soundLocation'].set_string(soundLocation)
+        if soundLocationMode == 'L2R3_L2R1_L1R2':
+            trialTypes = ['L2R3', 'L2R1', 'L1R2']
+            trialTypeInd = np.random.randint(len(trialTypes))
+            if trialTypes[trialTypeInd] == 'L2R3':
+                soundIntensity = [midIntensity, maxIntensity]
+                soundLocation = 'L2R3'
+            elif trialTypes[trialTypeInd] == 'L2R1':
+                soundIntensity = [midIntensity, minIntensity]
+                soundLocation = 'L2R1'
+            elif trialTypes[trialTypeInd] == 'L1R2':
+                soundIntensity = [minIntensity, midIntensity]
+                soundLocation = 'L1R2'
             else:
                 raise ValueError('Value of soundLocation is not appropriate')
             self.params['soundLocation'].set_string(soundLocation)
