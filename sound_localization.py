@@ -168,7 +168,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                                 units='', enabled=False,
                                                                 group='Sound parameters')
         self.params['targetLocationMode'] = paramgui.MenuParam('Location mode',
-                                                                ['L2R3_L2R1_L1R2', 'LeftRightMiddle'],
+                                                                ['L2R3_L2R1_L1R2', 'LeftRightMiddle','L2R3_L2R1_L1R2_L3R2'],
                                                                 value=0,group='Sound parameters')
         # This intensity corresponds to the intensity of each component of the chord
         self.params['targetMaxIntensity'] = paramgui.NumericParam('Max intensity',value=70,
@@ -190,7 +190,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                                     units='[0-1]',enabled=False, decimals=4,
                                                                     group='Sound parameters')
         self.params['soundLocation'] = paramgui.MenuParam('Sound location',
-                                                          ['middle', 'left', 'right', 'L2R3', 'L2R1', 'L1R2'],
+                                                          ['middle', 'left', 'right', 'L2R3', 'L2R1', 'L1R2','L3R2'],
                                                           value=0, enabled=False, group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
@@ -397,6 +397,24 @@ class Paradigm(templates.Paradigm2AFC):
                 soundLocation = 'L2R1'
             elif trialTypes[trialTypeInd] == 'L1R2':
                 soundIntensity = [minIntensity, midIntensity]
+                soundLocation = 'L1R2'
+            else:
+                raise ValueError('Value of soundLocation is not appropriate')
+            self.params['soundLocation'].set_string(soundLocation)
+        if soundLocationMode == 'L2R3_L2R1_L1R2_L3R2':
+            trialTypes = ['L2R3', 'L2R1', 'L1R2','L3R2']
+            trialTypeInd = np.random.randint(len(trialTypes))
+            if trialTypes[trialTypeInd] == 'L2R3':
+                soundIntensity = [midIntensity, maxIntensity]
+                soundLocation = 'L2R3'
+            elif trialTypes[trialTypeInd] == 'L2R1':
+                soundIntensity = [midIntensity, minIntensity]
+                soundLocation = 'L2R1'
+            elif trialTypes[trialTypeInd] == 'L1R2':
+                soundIntensity = [minIntensity, midIntensity]
+                soundLocation = 'L1R2'
+            elif trialTypes[trialTypeInd] == 'L3R2':
+                soundIntensity = [maxIntensity, midIntensity]
                 soundLocation = 'L1R2'
             else:
                 raise ValueError('Value of soundLocation is not appropriate')
