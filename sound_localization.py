@@ -415,7 +415,7 @@ class Paradigm(templates.Paradigm2AFC):
                 soundLocation = 'L1R2'
             elif trialTypes[trialTypeInd] == 'L3R2':
                 soundIntensity = [maxIntensity, midIntensity]
-                soundLocation = 'L1R2'
+                soundLocation = 'L3R2'
             else:
                 raise ValueError('Value of soundLocation is not appropriate')
             self.params['soundLocation'].set_string(soundLocation)
