@@ -43,5 +43,5 @@ sole060 = {'subject':'sole060', **amDiscrimStage3}
 sole061 = {'subject':'sole061', **amDiscrimStage4}
 sole062 = {'subject':'sole062', **amDiscrimStage3}
 sole064 = {'subject':'sole064', **amDiscrimStage3}
-sole065 = {'subject':'sole065', **amDiscrimBiasCorr}
-sole067 = {'subject':'sole067', **amDiscrimBiasCorr}
+sole065 = {'subject':'sole065', **amDiscrimStage3}
+sole067 = {'subject':'sole067', **amDiscrimStage3}
