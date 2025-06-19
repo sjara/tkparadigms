@@ -191,6 +191,7 @@ class Paradigm(QtWidgets.QMainWindow):
         dimsOuter = (self.params['xOuterSize'].get_value(),self.params['yOuterSize'].get_value())
         dimsInner = (self.params['xInnerSize'].get_value(),self.params['yInnerSize'].get_value())
         dimsTotal = (max(dimsOuter[0],dimsOuter[0]*dimsInner[0]),max(dimsOuter[1],dimsOuter[1]*dimsInner[1]))
+        print(dimsInner,dimsOuter,dimsTotal)
         img = np.zeros(dimsTotal, dtype=float)
         
         if dimsOuter == dimsTotal:
@@ -201,16 +202,24 @@ class Paradigm(QtWidgets.QMainWindow):
         else:
             xInnerInd = self.params['xInnerInd'].get_value()
             yInnerInd = self.params['yInnerInd'].get_value()
+
+            if xInnerInd >= dimsOuter[0]:
+                xInnerInd = 0
+                self.params['xInnerInd'].set_value(xInnerInd)
+            
+            if yInnerInd >= dimsOuter[1]: 
+                yInnerInd = 0
+                self.params['yInnerInd'].set_value(yInnerInd)
+                
             currentI = (trialVal%(dimsInner[0]*dimsInner[1]))//dimsInner[1]
             currentJ = trialVal%dimsInner[1]
 
             imStart = (xInnerInd*dimsInner[0],yInnerInd*dimsInner[1])
-            imEnd = (xInnerInd*dimsInner[0] + dimsInner[0],yInnerInd*dimsInner[1] + dimsInner[1])
             innerImg = np.zeros(dimsInner,dtype=float)
             
             innerImg[currentI,currentJ] = intensity
 
-            img[imStart[0]:imEnd[0],imStart[1]:imEnd[1]] = innerImg
+            img[imStart[0]:imStart[0]+innerImg.shape[0],imStart[1]:imStart[1]+innerImg.shape[1]] = innerImg
 
         self.params['currentI'].set_value(currentI)
         self.params['currentJ'].set_value(currentJ)
