@@ -45,5 +45,5 @@ optoNaturalInstances = {'subject':'poni000','experimenter':'ramzy', 'outcomeMode
 
 poniDisplayTuning = {'subject':'poni000','experimenter':'ramzy', 'interTrialInterval': 1.0, 'soundFrequency':1000,
                      'soundDuration':0.1, 'soundIntensity':60, 'soundAmplitude':0.0, 'lightIntensity':100,
-                     'xOuterSize':4, 'yOuterSize':4, 'xInnerSize':0, 'yInnerSize':0, 'xInnerInd':0, 
-                     'yInnerInd':0, 'randomMode':'Random'}
+                     'xOuterSize':4, 'yOuterSize':4, 'xInnerSize':3, 'yInnerSize':1, 'xInnerInd':1, 
+                     'yInnerInd':2, 'randomMode':'Random'}

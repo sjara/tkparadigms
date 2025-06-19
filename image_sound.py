@@ -21,7 +21,7 @@ class Paradigm(QtWidgets.QMainWindow):
     def __init__(self, parent=None, paramfile=None, paramdictname=None):
         super().__init__(parent)
 
-        self.name = 'timedimagesound'
+        self.name = 'image_sound'
 
         smServerType = rigsettings.STATE_MACHINE_TYPE
 
@@ -90,7 +90,9 @@ class Paradigm(QtWidgets.QMainWindow):
         
         imageParams = self.params.layout_group('Image parameters')
         
-
+        # -- Load parameters from a file --
+        self.params.from_file(paramfile,paramdictname)
+        
         # -- Create dispatcher --
         self.dispatcher = dispatcher.Dispatcher(serverType=smServerType,interval=0.1)
 
@@ -181,7 +183,10 @@ class Paradigm(QtWidgets.QMainWindow):
         self.soundClient.set_sound(self.soundID, s1)
 
     def prepare_image(self, nextTrial=0):
-        
+        random.seed()
+        trialVal = int(random.random()*1000) if self.params['randomMode'].get_string() == 'Random' else 0
+        trialVal += nextTrial
+
         intensity = self.params['lightIntensity'].get_value()/100
         dimsOuter = (self.params['xOuterSize'].get_value(),self.params['yOuterSize'].get_value())
         dimsInner = (self.params['xInnerSize'].get_value(),self.params['yInnerSize'].get_value())
@@ -189,15 +194,15 @@ class Paradigm(QtWidgets.QMainWindow):
         img = np.zeros(dimsTotal, dtype=float)
         
         if dimsOuter == dimsTotal:
-            currentI = (nextTrial%(dimsTotal[0]*dimsTotal[1]))//dimsTotal[1]
-            currentJ = nextTrial%dimsTotal[1]
+            currentI = (trialVal%(dimsTotal[0]*dimsTotal[1]))//dimsTotal[1]
+            currentJ = trialVal%dimsTotal[1]
             img[currentI, currentJ] = intensity
 
         else:
             xInnerInd = self.params['xInnerInd'].get_value()
             yInnerInd = self.params['yInnerInd'].get_value()
-            currentI = (nextTrial%(dimsInner[0]*dimsInner[1]))//dimsInner[1]
-            currentJ = nextTrial%dimsInner[1]
+            currentI = (trialVal%(dimsInner[0]*dimsInner[1]))//dimsInner[1]
+            currentJ = trialVal%dimsInner[1]
 
             imStart = (xInnerInd*dimsInner[0],yInnerInd*dimsInner[1])
             imEnd = (xInnerInd*dimsInner[0] + dimsInner[0],yInnerInd*dimsInner[1] + dimsInner[1])
