@@ -14,7 +14,6 @@ from taskontrol.plugins import manualcontrol
 from taskontrol.plugins import imagesoundclient
 from taskontrol.plugins import speakercalibration
 import time
-import random
 
 
 class Paradigm(QtWidgets.QMainWindow):
@@ -65,6 +64,13 @@ class Paradigm(QtWidgets.QMainWindow):
         # -- Image Params --
         self.params['lightIntensity'] = paramgui.NumericParam('Intensity of light (%)',value=100,
                                                               decimals=2,units='percent',group='Image parameters')
+        self.params['imageTrialsFraction'] = paramgui.NumericParam('Fraction of trials with image',
+                                                                   value=1.0,
+                                                                   group='Image parameters')
+        self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
+                                                         ['Ordered','Random'],
+                                                         value=1,group='Image parameters')
+        
         self.params['xOuterSize'] = paramgui.NumericParam('Size of image array (x)', value = 4,
                                                        decimals=0, units='pixels',group='Image parameters')
         self.params['yOuterSize'] = paramgui.NumericParam('Size of image array (y)', value = 4,
@@ -84,9 +90,11 @@ class Paradigm(QtWidgets.QMainWindow):
                                                        decimals=0,units='index',group='Image parameters')
         self.params['currentJ'] = paramgui.NumericParam('Current j-index', value = 0,
                                                        decimals=0,units='index',group='Image parameters')
-        self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
-                                                         ['Ordered','Random'],
-                                                         value=1,group='Image parameters')
+        self.params['imageTrial'] = paramgui.NumericParam('Image Trial?',value=0,
+                                                           enabled=False,
+                                                           group='Image parameters',
+                                                           decimals=0)
+        
         
         imageParams = self.params.layout_group('Image parameters')
         
@@ -183,47 +191,48 @@ class Paradigm(QtWidgets.QMainWindow):
         self.soundClient.set_sound(self.soundID, s1)
 
     def prepare_image(self, nextTrial=0):
-        random.seed()
-        trialVal = int(random.random()*1000) if self.params['randomMode'].get_string() == 'Random' else 0
+        trialVal = int(np.random.rand(1)[0]*1000) if self.params['randomMode'].get_string() == 'Random' else 0
         trialVal += nextTrial
 
         intensity = self.params['lightIntensity'].get_value()/100
         dimsOuter = (self.params['xOuterSize'].get_value(),self.params['yOuterSize'].get_value())
         dimsInner = (self.params['xInnerSize'].get_value(),self.params['yInnerSize'].get_value())
         dimsTotal = (max(dimsOuter[0],dimsOuter[0]*dimsInner[0]),max(dimsOuter[1],dimsOuter[1]*dimsInner[1]))
-        print(dimsInner,dimsOuter,dimsTotal)
         img = np.zeros(dimsTotal, dtype=float)
-        
-        if dimsOuter == dimsTotal:
-            currentI = (trialVal%(dimsTotal[0]*dimsTotal[1]))//dimsTotal[1]
-            currentJ = trialVal%dimsTotal[1]
-            img[currentI, currentJ] = intensity
 
-        else:
-            xInnerInd = self.params['xInnerInd'].get_value()
-            yInnerInd = self.params['yInnerInd'].get_value()
+        if self.params['imageTrial'].get_value():
+            if dimsOuter == dimsTotal:
+                currentI = (trialVal%(dimsTotal[0]*dimsTotal[1]))//dimsTotal[1]
+                currentJ = trialVal%dimsTotal[1]
+                img[currentI, currentJ] = intensity
 
-            if xInnerInd >= dimsOuter[0]:
-                xInnerInd = 0
-                self.params['xInnerInd'].set_value(xInnerInd)
-            
-            if yInnerInd >= dimsOuter[1]: 
-                yInnerInd = 0
-                self.params['yInnerInd'].set_value(yInnerInd)
+            else:
+                xInnerInd = self.params['xInnerInd'].get_value()
+                yInnerInd = self.params['yInnerInd'].get_value()
+
+                if xInnerInd >= dimsOuter[0]:
+                    xInnerInd = 0
+                    self.params['xInnerInd'].set_value(xInnerInd)
                 
-            currentI = (trialVal%(dimsInner[0]*dimsInner[1]))//dimsInner[1]
-            currentJ = trialVal%dimsInner[1]
+                if yInnerInd >= dimsOuter[1]: 
+                    yInnerInd = 0
+                    self.params['yInnerInd'].set_value(yInnerInd)
+                    
+                currentI = (trialVal%(dimsInner[0]*dimsInner[1]))//dimsInner[1]
+                currentJ = trialVal%dimsInner[1]
 
-            imStart = (xInnerInd*dimsInner[0],yInnerInd*dimsInner[1])
-            innerImg = np.zeros(dimsInner,dtype=float)
-            
-            innerImg[currentI,currentJ] = intensity
+                imStart = (xInnerInd*dimsInner[0],yInnerInd*dimsInner[1])
+                innerImg = np.zeros(dimsInner,dtype=float)
+                
+                innerImg[currentI,currentJ] = intensity
 
-            img[imStart[0]:imStart[0]+innerImg.shape[0],imStart[1]:imStart[1]+innerImg.shape[1]] = innerImg
+                img[imStart[0]:imStart[0]+innerImg.shape[0],imStart[1]:imStart[1]+innerImg.shape[1]] = innerImg
 
-        self.params['currentI'].set_value(currentI)
-        self.params['currentJ'].set_value(currentJ)
+            self.params['currentI'].set_value(currentI)
+            self.params['currentJ'].set_value(currentJ)
+
         self.soundClient.set_image(self.imageID, img)
+        return img
         
     def prepare_next_trial(self, nextTrial):
         if nextTrial>0:
@@ -233,6 +242,9 @@ class Paradigm(QtWidgets.QMainWindow):
         self.prepare_sound()
 
         # -- Prepare the next image to show --
+        fractionImageTrials = self.params['imageTrialsFraction'].get_value()
+        imageTrial = np.random.rand(1)[0]<fractionImageTrials
+        self.params['imageTrial'].set_value(int(imageTrial))
         self.prepare_image(nextTrial)
         
         self.sm.reset_transitions()
