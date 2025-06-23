@@ -191,25 +191,42 @@ class Paradigm(QtWidgets.QMainWindow):
         self.soundClient.set_sound(self.soundID, s1)
 
     def prepare_image(self, nextTrial=0):
+
+        # randomize if needed
         trialVal = int(np.random.rand(1)[0]*1000) if self.params['randomMode'].get_string() == 'Random' else 0
         trialVal += nextTrial
 
+        # get params
         intensity = self.params['lightIntensity'].get_value()/100
-        dimsOuter = (self.params['xOuterSize'].get_value(),self.params['yOuterSize'].get_value())
-        dimsInner = (self.params['xInnerSize'].get_value(),self.params['yInnerSize'].get_value())
-        dimsTotal = (max(dimsOuter[0],dimsOuter[0]*dimsInner[0]),max(dimsOuter[1],dimsOuter[1]*dimsInner[1]))
+
+        # this is the shape of the broader screen tiling
+        dimsOuter = (self.params['xOuterSize'].get_value(),
+                     self.params['yOuterSize'].get_value())
+        
+        # this is the shape of the subregion (if using a single tile from the broader screen)
+        dimsInner = (self.params['xInnerSize'].get_value(),
+                     self.params['yInnerSize'].get_value())
+        
+        # this is the shape of the entire array
+        dimsTotal = (max(dimsOuter[0],dimsOuter[0]*dimsInner[0]),
+                     max(dimsOuter[1],dimsOuter[1]*dimsInner[1]))
         img = np.zeros(dimsTotal, dtype=float)
 
         if self.params['imageTrial'].get_value():
-            if dimsOuter == dimsTotal:
+            # check if using broader screen tiling, or just a subregion
+
+            if dimsOuter == dimsTotal: # i/j indices iterating over broader screen tiling
                 currentI = (trialVal%(dimsTotal[0]*dimsTotal[1]))//dimsTotal[1]
                 currentJ = trialVal%dimsTotal[1]
                 img[currentI, currentJ] = intensity
 
-            else:
+            else: # i/j indices iterating over a subregion of the screen
+
+                # get indices of subregion
                 xInnerInd = self.params['xInnerInd'].get_value()
                 yInnerInd = self.params['yInnerInd'].get_value()
 
+                # error handling for if subregion indices are out of bounds
                 if xInnerInd >= dimsOuter[0]:
                     xInnerInd = 0
                     self.params['xInnerInd'].set_value(xInnerInd)
@@ -217,19 +234,24 @@ class Paradigm(QtWidgets.QMainWindow):
                 if yInnerInd >= dimsOuter[1]: 
                     yInnerInd = 0
                     self.params['yInnerInd'].set_value(yInnerInd)
-                    
+                
+                # get i/j indices for current trial
                 currentI = (trialVal%(dimsInner[0]*dimsInner[1]))//dimsInner[1]
                 currentJ = trialVal%dimsInner[1]
 
+                # convert to indices within the full screen array (dimsOuter)
                 imStart = (xInnerInd*dimsInner[0],yInnerInd*dimsInner[1])
+
+                # make image in terms of subregion indices
                 innerImg = np.zeros(dimsInner,dtype=float)
-                
                 innerImg[currentI,currentJ] = intensity
 
-                img[imStart[0]:imStart[0]+innerImg.shape[0],imStart[1]:imStart[1]+innerImg.shape[1]] = innerImg
+                # paste innerImg into full-size img
+                img[imStart[0]:imStart[0]+innerImg.shape[0],
+                    imStart[1]:imStart[1]+innerImg.shape[1]] = innerImg
 
-            self.params['currentI'].set_value(currentI)
-            self.params['currentJ'].set_value(currentJ)
+        self.params['currentI'].set_value(currentI)
+        self.params['currentJ'].set_value(currentJ)
 
         self.soundClient.set_image(self.imageID, img)
         return img
