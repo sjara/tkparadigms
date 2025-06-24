@@ -1,6 +1,7 @@
 '''
 Present a range of stimuli (either pure tones or AM noise) logarithmically space
 and at different intensities.
+
 '''
 
 import numpy as np
@@ -95,7 +96,7 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['isi'] = paramgui.NumericParam('Interstimulus interval (s)',
                                                    value=2, enabled=False, decimals=3,
                                                    group='Stim parameters')
-        self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
+        self.params['randomMode'] = paramgui.MenuParam('Sound Presentation Mode',
                                                          ['Ordered','Random'],
                                                          value=1,group='Stim parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
@@ -157,28 +158,27 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['imageTrialsFraction'] = paramgui.NumericParam('Fraction of trials with image',
                                                                    value=1.0,
                                                                    group='Image parameters')
-        # self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
-        #                                                  ['Ordered','Random'],
-        #                                                  value=1,group='Image parameters')
-        
-        self.params['xOuterSize'] = paramgui.NumericParam('Size of image array (x)', value = 4,
+        self.params['randomImageMode'] = paramgui.MenuParam('Image Presentation Mode',
+                                                         ['Ordered','Random'],
+                                                         value=1,group='Image parameters')
+        self.params['nColGrid'] = paramgui.NumericParam('Number of columns in full image grid', value = 4,
                                                        decimals=0, units='pixels',group='Image parameters')
-        self.params['yOuterSize'] = paramgui.NumericParam('Size of image array (y)', value = 4,
-                                                       decimals=0, units='pixels',group='Image parameters')
-        
-        self.params['xInnerSize'] = paramgui.NumericParam('Subregion size (x)', value = 0,
-                                                       decimals=0, units='pixels',group='Image parameters')
-        self.params['yInnerSize'] = paramgui.NumericParam('Subregion size (y)', value = 0,
+        self.params['nRowGrid'] = paramgui.NumericParam('Number of rows in full image grid', value = 4,
                                                        decimals=0, units='pixels',group='Image parameters')
         
-        self.params['xInnerInd'] = paramgui.NumericParam('Subregion i-index', value = 0,
+        self.params['nColSub'] = paramgui.NumericParam('Number of columns in subregion grid', value = 0,
                                                        decimals=0, units='pixels',group='Image parameters')
-        self.params['yInnerInd'] = paramgui.NumericParam('Subregion j-index', value = 0,
+        self.params['nRowSub'] = paramgui.NumericParam('Number of rows in subregion grid', value = 0,
                                                        decimals=0, units='pixels',group='Image parameters')
         
-        self.params['currentI'] = paramgui.NumericParam('Current i-index', value = 0,
+        self.params['subGridPosH'] = paramgui.NumericParam('Horizontal position of subregion', value = 0,
+                                                       decimals=0, units='pixels',group='Image parameters')
+        self.params['subGridPosV'] = paramgui.NumericParam('Vertical position of subregion', value = 0,
+                                                       decimals=0, units='pixels',group='Image parameters')
+        
+        self.params['currentStimCol'] = paramgui.NumericParam('Current column #', value = 0,
                                                        decimals=0,units='index',group='Image parameters')
-        self.params['currentJ'] = paramgui.NumericParam('Current j-index', value = 0,
+        self.params['currentStimRow'] = paramgui.NumericParam('Current row #', value = 0,
                                                        decimals=0,units='index',group='Image parameters')
         self.params['imageTrial'] = paramgui.NumericParam('Image Trial?',value=0,
                                                            enabled=False,
@@ -214,6 +214,8 @@ class Paradigm(QtWidgets.QMainWindow):
 
         layoutCol1.addWidget(sessionParams)
         layoutCol1.addStretch()
+        layoutCol1.addStretch()
+        layoutCol1.addWidget(syncParams)
         layoutCol1.addWidget(self.dispatcher.widget)
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.manualControl)
@@ -223,8 +225,6 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1.addWidget(self.clearButton)
 
         layoutCol2.addWidget(stimParams)
-        layoutCol2.addStretch()
-        layoutCol2.addWidget(syncParams)
         layoutCol2.addStretch()
         layoutCol2.addWidget(imageParams)
         # layoutCol3.addWidget(imageParams)
@@ -248,7 +248,9 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Initialize the list of trial parameters --
         self.trialParams = []
+        self.trialImageParams = []
         self.soundParamList = []
+        self.imageParamList = []
 
     def populate_sound_params(self):
 
@@ -286,25 +288,43 @@ class Paradigm(QtWidgets.QMainWindow):
 
         self.soundParamList = productList
 
-    def prepare_image(self, nextTrial=0):
+    def populate_image_params(self):
+        if self.params['nColSub'].get_value():
+            possibleI = list(range(self.params['nRowSub'].get_value()))
+            possibleJ = list(range(self.params['nColSub'].get_value()))
 
-        # randomize if needed
-        # trialVal = int(np.random.rand(1)[0]*1000) if self.params['randomMode'].get_string() == 'Random' else 0
-        # trialVal += nextTrial
-        trialVal = nextTrial
+        else:
+            possibleI = list(range(self.params['nRowGrid'].get_value()))
+            possibleJ = list(range(self.params['nColGrid'].get_value()))
+
+        productList = list(itertools.product(possibleI,possibleJ))
+        # -- If in random presentation mode, shuffle the list of products
+        randomMode = self.params['randomImageMode'].get_string()
+        if randomMode == 'Random':
+            random.shuffle(productList)
+        else:
+            pass
+        
+        self.imageParamList = productList
+
+
+    def prepare_image(self, nextTrial=(0,0)):
+
+        # get tile coordinates
+        currentI,currentJ = nextTrial
 
         # get params
         intensity = self.params['lightIntensity'].get_value()/100
 
         # this is the shape of the broader screen tiling
-        dimsOuter = (self.params['xOuterSize'].get_value(),
-                     self.params['yOuterSize'].get_value())
+        dimsOuter = (self.params['nRowGrid'].get_value(),
+                     self.params['nColGrid'].get_value())
         
         # this is the shape of the subregion (if using a single tile from the broader screen)
-        dimsInner = (self.params['xInnerSize'].get_value(),
-                     self.params['yInnerSize'].get_value())
+        dimsInner = (self.params['nRowSub'].get_value(),
+                     self.params['nColSub'].get_value())
         
-        # this is the shape of the entire array
+        # this is the shape of the entire image array
         dimsTotal = (max(dimsOuter[0],dimsOuter[0]*dimsInner[0]),
                      max(dimsOuter[1],dimsOuter[1]*dimsInner[1]))
         img = np.zeros(dimsTotal, dtype=float)
@@ -313,28 +333,22 @@ class Paradigm(QtWidgets.QMainWindow):
             # check if using broader screen tiling, or just a subregion
 
             if dimsOuter == dimsTotal: # i/j indices iterating over broader screen tiling
-                currentI = (trialVal%(dimsTotal[0]*dimsTotal[1]))//dimsTotal[1]
-                currentJ = trialVal%dimsTotal[1]
                 img[currentI, currentJ] = intensity
 
             else: # i/j indices iterating over a subregion of the screen
 
                 # get indices of subregion
-                xInnerInd = self.params['xInnerInd'].get_value()
-                yInnerInd = self.params['yInnerInd'].get_value()
+                xInnerInd = self.params['subGridPosV'].get_value()
+                yInnerInd = self.params['subGridPosH'].get_value()
 
                 # error handling for if subregion indices are out of bounds
                 if xInnerInd >= dimsOuter[0]:
                     xInnerInd = 0
-                    self.params['xInnerInd'].set_value(xInnerInd)
+                    self.params['subGridPosV'].set_value(xInnerInd)
                 
                 if yInnerInd >= dimsOuter[1]: 
                     yInnerInd = 0
-                    self.params['yInnerInd'].set_value(yInnerInd)
-                
-                # get i/j indices for current trial
-                currentI = (trialVal%(dimsInner[0]*dimsInner[1]))//dimsInner[1]
-                currentJ = trialVal%dimsInner[1]
+                    self.params['subGridPosH'].set_value(yInnerInd)
 
                 # convert to indices within the full screen array (dimsOuter)
                 imStart = (xInnerInd*dimsInner[0],yInnerInd*dimsInner[1])
@@ -347,8 +361,8 @@ class Paradigm(QtWidgets.QMainWindow):
                 img[imStart[0]:imStart[0]+innerImg.shape[0],
                     imStart[1]:imStart[1]+innerImg.shape[1]] = innerImg
 
-            self.params['currentI'].set_value(currentI)
-            self.params['currentJ'].set_value(currentJ)
+            self.params['currentStimRow'].set_value(currentI)
+            self.params['currentStimCol'].set_value(currentJ)
 
             self.soundClient.set_image(self.imageID, img)
         return img
@@ -380,6 +394,13 @@ class Paradigm(QtWidgets.QMainWindow):
         except IndexError:
             self.populate_sound_params()
             self.trialParams = self.soundParamList.pop(0)
+
+        try:
+            self.trialImageParams = self.imageParamList.pop(0)
+        except IndexError:
+            self.populate_image_params()
+            self.trialImageParams = self.imageParamList.pop(0)
+
 
         # -- Prepare the sound using randomly chosen parameters from parameter lists --
         stimType = self.params['stimType'].get_string()
@@ -429,8 +450,8 @@ class Paradigm(QtWidgets.QMainWindow):
         # else:
         stimOutput = stimSync
         # if laserTrial:
-        if imageTrial:
-            stimOutput = stimOutput + laserSync
+        # if imageTrial:
+        #     stimOutput = stimOutput + laserSync
         serialOutput = 1
         self.soundClient.set_sound(1,sound)
 
@@ -450,7 +471,7 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['currentAmpL'].set_value(targetAmp[0])
         self.params['currentAmpR'].set_value(targetAmp[1])
 
-        self.prepare_image(nextTrial)
+        self.prepare_image(self.trialImageParams)
 
         # -- Prepare the state transition matrix --
         soa = 0.2
@@ -502,7 +523,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                 transitions={'Tup':'showImage'})
             self.sm.add_state(name='showImage', statetimer=0,
                         transitions={'Tup':'outputOn'},
-                        outputsOn=['centerLED'],
+                        # outputsOn=['centerLED'],
                         serialOut=self.imageID)
             self.sm.add_state(name='outputOn', statetimer=stimDur,
                                 transitions={'Tup':'outputOff'},
@@ -511,7 +532,7 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='outputOff', statetimer=delayToSyncLight,
                                 transitions={'Tup':'syncLightOn'},
                                 outputsOff=stimOutput,
-                                serialOut=imagesoundclient.STOP_ALL_SOUNDS)
+                                serialOut=imagesoundclient.BLANK_SCREEN)
             self.sm.add_state(name='syncLightOn', statetimer=syncLightDuration,
                                 transitions={'Tup':'syncLightOff'},
                                 outputsOn=syncLightPort)
@@ -523,7 +544,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                 transitions={'Tup':'showImage'})
             self.sm.add_state(name='showImage', statetimer=0,
                         transitions={'Tup':'outputOn'},
-                        outputsOn=['centerLED'],
+                        # outputsOn=['centerLED'],
                         serialOut=self.imageID)
             self.sm.add_state(name='outputOn', statetimer=stimDur,
                                 transitions={'Tup':'outputOff'},
@@ -532,7 +553,7 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='outputOff', statetimer=isi,
                                 transitions={'Tup':'readyForNextTrial'},
                                 outputsOff=stimOutput+syncLightPort,
-                                serialOut=imagesoundclient.STOP_ALL_SOUNDS)
+                                serialOut=imagesoundclient.BLANK_SCREEN)
 
         self.dispatcher.set_state_matrix(self.sm)
         self.dispatcher.ready_to_start_trial()

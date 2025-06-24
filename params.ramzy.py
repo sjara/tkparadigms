@@ -22,13 +22,13 @@ Parameters for paradigms during optogenetic activation of PV neurons in the audi
 """
 
 optoTuningFreq = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
-                  'numTones':16, 'stimType':'Sine', 'stimDur':0.1, 'isiMean':1.2, 'isiHalfRange':0.2,
+                  'numTones':16, 'stimType':'Sine', 'stimDur':0.1, 'isiMean':2.0, 'isiHalfRange':0.5,
                   'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset',
                   'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
                   'laserTrialsFraction':0.25}
 
 optoTuningAM = {'subject':'poni000','experimenter':'ramzy', 'minFreq':4, 'maxFreq':128, 'numTones':11,
-                'stimType':'AM', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2,
+                'stimType':'AM', 'stimDur':0.5, 'isiMean':2.0, 'isiHalfRange':0.5,
                 'minInt':60,'maxInt':60, 'syncLightMode':'from_stim_offset',
                 'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
                 'laserTrialsFraction':0.25}
@@ -43,7 +43,16 @@ optoNaturalInstances = {'subject':'poni000','experimenter':'ramzy', 'outcomeMode
                          'laserMode':'bilateral', 'laserDuration':4.2, 'fractionLaserTrials':0.25,
                          'targetMaxIntensity':70, 'soundsSubset':'twoPerTwoCateg'}
 
-poniDisplayTuning = {'subject':'poni000','experimenter':'ramzy', 'interTrialInterval': 1.0, 'soundFrequency':1000,
-                     'soundDuration':0.1, 'stimType':'Sine','soundIntensity':60, 'soundAmplitude':0.0, 
-                     'lightIntensity':100, 'xOuterSize':4, 'yOuterSize':4, 'xInnerSize':3, 'yInnerSize':1, 
-                     'xInnerInd':1, 'yInnerInd':2, 'randomMode':'Random', 'imageTrialsFraction':1.0, }
+poniTuningFreq = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
+                        'numTones':16, 'stimType':'Sine', 'stimDur':0.1, 'isiMean':2.0, 'isiHalfRange':0.5,
+                        'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset','randomImageMode':'Random',
+                        'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1, 
+                        'lightIntensity':100, 'nColGrid':4, 'nRowGrid':4, 'nColSub':0, 'nRowSub':0, 
+                        'subGridPosH':0, 'subGridPosV':0, 'randomMode':'Random', 'imageTrialsFraction':1.0}
+
+poniTuningAM = {'subject':'poni000','experimenter':'ramzy', 'minFreq':4, 'maxFreq':128, 'numTones':11,
+                    'stimType':'AM', 'stimDur':0.5, 'isiMean':2.0, 'isiHalfRange':0.5,
+                    'minInt':60,'maxInt':60, 'syncLightMode':'from_stim_offset', 'randomImageMode':'Random',
+                    'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1, 
+                    'lightIntensity':100, 'nColGrid':4, 'nRowGrid':4, 'nColSub':3, 'nRowSub':1, 
+                    'subGridPosH':1, 'subGridPosV':2, 'randomMode':'Random', 'imageTrialsFraction':1.0}
