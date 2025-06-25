@@ -290,12 +290,12 @@ class Paradigm(QtWidgets.QMainWindow):
 
     def populate_image_params(self):
         if self.params['nColSub'].get_value():
-            possibleI = list(range(self.params['nRowSub'].get_value()))
-            possibleJ = list(range(self.params['nColSub'].get_value()))
+            possibleI = list(range(self.params['nColSub'].get_value()))
+            possibleJ = list(range(self.params['nRowSub'].get_value()))
 
         else:
-            possibleI = list(range(self.params['nRowGrid'].get_value()))
-            possibleJ = list(range(self.params['nColGrid'].get_value()))
+            possibleI = list(range(self.params['nColGrid'].get_value()))
+            possibleJ = list(range(self.params['nRowGrid'].get_value()))
 
         productList = list(itertools.product(possibleI,possibleJ))
         # -- If in random presentation mode, shuffle the list of products
@@ -317,12 +317,12 @@ class Paradigm(QtWidgets.QMainWindow):
         intensity = self.params['lightIntensity'].get_value()/100
 
         # this is the shape of the broader screen tiling
-        dimsOuter = (self.params['nRowGrid'].get_value(),
-                     self.params['nColGrid'].get_value())
+        dimsOuter = (self.params['nColGrid'].get_value(),
+                     self.params['nRowGrid'].get_value())
         
         # this is the shape of the subregion (if using a single tile from the broader screen)
-        dimsInner = (self.params['nRowSub'].get_value(),
-                     self.params['nColSub'].get_value())
+        dimsInner = (self.params['nColSub'].get_value(),
+                     self.params['nRowSub'].get_value())
         
         # this is the shape of the entire image array
         dimsTotal = (max(dimsOuter[0],dimsOuter[0]*dimsInner[0]),
@@ -338,17 +338,17 @@ class Paradigm(QtWidgets.QMainWindow):
             else: # i/j indices iterating over a subregion of the screen
 
                 # get indices of subregion
-                xInnerInd = self.params['subGridPosV'].get_value()
-                yInnerInd = self.params['subGridPosH'].get_value()
+                xInnerInd = self.params['subGridPosH'].get_value()
+                yInnerInd = self.params['subGridPosV'].get_value()
 
                 # error handling for if subregion indices are out of bounds
                 if xInnerInd >= dimsOuter[0]:
                     xInnerInd = 0
-                    self.params['subGridPosV'].set_value(xInnerInd)
+                    self.params['subGridPosH'].set_value(xInnerInd)
                 
                 if yInnerInd >= dimsOuter[1]: 
                     yInnerInd = 0
-                    self.params['subGridPosH'].set_value(yInnerInd)
+                    self.params['subGridPosV'].set_value(yInnerInd)
 
                 # convert to indices within the full screen array (dimsOuter)
                 imStart = (xInnerInd*dimsInner[0],yInnerInd*dimsInner[1])
@@ -361,8 +361,8 @@ class Paradigm(QtWidgets.QMainWindow):
                 img[imStart[0]:imStart[0]+innerImg.shape[0],
                     imStart[1]:imStart[1]+innerImg.shape[1]] = innerImg
 
-            self.params['currentStimRow'].set_value(currentI)
-            self.params['currentStimCol'].set_value(currentJ)
+            self.params['currentStimCol'].set_value(currentI)
+            self.params['currentStimRow'].set_value(currentJ)
 
             self.soundClient.set_image(self.imageID, img)
         return img
