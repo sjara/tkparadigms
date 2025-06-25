@@ -43,6 +43,13 @@ optoNaturalInstances = {'subject':'poni000','experimenter':'ramzy', 'outcomeMode
                          'laserMode':'bilateral', 'laserDuration':4.2, 'fractionLaserTrials':0.25,
                          'targetMaxIntensity':70, 'soundsSubset':'twoPerTwoCateg'}
 
+poniTuningSpont = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'stimType':'Noise', 
+                   'stimDur':0.1, 'isiMean':2.0, 'isiHalfRange':0.5,
+                        'minInt':0, 'maxInt':0, 'numInt':1, 'syncLightMode':'from_stim_offset','randomImageMode':'Random',
+                        'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1, 
+                        'lightIntensity':100, 'nColGrid':4, 'nRowGrid':4, 'nColSub':0, 'nRowSub':0, 
+                        'subGridPosH':0, 'subGridPosV':0, 'randomMode':'Random', 'imageTrialsFraction':1.0}
+
 poniTuningFreq = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
                         'numTones':16, 'stimType':'Sine', 'stimDur':0.1, 'isiMean':2.0, 'isiHalfRange':0.5,
                         'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset','randomImageMode':'Random',

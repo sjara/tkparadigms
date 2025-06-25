@@ -290,12 +290,12 @@ class Paradigm(QtWidgets.QMainWindow):
 
     def populate_image_params(self):
         if self.params['nColSub'].get_value():
-            possibleI = list(range(self.params['nColSub'].get_value()))
-            possibleJ = list(range(self.params['nRowSub'].get_value()))
+            possibleI = list(range(self.params['nRowSub'].get_value()))
+            possibleJ = list(range(self.params['nColSub'].get_value()))
 
         else:
-            possibleI = list(range(self.params['nColGrid'].get_value()))
-            possibleJ = list(range(self.params['nRowGrid'].get_value()))
+            possibleI = list(range(self.params['nRowGrid'].get_value()))
+            possibleJ = list(range(self.params['nColGrid'].get_value()))
 
         productList = list(itertools.product(possibleI,possibleJ))
         # -- If in random presentation mode, shuffle the list of products
@@ -317,12 +317,12 @@ class Paradigm(QtWidgets.QMainWindow):
         intensity = self.params['lightIntensity'].get_value()/100
 
         # this is the shape of the broader screen tiling
-        dimsOuter = (self.params['nColGrid'].get_value(),
-                     self.params['nRowGrid'].get_value())
+        dimsOuter = (self.params['nRowGrid'].get_value(),
+                     self.params['nColGrid'].get_value())
         
         # this is the shape of the subregion (if using a single tile from the broader screen)
-        dimsInner = (self.params['nColSub'].get_value(),
-                     self.params['nRowSub'].get_value())
+        dimsInner = (self.params['nRowSub'].get_value(),
+                     self.params['nColSub'].get_value())
         
         # this is the shape of the entire image array
         dimsTotal = (max(dimsOuter[0],dimsOuter[0]*dimsInner[0]),
@@ -333,7 +333,10 @@ class Paradigm(QtWidgets.QMainWindow):
             # check if using broader screen tiling, or just a subregion
 
             if dimsOuter == dimsTotal: # i/j indices iterating over broader screen tiling
-                img[currentI, currentJ] = intensity
+                try:
+                    img[currentI, currentJ] = intensity
+                except:
+                    return img
 
             else: # i/j indices iterating over a subregion of the screen
 
@@ -353,16 +356,19 @@ class Paradigm(QtWidgets.QMainWindow):
                 # convert to indices within the full screen array (dimsOuter)
                 imStart = (xInnerInd*dimsInner[0],yInnerInd*dimsInner[1])
 
-                # make image in terms of subregion indices
-                innerImg = np.zeros(dimsInner,dtype=float)
-                innerImg[currentI,currentJ] = intensity
+                try:
+                    # make image in terms of subregion indices
+                    innerImg = np.zeros(dimsInner,dtype=float)
+                    innerImg[currentI,currentJ] = intensity
 
-                # paste innerImg into full-size img
-                img[imStart[0]:imStart[0]+innerImg.shape[0],
-                    imStart[1]:imStart[1]+innerImg.shape[1]] = innerImg
+                    # paste innerImg into full-size img
+                    img[imStart[0]:imStart[0]+innerImg.shape[0],
+                        imStart[1]:imStart[1]+innerImg.shape[1]] = innerImg
+                except:
+                    return img
 
-            self.params['currentStimCol'].set_value(currentI)
-            self.params['currentStimRow'].set_value(currentJ)
+            self.params['currentStimRow'].set_value(currentI)
+            self.params['currentStimCol'].set_value(currentJ)
 
             self.soundClient.set_image(self.imageID, img)
         return img
@@ -452,7 +458,8 @@ class Paradigm(QtWidgets.QMainWindow):
         # if laserTrial:
         # if imageTrial:
         #     stimOutput = stimOutput + laserSync
-        serialOutput = 1
+        
+        serialOutput = 1 
         self.soundClient.set_sound(1,sound)
 
         syncLightMode = self.params['syncLightMode'].get_string()
