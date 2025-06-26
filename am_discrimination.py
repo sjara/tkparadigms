@@ -85,7 +85,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                         units='s',group='Timing parameters')
         self.params['punishTimeError'] = paramgui.NumericParam('Punishment (error)',value=0,
                                                         units='s',group='Timing parameters')
-        self.params['punishTimeEarly'] = paramgui.NumericParam('Punishment (early)',value=0,
+        self.params['punishTimeEarly'] = paramgui.NumericParam('Punishment (early)',value=0.5,
                                                         units='s',group='Timing parameters')
         timingParams = self.params.layout_group('Timing parameters')
 
