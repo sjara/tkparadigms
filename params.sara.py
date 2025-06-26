@@ -28,7 +28,7 @@ freqDiscrimBiasCorr = {'experimenter':'sara','soundTypeMode': 'tones', 'outcomeM
                      'targetIntensityMode':'fixed', 'punishTimeEarly': 0.2, 'punishSoundAmplitude':60, 'allowEarlyWithdrawal': 'off'}
 freqDiscrimStage4 = {'experimenter':'sara', 'soundTypeMode': 'tones', 'outcomeMode':'only_if_correct', 'psycurveMode':'uniform', 
                    'psycurveNfreq':6, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2,
-                    'punishSoundAmplitude':60 'allowEarlyWithdrawal': 'off'}
+                    'punishSoundAmplitude':60, 'allowEarlyWithdrawal': 'off'}
 
 mixedTasks = {'experimenter':'sara', 'soundTypeMode': 'mixed_tones', 'outcomeMode':'only_if_correct', 'psycurveMode':'uniform', 
               'psycurveNfreq':6, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2, 
