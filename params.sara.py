@@ -14,7 +14,7 @@ amDiscrimStage3 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'dela
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
                      'targetIntensityMode':'fixed', 'punishTimeEarly': 0.2, 'punishSoundAmplitude':60}
 amDiscrimStage4 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'psycurveMode':'uniform', 
-                   'psycurveNfreq':'6', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2, 
+                   'psycurveNfreq':6, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2, 
                    'punishSoundAmplitude':60}
 amDiscrimBiasCorr = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'antibiasMode':'repeat_mistake','delayToTargetMean':0.2,
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
@@ -27,10 +27,10 @@ freqDiscrimBiasCorr = {'experimenter':'sara','soundTypeMode': 'tones', 'outcomeM
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
                      'targetIntensityMode':'fixed', 'punishTimeEarly': 0.2, 'punishSoundAmplitude':60}
 freqDiscrimStage4 = {'experimenter':'sara', 'soundTypeMode': 'tones', 'outcomeMode':'only_if_correct', 'psycurveMode':'uniform', 
-                   'psycurveNfreq':'6', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2}
+                   'psycurveNfreq':6, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2}
 
 mixedTasks = {'experimenter':'sara', 'soundTypeMode': 'mixed_tones', 'outcomeMode':'only_if_correct', 'psycurveMode':'uniform', 
-              'psycurveNfreq':'6', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2, 
+              'psycurveNfreq':6, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2, 
               'punishSoundAmplitude':60}
 
 sole048 = {'subject':'sole048', **amDiscrimBiasCorr}
