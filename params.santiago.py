@@ -115,3 +115,7 @@ pupilAM = {'minFreq':4, 'maxFreq':12, 'soundType':'AM_rate', 'preDurationMean':3
 
 oddball = {'stimType':'FM', 'oddballStim':'FM_down', 'stimDuration':0.2,
            'oddballPeriod':3}
+
+amdisc = {'allowEarlyWithdrawal':'off', 'punishTimeEarly':0.5,
+          'targetIntensity':70,
+          'highSoundFreq':1600, 'lowSoundFreq':500}

@@ -65,7 +65,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                          'only_if_correct', 'simulated'],
                                                          value=3,group='Choice parameters')
         self.params['allowEarlyWithdrawal'] = paramgui.MenuParam('Allow early withdraw',
-                                                                 ['off','on'], enabled=False,
+                                                                 ['off','on'], enabled=True,
                                                                  value=1, group='Choice parameters')
         self.params['antibiasMode'] = paramgui.MenuParam('Anti-bias mode',
                                                         ['off','repeat_mistake'],
@@ -151,8 +151,11 @@ class Paradigm(templates.Paradigm2AFC):
                                                         enabled=False,group='Sound parameters')
         self.params['targetAmplitude'] = paramgui.NumericParam('Target amplitude',value=0.0,units='[0-1]',
                                                         enabled=False,decimals=4,group='Sound parameters')
+        self.params['punishSoundIntensity'] = paramgui.NumericParam('Punish amplitude',value=70,
+                                                              units='dB',enabled=True,
+                                                              group='Sound parameters')
         self.params['punishSoundAmplitude'] = paramgui.NumericParam('Punish amplitude',value=0.01,
-                                                              units='[0-1]',enabled=True,
+                                                              units='[0-1]',decimals=4,enabled=False,
                                                               group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
@@ -263,7 +266,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.punishSoundID = 127
         self.soundClient.set_sound(self.punishSoundID,sNoise)
         '''
-        self.punishSoundID = 127
+        self.punishSoundID = 9  # Some index differently from the target sound
         self.soundClient.start()
 
         # -- Specify state matrix with extratimer --
@@ -277,9 +280,16 @@ class Paradigm(templates.Paradigm2AFC):
         #self.prepare_next_trial(0)
 
     def prepare_punish_sound(self):
-        punishSoundAmplitude = self.params['punishSoundAmplitude'].get_value()
-        sNoise = {'type':'noise', 'duration':0.5, 'amplitude':punishSoundAmplitude}
-        self.soundClient.set_sound(self.punishSoundID,sNoise)
+        spkCalChords = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_CHORD)
+        punishSoundIntensity = self.params['punishSoundIntensity'].get_value()
+        #sNoise = {'type':'noise', 'duration':0.5, 'amplitude':punishSoundAmplitude}
+        punishCenterFreq = 9000
+        punishAmp = spkCalChords.find_amplitude(punishCenterFreq, punishSoundIntensity).mean()
+        self.params['punishSoundAmplitude'].set_value(punishAmp)
+        stimDur = self.params['punishTimeEarly'].get_value()
+        sPunish = {'type':'chord', 'frequency':punishCenterFreq, 'duration':stimDur,
+                   'amplitude':punishAmp, 'ntones':24, 'factor':2.5}
+        self.soundClient.set_sound(self.punishSoundID, sPunish)
 
     def prepare_target_sound(self, soundParam):
         if self.params['targetIntensityMode'].get_string() == 'randMinus20':
@@ -667,7 +677,7 @@ class Paradigm(templates.Paradigm2AFC):
             #                  outputsOff=stimSync,serialOut=self.punishSoundID)
             self.sm.add_state(name='earlyWithdrawal', statetimer=0,
                               transitions={'Tup':'playPunishment'},
-                              outputsOff=stimSync, serialOut=soundclient.STOP_ALL_SOUNDS)
+                              outputsOff=stimSync+laserOutput, serialOut=soundclient.STOP_ALL_SOUNDS)
             self.sm.add_state(name='playPunishment', statetimer=punishTimeEarly,
                               transitions={'Tup':'readyForNextTrial'},
                               serialOut=self.punishSoundID)
