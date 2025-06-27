@@ -12,7 +12,7 @@ amDiscrimStage2 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'dela
                      'targetMaxIntensity':60,'targetIntensityMode':'fixed',}
 amDiscrimStage3 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
-                     'targetIntensityMode':'fixed', 'punishTimeEarly': 0.2, ''punishSoundIntensity'':60, 'allowEarlyWithdrawal': 'off'}
+                     'targetIntensityMode':'fixed', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'allowEarlyWithdrawal': 'off'}
 amDiscrimStage4 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'psycurveMode':'uniform', 
                    'psycurveNfreq':6, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2, 
                    'punishSoundAmplitude':60, 'allowEarlyWithdrawal': 'off'}
