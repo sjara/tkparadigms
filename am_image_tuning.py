@@ -161,6 +161,11 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['randomImageMode'] = paramgui.MenuParam('Image Presentation Mode',
                                                          ['Ordered','Random'],
                                                          value=1,group='Image parameters')
+        self.params['screenBottomAxis'] = paramgui.MenuParam('Screen Bottom Axis', 
+                                                         ['Anterior','Posterior',
+                                                          'Dorsal','Ventral',
+                                                          'Medial','Lateral'],
+                                                         value=1,group='Image parameters')
         self.params['nColGrid'] = paramgui.NumericParam('Number of columns in full image grid', value = 4,
                                                        decimals=0, units='pixels',group='Image parameters')
         self.params['nRowGrid'] = paramgui.NumericParam('Number of rows in full image grid', value = 4,
@@ -310,26 +315,27 @@ class Paradigm(QtWidgets.QMainWindow):
 
     def prepare_image(self, nextTrial=(0,0)):
 
-        # get tile coordinates
-        currentI,currentJ = nextTrial
-
         # get params
         intensity = self.params['lightIntensity'].get_value()/100
 
         # this is the shape of the broader screen tiling
         dimsOuter = (self.params['nRowGrid'].get_value(),
-                     self.params['nColGrid'].get_value())
+                    self.params['nColGrid'].get_value())
         
         # this is the shape of the subregion (if using a single tile from the broader screen)
         dimsInner = (self.params['nRowSub'].get_value(),
-                     self.params['nColSub'].get_value())
+                    self.params['nColSub'].get_value())
         
         # this is the shape of the entire image array
         dimsTotal = (max(dimsOuter[0],dimsOuter[0]*dimsInner[0]),
-                     max(dimsOuter[1],dimsOuter[1]*dimsInner[1]))
+                    max(dimsOuter[1],dimsOuter[1]*dimsInner[1]))
         img = np.zeros(dimsTotal, dtype=float)
 
         if self.params['imageTrial'].get_value():
+            # get tile coordinates
+            currentI,currentJ = nextTrial
+
+            
             # check if using broader screen tiling, or just a subregion
 
             if dimsOuter == dimsTotal: # i/j indices iterating over broader screen tiling
@@ -370,7 +376,12 @@ class Paradigm(QtWidgets.QMainWindow):
             self.params['currentStimRow'].set_value(currentI)
             self.params['currentStimCol'].set_value(currentJ)
 
-            self.soundClient.set_image(self.imageID, img)
+        else:
+            self.params['currentStimRow'].set_value(-1)
+            self.params['currentStimCol'].set_value(-1)
+
+
+        self.soundClient.set_image(self.imageID, img)
         return img
     
 
@@ -401,12 +412,19 @@ class Paradigm(QtWidgets.QMainWindow):
             self.populate_sound_params()
             self.trialParams = self.soundParamList.pop(0)
 
-        try:
-            self.trialImageParams = self.imageParamList.pop(0)
-        except IndexError:
-            self.populate_image_params()
-            self.trialImageParams = self.imageParamList.pop(0)
+        fractionImageTrials = self.params['imageTrialsFraction'].get_value()
+        imageTrial = np.random.rand(1)[0]<fractionImageTrials
+        self.params['imageTrial'].set_value(int(imageTrial))
 
+        if imageTrial:
+            try:
+                self.trialImageParams = self.imageParamList.pop(0)
+            except IndexError:
+                self.populate_image_params()
+                self.trialImageParams = self.imageParamList.pop(0)
+
+        else:
+            self.trialImageParams = (-1,-1)
 
         # -- Prepare the sound using randomly chosen parameters from parameter lists --
         stimType = self.params['stimType'].get_string()
@@ -441,9 +459,7 @@ class Paradigm(QtWidgets.QMainWindow):
                      'amplitude':targetAmp, 'frequency':self.trialParams[0],
                      'toneDuration':0.025, 'rate':20}
 
-        fractionImageTrials = self.params['imageTrialsFraction'].get_value()
-        imageTrial = np.random.rand(1)[0]<fractionImageTrials
-        self.params['imageTrial'].set_value(int(imageTrial))
+        
 
         # if (stimType == 'Laser') or (stimType == 'LaserTrain'):
         #     stimOutput = stimSync+laserSync
