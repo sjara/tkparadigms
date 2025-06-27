@@ -161,7 +161,7 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['randomImageMode'] = paramgui.MenuParam('Image Presentation Mode',
                                                          ['Ordered','Random'],
                                                          value=1,group='Image parameters')
-        self.params['screenBottomAxis'] = paramgui.MenuParam('Screen Bottom Axis', 
+        self.params['screenBottom'] = paramgui.MenuParam('Orientation of Screen Bottom', 
                                                          ['Anterior','Posterior',
                                                           'Dorsal','Ventral',
                                                           'Medial','Lateral'],
@@ -171,14 +171,14 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['nRowGrid'] = paramgui.NumericParam('Number of rows in full image grid', value = 4,
                                                        decimals=0, units='pixels',group='Image parameters')
         
-        self.params['nColSub'] = paramgui.NumericParam('Number of columns in subregion grid', value = 0,
+        self.params['nColSubregion'] = paramgui.NumericParam('Number of columns in subregion grid', value = 0,
                                                        decimals=0, units='pixels',group='Image parameters')
-        self.params['nRowSub'] = paramgui.NumericParam('Number of rows in subregion grid', value = 0,
+        self.params['nRowSubregion'] = paramgui.NumericParam('Number of rows in subregion grid', value = 0,
                                                        decimals=0, units='pixels',group='Image parameters')
         
-        self.params['subGridPosH'] = paramgui.NumericParam('Horizontal position of subregion', value = 0,
+        self.params['subregionPosX'] = paramgui.NumericParam('Horizontal position of subregion', value = 0,
                                                        decimals=0, units='pixels',group='Image parameters')
-        self.params['subGridPosV'] = paramgui.NumericParam('Vertical position of subregion', value = 0,
+        self.params['subregionPosY'] = paramgui.NumericParam('Vertical position of subregion', value = 0,
                                                        decimals=0, units='pixels',group='Image parameters')
         
         self.params['currentStimCol'] = paramgui.NumericParam('Current column #', value = 0,
@@ -294,9 +294,9 @@ class Paradigm(QtWidgets.QMainWindow):
         self.soundParamList = productList
 
     def populate_image_params(self):
-        if self.params['nColSub'].get_value():
-            possibleI = list(range(self.params['nRowSub'].get_value()))
-            possibleJ = list(range(self.params['nColSub'].get_value()))
+        if self.params['nColSubregion'].get_value():
+            possibleI = list(range(self.params['nRowSubregion'].get_value()))
+            possibleJ = list(range(self.params['nColSubregion'].get_value()))
 
         else:
             possibleI = list(range(self.params['nRowGrid'].get_value()))
@@ -323,21 +323,19 @@ class Paradigm(QtWidgets.QMainWindow):
                     self.params['nColGrid'].get_value())
         
         # this is the shape of the subregion (if using a single tile from the broader screen)
-        dimsInner = (self.params['nRowSub'].get_value(),
-                    self.params['nColSub'].get_value())
+        dimsInner = (self.params['nRowSubregion'].get_value(),
+                    self.params['nColSubregion'].get_value())
         
         # this is the shape of the entire image array
         dimsTotal = (max(dimsOuter[0],dimsOuter[0]*dimsInner[0]),
                     max(dimsOuter[1],dimsOuter[1]*dimsInner[1]))
         img = np.zeros(dimsTotal, dtype=float)
 
+        # get tile coordinates
+        currentI,currentJ = nextTrial
+
         if self.params['imageTrial'].get_value():
-            # get tile coordinates
-            currentI,currentJ = nextTrial
-
-            
-            # check if using broader screen tiling, or just a subregion
-
+            # check if using full screen tiling, or just a subregion
             if dimsOuter == dimsTotal: # i/j indices iterating over broader screen tiling
                 try:
                     img[currentI, currentJ] = intensity
@@ -347,20 +345,20 @@ class Paradigm(QtWidgets.QMainWindow):
             else: # i/j indices iterating over a subregion of the screen
 
                 # get indices of subregion
-                xInnerInd = self.params['subGridPosH'].get_value()
-                yInnerInd = self.params['subGridPosV'].get_value()
+                subPosX = self.params['subregionPosX'].get_value()
+                subPosY = self.params['subregionPosY'].get_value()
 
                 # error handling for if subregion indices are out of bounds
-                if xInnerInd >= dimsOuter[0]:
-                    xInnerInd = 0
-                    self.params['subGridPosH'].set_value(xInnerInd)
+                if subPosX >= dimsOuter[0]:
+                    subPosX = 0
+                    self.params['subregionPosX'].set_value(subPosX)
                 
-                if yInnerInd >= dimsOuter[1]: 
-                    yInnerInd = 0
-                    self.params['subGridPosV'].set_value(yInnerInd)
+                if subPosY >= dimsOuter[1]: 
+                    subPosY = 0
+                    self.params['subregionPosY'].set_value(subPosY)
 
                 # convert to indices within the full screen array (dimsOuter)
-                imStart = (xInnerInd*dimsInner[0],yInnerInd*dimsInner[1])
+                imStart = (subPosX*dimsInner[0],subPosY*dimsInner[1])
 
                 try:
                     # make image in terms of subregion indices
@@ -373,13 +371,8 @@ class Paradigm(QtWidgets.QMainWindow):
                 except:
                     return img
 
-            self.params['currentStimRow'].set_value(currentI)
-            self.params['currentStimCol'].set_value(currentJ)
-
-        else:
-            self.params['currentStimRow'].set_value(-1)
-            self.params['currentStimCol'].set_value(-1)
-
+        self.params['currentStimRow'].set_value(currentI)
+        self.params['currentStimCol'].set_value(currentJ)
 
         self.soundClient.set_image(self.imageID, img)
         return img
@@ -416,15 +409,17 @@ class Paradigm(QtWidgets.QMainWindow):
         imageTrial = np.random.rand(1)[0]<fractionImageTrials
         self.params['imageTrial'].set_value(int(imageTrial))
 
-        if imageTrial:
-            try:
-                self.trialImageParams = self.imageParamList.pop(0)
-            except IndexError:
-                self.populate_image_params()
-                self.trialImageParams = self.imageParamList.pop(0)
+        if not imageTrial:
+            self.imageParamList = [(-1,-1)] + self.imageParamList
 
-        else:
-            self.trialImageParams = (-1,-1)
+        try:
+            self.trialImageParams = self.imageParamList.pop(0)
+        except IndexError:
+            self.populate_image_params()
+            self.trialImageParams = self.imageParamList.pop(0)
+
+        # else:
+        #     self.trialImageParams = (-1,-1)
 
         # -- Prepare the sound using randomly chosen parameters from parameter lists --
         stimType = self.params['stimType'].get_string()
