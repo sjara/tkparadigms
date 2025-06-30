@@ -55,11 +55,11 @@ poniTuningFreq = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'm
                         'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset','randomImageMode':'Random',
                         'screenBottomAxis':'Posterior','syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1, 
                         'lightIntensity':100, 'nColGrid':4, 'nRowGrid':1, 'nColSubregion':0, 'nRowSubregion':0, 
-                        'subregionPosX':0, 'subregionPosY':0, 'randomMode':'Random', 'imageTrialsFraction':1.0}
+                        'subregionPosX':0, 'subregionPosY':0, 'randomMode':'Random', 'imageTrialsFraction':0.8}
 
 poniTuningAM = {'subject':'poni000','experimenter':'ramzy', 'minFreq':4, 'maxFreq':128, 'numTones':11,
                     'stimType':'AM', 'stimDur':0.5, 'isiMean':2.0, 'isiHalfRange':0.5,
                     'minInt':60,'maxInt':60, 'syncLightMode':'from_stim_offset', 'randomImageMode':'Random',
                     'screenBottomAxis':'Posterior','syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1, 
                     'lightIntensity':100, 'nColGrid':4, 'nRowGrid':4, 'nColSubregion':0, 'nRowSubregion':0, 
-                    'subregionPosX':0, 'subregionPosY':0, 'randomMode':'Random', 'imageTrialsFraction':1.0}
+                    'subregionPosX':0, 'subregionPosY':0, 'randomMode':'Random', 'imageTrialsFraction':0.8}
