@@ -55,4 +55,4 @@ sole067 = {'subject':'sole067', **amDiscrimStage3}
 sole068 = {'subject':'sole068', **amDiscrimStage3}
 sole069 = {'subject':'sole069', **amDiscrimStage3}
 sole070 = {'subject':'sole070', **amDiscrimStage3}
-sole071 = {'subject':'sole071', **amDiscrimStage0}
+sole071 = {'subject':'sole071', **amDiscrimStage1}
