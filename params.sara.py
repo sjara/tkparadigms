@@ -36,7 +36,7 @@ mixedTasks = {'experimenter':'sara', 'soundTypeMode': 'mixed_tones', 'outcomeMod
 
 sole048 = {'subject':'sole048', **amDiscrimStage4}
 sole049 = {'subject':'sole049', **amDiscrimStage4}
-sole050 = {'subject':'sole050', **amDiscrimStage4}
+sole050 = {'subject':'sole050', **amDiscrimBiasCorr}
 sole051 = {'subject':'sole051', **amDiscrimStage4}
 sole052 = {'subject':'sole052', **amDiscrimStage4}
 sole053 = {'subject':'sole053', **amDiscrimStage4}
