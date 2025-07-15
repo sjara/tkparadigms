@@ -34,7 +34,7 @@ mixedTasks = {'experimenter':'sara', 'soundTypeMode': 'mixed_tones', 'outcomeMod
               'psycurveNfreq':6, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2, 'targetDuration': 0.2, 
               'punishSoundIntensity':60, 'allowEarlyWithdrawal': 'off'}
 
-sole048 = {'subject':'sole048', **amDiscrimStage4}
+sole048 = {'subject':'sole048', **amDiscrimBiasCorr}
 sole049 = {'subject':'sole049', **amDiscrimStage4}
 sole050 = {'subject':'sole050', **amDiscrimBiasCorr}
 sole051 = {'subject':'sole051', **freqDiscrimStage3}
