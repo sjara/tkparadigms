@@ -8,6 +8,8 @@ import numpy as np
 import itertools
 import random
 import time
+import glob
+import os
 from qtpy import QtWidgets
 from taskontrol import dispatcher
 from taskontrol import paramgui
@@ -336,7 +338,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         if self.params['imageTrial'].get_value():
             # check if using full screen tiling, or just a subregion
-            if dimsOuter == dimsTotal: # i/j indices iterating over broader screen tiling
+            if min(dimsInner)==0: # i/j indices iterating over broader screen tiling
                 try:
                     img[currentI, currentJ] = intensity
                 except:
