@@ -56,4 +56,4 @@ sole068 = {'subject':'sole068', **amDiscrimStage3}
 sole069 = {'subject':'sole069', **amDiscrimBiasCorr}
 sole070 = {'subject':'sole070', **amDiscrimBiasCorr}
 sole071 = {'subject':'sole071', **amDiscrimBiasCorr}
-test000 = {'subject':'test000', **amDiscrimStage4}
+test000 = {'subject':'test000', **freqDiscrimStage4}
