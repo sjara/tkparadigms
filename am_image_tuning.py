@@ -42,7 +42,7 @@ class Paradigm(QtWidgets.QMainWindow):
         initialize the sound server.
         """
         super(Paradigm, self).__init__(parent)
-        self.name = 'am_tuning_curve'
+        self.name = 'am_image_tuning'
 
         # -- Read settings --
         smServerType = rigsettings.STATE_MACHINE_TYPE
