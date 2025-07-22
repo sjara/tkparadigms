@@ -34,25 +34,25 @@ mixedTasks = {'experimenter':'sara', 'soundTypeMode': 'mixed_tones', 'outcomeMod
               'psycurveNfreq':6, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2, 'targetDuration': 0.2, 
               'punishSoundIntensity':60, 'allowEarlyWithdrawal': 'off'}
 
-sole048 = {'subject':'sole048', **amDiscrimStage3}
+sole048 = {'subject':'sole048', **amDiscrimBiasCorr}
 sole049 = {'subject':'sole049', **amDiscrimStage4}
 sole050 = {'subject':'sole050', **amDiscrimStage3}
-sole051 = {'subject':'sole051', **freqDiscrimStage3}
+sole051 = {'subject':'sole051', **freqDiscrimBiasCorr}
 sole052 = {'subject':'sole052', **amDiscrimStage3}
 sole053 = {'subject':'sole053', **amDiscrimStage4}
 sole054 = {'subject':'sole054', **amDiscrimStage3}
-sole055 = {'subject':'sole055', **amDiscrimStage3}
+sole055 = {'subject':'sole055', **amDiscrimBiasCorr}
 sole056 = {'subject':'sole056', **freqDiscrimStage4}
-sole057 = {'subject':'sole057', **amDiscrimBiasCorr}
+sole057 = {'subject':'sole057', **amDiscrimStage3}
 sole058 = {'subject':'sole058', **amDiscrimBiasCorr}
 sole059 = {'subject':'sole059', **freqDiscrimStage3}
-sole060 = {'subject':'sole060', **amDiscrimBiasCorr}
-sole061 = {'subject':'sole061', **amDiscrimBiasCorr}
+sole060 = {'subject':'sole060', **amDiscrimStage3}
+sole061 = {'subject':'sole061', **amDiscrimStage3}
 sole062 = {'subject':'sole062', **freqDiscrimStage3}
 sole064 = {'subject':'sole064', **amDiscrimStage3}
-sole065 = {'subject':'sole065', **amDiscrimStage3}
+sole065 = {'subject':'sole065', **amDiscrimBiasCorr}
 sole067 = {'subject':'sole067', **amDiscrimBiasCorr}
-sole068 = {'subject':'sole068', **amDiscrimBiasCorr}
+sole068 = {'subject':'sole068', **amDiscrimStage3}
 sole069 = {'subject':'sole069', **amDiscrimStage3}
 sole070 = {'subject':'sole070', **amDiscrimBiasCorr}
 sole071 = {'subject':'sole071', **amDiscrimStage3}
