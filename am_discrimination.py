@@ -118,7 +118,10 @@ class Paradigm(templates.Paradigm2AFC):
         laserParams = self.params.layout_group('Laser parameters')
 
         self.params['automationMode'] = paramgui.MenuParam('Automation Mode',
-                                                           ['off','increase_delay','same_left_right','same_right_left','left_right_left'],
+                                                           ['off','increase_delay',
+                                                            'increase_duration',
+                                                            'same_left_right','same_right_left',
+                                                            'left_right_left'],
                                                            value=0,group='Automation')
         automationParams = self.params.layout_group('Automation')
 
@@ -822,6 +825,9 @@ class Paradigm(templates.Paradigm2AFC):
         if automationMode=='increase_delay':
             if nValid>0 and self.results['valid'][nextTrial-1] and not nValid%10:
                 self.params['delayToTargetMean'].add(0.010)
+        elif automationMode=='increase_duration':
+            if nValid>0 and self.results['valid'][nextTrial-1] and not nValid%10:
+                self.params['targetDuration'].add(0.010)
 
     def closeEvent(self, event):
         '''
