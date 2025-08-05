@@ -1,15 +1,12 @@
 '''
 Present a range of stimuli (either pure tones or AM noise) logarithmically space
-and at different intensities, combined with displaying images in the center s
-
+and at different intensities.
 '''
 
 import numpy as np
 import itertools
 import random
 import time
-import glob
-import os
 from qtpy import QtWidgets
 from taskontrol import dispatcher
 from taskontrol import paramgui
@@ -17,7 +14,7 @@ from taskontrol import savedata
 from taskontrol import statematrix
 from taskontrol.plugins import speakercalibration
 from taskontrol.plugins import manualcontrol
-from taskontrol.plugins import imagesoundclient
+from taskontrol.plugins import soundclient
 from taskontrol import rigsettings
 
 
@@ -42,7 +39,7 @@ class Paradigm(QtWidgets.QMainWindow):
         initialize the sound server.
         """
         super(Paradigm, self).__init__(parent)
-        self.name = 'am_image_tuning'
+        self.name = 'am_tuning_curve'
 
         # -- Read settings --
         smServerType = rigsettings.STATE_MACHINE_TYPE
@@ -68,24 +65,26 @@ class Paradigm(QtWidgets.QMainWindow):
                                                        group='Session parameters')
         sessionParams = self.params.layout_group('Session parameters')
 
-        self.params['minFreq'] = paramgui.NumericParam('Min Frequency (Hz)',
+        self.params['minFreq'] = paramgui.NumericParam('Min Carrier Frequency (Hz)',
                                                         value=2000,
                                                         group='Stim parameters')
-        self.params['maxFreq'] = paramgui.NumericParam('Max Frequency (Hz)',
+        self.params['maxFreq'] = paramgui.NumericParam('Max Carrier Frequency (Hz)',
                                                         value=40000,
                                                         group='Stim parameters')
-        self.params['numTones'] = paramgui.NumericParam('Number of Frequencies',
+        self.params['numTones'] = paramgui.NumericParam('Number of Carrier Frequencies',
                                                          value=16,
                                                          group='Stim parameters')
+        
         self.params['minModFreq'] = paramgui.NumericParam('Min AM Frequency (Hz)',
                                                         value=4,
                                                         group='Stim parameters')
         self.params['maxModFreq'] = paramgui.NumericParam('Max AM Frequency (Hz)',
-                                                        value=64,
+                                                        value=128,
                                                         group='Stim parameters')
         self.params['numModFreqs'] = paramgui.NumericParam('Number of AM Frequencies',
                                                          value=4,
                                                          group='Stim parameters')
+        
         self.params['minInt'] = paramgui.NumericParam('Min Intensity (dB SPL)',
                                                        value=60,
                                                        group='Stim parameters')
@@ -107,15 +106,15 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['isi'] = paramgui.NumericParam('Interstimulus interval (s)',
                                                    value=2, enabled=False, decimals=3,
                                                    group='Stim parameters')
-        self.params['randomMode'] = paramgui.MenuParam('Sound Presentation Mode',
+        self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
                                                          ['Ordered','Random'],
                                                          value=1,group='Stim parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
                                                          ['Sine','Chord', 'Noise', 'AM',
-                                                          'AMtone','ToneTrain',
+                                                          'ToneTrain', 'AMtone',
                                                           'Laser', 'LaserTrain', 'Light'],
                                                          value=2,group='Stim parameters')
-        self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
+        self.params['currentFreq'] = paramgui.NumericParam('Current Tone Frequency (Hz)',
                                                             value=0, units='Hz',
                                                             enabled=False, decimals=3,
                                                             group='Stim parameters')
@@ -152,61 +151,20 @@ class Paradigm(QtWidgets.QMainWindow):
                                                         units='s',group='Sync parameters')
         syncParams = self.params.layout_group('Sync parameters')
 
-        # self.params['laserTrialsFraction'] = paramgui.NumericParam('Fraction of trials with laser',
-        #                                                            value=0,
-        #                                                            group='Laser parameters')
-        # self.params['laserFrontOverhang'] = paramgui.NumericParam('Laser Front Overhang',value=0,
-        #                                                           group='Laser parameters', enabled=False,
-        #                                                           decimals=1)
-        # self.params['laserBackOverhang'] = paramgui.NumericParam('Laser Back Overhang',value=0,
-        #                                                          group='Laser parameters', enabled=False,
-        #                                                          decimals=1)
-        # self.params['laserTrial'] = paramgui.NumericParam('Laser Trial?',value=0,
-        #                                                    enabled=False,
-        #                                                    group='Laser parameters',
-        #                                                    decimals=0)
-        # laserParams = self.params.layout_group('Laser parameters')
-
-        # -- Image Params --
-        self.params['lightIntensity'] = paramgui.NumericParam('Intensity of light (%)',value=100,
-                                                              decimals=2,units='percent',group='Image parameters')
-        self.params['imageTrialsFraction'] = paramgui.NumericParam('Fraction of trials with image',
-                                                                   value=1.0,
-                                                                   group='Image parameters')
-        self.params['randomImageMode'] = paramgui.MenuParam('Image Presentation Mode',
-                                                         ['Ordered','Random'],
-                                                         value=1,group='Image parameters')
-        self.params['screenBottom'] = paramgui.MenuParam('Orientation of Screen Bottom', 
-                                                         ['Anterior','Posterior',
-                                                          'Dorsal','Ventral',
-                                                          'Medial','Lateral'],
-                                                         value=1,group='Image parameters')
-        self.params['nColGrid'] = paramgui.NumericParam('Number of columns in full image grid', value = 4,
-                                                       decimals=0, units='pixels',group='Image parameters')
-        self.params['nRowGrid'] = paramgui.NumericParam('Number of rows in full image grid', value = 4,
-                                                       decimals=0, units='pixels',group='Image parameters')
-        
-        self.params['nColSubregion'] = paramgui.NumericParam('Number of columns in subregion grid', value = 0,
-                                                       decimals=0, units='pixels',group='Image parameters')
-        self.params['nRowSubregion'] = paramgui.NumericParam('Number of rows in subregion grid', value = 0,
-                                                       decimals=0, units='pixels',group='Image parameters')
-        
-        self.params['subregionPosX'] = paramgui.NumericParam('Horizontal position of subregion', value = 0,
-                                                       decimals=0, units='pixels',group='Image parameters')
-        self.params['subregionPosY'] = paramgui.NumericParam('Vertical position of subregion', value = 0,
-                                                       decimals=0, units='pixels',group='Image parameters')
-        
-        self.params['currentStimCol'] = paramgui.NumericParam('Current column #', value = 0,
-                                                       decimals=0,units='index',group='Image parameters')
-        self.params['currentStimRow'] = paramgui.NumericParam('Current row #', value = 0,
-                                                       decimals=0,units='index',group='Image parameters')
-        self.params['imageTrial'] = paramgui.NumericParam('Image Trial?',value=0,
+        self.params['laserTrialsFraction'] = paramgui.NumericParam('Fraction of trials with laser',
+                                                                   value=0,
+                                                                   group='Laser parameters')
+        self.params['laserFrontOverhang'] = paramgui.NumericParam('Laser Front Overhang',value=0,
+                                                                  group='Laser parameters', enabled=False,
+                                                                  decimals=1)
+        self.params['laserBackOverhang'] = paramgui.NumericParam('Laser Back Overhang',value=0,
+                                                                 group='Laser parameters', enabled=False,
+                                                                 decimals=1)
+        self.params['laserTrial'] = paramgui.NumericParam('Laser Trial?',value=0,
                                                            enabled=False,
-                                                           group='Image parameters',
+                                                           group='Laser parameters',
                                                            decimals=0)
-        
-        
-        imageParams = self.params.layout_group('Image parameters')
+        laserParams = self.params.layout_group('Laser parameters')
 
         # -- Load parameters from a file --
         self.params.from_file(paramfile,paramdictname)
@@ -226,16 +184,12 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutMain = QtWidgets.QHBoxLayout()
         layoutCol1 = QtWidgets.QVBoxLayout()
         layoutCol2 = QtWidgets.QVBoxLayout()
-        # layoutCol3 = QtWidgets.QVBoxLayout()
 
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
-        # layoutMain.addLayout(layoutCol3)
 
         layoutCol1.addWidget(sessionParams)
         layoutCol1.addStretch()
-        layoutCol1.addStretch()
-        layoutCol1.addWidget(syncParams)
         layoutCol1.addWidget(self.dispatcher.widget)
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.manualControl)
@@ -246,8 +200,9 @@ class Paradigm(QtWidgets.QMainWindow):
 
         layoutCol2.addWidget(stimParams)
         layoutCol2.addStretch()
-        layoutCol2.addWidget(imageParams)
-        # layoutCol3.addWidget(imageParams)
+        layoutCol2.addWidget(syncParams)
+        layoutCol2.addStretch()
+        layoutCol2.addWidget(laserParams)
 
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
@@ -261,16 +216,12 @@ class Paradigm(QtWidgets.QMainWindow):
         print("Connecting to sound server")
         print('***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****')
         time.sleep(0.2)
-        self.soundClient = imagesoundclient.SoundClient()
-        self.soundID = 1
-        self.imageID = 64
+        self.soundClient = soundclient.SoundClient()
         self.soundClient.start()
 
         # -- Initialize the list of trial parameters --
         self.trialParams = []
-        self.trialImageParams = []
         self.soundParamList = []
-        self.imageParamList = []
 
     def populate_sound_params(self):
 
@@ -312,90 +263,6 @@ class Paradigm(QtWidgets.QMainWindow):
 
         self.soundParamList = productList
 
-    def populate_image_params(self):
-        if self.params['nColSubregion'].get_value():
-            possibleI = list(range(self.params['nRowSubregion'].get_value()))
-            possibleJ = list(range(self.params['nColSubregion'].get_value()))
-
-        else:
-            possibleI = list(range(self.params['nRowGrid'].get_value()))
-            possibleJ = list(range(self.params['nColGrid'].get_value()))
-
-        productList = list(itertools.product(possibleI,possibleJ))
-        # -- If in random presentation mode, shuffle the list of products
-        randomMode = self.params['randomImageMode'].get_string()
-        if randomMode == 'Random':
-            random.shuffle(productList)
-        else:
-            pass
-        
-        self.imageParamList = productList
-
-
-    def prepare_image(self, nextTrial=(0,0)):
-
-        # get params
-        intensity = self.params['lightIntensity'].get_value()/100
-
-        # this is the shape of the broader screen tiling
-        dimsOuter = (self.params['nRowGrid'].get_value(),
-                    self.params['nColGrid'].get_value())
-        
-        # this is the shape of the subregion (if using a single tile from the broader screen)
-        dimsInner = (self.params['nRowSubregion'].get_value(),
-                    self.params['nColSubregion'].get_value())
-        
-        # this is the shape of the entire image array
-        dimsTotal = (max(dimsOuter[0],dimsOuter[0]*dimsInner[0]),
-                    max(dimsOuter[1],dimsOuter[1]*dimsInner[1]))
-        img = np.zeros(dimsTotal, dtype=float)
-
-        # get tile coordinates
-        currentI,currentJ = nextTrial
-
-        if self.params['imageTrial'].get_value():
-            # check if using full screen tiling, or just a subregion
-            if min(dimsInner)==0: # i/j indices iterating over broader screen tiling
-                try:
-                    img[currentI, currentJ] = intensity
-                except:
-                    return img
-
-            else: # i/j indices iterating over a subregion of the screen
-
-                # get indices of subregion
-                subPosX = self.params['subregionPosX'].get_value()
-                subPosY = self.params['subregionPosY'].get_value()
-
-                # error handling for if subregion indices are out of bounds
-                if subPosX >= dimsOuter[0]:
-                    subPosX = 0
-                    self.params['subregionPosX'].set_value(subPosX)
-                
-                if subPosY >= dimsOuter[1]: 
-                    subPosY = 0
-                    self.params['subregionPosY'].set_value(subPosY)
-
-                # convert to indices within the full screen array (dimsOuter)
-                imStart = (subPosX*dimsInner[0],subPosY*dimsInner[1])
-
-                try:
-                    # make image in terms of subregion indices
-                    innerImg = np.zeros(dimsInner,dtype=float)
-                    innerImg[currentI,currentJ] = intensity
-
-                    # paste innerImg into full-size img
-                    img[imStart[0]:imStart[0]+innerImg.shape[0],
-                        imStart[1]:imStart[1]+innerImg.shape[1]] = innerImg
-                except:
-                    return img
-
-        self.params['currentStimRow'].set_value(currentI)
-        self.params['currentStimCol'].set_value(currentJ)
-
-        self.soundClient.set_image(self.imageID, img)
-        return img
-    
 
     def prepare_next_trial(self, nextTrial):
 
@@ -424,22 +291,6 @@ class Paradigm(QtWidgets.QMainWindow):
             self.populate_sound_params()
             self.trialParams = self.soundParamList.pop(0)
 
-        fractionImageTrials = self.params['imageTrialsFraction'].get_value()
-        imageTrial = np.random.rand(1)[0]<fractionImageTrials
-        self.params['imageTrial'].set_value(int(imageTrial))
-
-        if not imageTrial:
-            self.imageParamList = [(-1,-1)] + self.imageParamList
-
-        try:
-            self.trialImageParams = self.imageParamList.pop(0)
-        except IndexError:
-            self.populate_image_params()
-            self.trialImageParams = self.imageParamList.pop(0)
-
-        # else:
-        #     self.trialImageParams = (-1,-1)
-
         # -- Prepare the sound using randomly chosen parameters from parameter lists --
         stimType = self.params['stimType'].get_string()
         stimDur = self.params['stimDur'].get_value()
@@ -462,41 +313,38 @@ class Paradigm(QtWidgets.QMainWindow):
         elif stimType == 'Chord':
             sound = {'type':'chord', 'frequency':self.trialParams[0], 'duration':stimDur,
                   'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
-        elif stimType == 'Noise': 
+        elif stimType == 'Noise':
             sound = {'type':'noise', 'duration':stimDur,
                      'amplitude':targetAmp}
         elif stimType == 'AM':
             sound = {'type':'AM', 'duration':stimDur,
                      'amplitude':targetAmp,'modFrequency':self.trialParams[0]}
         elif stimType == 'ToneTrain':
-            rateThisTrial = int(self.trialParams[2])
-            maxRate = int(self.params['maxModFreq'].get_value())
-            toneDur = 1/(2*maxRate)
-            sound = {'type':'toneTrain', 'duration':stimDur, 
+            sound = {'type':'toneTrain', 'duration':stimDur,
                      'amplitude':targetAmp, 'frequency':self.trialParams[0],
-                     'toneDuration':toneDur, 'rate':rateThisTrial}
+                     'toneDuration':0.025, 'rate':20}
         elif stimType == 'AMtone':
             sound = {'type':'AMtone', 'duration':stimDur, 'toneFrequency':self.trialParams[0],
                      'amplitude':targetAmp,'modFrequency':self.trialParams[2]}
 
-        
+        fractionLaserTrials = self.params['laserTrialsFraction'].get_value()
+        laserTrial = np.random.rand(1)[0]<fractionLaserTrials
+        self.params['laserTrial'].set_value(int(laserTrial))
 
-        # if (stimType == 'Laser') or (stimType == 'LaserTrain'):
-        #     stimOutput = stimSync+laserSync
-        #     serialOutput = 0
-        # elif stimType=='Light':
-        #     stimOutput = stimSync + ['leftLED', 'centerLED', 'rightLED']
-        #     if laserTrial:
-        #         stimOutput = stimOutput + laserSync
-        #     serialOutput = 0
-        # else:
-        stimOutput = stimSync
-        # if laserTrial:
-        # if imageTrial:
-        #     stimOutput = stimOutput + laserSync
-        
-        serialOutput = 1 
-        self.soundClient.set_sound(1,sound)
+        if (stimType == 'Laser') or (stimType == 'LaserTrain'):
+            stimOutput = stimSync+laserSync
+            serialOutput = 0
+        elif stimType=='Light':
+            stimOutput = stimSync + ['leftLED', 'centerLED', 'rightLED']
+            if laserTrial:
+                stimOutput = stimOutput + laserSync
+            serialOutput = 0
+        else:
+            stimOutput = stimSync
+            if laserTrial:
+                stimOutput = stimOutput + laserSync
+            serialOutput = 1
+            self.soundClient.set_sound(1,sound)
 
         syncLightMode = self.params['syncLightMode'].get_string()
         delayToSyncLight = self.params['delayToSyncLight'].get_value()
@@ -515,89 +363,73 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['currentAmpL'].set_value(targetAmp[0])
         self.params['currentAmpR'].set_value(targetAmp[1])
 
-        self.prepare_image(self.trialImageParams)
-
         # -- Prepare the state transition matrix --
         soa = 0.2
-        # if stimType == 'LaserTrain':
-        #     self.sm.add_state(name='startTrial', statetimer = 0,
-        #                       transitions={'Tup':'output1On'})
-        #     self.sm.add_state(name='showImage', statetimer=0,
-        #                   transitions={'Tup':'outputOn'},
-        #                   outputsOn=['centerLED'],
-        #                   serialOut=self.imageID)
-        #     self.sm.add_state(name='output1On', statetimer=stimDur,
-        #                       transitions={'Tup':'output1Off'},
-        #                       outputsOn=stimOutput,
-        #                       serialOut=serialOutput)
-        #     self.sm.add_state(name='output1Off', statetimer = soa-stimDur,
-        #                       transitions={'Tup':'output2On'},
-        #                       outputsOff=stimOutput)
-        #     self.sm.add_state(name='output2On', statetimer=stimDur,
-        #                       transitions={'Tup':'output2Off'},
-        #                       outputsOn=stimOutput,
-        #                       serialOut=serialOutput)
-        #     self.sm.add_state(name='output2Off', statetimer = soa-stimDur,
-        #                       transitions={'Tup':'output3On'},
-        #                       outputsOff=stimOutput)
-        #     self.sm.add_state(name='output3On', statetimer=stimDur,
-        #                       transitions={'Tup':'output3Off'},
-        #                       outputsOn=stimOutput,
-        #                       serialOut=serialOutput)
-        #     self.sm.add_state(name='output3Off', statetimer = soa-stimDur,
-        #                       transitions={'Tup':'output4On'},
-        #                       outputsOff=stimOutput)
-        #     self.sm.add_state(name='output4On', statetimer=stimDur,
-        #                       transitions={'Tup':'output4Off'},
-        #                       outputsOn=stimOutput,
-        #                       serialOut=serialOutput)
-        #     self.sm.add_state(name='output4Off', statetimer = soa-stimDur,
-        #                       transitions={'Tup':'output5On'},
-        #                       outputsOff=stimOutput)
-        #     self.sm.add_state(name='output5On', statetimer=stimDur,
-        #                       transitions={'Tup':'output5Off'},
-        #                       outputsOn=stimOutput,
-        #                       serialOut=serialOutput)
-        #     self.sm.add_state(name='output5Off', statetimer = isi,
-        #                       transitions={'Tup':'readyForNextTrial'},
-        #                       outputsOff=stimOutput)
-        # else:
-        if syncLightMode=='from_stim_offset':
+        if stimType == 'LaserTrain':
             self.sm.add_state(name='startTrial', statetimer = 0,
-                                transitions={'Tup':'showImage'})
-            self.sm.add_state(name='showImage', statetimer=0,
-                        transitions={'Tup':'outputOn'},
-                        # outputsOn=['centerLED'],
-                        serialOut=self.imageID)
-            self.sm.add_state(name='outputOn', statetimer=stimDur,
-                                transitions={'Tup':'outputOff'},
-                                outputsOn=stimOutput,
-                                serialOut=serialOutput)
-            self.sm.add_state(name='outputOff', statetimer=delayToSyncLight,
-                                transitions={'Tup':'syncLightOn'},
-                                outputsOff=stimOutput,
-                                serialOut=imagesoundclient.BLANK_SCREEN)
-            self.sm.add_state(name='syncLightOn', statetimer=syncLightDuration,
-                                transitions={'Tup':'syncLightOff'},
-                                outputsOn=syncLightPort)
-            self.sm.add_state(name='syncLightOff', statetimer=isi-delayToSyncLight-syncLightDuration,
-                                transitions={'Tup':'readyForNextTrial'},
-                                outputsOff=syncLightPort)
-        elif syncLightMode=='overlap_with_stim':
-            self.sm.add_state(name='startTrial', statetimer = 0,
-                                transitions={'Tup':'showImage'})
-            self.sm.add_state(name='showImage', statetimer=0,
-                        transitions={'Tup':'outputOn'},
-                        # outputsOn=['centerLED'],
-                        serialOut=self.imageID)
-            self.sm.add_state(name='outputOn', statetimer=stimDur,
-                                transitions={'Tup':'outputOff'},
-                                outputsOn=stimOutput+syncLightPort,
-                                serialOut=serialOutput)
-            self.sm.add_state(name='outputOff', statetimer=isi,
-                                transitions={'Tup':'readyForNextTrial'},
-                                outputsOff=stimOutput+syncLightPort,
-                                serialOut=imagesoundclient.BLANK_SCREEN)
+                              transitions={'Tup':'output1On'})
+            self.sm.add_state(name='output1On', statetimer=stimDur,
+                              transitions={'Tup':'output1Off'},
+                              outputsOn=stimOutput,
+                              serialOut=serialOutput)
+            self.sm.add_state(name='output1Off', statetimer = soa-stimDur,
+                              transitions={'Tup':'output2On'},
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='output2On', statetimer=stimDur,
+                              transitions={'Tup':'output2Off'},
+                              outputsOn=stimOutput,
+                              serialOut=serialOutput)
+            self.sm.add_state(name='output2Off', statetimer = soa-stimDur,
+                              transitions={'Tup':'output3On'},
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='output3On', statetimer=stimDur,
+                              transitions={'Tup':'output3Off'},
+                              outputsOn=stimOutput,
+                              serialOut=serialOutput)
+            self.sm.add_state(name='output3Off', statetimer = soa-stimDur,
+                              transitions={'Tup':'output4On'},
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='output4On', statetimer=stimDur,
+                              transitions={'Tup':'output4Off'},
+                              outputsOn=stimOutput,
+                              serialOut=serialOutput)
+            self.sm.add_state(name='output4Off', statetimer = soa-stimDur,
+                              transitions={'Tup':'output5On'},
+                              outputsOff=stimOutput)
+            self.sm.add_state(name='output5On', statetimer=stimDur,
+                              transitions={'Tup':'output5Off'},
+                              outputsOn=stimOutput,
+                              serialOut=serialOutput)
+            self.sm.add_state(name='output5Off', statetimer = isi,
+                              transitions={'Tup':'readyForNextTrial'},
+                              outputsOff=stimOutput)
+        else:
+            if syncLightMode=='from_stim_offset':
+                self.sm.add_state(name='startTrial', statetimer = 0,
+                                  transitions={'Tup':'outputOn'})
+                self.sm.add_state(name='outputOn', statetimer=stimDur,
+                                  transitions={'Tup':'outputOff'},
+                                  outputsOn=stimOutput,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='outputOff', statetimer=delayToSyncLight,
+                                  transitions={'Tup':'syncLightOn'},
+                                  outputsOff=stimOutput)
+                self.sm.add_state(name='syncLightOn', statetimer=syncLightDuration,
+                                  transitions={'Tup':'syncLightOff'},
+                                  outputsOn=syncLightPort)
+                self.sm.add_state(name='syncLightOff', statetimer=isi-delayToSyncLight-syncLightDuration,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=syncLightPort)
+            elif syncLightMode=='overlap_with_stim':
+                self.sm.add_state(name='startTrial', statetimer = 0,
+                                  transitions={'Tup':'outputOn'})
+                self.sm.add_state(name='outputOn', statetimer=stimDur,
+                                  transitions={'Tup':'outputOff'},
+                                  outputsOn=stimOutput+syncLightPort,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='outputOff', statetimer=isi,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=stimOutput+syncLightPort)
 
         self.dispatcher.set_state_matrix(self.sm)
         self.dispatcher.ready_to_start_trial()
