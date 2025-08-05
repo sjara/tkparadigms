@@ -68,22 +68,22 @@ class Paradigm(QtWidgets.QMainWindow):
                                                        group='Session parameters')
         sessionParams = self.params.layout_group('Session parameters')
 
-        self.params['minFreq'] = paramgui.NumericParam('Min Frequency (Hz)',
+        self.params['minFreq'] = paramgui.NumericParam('Min Tone Frequency (Hz)',
                                                         value=2000,
                                                         group='Stim parameters')
-        self.params['maxFreq'] = paramgui.NumericParam('Max Frequency (Hz)',
+        self.params['maxFreq'] = paramgui.NumericParam('Max Tone Frequency (Hz)',
                                                         value=40000,
                                                         group='Stim parameters')
-        self.params['numTones'] = paramgui.NumericParam('Number of Frequencies',
+        self.params['numTones'] = paramgui.NumericParam('Number of Tone Frequencies',
                                                          value=16,
                                                          group='Stim parameters')
-        self.params['minModFreq'] = paramgui.NumericParam('Min AM Frequency (Hz)',
+        self.params['minModRate'] = paramgui.NumericParam('Min AM Rate (Hz)',
                                                         value=4,
                                                         group='Stim parameters')
-        self.params['maxModFreq'] = paramgui.NumericParam('Max AM Frequency (Hz)',
+        self.params['maxModRate'] = paramgui.NumericParam('Max AM Rate (Hz)',
                                                         value=64,
                                                         group='Stim parameters')
-        self.params['numModFreqs'] = paramgui.NumericParam('Number of AM Frequencies',
+        self.params['numModRates'] = paramgui.NumericParam('Number of AM Rates',
                                                          value=4,
                                                          group='Stim parameters')
         self.params['minInt'] = paramgui.NumericParam('Min Intensity (dB SPL)',
@@ -119,7 +119,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                             value=0, units='Hz',
                                                             enabled=False, decimals=3,
                                                             group='Stim parameters')
-        self.params['currentMod'] = paramgui.NumericParam('Current Mod Frequency (Hz)',
+        self.params['currentMod'] = paramgui.NumericParam('Current Mod Rate (Hz)',
                                                             value=0, units='Hz',
                                                             enabled=False, decimals=3,
                                                             group='Stim parameters')
@@ -283,13 +283,13 @@ class Paradigm(QtWidgets.QMainWindow):
         maxFreq = self.params['maxFreq'].get_value()
         minFreq = self.params['minFreq'].get_value()
         numFreqs = self.params['numTones'].get_value()
-        maxModFreq = self.params['maxModFreq'].get_value()
-        minModFreq = self.params['minModFreq'].get_value()
-        numModFreqs = self.params['numModFreqs'].get_value()
+        maxModRate = self.params['maxModRate'].get_value()
+        minModRate = self.params['minModRate'].get_value()
+        numModRates = self.params['numModRates'].get_value()
 
         # -- Create a list of frequencies --
         toneList = np.logspace(np.log10(minFreq), np.log10(maxFreq),num = numFreqs)
-        modList = np.logspace(np.log10(minModFreq), np.log10(maxModFreq),num = numModFreqs)
+        modList = np.logspace(np.log10(minModRate), np.log10(maxModRate),num = numModRates)
 
 
         minInt = self.params['minInt'].get_value()
@@ -470,7 +470,7 @@ class Paradigm(QtWidgets.QMainWindow):
                      'amplitude':targetAmp,'modFrequency':self.trialParams[0]}
         elif stimType == 'ToneTrain':
             rateThisTrial = int(self.trialParams[2])
-            maxRate = int(self.params['maxModFreq'].get_value())
+            maxRate = int(self.params['maxModRate'].get_value())
             toneDur = 1/(2*maxRate)
             sound = {'type':'toneTrain', 'duration':stimDur, 
                      'amplitude':targetAmp, 'frequency':self.trialParams[0],

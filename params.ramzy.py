@@ -17,7 +17,7 @@ tuningAMtone = {'subject':'test000','experimenter':'ramzy', 'minFreq':2000, 'max
               'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2,
               'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset',
               'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
-              'soundLocation':'left','minModFreq':2,'maxModFreq':64,'numModFreqs':4}
+              'soundLocation':'left','minModRate':4,'maxModRate':64,'numModRates':5}
 
 #test000 = {'subject':'test000', **tuningFreq}
 test000 = {'subject':'test000', **tuningAM}
@@ -40,10 +40,10 @@ optoTuningAM = {'subject':'poni000','experimenter':'ramzy', 'minFreq':4, 'maxFre
                     'laserTrialsFraction':0.5}
 
 optoTuningAMtone = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
-                    'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.0, 'isiHalfRange':0.5,
+                    'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.5, 'isiHalfRange':0.5,
                     'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset',
                     'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
-                    'soundLocation':'left','minModFreq':2,'maxModFreq':64,'numModFreqs':4,
+                    'soundLocation':'left','minModRate':4,'maxModRate':64,'numModRates':5,
                     'laserTrialsFraction':0.5}
 
 optoNaturalCategories = {'subject':'poni000','experimenter':'ramzy', 'outcomeMode':'passive_exposure',
@@ -79,9 +79,9 @@ poniTuningAM = {'subject':'poni000','experimenter':'ramzy', 'minFreq':4, 'maxFre
 
 
 poniTuningAMtone = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
-                    'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.0, 'isiHalfRange':0.5,
+                    'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.5, 'isiHalfRange':0.5,
                     'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset',
                     'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
-                    'soundLocation':'left','minModFreq':2,'maxModFreq':64,'numModFreqs':4, 
+                    'soundLocation':'left','minModRate':4,'maxModRate':64,'numModRates':2, 
                     'lightIntensity':100, 'nColGrid':4, 'nRowGrid':4, 'nColSubregion':0, 'nRowSubregion':0, 
                     'subregionPosX':0, 'subregionPosY':0, 'randomMode':'Random', 'imageTrialsFraction':0.8}
