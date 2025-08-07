@@ -117,5 +117,5 @@ oddball = {'stimType':'FM', 'oddballStim':'FM_down', 'stimDuration':0.2,
            'oddballPeriod':3}
 
 amdisc = {'allowEarlyWithdrawal':'off', 'punishTimeEarly':0.5,
-          'targetIntensity':70,
-          'highSoundFreq':1600, 'lowSoundFreq':500}
+          'targetIntensity':70, 'highSoundFreq':1600, 'lowSoundFreq':500,
+          'automationMode':'increase_duration'}

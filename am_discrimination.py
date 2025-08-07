@@ -822,11 +822,14 @@ class Paradigm(templates.Paradigm2AFC):
     def execute_automation(self,nextTrial):
         automationMode = self.params['automationMode'].get_string()
         nValid = self.params['nValid'].get_value()
+        nRewarded = self.params['nRewarded'].get_value()
         if automationMode=='increase_delay':
             if nValid>0 and self.results['valid'][nextTrial-1] and not nValid%10:
                 self.params['delayToTargetMean'].add(0.010)
         elif automationMode=='increase_duration':
-            if nValid>0 and self.results['valid'][nextTrial-1] and not nValid%10:
+            #if nValid>0 and self.results['valid'][nextTrial-1] and not nValid%10:
+            #    self.params['targetDuration'].add(0.010)
+            if nValid>0 and self.results['valid'][nextTrial-1] and not nRewarded%10:
                 self.params['targetDuration'].add(0.010)
 
     def closeEvent(self, event):
