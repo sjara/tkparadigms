@@ -3,10 +3,10 @@
 # === Amplitude Modulation (freely moving) ===
 amDiscrimStage0 = {'experimenter':'sara', 'outcomeMode':'sides_direct', 'delayToTargetMean':0,
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
-                     'targetIntensityMode':'fixed'}
+                     'targetIntensityMode':'fixed', 'targetDuration': 0.1}
 amDiscrimStage1 = {'experimenter':'sara', 'outcomeMode':'direct', 'delayToTargetMean':0,
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
-                     'targetIntensityMode':'fixed',}
+                     'targetIntensityMode':'fixed', 'targetDuration': 0.1}
 amDiscrimStage2 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01,
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'automationMode':'increase_delay', 
                      'targetMaxIntensity':60,'targetIntensityMode':'fixed',}
@@ -56,4 +56,10 @@ sole068 = {'subject':'sole068', **amDiscrimStage3}
 sole069 = {'subject':'sole069', **amDiscrimStage3}
 sole070 = {'subject':'sole070', **amDiscrimStage3}
 sole071 = {'subject':'sole071', **amDiscrimBiasCorr}
+sole072 = {'subject':'sole072', **amDiscrimStage0}
+sole073 = {'subject':'sole073', **amDiscrimStage0}
+sole074 = {'subject':'sole074', **amDiscrimStage0}
+sole075 = {'subject':'sole075', **amDiscrimStage0}
+sole076 = {'subject':'sole076', **amDiscrimStage0}
+sole077 = {'subject':'sole077', **amDiscrimStage0}
 test000 = {'subject':'test000', **freqDiscrimStage4}
