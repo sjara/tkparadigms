@@ -8,8 +8,11 @@ amDiscrimStage1 = {'experimenter':'sara', 'outcomeMode':'direct', 'delayToTarget
                      'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
                      'targetIntensityMode':'fixed', 'targetDuration': 0.1}
 amDiscrimStage2 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01,
-                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'automationMode':'increase_delay', 
-                     'targetMaxIntensity':60,'targetIntensityMode':'fixed',}
+                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'automationMode':'increase_duration', 
+                     'targetMaxIntensity':60,'targetIntensityMode':'fixed', 'targetDuration': 0.1 }
+amDiscrimStage21 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01,
+                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'automationMode':'increase_duration', 
+                     'targetMaxIntensity':60,'targetIntensityMode':'fixed', 'targetDuration': 0.25 }
 amDiscrimStage3 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
                      'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
                      'targetIntensityMode':'fixed', 'punishTimeEarly': 0.2, 'targetDuration': 0.2, 'punishSoundIntensity':60, 'allowEarlyWithdrawal': 'off'}
@@ -37,29 +40,22 @@ mixedTasks = {'experimenter':'sara', 'soundTypeMode': 'mixed_tones', 'outcomeMod
 sole048 = {'subject':'sole048', **amDiscrimBiasCorr}
 sole049 = {'subject':'sole049', **amDiscrimStage4}
 sole050 = {'subject':'sole050', **amDiscrimStage3}
-sole051 = {'subject':'sole051', **amDiscrimBiasCorr}
-sole052 = {'subject':'sole052', **amDiscrimStage3}
 sole053 = {'subject':'sole053', **amDiscrimStage4}
 sole054 = {'subject':'sole054', **amDiscrimStage3}
-sole055 = {'subject':'sole055', **amDiscrimStage3}
-sole056 = {'subject':'sole056', **freqDiscrimStage4}
-sole057 = {'subject':'sole057', **amDiscrimBiasCorr}
-sole058 = {'subject':'sole058', **amDiscrimBiasCorr}
+sole056 = {'subject':'sole056', **amDiscrimStage4}
 sole059 = {'subject':'sole059', **freqDiscrimStage3}
-sole060 = {'subject':'sole060', **amDiscrimStage3}
-sole061 = {'subject':'sole061', **amDiscrimStage3}
 sole062 = {'subject':'sole062', **amDiscrimBiasCorr}
 sole064 = {'subject':'sole064', **amDiscrimStage3}
 sole065 = {'subject':'sole065', **amDiscrimStage3}
 sole067 = {'subject':'sole067', **amDiscrimStage4}
-sole068 = {'subject':'sole068', **amDiscrimStage3}
-sole069 = {'subject':'sole069', **amDiscrimStage3}
+sole068 = {'subject':'sole068', **amDiscrimBiasCorr}
+sole069 = {'subject':'sole069', **amDiscrimBiasCorr}
 sole070 = {'subject':'sole070', **amDiscrimStage3}
-sole071 = {'subject':'sole071', **amDiscrimBiasCorr}
-sole072 = {'subject':'sole072', **amDiscrimStage0}
-sole073 = {'subject':'sole073', **amDiscrimStage0}
-sole074 = {'subject':'sole074', **amDiscrimStage0}
-sole075 = {'subject':'sole075', **amDiscrimStage0}
-sole076 = {'subject':'sole076', **amDiscrimStage0}
-sole077 = {'subject':'sole077', **amDiscrimStage0}
-test000 = {'subject':'test000', **freqDiscrimStage4}
+sole071 = {'subject':'sole071', **amDiscrimStage3}
+sole072 = {'subject':'sole072', **amDiscrimStage1}
+sole073 = {'subject':'sole073', **amDiscrimStage1}
+sole074 = {'subject':'sole074', **amDiscrimStage1}
+sole075 = {'subject':'sole075', **amDiscrimStage1}
+sole076 = {'subject':'sole076', **amDiscrimStage1}
+sole077 = {'subject':'sole077', **amDiscrimStage1}
+test000 = {'subject':'test000', **amDiscrimStage2}
