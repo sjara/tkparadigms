@@ -48,7 +48,7 @@ mixedTasks = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTa
 
 sole048 = {'subject':'sole048', **amDiscrimStage2}
 sole049 = {'subject':'sole049', **amDiscrimStage4}
-sole050 = {'subject':'sole050', **amDiscrimStage3}
+sole050 = {'subject':'sole050', **amDiscrimStage2}
 sole053 = {'subject':'sole053', **amDiscrimStage4}
 sole054 = {'subject':'sole054', **amDiscrimStage3}
 sole056 = {'subject':'sole056', **amDiscrimStage4}
