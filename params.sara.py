@@ -15,7 +15,7 @@ amDiscrimStage2 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'dela
 
 amDiscrimStage21 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
                     'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed'
-                    'targetDuration': 0.25, 'automationMode':'increase_duration'}
+                    'targetDuration': 0.2, 'automationMode':'increase_duration'}
                      
 amDiscrimStage3 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
                    'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed'
