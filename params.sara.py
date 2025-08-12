@@ -31,7 +31,7 @@ amDiscrimBiasCorr = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'de
                     
 freqDiscrimStage3 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0,
                      'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
-                     'targetDuration': 0.2, soundTypeMode': 'tones'}
+                     'targetDuration': 0.2, 'soundTypeMode': 'tones'}
                                            
 freqDiscrimBiasCorr = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0,
                        'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60', 'targetIntensityMode':'fixed',
