@@ -1,41 +1,50 @@
 # Parameters for paradigms used by Sara
 
 # === Amplitude Modulation (freely moving) ===
-amDiscrimStage0 = {'experimenter':'sara', 'outcomeMode':'sides_direct', 'delayToTargetMean':0,
-                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
-                     'targetIntensityMode':'fixed', 'targetDuration': 0.1}
-amDiscrimStage1 = {'experimenter':'sara', 'outcomeMode':'direct', 'delayToTargetMean':0,
-                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
-                     'targetIntensityMode':'fixed', 'targetDuration': 0.1}
-amDiscrimStage2 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01,
-                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'automationMode':'increase_duration', 
-                     'targetMaxIntensity':60,'targetIntensityMode':'fixed', 'targetDuration': 0.1 }
-amDiscrimStage21 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01,
-                     'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'automationMode':'increase_duration', 
-                     'targetMaxIntensity':60,'targetIntensityMode':'fixed', 'targetDuration': 0.25 }
-amDiscrimStage3 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
-                     'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
-                     'targetIntensityMode':'fixed', 'punishTimeEarly': 0.2, 'targetDuration': 0.2, 'punishSoundIntensity':60, 'allowEarlyWithdrawal': 'off'}
-amDiscrimStage4 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'psycurveMode':'uniform', 
-                   'psycurveNfreq':6, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2, 
-                   'punishSoundIntensity':60, 'allowEarlyWithdrawal': 'off'}
-amDiscrimBiasCorr = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'antibiasMode':'repeat_mistake','delayToTargetMean':0.2,
-                     'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
-                     'targetIntensityMode':'fixed', 'punishTimeEarly': 0.2, 'targetDuration': 0.2, 'punishSoundIntensity':60, 'allowEarlyWithdrawal': 'off'}
+amDiscrimStage0 = {'experimenter':'sara', 'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0, 
+                   'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,'targetIntensityMode':'fixed',
+                   'targetDuration': 0.1}
 
-freqDiscrimStage3 = {'experimenter':'sara','soundTypeMode': 'tones', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2,
-                     'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
-                     'targetIntensityMode':'fixed', 'punishTimeEarly': 0.2, 'targetDuration': 0.2, 'punishSoundIntensity':60, 'allowEarlyWithdrawal': 'off'}
-freqDiscrimBiasCorr = {'experimenter':'sara','soundTypeMode': 'tones', 'outcomeMode':'only_if_correct', 'antibiasMode':'repeat_mistake','delayToTargetMean':0.2,
-                     'delayToTargetHalfRange':0.05, 'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,
-                     'targetIntensityMode':'fixed', 'punishTimeEarly': 0.2, 'targetDuration': 0.2, 'punishSoundIntensity':60, 'allowEarlyWithdrawal': 'off'}
-freqDiscrimStage4 = {'experimenter':'sara', 'soundTypeMode': 'tones', 'outcomeMode':'only_if_correct', 'psycurveMode':'uniform', 
-                   'psycurveNfreq':6, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2, 'targetDuration': 0.2, 
-                    'punishSoundIntensity':60, 'allowEarlyWithdrawal': 'off'}
+amDiscrimStage1 = {'experimenter':'sara', 'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0, 
+                   'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
+                   'targetDuration': 0.1}
 
-mixedTasks = {'experimenter':'sara', 'soundTypeMode': 'mixed_tones', 'outcomeMode':'only_if_correct', 'psycurveMode':'uniform', 
-              'psycurveNfreq':6, 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0.05, 'targetIntensityMode':'fixed', 'targetMaxIntensity':60, 'punishTimeEarly': 0.2, 'targetDuration': 0.2, 
-              'punishSoundIntensity':60, 'allowEarlyWithdrawal': 'off'}
+amDiscrimStage2 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
+                   'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60,'targetIntensityMode':'fixed',
+                   'targetDuration': 0.1, 'automationMode':'increase_duration' }
+
+amDiscrimStage21 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
+                    'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed'
+                    'targetDuration': 0.25, 'automationMode':'increase_duration'}
+                     
+amDiscrimStage3 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
+                   'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed'
+                   'targetDuration': 0.2}
+
+amDiscrimStage4 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
+                   'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60', 'targetMaxIntensity':60, 'targetIntensityMode':'fixed'
+                   'targetDuration': 0.2, psycurveMode':'uniform', 'psycurveNfreq':6}
+                   
+amDiscrimBiasCorr = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
+                     'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed'
+                     'targetDuration': 0.2, 'antibiasMode':'repeat_mistake'}
+                    
+freqDiscrimStage3 = {'experimenter':'sara','outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0,
+                     'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
+                     'targetDuration': 0.2', soundTypeMode': 'tones'}
+                                           
+freqDiscrimBiasCorr = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0,
+                       'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60', 'targetIntensityMode':'fixed',
+                       'targetDuration': 0.2, 'antibiasMode':'repeat_mistake', soundTypeMode': 'tones'}
+                                           
+freqDiscrimStage4 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0,
+                     'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed', 
+                     'targetDuration': 0.2,'psycurveMode':'uniform', 'psycurveNfreq':6, 'soundTypeMode': 'tones'}                    
+
+mixedTasks = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0,
+              'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
+              'targetDuration': 0.2, , 'psycurveMode':'uniform', 'psycurveNfreq':6', soundTypeMode': 'mixed_tones'}
+             
 
 sole048 = {'subject':'sole048', **amDiscrimStage2}
 sole049 = {'subject':'sole049', **amDiscrimStage4}
