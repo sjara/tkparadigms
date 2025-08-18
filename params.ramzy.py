@@ -49,7 +49,7 @@ optoTuningAMtone = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 
                     'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.5, 'isiHalfRange':0.5,
                     'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset',
                     'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
-                    'soundLocation':'left','minModRate':4,'maxModRate':64,'numModRates':5,
+                    'soundLocation':'binaural','minModRate':4,'maxModRate':64,'numModRates':5,
                     'laserTrialsFraction':0.5}
 
 optoNaturalCategories = {'subject':'poni000','experimenter':'ramzy', 'outcomeMode':'passive_exposure',
