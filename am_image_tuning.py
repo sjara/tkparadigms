@@ -1,6 +1,7 @@
 '''
 Present a range of stimuli (either pure tones or AM noise) logarithmically space
-and at different intensities, combined with displaying images in the center s
+and at different intensities, combined with displaying images within a 2mm x 2mm square
+in the center of the minidisplay screen.
 
 '''
 
