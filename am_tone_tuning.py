@@ -114,6 +114,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                           'ToneTrain', 'AMtone',
                                                           'Laser', 'LaserTrain', 'Light'],
                                                          value=2,group='Stim parameters')
+        
         self.params['currentFreq'] = paramgui.NumericParam('Current Tone Frequency (Hz)',
                                                             value=0, units='Hz',
                                                             enabled=False, decimals=3,
@@ -137,6 +138,8 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['soundLocation'] = paramgui.MenuParam('Sound location',
                                                           ['binaural', 'left', 'right'],
                                                           value=0, group='Stim parameters')
+
+
         stimParams = self.params.layout_group('Stim parameters')
 
         self.params['syncLight'] = paramgui.MenuParam('Sync light',

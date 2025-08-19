@@ -15,7 +15,7 @@ tuningAM = {'subject':'test000','experimenter':'ramzy', 'minFreq':4, 'maxFreq':1
 
 tuningAMtone = {'subject':'test000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
               'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2,
-              'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset',
+              'numRates':5, 'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset',
               'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
               'soundLocation':'left','minModRate':4,'maxModRate':64,'numModRates':5}
 
@@ -34,7 +34,7 @@ optoTuningFreq = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'm
                     'laserTrialsFraction':0.5}
 
 optoTuningAM = {'subject':'poni000','experimenter':'ramzy', 'minFreq':4, 'maxFreq':128, 'numTones':11,
-                    'stimType':'AM', 'stimDur':0.5, 'isiMean':2.0, 'isiHalfRange':0.5,
+                    'stimType':'AM', 'stimDur':0.5, 'isiMean':2.0, 'isiHalfRange':0.5, 
                     'minInt':70,'maxInt':70, 'syncLightMode':'from_stim_offset',
                     'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
                     'laserTrialsFraction':0.5}
@@ -47,7 +47,7 @@ optoValidation = {'subject':'poni000','experimenter':'ramzy', 'minFreq':4, 'maxF
 
 optoTuningAMtone = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
                     'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.5, 'isiHalfRange':0.5,
-                    'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset',
+                    'numRates':2, 'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset',
                     'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
                     'soundLocation':'binaural','minModRate':4,'maxModRate':64,'numModRates':5,
                     'laserTrialsFraction':0.5}
