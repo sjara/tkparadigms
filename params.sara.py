@@ -79,5 +79,5 @@ sole073 = {'subject':'sole073', **amDiscrimStage03}
 sole074 = {'subject':'sole074', **amDiscrimStage03}
 sole075 = {'subject':'sole075', **amDiscrimBiasCorr0}
 sole076 = {'subject':'sole076', **amDiscrimBiasCorr0}
-sole077 = {'subject':'sole077', **aamDiscrimStage03}
+sole077 = {'subject':'sole077', **amDiscrimStage03}
 test000 = {'subject':'test000', **amDiscrimStage2}
