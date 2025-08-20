@@ -47,9 +47,16 @@ optoValidation = {'subject':'poni000','experimenter':'ramzy', 'minFreq':4, 'maxF
 
 optoTuningAMtone = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
                     'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.5, 'isiHalfRange':0.5,
-                    'numModRates':2, 'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset',
+                    'minInt':70, 'maxInt':70, 'numInt':1, 'syncLightMode':'from_stim_offset',
                     'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
-                    'soundLocation':'binaural','minModRate':4,'maxModRate':64,'numModRates':5,
+                    'soundLocation':'binaural','minModRate':4,'maxModRate':64,'numModRates':2,
+                    'laserTrialsFraction':0.5}
+
+optoTuningAMtoneEarbuds = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
+                    'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.5, 'isiHalfRange':0.5,
+                    'minInt':40, 'maxInt':40, 'numInt':1, 'syncLightMode':'from_stim_offset',
+                    'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+                    'soundLocation':'binaural','minModRate':4,'maxModRate':64,'numModRates':2,
                     'laserTrialsFraction':0.5}
 
 optoNaturalCategories = {'subject':'poni000','experimenter':'ramzy', 'outcomeMode':'passive_exposure',
