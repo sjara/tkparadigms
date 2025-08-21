@@ -416,7 +416,7 @@ class Paradigm(QtWidgets.QMainWindow):
                 self.sm.add_state(name='outputOn', statetimer=laserFront,
                                   transitions={'Tup':'outputOff'},
                                   outputsOn=laserSync,
-                                  serialOut=serialOutput)
+                                  serialOut=0)
                 self.sm.add_state(name='outputOn', statetimer=stimDur,
                                   transitions={'Tup':'outputOff'},
                                   outputsOn=stimSync,
@@ -436,7 +436,7 @@ class Paradigm(QtWidgets.QMainWindow):
                 self.sm.add_state(name='outputOn', statetimer=laserFront,
                                   transitions={'Tup':'outputOff'},
                                   outputsOn=laserSync,
-                                  serialOut=serialOutput)
+                                  serialOut=0)
                 self.sm.add_state(name='outputOn', statetimer=stimDur,
                                   transitions={'Tup':'outputOff'},
                                   outputsOn=stimSync,
