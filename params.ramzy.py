@@ -33,6 +33,13 @@ optoTuningFreq = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'm
                     'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
                     'laserTrialsFraction':0.5}
 
+optoTuningFreqEarbuds = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
+                    'numTones':16, 'stimType':'Sine', 'stimDur':0.25, 'isiMean':2.0, 'isiHalfRange':0.5,
+                    'minInt':40, 'maxInt':40, 'numInt':1, 'syncLightMode':'from_stim_offset',
+                    'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+                    'soundLocation':'left',
+                    'laserTrialsFraction':0.5,'laserFrontOverhang':0.25}
+
 optoTuningAM = {'subject':'poni000','experimenter':'ramzy', 'minFreq':4, 'maxFreq':128, 'numTones':11,
                     'stimType':'AM', 'stimDur':0.5, 'isiMean':2.0, 'isiHalfRange':0.5, 
                     'minInt':70,'maxInt':70, 'syncLightMode':'from_stim_offset',
@@ -56,7 +63,7 @@ optoTuningAMtoneEarbuds = {'subject':'poni000','experimenter':'ramzy', 'minFreq'
                     'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.5, 'isiHalfRange':0.5,
                     'minInt':40, 'maxInt':40, 'numInt':1, 'syncLightMode':'from_stim_offset',
                     'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
-                    'soundLocation':'binaural','minModRate':4,'maxModRate':64,'numModRates':2,
+                    'soundLocation':'left','minModRate':4,'maxModRate':64,'numModRates':2,
                     'laserTrialsFraction':0.5}
 
 optoNaturalCategories = {'subject':'poni000','experimenter':'ramzy', 'outcomeMode':'passive_exposure',

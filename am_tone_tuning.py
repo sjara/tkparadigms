@@ -309,6 +309,7 @@ class Paradigm(QtWidgets.QMainWindow):
         elif soundLocation == 'right':
             targetAmp = [0, targetAmp[1]]
 
+
         # -- Determine the sound presentation mode and prepare the appropriate sound
         if stimType == 'Sine':
             sound = {'type':'tone', 'duration':stimDur,
@@ -333,6 +334,7 @@ class Paradigm(QtWidgets.QMainWindow):
         fractionLaserTrials = self.params['laserTrialsFraction'].get_value()
         laserTrial = np.random.rand(1)[0]<fractionLaserTrials
         self.params['laserTrial'].set_value(int(laserTrial))
+        laserFront = self.params['laserFrontOverhang'].get_value()
 
         if (stimType == 'Laser') or (stimType == 'LaserTrain'):
             stimOutput = stimSync+laserSync
@@ -406,6 +408,43 @@ class Paradigm(QtWidgets.QMainWindow):
             self.sm.add_state(name='output5Off', statetimer = isi,
                               transitions={'Tup':'readyForNextTrial'},
                               outputsOff=stimOutput)
+            
+        elif laserTrial and laserFront > 0:
+            if syncLightMode=='from_stim_offset':
+                self.sm.add_state(name='startTrial', statetimer = 0,
+                                  transitions={'Tup':'outputOn'})
+                self.sm.add_state(name='outputOn', statetimer=laserFront,
+                                  transitions={'Tup':'outputOff'},
+                                  outputsOn=laserSync,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='outputOn', statetimer=stimDur,
+                                  transitions={'Tup':'outputOff'},
+                                  outputsOn=stimSync,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='outputOff', statetimer=delayToSyncLight,
+                                  transitions={'Tup':'syncLightOn'},
+                                  outputsOff=stimOutput)
+                self.sm.add_state(name='syncLightOn', statetimer=syncLightDuration,
+                                  transitions={'Tup':'syncLightOff'},
+                                  outputsOn=syncLightPort)
+                self.sm.add_state(name='syncLightOff', statetimer=isi-delayToSyncLight-syncLightDuration,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=syncLightPort)
+            elif syncLightMode=='overlap_with_stim':
+                self.sm.add_state(name='startTrial', statetimer = 0,
+                                  transitions={'Tup':'outputOn'})
+                self.sm.add_state(name='outputOn', statetimer=laserFront,
+                                  transitions={'Tup':'outputOff'},
+                                  outputsOn=laserSync,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='outputOn', statetimer=stimDur,
+                                  transitions={'Tup':'outputOff'},
+                                  outputsOn=stimSync,
+                                  serialOut=serialOutput)
+                self.sm.add_state(name='outputOff', statetimer=isi,
+                                  transitions={'Tup':'readyForNextTrial'},
+                                  outputsOff=stimOutput+syncLightPort)
+        
         else:
             if syncLightMode=='from_stim_offset':
                 self.sm.add_state(name='startTrial', statetimer = 0,
