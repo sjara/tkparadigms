@@ -158,8 +158,8 @@ class Paradigm(QtWidgets.QMainWindow):
                                                                    value=0,
                                                                    group='Laser parameters')
         self.params['laserFrontOverhang'] = paramgui.NumericParam('Laser Front Overhang',value=0,
-                                                                  group='Laser parameters', enabled=False,
-                                                                  decimals=1)
+                                                                  group='Laser parameters', #enabled=False,
+                                                                  decimals=2)
         self.params['laserBackOverhang'] = paramgui.NumericParam('Laser Back Overhang',value=0,
                                                                  group='Laser parameters', enabled=False,
                                                                  decimals=1)
