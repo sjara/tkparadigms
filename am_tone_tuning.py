@@ -412,9 +412,9 @@ class Paradigm(QtWidgets.QMainWindow):
         elif laserTrial and laserFront > 0:
             if syncLightMode=='from_stim_offset':
                 self.sm.add_state(name='startTrial', statetimer = 0,
-                                  transitions={'Tup':'outputOn'})
-                self.sm.add_state(name='outputOn', statetimer=laserFront,
-                                  transitions={'Tup':'outputOff'},
+                                  transitions={'Tup':'laserOn'})
+                self.sm.add_state(name='laserOn', statetimer=laserFront,
+                                  transitions={'Tup':'outputOn'},
                                   outputsOn=laserSync,
                                   serialOut=0)
                 self.sm.add_state(name='outputOn', statetimer=stimDur,
