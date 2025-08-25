@@ -340,7 +340,8 @@ class Paradigm(templates.Paradigm2AFC):
             # -- Apply anti-bias --
             if self.params['antibiasMode'].get_string()=='repeat_mistake':
                 if ((self.results['outcome'][nextTrial-1]==self.results.labels['outcome']['error']) or
-                    (self.results['outcome'][nextTrial-1]==self.results.labels['outcome']['invalid'])):
+                    (self.results['outcome'][nextTrial-1]==self.results.labels['outcome']['invalid']) or
+                    (self.results['outcome'][nextTrial-1]==self.results.labels['outcome']['nochoice'])):
                     self.results['rewardSide'][nextTrial] = self.results['rewardSide'][nextTrial-1]
             # -- Set current block if switching --
             trialsPerBlock = self.params['trialsPerBlock'].get_value()
@@ -647,7 +648,7 @@ class Paradigm(templates.Paradigm2AFC):
                                   outputsOff=trialStartSync, trigger=['laserTimer'])
             else:
                 self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                                  transitions={'Tup':'waitForSidePoke', 'Cout':'earlyWithdrawal'},
+                                  transitions={'Tup':'startRewardTimer', 'Cout':'earlyWithdrawal'},
                                   outputsOn=stimSync+laserOutput, serialOut=soundID,
                                   outputsOff=trialStartSync, trigger=['laserTimer'])
             self.sm.add_state(name='turnOffLaserBeforeWaitSide', statetimer=0,
