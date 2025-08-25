@@ -339,7 +339,8 @@ class Paradigm(templates.Paradigm2AFC):
             self.calculate_results(nextTrial-1)
             # -- Apply anti-bias --
             if self.params['antibiasMode'].get_string()=='repeat_mistake':
-                if self.results['outcome'][nextTrial-1]==self.results.labels['outcome']['error']:
+                if ((self.results['outcome'][nextTrial-1]==self.results.labels['outcome']['error']) or
+                    (self.results['outcome'][nextTrial-1]==self.results.labels['outcome']['invalid'])):
                     self.results['rewardSide'][nextTrial] = self.results['rewardSide'][nextTrial-1]
             # -- Set current block if switching --
             trialsPerBlock = self.params['trialsPerBlock'].get_value()
