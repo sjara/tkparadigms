@@ -104,4 +104,14 @@ poniTuningAMtone = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 
                     'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
                     'soundLocation':'left','minModRate':4,'maxModRate':64,'numModRates':2, 
                     'lightIntensity':100, 'nColGrid':4, 'nRowGrid':4, 'nColSubregion':0, 'nRowSubregion':0, 
-                    'subregionPosX':0, 'subregionPosY':0, 'randomMode':'Random', 'imageTrialsFraction':0.8}
+                    'subregionPosX':0, 'subregionPosY':0, 'randomMode':'Random', 'imageTrialsFraction':0.8,
+                    'imageFrontOverhang':0.25}
+
+poniTuningAMtoneEarbuds = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
+                    'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.5, 'isiHalfRange':0.5,
+                    'minInt':40, 'maxInt':40, 'numInt':1, 'syncLightMode':'from_stim_offset',
+                    'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+                    'soundLocation':'left','minModRate':4,'maxModRate':64,'numModRates':2, 
+                    'lightIntensity':100, 'nColGrid':4, 'nRowGrid':4, 'nColSubregion':0, 'nRowSubregion':0, 
+                    'subregionPosX':0, 'subregionPosY':0, 'randomMode':'Random', 'imageTrialsFraction':0.8,
+                    'imageFrontOverhang':0.25}
