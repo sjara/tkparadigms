@@ -206,6 +206,10 @@ class Paradigm(QtWidgets.QMainWindow):
                                                            group='Image parameters',
                                                            decimals=0)
         
+        self.params['imageFrontOverhang'] = paramgui.NumericParam('Image Front Overhang',value=0,
+                                                                  group='Image parameters', #enabled=False,
+                                                                  decimals=2)
+        
         
         imageParams = self.params.layout_group('Image parameters')
 
@@ -333,7 +337,7 @@ class Paradigm(QtWidgets.QMainWindow):
         self.imageParamList = productList
 
 
-    def prepare_image(self, nextTrial=(0,0)):
+    def prepare_image(self, nextImage=(0,0)):
 
         # get params
         intensity = self.params['lightIntensity'].get_value()/100
@@ -352,7 +356,7 @@ class Paradigm(QtWidgets.QMainWindow):
         img = np.zeros(dimsTotal, dtype=float)
 
         # get tile coordinates
-        currentI,currentJ = nextTrial
+        currentI,currentJ = nextImage
 
         if self.params['imageTrial'].get_value():
             # check if using full screen tiling, or just a subregion
@@ -428,6 +432,8 @@ class Paradigm(QtWidgets.QMainWindow):
         fractionImageTrials = self.params['imageTrialsFraction'].get_value()
         imageTrial = np.random.rand(1)[0]<fractionImageTrials
         self.params['imageTrial'].set_value(int(imageTrial))
+
+        imageFront = self.params['imageFrontOverhang'].get_value()
 
         if not imageTrial:
             self.imageParamList = [(-1,-1)] + self.imageParamList
@@ -566,7 +572,7 @@ class Paradigm(QtWidgets.QMainWindow):
         if syncLightMode=='from_stim_offset':
             self.sm.add_state(name='startTrial', statetimer = 0,
                                 transitions={'Tup':'showImage'})
-            self.sm.add_state(name='showImage', statetimer=0,
+            self.sm.add_state(name='showImage', statetimer=imageFront,
                         transitions={'Tup':'outputOn'},
                         # outputsOn=['centerLED'],
                         serialOut=self.imageID)
