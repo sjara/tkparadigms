@@ -1,6 +1,6 @@
 # Parameters for paradigms used by Sara
 
-# === Amplitude Modulation (freely moving) ===
+# === Amplitude Modulation and frequency discrimination (freely moving) ===
 amDiscrimStage0 = {'experimenter':'sara', 'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0, 
                    'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,'targetIntensityMode':'fixed',
                    'targetDuration': 0.1}
