@@ -81,4 +81,4 @@ sole077 = {'subject':'sole077', **amDiscrimStage03}
 sole078 = {'subject':'sole078', **amDiscrimStage21}
 sole079 = {'subject':'sole079', **amDiscrimBiasCorr0}
 sole080 = {'subject':'sole080', **amDiscrimStage0}
-test000 = {'subject':'test000', **amDiscrimStage03}
+test000 = {'subject':'test000', **Lasor_on_am}
