@@ -58,7 +58,7 @@ mixedTasks = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTa
               'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
               'targetDuration': 0.2, 'psycurveMode':'uniform', 'psycurveNfreq':6, 'soundTypeMode': 'mixed_tones'}
 
-LasorOnAm = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
+lasorOnAm = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
                    'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
                    'targetDuration': 0.3, 'psycurveMode':'uniform', 'psycurveNfreq':6, 'Laser Mode': 'random', 'Laser probability': 0.25, 'Laser duration': 0.3 }
              
@@ -81,4 +81,4 @@ sole077 = {'subject':'sole077', **amDiscrimStage03}
 sole078 = {'subject':'sole078', **amDiscrimStage21}
 sole079 = {'subject':'sole079', **amDiscrimBiasCorr0}
 sole080 = {'subject':'sole080', **amDiscrimStage0}
-test000 = {'subject':'test000', **LasorOnAm}
+test000 = {'subject':'test000', **lasorOnAm}
