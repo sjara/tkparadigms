@@ -60,7 +60,7 @@ mixedTasks = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTa
 
 Lasor_on_am = amDiscrimStage04 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
                    'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
-                   'targetDuration': 0.3, 'psycurveMode':'uniform', 'psycurveNfreq':6, 'Laser Mode': random, 'Laser probability': 0.25, 'Laser duration': 0.3 }
+                   'targetDuration': 0.3, 'psycurveMode':'uniform', 'psycurveNfreq':6, 'Laser Mode': 'random', 'Laser probability': 0.25, 'Laser duration': 0.3 }
              
 
 sole049 = {'subject':'sole049', **freqDiscrimStage3}
