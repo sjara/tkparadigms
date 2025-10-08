@@ -119,3 +119,7 @@ oddball = {'stimType':'FM', 'oddballStim':'FM_down', 'stimDuration':0.2,
 amdisc = {'allowEarlyWithdrawal':'off', 'punishTimeEarly':0.5,
           'targetIntensity':70, 'highSoundFreq':1600, 'lowSoundFreq':500,
           'automationMode':'increase_duration'}
+
+amlaser = {'allowEarlyWithdrawal':'off', 'punishTimeEarly':0.2, 'laserMode':'random',
+           'laserProbability':0.5,
+           'targetIntensity':50, 'visibleLightMode':'center', 'punishIntensity':50}

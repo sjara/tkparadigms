@@ -113,8 +113,10 @@ class Paradigm(templates.Paradigm2AFC):
                                                                 value=0.25, group='Laser parameters')
         self.params['laserDuration'] = paramgui.NumericParam('Laser duration', value=0.5,
                                                              group='Laser parameters')
-        self.params['laserOn'] = paramgui.NumericParam('Laser On', value=0,
-                                                       enabled=False, group='Laser parameters')
+        self.params['laserOn'] = paramgui.MenuParam('Laser On', ['off','on'], value=0,
+                                                    enabled=False, group='Laser parameters')
+        self.params['visibleLightMode'] = paramgui.MenuParam('Visible light', ['off','center','all'], value=0,
+                                                    enabled=True, group='Laser parameters')
         laserParams = self.params.layout_group('Laser parameters')
 
         self.params['automationMode'] = paramgui.MenuParam('Automation Mode',
@@ -154,7 +156,7 @@ class Paradigm(templates.Paradigm2AFC):
                                                         enabled=False,group='Sound parameters')
         self.params['targetAmplitude'] = paramgui.NumericParam('Target amplitude',value=0.0,units='[0-1]',
                                                         enabled=False,decimals=4,group='Sound parameters')
-        self.params['punishSoundIntensity'] = paramgui.NumericParam('Punish amplitude',value=70,
+        self.params['punishSoundIntensity'] = paramgui.NumericParam('Punish intensity',value=70,
                                                               units='dB',enabled=True,
                                                               group='Sound parameters')
         self.params['punishSoundAmplitude'] = paramgui.NumericParam('Punish amplitude',value=0.01,
@@ -205,15 +207,17 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol2.addStretch()
         layoutCol2.addWidget(waterDelivery)
         layoutCol2.addStretch()
+        #layoutCol2.addWidget(switchingParams)
+        #layoutCol2.addStretch()
         layoutCol2.addWidget(choiceParams)
         layoutCol2.addStretch()
 
         layoutCol3.addWidget(timingParams)
         layoutCol3.addStretch()
-        layoutCol3.addWidget(switchingParams)
-        layoutCol3.addStretch()
         layoutCol3.addWidget(psychometricParams)
         layoutCol3.addStretch()
+        layoutCol3.addStretch()
+        layoutCol3.addWidget(switchingParams)
         layoutCol3.addWidget(laserParams)
         layoutCol3.addStretch()
 
@@ -624,7 +628,15 @@ class Paradigm(templates.Paradigm2AFC):
                 else:
                     laserOutput=[]
                     self.params['laserOn'].set_value(0)
-
+                    
+            visibleLightMode = self.params['visibleLightMode'].get_string()
+            if visibleLightMode == 'center':
+                visibleLightOutput = ['centerLED']
+            elif visibleLightMode == 'all':
+                visibleLightOutput = ['centerLED','leftLED','rightLED']
+            else:
+                visibleLightOutput = []
+                
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
                               outputsOn=trialStartSync)
@@ -644,15 +656,15 @@ class Paradigm(templates.Paradigm2AFC):
                 self.sm.add_state(name='playStimulus', statetimer=targetDuration,
                                   transitions={'Tup':'waitForSidePoke', 'Cout':'startRewardTimer',
                                                'laserTimer':'turnOffLaserBeforeWaitSide'},
-                                  outputsOn=stimSync+laserOutput, serialOut=soundID,
+                                  outputsOn=stimSync+laserOutput+visibleLightOutput, serialOut=soundID,
                                   outputsOff=trialStartSync, trigger=['laserTimer'])
             else:
                 self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                                  transitions={'Tup':'startRewardTimer', 'Cout':'earlyWithdrawal'},
-                                  outputsOn=stimSync+laserOutput, serialOut=soundID,
+                                  transitions={'Tup':'turnOffLaserBeforeWaitSide', 'Cout':'earlyWithdrawal'},
+                                  outputsOn=stimSync+laserOutput+visibleLightOutput, serialOut=soundID,
                                   outputsOff=trialStartSync, trigger=['laserTimer'])
             self.sm.add_state(name='turnOffLaserBeforeWaitSide', statetimer=0,
-                              outputsOff=laserOutput,
+                              outputsOff=laserOutput+visibleLightOutput,
                               transitions={'Tup':'startRewardTimer'})
             self.sm.add_state(name='startRewardTimer', statetimer=0,
                               trigger=['rewardAvailabilityTimer'],
@@ -665,7 +677,7 @@ class Paradigm(templates.Paradigm2AFC):
                                            'laserTimer':'turnOffLaserAfterWaitSide'},
                               outputsOff=stimSync)
             self.sm.add_state(name='turnOffLaserAfterWaitSide', statetimer=0,
-                              outputsOff=laserOutput,
+                              outputsOff=laserOutput+visibleLightOutput,
                               transitions={'Tup':'waitForSidePoke'})
             if correctSidePort=='Lin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
@@ -682,23 +694,24 @@ class Paradigm(templates.Paradigm2AFC):
             #                  outputsOff=stimSync,serialOut=self.punishSoundID)
             self.sm.add_state(name='earlyWithdrawal', statetimer=0,
                               transitions={'Tup':'playPunishment'},
-                              outputsOff=stimSync+laserOutput, serialOut=soundclient.STOP_ALL_SOUNDS)
+                              outputsOff=stimSync+laserOutput+visibleLightOutput,
+                              serialOut=soundclient.STOP_ALL_SOUNDS)
             self.sm.add_state(name='playPunishment', statetimer=punishTimeEarly,
                               transitions={'Tup':'readyForNextTrial'},
                               serialOut=self.punishSoundID)
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput],
-                              outputsOff=laserOutput)
+                              outputsOff=laserOutput+visibleLightOutput)
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=[rewardOutput]+stimSync+laserOutput)
+                              outputsOff=[rewardOutput]+stimSync+laserOutput+visibleLightOutput)
             self.sm.add_state(name='punishError', statetimer=punishTimeError,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=laserOutput)
+                              outputsOff=laserOutput+visibleLightOutput)
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=laserOutput)
+                              outputsOff=laserOutput+visibleLightOutput)
 
         else:
             raise TypeError('outcomeMode={0} has not been implemented'.format(outcomeMode))
