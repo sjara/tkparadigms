@@ -64,21 +64,21 @@ lasorOnAm = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTar
              
 
 sole049 = {'subject':'sole049', **amDiscrimStage4}
-sole059 = {'subject':'sole059', **amDiscrimStage3}
+sole059 = {'subject':'sole059', **amDiscrimBiasCorr}
 sole064 = {'subject':'sole064', **amDiscrimStage3}
 sole065 = {'subject':'sole065', **amDiscrimStage3}
-sole067 = {'subject':'sole067', **amDiscrimStage3}
+sole067 = {'subject':'sole067', **amDiscrimBiasCorr}
 sole068 = {'subject':'sole068', **amDiscrimStage3}
 sole069 = {'subject':'sole069', **amDiscrimStage3}
 sole070 = {'subject':'sole070', **amDiscrimStage3}
-sole071 = {'subject':'sole071', **amDiscrimBiasCorr}
+sole071 = {'subject':'sole071', **amDiscrimStage3}
 sole072 = {'subject':'sole072', **amDiscrimStage03}
 sole073 = {'subject':'sole073', **amDiscrimStage03}
 sole074 = {'subject':'sole074', **amDiscrimStage03}
 sole075 = {'subject':'sole075', **amDiscrimStage03}
 sole076 = {'subject':'sole076', **amDiscrimStage03}
-sole077 = {'subject':'sole077', **amDiscrimStage03}
+sole077 = {'subject':'sole077', **amDiscrimBiasCorr0}
 sole078 = {'subject':'sole078', **amDiscrimStage03}
 sole079 = {'subject':'sole079', **amDiscrimStage03}
-sole080 = {'subject':'sole080', **amDiscrimBiasCorr0}
+sole080 = {'subject':'sole080', **amDiscrimStage03}
 test000 = {'subject':'test000', **lasorOnAm}
