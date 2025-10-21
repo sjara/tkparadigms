@@ -1,5 +1,50 @@
 # Parameters for paradigms used by Ramzy
 
+# === For Asym Study ===
+# === AM tuning (test) ===
+tuningFreqL = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
+              'numTones':16, 'stimType':'Sine', 'stimDur':0.1, 'isiMean':1.2, 'isiHalfRange':0.2,
+              'minInt':50, 'maxInt':50, 'numInt':1, 'syncLightMode':'from_stim_offset',
+              'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+              'soundLocation':'left'}
+tuningFreqR = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
+              'numTones':16, 'stimType':'Sine', 'stimDur':0.1, 'isiMean':1.2, 'isiHalfRange':0.2,
+              'minInt':50, 'maxInt':50, 'numInt':1, 'syncLightMode':'from_stim_offset',
+              'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+              'soundLocation':'right'}
+              
+tuningAML = {'subject':'poni000','experimenter':'ramzy', 'minFreq':4, 'maxFreq':128, 'numTones':11,
+            'stimType':'AM', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2, 'minInt':50,
+            'maxInt':50, 'syncLightMode':'from_stim_offset', 'syncLight':'centerLED',
+            'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+            'soundLocation':'left'}
+tuningAMR = {'subject':'poni000','experimenter':'ramzy', 'minFreq':4, 'maxFreq':128, 'numTones':11,
+            'stimType':'AM', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2, 'minInt':50,
+            'maxInt':50, 'syncLightMode':'from_stim_offset', 'syncLight':'centerLED',
+            'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+            'soundLocation':'right'}
+
+tuningAMtoneL = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
+              'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2,
+              'numModRates':5, 'minInt':50, 'maxInt':50, 'numInt':1, 'syncLightMode':'from_stim_offset',
+              'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+              'soundLocation':'left','minModRate':4,'maxModRate':64,'numModRates':5}
+
+tuningAMtoneR = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
+              'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2,
+              'numModRates':5, 'minInt':50, 'maxInt':50, 'numInt':1, 'syncLightMode':'from_stim_offset',
+              'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+              'soundLocation':'right','minModRate':4,'maxModRate':64,'numModRates':5}
+
+naturalSoundL = {'subject':'poni000','experimenter':'ramzy', 'outcomeMode':'passive_exposure',
+                         'delayToTargetMean':3.5, 'delayToTargetHalfRange':0.5,
+                         'targetMaxIntensity':50,'soundLocation':'left'}
+
+naturalSoundR = {'subject':'poni000','experimenter':'ramzy', 'outcomeMode':'passive_exposure',
+                         'delayToTargetMean':3.5, 'delayToTargetHalfRange':0.5,
+                         'targetMaxIntensity':50,'soundLocation':'right'}
+
+
 # === AM tuning (test) ===
 tuningFreq = {'subject':'test000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
               'numTones':16, 'stimType':'Sine', 'stimDur':0.1, 'isiMean':1.2, 'isiHalfRange':0.2,
@@ -34,7 +79,7 @@ optoTuningFreq = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'm
                     'laserTrialsFraction':0.5}
 
 optoTuningFreqEarbuds = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
-                    'numTones':16, 'stimType':'Sine', 'stimDur':0.25, 'isiMean':2.0, 'isiHalfRange':0.5,
+                    'numTones':16, 'stimType':'Sine', 'stimDur':0.25, 'isiMean':2.5, 'isiHalfRange':0.5,
                     'minInt':40, 'maxInt':40, 'numInt':1, 'syncLightMode':'from_stim_offset',
                     'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
                     'soundLocation':'left',
