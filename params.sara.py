@@ -29,6 +29,10 @@ amDiscrimStage4 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'dela
                    'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
                    'targetDuration': 0.2, 'psycurveMode':'uniform', 'psycurveNfreq':6}
 
+amDiscrimStage41 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
+                   'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
+                   'targetDuration': 0.2, 'psycurveMode':'uniform', 'psycurveNfreq':6,  'visibleLightMode':'center'}
+
 
 amDiscrimStage04 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
                    'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
@@ -69,7 +73,7 @@ sole059 = {'subject':'sole059', **amDiscrimBiasCorr}
 sole064 = {'subject':'sole064', **amDiscrimStage3}
 sole065 = {'subject':'sole065', **amDiscrimStage3}
 sole067 = {'subject':'sole067', **amDiscrimStage3}
-sole068 = {'subject':'sole068', **amDiscrimStage4}
+sole068 = {'subject':'sole068', **amDiscrimStage41}
 sole069 = {'subject':'sole069', **amDiscrimBiasCorr}
 sole070 = {'subject':'sole070', **amDiscrimStage3}
 sole071 = {'subject':'sole071', **amDiscrimBiasCorr}
