@@ -45,6 +45,34 @@ naturalSoundR = {'subject':'poni000','experimenter':'ramzy', 'outcomeMode':'pass
                          'delayToTargetMean':3.5, 'delayToTargetHalfRange':0.5,
                          'targetMaxIntensity':stimInt,'soundLocation':'right'}
 
+optoTuningFreqL = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
+                    'numTones':16, 'stimType':'Sine', 'stimDur':0.25, 'isiMean':2.5, 'isiHalfRange':0.5,
+                    'minInt':stimInt, 'maxInt':stimInt, 'numInt':1, 'syncLightMode':'from_stim_offset',
+                    'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+                    'soundLocation':'left',
+                    'laserTrialsFraction':0.5,'laserFrontOverhang':0.25}
+
+optoTuningFreqR = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
+                    'numTones':16, 'stimType':'Sine', 'stimDur':0.25, 'isiMean':2.5, 'isiHalfRange':0.5,
+                    'minInt':stimInt, 'maxInt':stimInt, 'numInt':1, 'syncLightMode':'from_stim_offset',
+                    'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+                    'soundLocation':'right',
+                    'laserTrialsFraction':0.5,'laserFrontOverhang':0.25}
+
+optoTuningAMtoneL = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
+                    'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.5, 'isiHalfRange':0.5,
+                    'minInt':stimInt, 'maxInt':stimInt, 'numInt':1, 'syncLightMode':'from_stim_offset',
+                    'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+                    'soundLocation':'left','minModRate':4,'maxModRate':64,'numModRates':2,
+                    'laserTrialsFraction':0.5}
+
+optoTuningAMtoneR = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
+                    'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.5, 'isiHalfRange':0.5,
+                    'minInt':stimInt, 'maxInt':stimInt, 'numInt':1, 'syncLightMode':'from_stim_offset',
+                    'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
+                    'soundLocation':'right','minModRate':4,'maxModRate':64,'numModRates':2,
+                    'laserTrialsFraction':0.5}
+
 
 # === AM tuning (test) ===
 tuningFreq = {'subject':'test000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
