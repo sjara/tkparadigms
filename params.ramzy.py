@@ -64,14 +64,14 @@ optoTuningAMtoneL = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000,
                     'minInt':stimInt, 'maxInt':stimInt, 'numInt':1, 'syncLightMode':'from_stim_offset',
                     'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
                     'soundLocation':'left','minModRate':4,'maxModRate':64,'numModRates':2,
-                    'laserTrialsFraction':0.5}
+                    'laserTrialsFraction':0.5,'laserFrontOverhang':0.25}
 
 optoTuningAMtoneR = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
                     'numTones':16, 'stimType':'AMtone', 'stimDur':0.5, 'isiMean':2.5, 'isiHalfRange':0.5,
                     'minInt':stimInt, 'maxInt':stimInt, 'numInt':1, 'syncLightMode':'from_stim_offset',
                     'syncLight':'centerLED', 'delayToSyncLight': 0.2, 'syncLightDuration':0.1,
                     'soundLocation':'right','minModRate':4,'maxModRate':64,'numModRates':2,
-                    'laserTrialsFraction':0.5}
+                    'laserTrialsFraction':0.5,'laserFrontOverhang':0.25}
 
 
 # === AM tuning (test) ===
