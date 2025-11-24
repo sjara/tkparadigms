@@ -70,7 +70,7 @@ lasorOnAm = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTar
 
 sole049 = {'subject':'sole049', **amDiscrimStage3}
 sole059 = {'subject':'sole059', **amDiscrimStage3}
-sole064 = {'subject':'sole064', **amDiscrimBiasCorr
+sole064 = {'subject':'sole064', **amDiscrimBiasCorr}
 sole065 = {'subject':'sole065', **amDiscrimBiasCorr}
 sole067 = {'subject':'sole067', **amDiscrimBiasCorr}
 sole068 = {'subject':'sole068', **amDiscrimStage41}
