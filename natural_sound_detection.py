@@ -51,6 +51,7 @@ class Paradigm(templates.Paradigm2AFC):
 
         self.soundFiles = []
         self.soundOrder = []
+        self.soundLocationOrder = []  # Stores (soundID, location) pairs for random_LRB mode
         # FIXME: targetSoundID does not seem necessary
         #self.targetSoundID = {}  # Keys are filenames, items are integers to be used as soundID
         #self.freqFactor = 0
@@ -196,6 +197,9 @@ class Paradigm(templates.Paradigm2AFC):
                                                                     group='Sound parameters')
         self.params['soundLocation'] = paramgui.MenuParam('Sound location',
                                                           ['binaural', 'left', 'right'],
+                                                          value=0, group='Sound parameters')
+        self.params['soundLocationMode'] = paramgui.MenuParam('Sound location mode',
+                                                          ['fixed', 'random_LRB'],
                                                           value=0, group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
@@ -482,20 +486,39 @@ CATEGORY_SUBSET = [1, 3] # Categories to use when threePerTwoCateg (Crickets, Bu
                             and x.endswith(('_00.wav', '_01.wav'))]
 
         nSounds = len(soundsIDlist)
-       
-        # -- Present all sounds before repeating a specific sound --
-        trialIndexInSet = nextTrial%nSounds
-        if trialIndexInSet==0:
-            #self.soundOrder = np.random.permutation(np.arange(nSounds))
-            self.soundOrder = np.random.permutation(soundsIDlist)
-            print(self.soundOrder)
-        soundID = self.soundOrder[trialIndexInSet]
+
+        # -- Handle sound and location selection --
+        if self.params['soundLocationMode'].get_string() == 'random_LRB':
+            # Create all combinations of sounds and locations, present all before repeating
+            possibleLocations = ['left', 'right', 'binaural']
+            nCombinations = nSounds * len(possibleLocations)
+            trialIndexInSet = nextTrial % nCombinations
+            
+            if trialIndexInSet == 0:
+                # Create all (soundID, location) pairs
+                allCombinations = [(sid, loc) for sid in soundsIDlist for loc in possibleLocations]
+                # Shuffle using indices to preserve integer types in tuples
+                indices = np.random.permutation(len(allCombinations))
+                self.soundLocationOrder = [allCombinations[i] for i in indices]
+                print(f"New sound-location order (first 10): {self.soundLocationOrder[:10]}")
+            
+            # Get the current sound-location pair
+            soundID, soundLocation = self.soundLocationOrder[trialIndexInSet]
+            self.params['soundLocation'].set_string(soundLocation)
+        else:
+            # Original behavior: just randomize sounds
+            trialIndexInSet = nextTrial % nSounds
+            if trialIndexInSet == 0:
+                self.soundOrder = np.random.permutation(soundsIDlist)
+                print(self.soundOrder)
+            soundID = self.soundOrder[trialIndexInSet]
         
         soundFilepath = ALL_SOUND_FILE_PATHS[soundID]
         #soundFilepath = os.path.join(SOUND_DIR, soundsList[soundID])
         self.params['soundID'].set_value(soundID)
         self.params['soundFilename'].set_value(os.path.basename(soundFilepath))
         self.currentSoundID = 1 #self.targetSoundID[soundKey]
+ 
 
         # -- Check if it will be a laser trial --
         if self.params['laserMode'].get_string()=='bilateral':
