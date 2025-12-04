@@ -45,6 +45,10 @@ naturalSoundR = {'subject':'poni000','experimenter':'ramzy', 'outcomeMode':'pass
                          'delayToTargetMean':3.5, 'delayToTargetHalfRange':0.5,
                          'targetMaxIntensity':stimInt,'soundLocation':'right'}
 
+naturalSoundLocs = {'subject':'poni000','experimenter':'ramzy', 'outcomeMode':'passive_exposure',
+                         'delayToTargetMean':3.5, 'delayToTargetHalfRange':0.5,
+                         'targetMaxIntensity':stimInt, 'soundLocationMode':'random_LRB'}
+
 optoTuningFreqL = {'subject':'poni000','experimenter':'ramzy', 'minFreq':2000, 'maxFreq':40000,
                     'numTones':16, 'stimType':'Sine', 'stimDur':0.25, 'isiMean':2.5, 'isiHalfRange':0.5,
                     'minInt':stimInt, 'maxInt':stimInt, 'numInt':1, 'syncLightMode':'from_stim_offset',
