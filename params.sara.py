@@ -73,7 +73,7 @@ amDiscrimStage03 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'del
 
 amDiscrimSole068 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
                    'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
-                   'targetDuration': 0.18}
+                   'targetDuration': 0.2, 'psycurveMode':'uniform', 'visibleLightMode':'center'}
 
 sole049 = {'subject':'sole049', **amDiscrimStage3}
 sole059 = {'subject':'sole059', **amDiscrimBiasCorr}
