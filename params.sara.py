@@ -71,26 +71,26 @@ amDiscrimStage03 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'del
                    'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
                    'targetDuration': 0.3}
 
-amDiscrimSole068 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
+amDiscrimSole068 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
                    'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
-                   'targetDuration': 0.2, 'psycurveMode':'uniform', 'visibleLightMode':'center'}
+                   'targetDuration': 0.1, 'automationMode':'increase_duration', 'visibleLightMode':'center'}
 
-sole049 = {'subject':'sole049', **amDiscrimStage3}
+sole049 = {'subject':'sole049', **amDiscrimBiasCorr}
 sole059 = {'subject':'sole059', **amDiscrimStage3}
 sole064 = {'subject':'sole064', **amDiscrimBiasCorr}
-sole065 = {'subject':'sole065', **amDiscrimStage3}
-sole067 = {'subject':'sole067', **amDiscrimBiasCorr}
-sole068 = {'subject':'sole068', **amDiscrimStage2}
-sole069 = {'subject':'sole069', **amDiscrimBiasCorr}
+sole065 = {'subject':'sole065', **amDiscrimBiasCorr}
+sole067 = {'subject':'sole067', **amDiscrimStage3}
+sole068 = {'subject':'sole068', **amDiscrimSole068}
+sole069 = {'subject':'sole069', **amDiscrimStage3}
 sole070 = {'subject':'sole070', **amDiscrimStage4}
 sole071 = {'subject':'sole071', **amDiscrimStage3}
-sole072 = {'subject':'sole072', **amDiscrimStage03}
+sole072 = {'subject':'sole072', **amDiscrimBiasCorr0}
 sole073 = {'subject':'sole073', **amDiscrimStage03}
 sole074 = {'subject':'sole074', **amDiscrimStage03}
 sole075 = {'subject':'sole075', **amDiscrimStage03}
-sole076 = {'subject':'sole076', **amDiscrimBiasCorr0}
-sole077 = {'subject':'sole077', **amDiscrimBiasCorr0}
-sole078 = {'subject':'sole078', **amDiscrimStage03}
+sole076 = {'subject':'sole076', **amDiscrimStage03}
+sole077 = {'subject':'sole077', **amDiscrimStage03}
+sole078 = {'subject':'sole078', **amDiscrimBiasCorr0}
 sole079 = {'subject':'sole079', **amDiscrimStage03}
 sole080 = {'subject':'sole080', **amDiscrimStage03}
 test000 = {'subject':'test000', **lasorOnAm}
