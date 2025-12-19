@@ -72,8 +72,8 @@ amDiscrimStage03 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'del
                    'targetDuration': 0.3}
 
 amDiscrimSole068 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
-                     'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
-                     'targetDuration': 0.3, 'antibiasMode':'repeat_mistake', 'visibleLightMode':'center'}
+                   'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
+                   'targetDuration': 0.3, 'visibleLightMode':'center'}
 
 sole049 = {'subject':'sole049', **amDiscrimBiasCorr}
 sole059 = {'subject':'sole059', **amDiscrimStage3}
