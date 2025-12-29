@@ -95,5 +95,5 @@ sole078 = {'subject':'sole078', **amDiscrimBiasCorr0}
 sole079 = {'subject':'sole079', **amDiscrimStage03}
 sole080 = {'subject':'sole080', **amDiscrimStage03}
 sole081 = {'subject':'sole081', **amDiscrimStage2}
-sole082 = {'subject':'sole082', **amDiscrimStage1}
+sole082 = {'subject':'sole082', **amDiscrimStage0}
 test000 = {'subject':'test000', **lasorOnAm}
