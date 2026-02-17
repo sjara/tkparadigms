@@ -3,15 +3,15 @@
 # === Amplitude Modulation and frequency discrimination (freely moving) ===
 amDiscrimStage0 = {'experimenter':'sara', 'outcomeMode':'sides_direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0, 
                    'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60,'targetIntensityMode':'fixed',
-                   'targetDuration': 0.1, 'visibleLightMode':'center'}
+                   'targetDuration': 0.5, 'visibleLightMode':'center'}
 
 amDiscrimStage1 = {'experimenter':'sara', 'outcomeMode':'direct', 'delayToTargetMean':0, 'delayToTargetHalfRange':0, 
                    'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
-                   'targetDuration': 0.1, 'visibleLightMode':'center'}
+                   'targetDuration': 0.5, 'visibleLightMode':'center'}
 
 amDiscrimStage2 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
                    'allowEarlyWithdrawal':'off', 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
-                   'targetDuration': 0.1, 'visibleLightMode':'center'}
+                   'targetDuration': 0.5, 'visibleLightMode':'center'}
 
 amDiscrimStage20 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
                    'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
