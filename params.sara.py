@@ -10,7 +10,7 @@ amDiscrimStage1 = {'experimenter':'sara', 'outcomeMode':'direct', 'delayToTarget
                    'targetDuration': 0.5, 'visibleLightMode':'center'}
 
 amDiscrimStage2 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
-                   'allowEarlyWithdrawal':'off', 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
+                   'allowEarlyWithdrawal':'on', 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
                    'targetDuration': 0.5, 'visibleLightMode':'center'}
 
 amDiscrimStage20 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
