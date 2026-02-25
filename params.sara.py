@@ -43,7 +43,7 @@ amDiscrimStage04 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'del
                    'targetDuration': 0.3, 'psycurveMode':'uniform', 'psycurveNfreq':6}
                    
 amDiscrimBiasCorr = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.01, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5, 
-                     'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 'antibiasMode': 'repeat_mistake'}
+                     'allowEarlyWithdrawal': 'on', 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 'antibiasMode': 'repeat_mistake'}
 
 
 amDiscrimBiasCorr0 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
