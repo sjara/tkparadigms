@@ -42,9 +42,8 @@ amDiscrimStage04 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'del
                    'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
                    'targetDuration': 0.3, 'psycurveMode':'uniform', 'psycurveNfreq':6}
                    
-amDiscrimBiasCorr = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.01, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5, 
-                     'allowEarlyWithdrawal': 'on', 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 'antibiasMode': 'repeat_mistake'}
-
+amDiscrimBiasCorr = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.01, 'delayToTargetHalfRange': 0, 'allowEarlyWithdrawal': 'on', 
+                             'punishTimeError': 0, 'punishTimeEarly': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 'targetDuration': 0.3, 'antibiasMode': 'repeat_mistake'}
 
 amDiscrimBiasCorr0 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
                      'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
@@ -93,5 +92,5 @@ sole080 = {'subject':'sole080', **amDiscrimStage03}
 sole081 = {'subject':'sole081', **amDiscrimBiasCorr0}
 sole082 = {'subject':'sole082', **amDiscrimStage03}
 sole083 = {'subject':'sole083', **amDiscrimStage3}
-sole083 = {'subject':'sole083', **amDiscrimStage0}
+sole084 = {'subject':'sole084', **amDiscrimStage0}
 test000 = {'subject':'test000', **amDiscrimStage3}
