@@ -81,11 +81,11 @@ amDiscrimStage3LaserOn = {'experimenter':'sara', 'outcomeMode':'only_if_correct'
 
 
 sole072 = {'subject':'sole072', **amDiscrimStage03}
-sole073 = {'subject':'sole073', **amDiscrimStage03}
+sole073 = {'subject':'sole073', **amDiscrimBiasCorr0}
 sole074 = {'subject':'sole074', **amDiscrimStage04}
 sole075 = {'subject':'sole075', **amDiscrimStage03}
-sole076 = {'subject':'sole076', **amDiscrimBiasCorr0}
-sole077 = {'subject':'sole077', **amDiscrimBiasCorr0}
+sole076 = {'subject':'sole076', **amDiscrimStage03}
+sole077 = {'subject':'sole077', **amDiscrimStage03}
 sole078 = {'subject':'sole078', **amDiscrimBiasCorr0}
 sole079 = {'subject':'sole079', **amDiscrimBiasCorr0}
 sole080 = {'subject':'sole080', **amDiscrimStage03}
