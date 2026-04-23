@@ -80,7 +80,7 @@ amDiscrimStage3LaserOn = {'experimenter':'sara', 'outcomeMode':'only_if_correct'
 changedStage3 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.01, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5,
                  'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 'lowAMrate': 4, 'highAMrate': 128}
 
-amDiscrimStage3Guided = {
+amDiscrimStage3 = {
     'experimenter': 'sara',
     'outcomeMode': 'only_if_correct',
     'delayToTargetMean': 0.01,
@@ -91,18 +91,7 @@ amDiscrimStage3Guided = {
     'punishTimeError': 0,
     'targetMaxIntensity': 60,
     'targetIntensityMode': 'fixed',
-
-    # LED guidance
-    'visibleLightMode': 'rewarded_side',
-    'guideLightDelay': 0.1,
-    'guideLightDuration': 0.5,
-    'guideLightFraction': 1.0,
-
-    # fading rule
-    'automationMode': 'fade_guidance',
-    'fadeStep': 0.1,
-    'fadeCriterion': 0.8,
-    'fadeMinTrials': 100
+    'visibleLightMode': 'sides'
 }
 
 
