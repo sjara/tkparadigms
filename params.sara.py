@@ -95,4 +95,4 @@ sole081 = {'subject':'sole081', **amDiscrimBiasCorr0}
 sole082 = {'subject':'sole082', **amDiscrimBiasCorr0}
 sole083 = {'subject':'sole083', **amDiscrimStage3}
 sole084 = {'subject':'sole084', **amDiscrimStage3}
-test000 = {'subject':'test000', **amDiscrimStage93}
+test000 = {'subject':'test000', **changedStage3}
