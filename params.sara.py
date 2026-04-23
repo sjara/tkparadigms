@@ -80,7 +80,30 @@ amDiscrimStage3LaserOn = {'experimenter':'sara', 'outcomeMode':'only_if_correct'
 changedStage3 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.01, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5,
                  'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 'lowAMrate': 4, 'highAMrate': 128}
 
+amDiscrimStage3Guided = {
+    'experimenter': 'sara',
+    'outcomeMode': 'only_if_correct',
+    'delayToTargetMean': 0.01,
+    'delayToTargetHalfRange': 0,
+    'targetDuration': 0.5,
+    'allowEarlyWithdrawal': 'on',
+    'punishTimeEarly': 0,
+    'punishTimeError': 0,
+    'targetMaxIntensity': 60,
+    'targetIntensityMode': 'fixed',
 
+    # LED guidance
+    'visibleLightMode': 'rewarded_side',
+    'guideLightDelay': 0.1,
+    'guideLightDuration': 0.5,
+    'guideLightFraction': 1.0,
+
+    # fading rule
+    'automationMode': 'fade_guidance',
+    'fadeStep': 0.1,
+    'fadeCriterion': 0.8,
+    'fadeMinTrials': 100
+}
 
 
 sole072 = {'subject':'sole072', **amDiscrimBiasCorr0}
@@ -96,4 +119,4 @@ sole081 = {'subject':'sole081', **amDiscrimBiasCorr0}
 sole082 = {'subject':'sole082', **amDiscrimBiasCorr0}
 sole083 = {'subject':'sole083', **amDiscrimStage3}
 sole084 = {'subject':'sole084', **amDiscrimStage3}
-test000 = {'subject':'test000', **changedStage3}
+test000 = {'subject':'test000', **amDiscrimStage3Guided}
