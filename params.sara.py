@@ -80,7 +80,7 @@ amDiscrimStage3LaserOn = {'experimenter':'sara', 'outcomeMode':'only_if_correct'
 changedStage3 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.01, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5,
                  'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 'lowAMrate': 4, 'highAMrate': 128}
 
-amDiscrimStage3 = {
+amDiscrimStage93 = {
     'experimenter': 'sara',
     'outcomeMode': 'only_if_correct',
     'delayToTargetMean': 0.01,
@@ -108,4 +108,4 @@ sole081 = {'subject':'sole081', **amDiscrimBiasCorr0}
 sole082 = {'subject':'sole082', **amDiscrimBiasCorr0}
 sole083 = {'subject':'sole083', **amDiscrimStage3}
 sole084 = {'subject':'sole084', **amDiscrimStage3}
-test000 = {'subject':'test000', **amDiscrimStage3Guided}
+test000 = {'subject':'test000', **amDiscrimStage93}
