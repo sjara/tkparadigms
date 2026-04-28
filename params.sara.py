@@ -82,12 +82,12 @@ changedStage3 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'dela
 
 
 
-sole072 = {'subject':'sole072', **amDiscrimBiasCorr0}
-sole073 = {'subject':'sole073', **amDiscrimBiasCorr0}
-sole074 = {'subject':'sole074', **amDiscrimStage3}
+sole072 = {'subject':'sole072', **amDiscrimStage03}
+sole073 = {'subject':'sole073', **amDiscrimStage03}
+sole074 = {'subject':'sole074', **amDiscrimBiasCorr}
 sole075 = {'subject':'sole075', **amDiscrimStage03}
-sole076 = {'subject':'sole076', **amDiscrimBiasCorr0}
-sole077 = {'subject':'sole077', **amDiscrimBiasCorr0}
+sole076 = {'subject':'sole076', **amDiscrimStage03}
+sole077 = {'subject':'sole077', **amDiscrimStage03}
 sole078 = {'subject':'sole078', **amDiscrimBiasCorr}
 sole079 = {'subject':'sole079', **amDiscrimStage3}
 sole080 = {'subject':'sole080', **amDiscrimStage3}
