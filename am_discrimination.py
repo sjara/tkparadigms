@@ -164,6 +164,14 @@ class Paradigm(templates.Paradigm2AFC):
                                                               group='Sound parameters')
         soundParams = self.params.layout_group('Sound parameters')
 
+        self.params['lightMode'] = paramgui.MenuParam('Light mode',
+                                                      ['off','on'],
+                                                      value=0,group='Light parameters')
+        self.params['lightOffset'] = paramgui.MenuParam('Light offset',
+                                                        ['side_poke','stim_offset'],
+                                                        value=0,group='Light parameters')
+        lightParameters = self.params.layout_group('Light parameters')
+
         self.params['nValid'] = paramgui.NumericParam('N valid',value=0,
                                                       units='',enabled=False,
                                                       group='Report')
@@ -209,6 +217,8 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol2.addStretch()
         #layoutCol2.addWidget(switchingParams)
         #layoutCol2.addStretch()
+        layoutCol2.addWidget(automationParams)
+        layoutCol2.addStretch()
         layoutCol2.addWidget(choiceParams)
         layoutCol2.addStretch()
 
@@ -221,10 +231,10 @@ class Paradigm(templates.Paradigm2AFC):
         layoutCol3.addWidget(laserParams)
         layoutCol3.addStretch()
 
-        layoutCol4.addWidget(automationParams)
-        layoutCol3.addStretch()
         layoutCol4.addWidget(soundParams)
-        layoutCol3.addStretch()
+        layoutCol4.addStretch()
+        layoutCol4.addWidget(lightParameters)
+        layoutCol4.addStretch()
         layoutCol4.addWidget(reportParams)
         layoutCol4.addStretch()
 
@@ -636,7 +646,16 @@ class Paradigm(templates.Paradigm2AFC):
                 visibleLightOutput = ['centerLED','leftLED','rightLED']
             else:
                 visibleLightOutput = []
-                
+
+            lightMode = self.params['lightMode'].get_string()
+            lightOffset = self.params['lightOffset'].get_string()
+            if lightMode == 'on':
+                lightOutput = [ledOutput]
+            else:
+                lightOutput = []
+            lightOffAtStimEnd = lightOutput if lightOffset == 'stim_offset' else []
+            lightOffAtSidePoke = lightOutput if lightOffset == 'side_poke' else []
+
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
                               outputsOn=trialStartSync)
@@ -656,18 +675,21 @@ class Paradigm(templates.Paradigm2AFC):
                 self.sm.add_state(name='playStimulus', statetimer=targetDuration,
                                   transitions={'Tup':'waitForSidePoke', 'Cout':'startRewardTimer',
                                                'laserTimer':'turnOffLaserBeforeWaitSide'},
-                                  outputsOn=stimSync+laserOutput+visibleLightOutput, serialOut=soundID,
+                                  outputsOn=stimSync+laserOutput+visibleLightOutput+lightOutput,
+                                  serialOut=soundID,
                                   outputsOff=trialStartSync, trigger=['laserTimer'])
             else:
                 self.sm.add_state(name='playStimulus', statetimer=targetDuration,
                                   transitions={'Tup':'turnOffLaserBeforeWaitSide', 'Cout':'earlyWithdrawal'},
-                                  outputsOn=stimSync+laserOutput+visibleLightOutput, serialOut=soundID,
+                                  outputsOn=stimSync+laserOutput+visibleLightOutput+lightOutput,
+                                  serialOut=soundID,
                                   outputsOff=trialStartSync, trigger=['laserTimer'])
             self.sm.add_state(name='turnOffLaserBeforeWaitSide', statetimer=0,
-                              outputsOff=laserOutput+visibleLightOutput,
+                              outputsOff=laserOutput+visibleLightOutput+lightOffAtStimEnd,
                               transitions={'Tup':'startRewardTimer'})
             self.sm.add_state(name='startRewardTimer', statetimer=0,
                               trigger=['rewardAvailabilityTimer'],
+                              outputsOff=lightOffAtStimEnd,
                               transitions={'Tup':'waitForSidePoke'})
             # NOTE: The idea of outputsOff here (in other paradigms) was to indicate the end
             #       of the stimulus. But in this paradigm the stimulus will continue to play.
@@ -675,26 +697,30 @@ class Paradigm(templates.Paradigm2AFC):
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                            'rewardAvailabilityTimer':'noChoice',
                                            'laserTimer':'turnOffLaserAfterWaitSide'},
-                              outputsOff=stimSync)
+                              outputsOff=stimSync+lightOffAtStimEnd)
             self.sm.add_state(name='turnOffLaserAfterWaitSide', statetimer=0,
                               outputsOff=laserOutput+visibleLightOutput,
                               transitions={'Tup':'waitForSidePoke'})
             if correctSidePort=='Lin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
-                                  transitions={'Tup':'reward'})
+                                  transitions={'Tup':'reward'},
+                                  outputsOff=lightOffAtSidePoke)
                 self.sm.add_state(name='choiceRight', statetimer=0,
-                                  transitions={'Tup':'punishError'})
+                                  transitions={'Tup':'punishError'},
+                                  outputsOff=lightOffAtSidePoke)
             elif correctSidePort=='Rin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
-                                  transitions={'Tup':'punishError'})
+                                  transitions={'Tup':'punishError'},
+                                  outputsOff=lightOffAtSidePoke)
                 self.sm.add_state(name='choiceRight', statetimer=0,
-                                  transitions={'Tup':'reward'})
+                                  transitions={'Tup':'reward'},
+                                  outputsOff=lightOffAtSidePoke)
             #self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
             #                  transitions={'Tup':'readyForNextTrial'},
             #                  outputsOff=stimSync,serialOut=self.punishSoundID)
             self.sm.add_state(name='earlyWithdrawal', statetimer=0,
                               transitions={'Tup':'playPunishment'},
-                              outputsOff=stimSync+laserOutput+visibleLightOutput,
+                              outputsOff=stimSync+laserOutput+visibleLightOutput+lightOutput,
                               serialOut=soundclient.STOP_ALL_SOUNDS)
             self.sm.add_state(name='playPunishment', statetimer=punishTimeEarly,
                               transitions={'Tup':'readyForNextTrial'},
@@ -711,7 +737,7 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOff=laserOutput+visibleLightOutput)
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=laserOutput+visibleLightOutput)
+                              outputsOff=laserOutput+visibleLightOutput+lightOutput)
 
         else:
             raise TypeError('outcomeMode={0} has not been implemented'.format(outcomeMode))
