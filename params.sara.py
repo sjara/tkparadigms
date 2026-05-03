@@ -80,7 +80,10 @@ amDiscrimStage3LaserOn = {'experimenter':'sara', 'outcomeMode':'only_if_correct'
 changedStage3 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.01, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5,
                  'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 'lowAMrate': 4, 'highAMrate': 128, 'visibleLightMode':'all'}
 amDiscrimStage22 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.01, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5,
-                   'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 'lightMode': 'on', 'lightOffset': 'side_poke',}
+                   'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 'lightMode': 'on', 'lightOffset': 'side_poke'}
+amDiscrimBiasCorr22 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'punishTimeError':0,
+                             'punishTimeEarly':0.2, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed', 'targetDuration':0.3, 'antibiasMode':'repeat_mistake', 'lightMode': 'on', 'lightOffset': 'side_poke'}
+
 
 sole072 = {'subject':'sole072', **amDiscrimStage22}
 sole073 = {'subject':'sole073', **amDiscrimStage22}
