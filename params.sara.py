@@ -49,7 +49,7 @@ amDiscrimBiasCorr0 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'd
                      'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
                      'targetDuration': 0.3, 'antibiasMode':'repeat_mistake'}
                     
-freqDiscrimStage3 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0,
+freqDiscrimStage3 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.1, 'delayToTargetHalfRange':0,
                      'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
                      'targetDuration': 0.2, 'soundTypeMode': 'tones'}
                                            
@@ -79,15 +79,15 @@ amDiscrimStage3LaserOn = {'experimenter':'sara', 'outcomeMode':'only_if_correct'
                    'targetDuration': 0.3, 'visibleLightMode':'center'}
 changedStage3 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.01, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5,
                  'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 'lowAMrate': 4, 'highAMrate': 128, 'visibleLightMode':'all'}
-amDiscrimStage22 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.01, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5,
+amDiscrimStage22 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.1, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5,
                    'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 'lightMode': 'on', 'lightOffset': 'side_poke'}
-amDiscrimBiasCorr22 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'punishTimeError':0,
-                             'punishTimeEarly':0.2, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed', 'targetDuration':0.3, 'antibiasMode':'repeat_mistake', 'lightMode': 'on', 'lightOffset': 'side_poke'}
+amDiscrimBiasCorr22 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.1, 'delayToTargetHalfRange':0, 'allowEarlyWithdrawal':'on', 'punishTimeError':0,
+                             'punishTimeEarly':0, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed', 'targetDuration':0.5, 'antibiasMode':'repeat_mistake', 'lightMode': 'on', 'lightOffset': 'side_poke'}
 
 
-sole072 = {'subject':'sole072', **amDiscrimStage22}
+sole072 = {'subject':'sole072', **amDiscrimStage3}
 sole073 = {'subject':'sole073', **amDiscrimStage22}
-sole074 = {'subject':'sole074', **amDiscrimBiasCorr22}
+sole074 = {'subject':'sole074', **amDiscrimStage22}
 sole075 = {'subject':'sole075', **amDiscrimStage22}
 sole076 = {'subject':'sole076', **amDiscrimStage22}
 sole077 = {'subject':'sole077', **amDiscrimStage22}
