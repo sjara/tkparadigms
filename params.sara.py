@@ -15,11 +15,11 @@ amDiscrimStage2 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'dela
 
 amDiscrimStage20 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
                    'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
-                   'targetDuration': 0.1, 'automationMode':'increase_duration', 'visibleLightMode':'center', 'lightMode': 'on', 'lightOffset': 'side_poke'}
+                   'targetDuration': 0.1, 'automationMode':'increase_duration', 'lightMode': 'on', 'lightOffset': 'side_poke'}
 
 amDiscrimStage21 = {'experimenter':'sara', 'outcomeMode':'on_next_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0, 
                     'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
-                    'targetDuration': 0.25, 'automationMode':'increase_duration',  'lightMode': 'on', 'lightOffset': 'side_poke'}
+                    'targetDuration': 0.25, 'automationMode':'increase_duration', 'lightMode': 'on', 'lightOffset': 'side_poke'}
                      
 amDiscrimStage3 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.01, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5,
                    'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed'}
