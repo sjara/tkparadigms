@@ -85,17 +85,17 @@ amDiscrimBiasCorr22 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', '
                              'punishTimeEarly':0, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed', 'targetDuration':0.5, 'antibiasMode':'repeat_mistake', 'lightMode': 'on', 'lightOffset': 'side_poke'}
 
 
-sole072 = {'subject':'sole072', **amDiscrimStage20}
-sole073 = {'subject':'sole073', **amDiscrimStage20}
-sole074 = {'subject':'sole074', **amDiscrimStage20}
-sole075 = {'subject':'sole075', **amDiscrimStage20}
-sole076 = {'subject':'sole076', **amDiscrimStage20}
-sole077 = {'subject':'sole077', **amDiscrimStage20}
-sole078 = {'subject':'sole078', **amDiscrimStage20}
-sole079 = {'subject':'sole079', **amDiscrimStage20}
-sole080 = {'subject':'sole080', **amDiscrimStage20}
-sole081 = {'subject':'sole081', **amDiscrimStage20}
-sole082 = {'subject':'sole082', **amDiscrimStage20}
+sole072 = {'subject':'sole072', **amDiscrimStage21}
+sole073 = {'subject':'sole073', **amDiscrimStage21}
+sole074 = {'subject':'sole074', **amDiscrimStage21}
+sole075 = {'subject':'sole075', **amDiscrimStage21}
+sole076 = {'subject':'sole076', **amDiscrimStage21}
+sole077 = {'subject':'sole077', **amDiscrimStage21}
+sole078 = {'subject':'sole078', **amDiscrimStage21}
+sole079 = {'subject':'sole079', **amDiscrimStage21}
+sole080 = {'subject':'sole080', **amDiscrimStage21}
+sole081 = {'subject':'sole081', **amDiscrimStage21}
+sole082 = {'subject':'sole082', **amDiscrimStage21}
 sole083 = {'subject':'sole083', **amDiscrimStage3}
 sole084 = {'subject':'sole084', **amDiscrimStage3}
 test000 = {'subject':'test000', **amDiscrimStage22}
