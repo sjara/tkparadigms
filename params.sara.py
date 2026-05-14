@@ -80,7 +80,7 @@ amDiscrimStage3LaserOn = {'experimenter':'sara', 'outcomeMode':'only_if_correct'
 changedStage3 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.01, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5,
                  'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
                  'lowAMrate': 4, 'highAMrate': 128, 'visibleLightMode':'all'}
-amDiscrimStage22 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.1, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5, 
+amDiscrimStage22 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5, 
                        'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
                        'lightMode': 'on', 'lightOffset': 'side_poke', 'automationMode': 'increase_delay'}
 amDiscrimBiasCorr22 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.1, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5, 
