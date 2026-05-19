@@ -86,8 +86,9 @@ amDiscrimStage22 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'd
 amDiscrimBiasCorr22 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.1, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5, 
                        'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
                        'lightMode': 'on', 'lightOffset': 'side_poke', 'automationMode': 'increase_delay'}
-
-
+amDiscrimStage3LedDelay = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.05, 'delayToTargetHalfRange': 0, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay}
 sole072 = {'subject':'sole072', **amDiscrimStage22}
 sole073 = {'subject':'sole073', **amDiscrimStage22}
 sole074 = {'subject':'sole074', **amDiscrimStage22}
