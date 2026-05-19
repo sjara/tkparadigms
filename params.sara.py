@@ -91,7 +91,7 @@ amDiscrimStage3LedDelay = { 'experimenter': 'sara', 'outcomeMode': 'only_if_corr
                        'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay'}
 sole072 = {'subject':'sole072', **amDiscrimStage22}
 sole073 = {'subject':'sole073', **amDiscrimStage22}
-sole074 = {'subject':'sole074', **amDiscrimStage22}
+sole074 = {'subject':'sole074', **amDiscrimStage3LedDelay}
 sole075 = {'subject':'sole075', **amDiscrimStage22}
 sole076 = {'subject':'sole076', **amDiscrimStage22}
 sole077 = {'subject':'sole077', **amDiscrimStage22}
@@ -102,4 +102,4 @@ sole081 = {'subject':'sole081', **amDiscrimStage22}
 sole082 = {'subject':'sole082', **amDiscrimStage22}
 sole083 = {'subject':'sole083', **amDiscrimStage3}
 sole084 = {'subject':'sole084', **amDiscrimStage3}
-test000 = {'subject':'test000', **amDiscrimStage22}
+test000 = {'subject':'test000', **amDiscrimStage3LedDelay}
