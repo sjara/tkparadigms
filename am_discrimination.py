@@ -906,7 +906,7 @@ class Paradigm(templates.Paradigm2AFC):
             if nValid>0 and self.results['valid'][nextTrial-1] and not nRewarded%10:
                 self.params['targetDuration'].add(0.010)
         elif automationMode=='increase_light_delay':
-            if nValid>0 and self.results['valid'][nextTrial-1] and not nValid%5:
+            if nValid>0 and self.results['valid'][nextTrial-1] and not nRewarded%5:
                 self.params['delayToLight'].add(0.020)
                 if self.params['delayToLight'].get_value()>=self.params['targetDuration'].get_value():
                     self.params['delayToLight'].set_value(self.params['targetDuration'].get_value())
