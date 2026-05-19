@@ -79,7 +79,7 @@ class Paradigm(templates.Paradigm2AFC):
         self.params['delayToTarget'] = paramgui.NumericParam('Delay to target',value=0.3,
                                                         units='s',group='Timing parameters',
                                                         enabled=False,decimals=3)
-        self.params['targetDuration'] = paramgui.NumericParam('Target duration',value=0.5,
+        self.params['targetDuration'] = paramgui.NumericParam('Target duration',value=0.5, decimals=3,
                                                         units='s',group='Timing parameters')
         self.params['rewardAvailability'] = paramgui.NumericParam('Reward availability',value=4,
                                                         units='s',group='Timing parameters')
@@ -115,13 +115,14 @@ class Paradigm(templates.Paradigm2AFC):
                                                              group='Laser parameters')
         self.params['laserOn'] = paramgui.MenuParam('Laser On', ['off','on'], value=0,
                                                     enabled=False, group='Laser parameters')
-        self.params['visibleLightMode'] = paramgui.MenuParam('Visible light', ['off','center','all'], value=0,
+        self.params['centerLightMode'] = paramgui.MenuParam('Center light', ['off','center','all'], value=0,
                                                     enabled=True, group='Laser parameters')
         laserParams = self.params.layout_group('Laser parameters')
 
         self.params['automationMode'] = paramgui.MenuParam('Automation Mode',
                                                            ['off','increase_delay',
                                                             'increase_duration',
+                                                            'increase_light_delay',
                                                             'same_left_right','same_right_left',
                                                             'left_right_left'],
                                                            value=0,group='Automation')
@@ -165,11 +166,13 @@ class Paradigm(templates.Paradigm2AFC):
         soundParams = self.params.layout_group('Sound parameters')
 
         self.params['lightMode'] = paramgui.MenuParam('Light mode',
-                                                      ['off','on'],
+                                                      ['off','on','delayed'],
                                                       value=0,group='Light parameters')
-        self.params['lightOffset'] = paramgui.MenuParam('Light offset',
-                                                        ['side_poke','stim_offset'],
-                                                        value=0,group='Light parameters')
+        self.params['delayToLight'] = paramgui.NumericParam('Delay to light', value=0.0, units='s', 
+                                                            decimals=3, group='Light parameters')
+        self.params['lightOffset'] = paramgui.MenuParam('Light offset', ['side_poke','stim_offset'],
+                                                        enabled=False,
+                                                        value=1,group='Light parameters')
         lightParameters = self.params.layout_group('Light parameters')
 
         self.params['nValid'] = paramgui.NumericParam('N valid',value=0,
@@ -287,12 +290,11 @@ class Paradigm(templates.Paradigm2AFC):
         self.soundClient.start()
 
         # -- Specify state matrix with extratimer --
-
-
         self.sm = statematrix.StateMatrix(inputs=rigsettings.INPUTS,
                                           outputs=rigsettings.OUTPUTS,
                                           readystate='readyForNextTrial',
-                                          extratimers=['laserTimer', 'rewardAvailabilityTimer'])
+                                          extratimers=['laserTimer', 'rewardAvailabilityTimer',
+                                                       'delayToLight', 'soundOff'])
         # -- Prepare first trial --
         #self.prepare_next_trial(0)
 
@@ -475,14 +477,20 @@ class Paradigm(templates.Paradigm2AFC):
     def set_state_matrix(self,nextCorrectChoice):
         # print self.sm.get_matrix()
         self.sm.reset_transitions()
+        targetDuration = self.params['targetDuration'].get_value()
         laserDuration = self.params['laserDuration'].get_value()
         rewardAvailability = self.params['rewardAvailability'].get_value()
+        delayToLight = self.params['delayToLight'].get_value()
+        if delayToLight>=targetDuration:
+            delayToLight = targetDuration
+            self.params['delayToLight'].set_value(delayToLight)
 
         self.sm.set_extratimer('laserTimer', duration=laserDuration)
         self.sm.set_extratimer('rewardAvailabilityTimer', duration=rewardAvailability)
+        self.sm.set_extratimer('delayToLight', duration=delayToLight)
+        self.sm.set_extratimer('soundOff', duration=targetDuration)
 
         soundID = 1  # The appropriate sound has already been prepared and sent to server with ID=1
-        targetDuration = self.params['targetDuration'].get_value()
         if nextCorrectChoice==self.results.labels['rewardSide']['left']:
             rewardDuration = self.params['timeWaterValveL'].get_value()
             ledOutput = 'leftLED'
@@ -639,13 +647,13 @@ class Paradigm(templates.Paradigm2AFC):
                     laserOutput=[]
                     self.params['laserOn'].set_value(0)
                     
-            visibleLightMode = self.params['visibleLightMode'].get_string()
-            if visibleLightMode == 'center':
-                visibleLightOutput = ['centerLED']
-            elif visibleLightMode == 'all':
-                visibleLightOutput = ['centerLED','leftLED','rightLED']
+            centerLightMode = self.params['centerLightMode'].get_string()
+            if centerLightMode == 'center':
+                centerLightOutput = ['centerLED']
+            elif centerLightMode == 'all':
+                centerLightOutput = ['centerLED','leftLED','rightLED']
             else:
-                visibleLightOutput = []
+                centerLightOutput = []
 
             lightMode = self.params['lightMode'].get_string()
             lightOffset = self.params['lightOffset'].get_string()
@@ -653,8 +661,8 @@ class Paradigm(templates.Paradigm2AFC):
                 lightOutput = [ledOutput]
             else:
                 lightOutput = []
-            lightOffAtStimEnd = lightOutput if lightOffset == 'stim_offset' else []
-            lightOffAtSidePoke = lightOutput if lightOffset == 'side_poke' else []
+            lightOffAtStimEnd = [ledOutput] if lightOffset == 'stim_offset' else []
+            lightOffAtSidePoke = [ledOutput] if lightOffset == 'side_poke' else []
 
             self.sm.add_state(name='startTrial', statetimer=0,
                               transitions={'Tup':'waitForCenterPoke'},
@@ -664,7 +672,11 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='delayPeriod', statetimer=delayToTarget,
                               transitions={'Tup':'playStimulus','Cout':'waitForCenterPoke'})
             # Note that 'delayPeriod' may happen several times in a trial, so
-            # trialStartSync off here would only meaningful for the first time in the trial.
+            # trialStartSync off here would only be meaningful for the first time in the trial.
+            if lightMode == 'delayed':
+                extraTrigger = ['laserTimer','delayToLight', 'soundOff']
+            else:
+                extraTrigger = ['laserTimer', 'soundOff']
             if allowEarlyWithdrawal=='on':
                 '''
                 self.sm.add_state(name='playStimulus', statetimer=LONGTIME,
@@ -673,54 +685,75 @@ class Paradigm(templates.Paradigm2AFC):
                               outputsOff=trialStartSync, trigger=['laserTimer'])
                 '''
                 self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                                  transitions={'Tup':'waitForSidePoke', 'Cout':'startRewardTimer',
-                                               'laserTimer':'turnOffLaserBeforeWaitSide'},
-                                  outputsOn=stimSync+laserOutput+visibleLightOutput+lightOutput,
+                                  transitions={'Tup':'stopSound', 'Cout':'startRewardTimer',
+                                               'laserTimer':'turnOffLaserBeforeWaitSide',
+                                               'delayToLight':'turnSideLightOnBeforeCout',
+                                               'soundOff':'stopSound'},
+                                  outputsOn=stimSync+laserOutput+centerLightOutput+lightOutput,
                                   serialOut=soundID,
-                                  outputsOff=trialStartSync, trigger=['laserTimer'])
+                                  outputsOff=trialStartSync,
+                                  trigger=extraTrigger)
             else:
                 self.sm.add_state(name='playStimulus', statetimer=targetDuration,
-                                  transitions={'Tup':'turnOffLaserBeforeWaitSide', 'Cout':'earlyWithdrawal'},
-                                  outputsOn=stimSync+laserOutput+visibleLightOutput+lightOutput,
+                                  transitions={'Tup':'turnOffLaserBeforeWaitSide', 
+                                               'Cout':'earlyWithdrawal',
+                                               'delayToLight':'turnSideLightOnBeforeCout'},
+                                  outputsOn=stimSync+laserOutput+centerLightOutput+lightOutput,
                                   serialOut=soundID,
-                                  outputsOff=trialStartSync, trigger=['laserTimer'])
+                                  outputsOff=trialStartSync, trigger=extraTrigger)
+            self.sm.add_state(name='turnSideLightOnBeforeCout', statetimer=0,
+                              outputsOn=[ledOutput],
+                              transitions={'Tup':'waitForSidePoke', 'Cout':'startRewardTimer',
+                                           'laserTimer':'turnOffLaserBeforeWaitSide',
+                                           'soundOff':'stopSound'})           
+            self.sm.add_state(name='turnSideLightOnAfterCout', statetimer=0,
+                              outputsOn=[ledOutput],
+                              transitions={'Tup':'waitForSidePoke',
+                                           'laserTimer':'turnOffLaserBeforeWaitSide',
+                                           'soundOff':'stopSound'})           
+            self.sm.add_state(name='stopSound', statetimer=0,
+                              outputsOff=lightOffAtStimEnd,
+                              transitions={'Tup':'startRewardTimer'},
+                              serialOut=soundclient.STOP_ALL_SOUNDS)           
             self.sm.add_state(name='turnOffLaserBeforeWaitSide', statetimer=0,
-                              outputsOff=laserOutput+visibleLightOutput+lightOffAtStimEnd,
+                              outputsOff=laserOutput+centerLightOutput+lightOffAtStimEnd,
                               transitions={'Tup':'startRewardTimer'})
             self.sm.add_state(name='startRewardTimer', statetimer=0,
                               trigger=['rewardAvailabilityTimer'],
-                              outputsOff=lightOffAtStimEnd,
+                              outputsOff=[],
                               transitions={'Tup':'waitForSidePoke'})
             # NOTE: The idea of outputsOff here (in other paradigms) was to indicate the end
             #       of the stimulus. But in this paradigm the stimulus will continue to play.
             self.sm.add_state(name='waitForSidePoke', statetimer=LONGTIME,
                               transitions={'Lin':'choiceLeft','Rin':'choiceRight',
                                            'rewardAvailabilityTimer':'noChoice',
-                                           'laserTimer':'turnOffLaserAfterWaitSide'},
-                              outputsOff=stimSync+lightOffAtStimEnd)
+                                           'laserTimer':'turnOffLaserAfterWaitSide',
+                                           'delayToLight':'turnSideLightOnAfterCout',
+                                           'soundOff':'stopSound'},
+                              outputsOff=stimSync)
             self.sm.add_state(name='turnOffLaserAfterWaitSide', statetimer=0,
-                              outputsOff=laserOutput+visibleLightOutput,
-                              transitions={'Tup':'waitForSidePoke'})
+                              outputsOff=laserOutput+centerLightOutput,
+                              transitions={'Tup':'waitForSidePoke','soundOff':'stopSound'})
             if correctSidePort=='Lin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'reward'},
-                                  outputsOff=lightOffAtSidePoke)
+                                  outputsOff=lightOffAtSidePoke+lightOffAtStimEnd)
                 self.sm.add_state(name='choiceRight', statetimer=0,
                                   transitions={'Tup':'punishError'},
-                                  outputsOff=lightOffAtSidePoke)
+                                  outputsOff=lightOffAtSidePoke+lightOffAtStimEnd)
             elif correctSidePort=='Rin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'punishError'},
-                                  outputsOff=lightOffAtSidePoke)
+                                  outputsOff=lightOffAtSidePoke+lightOffAtStimEnd)
                 self.sm.add_state(name='choiceRight', statetimer=0,
                                   transitions={'Tup':'reward'},
-                                  outputsOff=lightOffAtSidePoke)
+                                  outputsOff=lightOffAtSidePoke+lightOffAtStimEnd)
             #self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
             #                  transitions={'Tup':'readyForNextTrial'},
             #                  outputsOff=stimSync,serialOut=self.punishSoundID)
             self.sm.add_state(name='earlyWithdrawal', statetimer=0,
                               transitions={'Tup':'playPunishment'},
-                              outputsOff=stimSync+laserOutput+visibleLightOutput+lightOutput,
+                              outputsOff=stimSync+laserOutput+centerLightOutput+lightOutput,
                               serialOut=soundclient.STOP_ALL_SOUNDS)
             self.sm.add_state(name='playPunishment', statetimer=punishTimeEarly,
                               transitions={'Tup':'readyForNextTrial'},
@@ -728,20 +761,20 @@ class Paradigm(templates.Paradigm2AFC):
             self.sm.add_state(name='reward', statetimer=rewardDuration,
                               transitions={'Tup':'stopReward'},
                               outputsOn=[rewardOutput],
-                              outputsOff=laserOutput+visibleLightOutput)
+                              outputsOff=laserOutput+centerLightOutput)
             self.sm.add_state(name='stopReward', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=[rewardOutput]+stimSync+laserOutput+visibleLightOutput)
+                              outputsOff=[rewardOutput]+stimSync+laserOutput+centerLightOutput)
             self.sm.add_state(name='punishError', statetimer=punishTimeError,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=laserOutput+visibleLightOutput)
+                              outputsOff=laserOutput+centerLightOutput)
             self.sm.add_state(name='noChoice', statetimer=0,
                               transitions={'Tup':'readyForNextTrial'},
-                              outputsOff=laserOutput+visibleLightOutput+lightOutput)
+                              outputsOff=laserOutput+centerLightOutput+[ledOutput])
 
         else:
             raise TypeError('outcomeMode={0} has not been implemented'.format(outcomeMode))
-        ###print self.sm ### DEBUG
+        # print(self.sm)  # DEBUG
         self.dispatcher.set_state_matrix(self.sm)
 
 
@@ -872,6 +905,11 @@ class Paradigm(templates.Paradigm2AFC):
             #    self.params['targetDuration'].add(0.010)
             if nValid>0 and self.results['valid'][nextTrial-1] and not nRewarded%10:
                 self.params['targetDuration'].add(0.010)
+        elif automationMode=='increase_light_delay':
+            if nValid>0 and self.results['valid'][nextTrial-1] and not nValid%5:
+                self.params['delayToLight'].add(0.020)
+                if self.params['delayToLight'].get_value()>=self.params['targetDuration'].get_value():
+                    self.params['delayToLight'].set_value(self.params['targetDuration'].get_value())
 
     def closeEvent(self, event):
         '''
