@@ -123,3 +123,7 @@ amdisc = {'allowEarlyWithdrawal':'off', 'punishTimeEarly':0.5,
 amlaser = {'allowEarlyWithdrawal':'off', 'punishTimeEarly':0.2, 'laserMode':'random',
            'laserProbability':0.5,
            'targetIntensity':50, 'visibleLightMode':'center', 'punishIntensity':50}
+
+delaylight = {'lightMode':'delayed', 'delayToLight':1, 'targetDuration':2,
+              'targetMaxIntensity':70}
+
