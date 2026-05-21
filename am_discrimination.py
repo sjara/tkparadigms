@@ -737,17 +737,21 @@ class Paradigm(templates.Paradigm2AFC):
             if correctSidePort=='Lin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'reward'},
-                                  outputsOff=lightOffAtSidePoke+lightOffAtStimEnd)
+                                  outputsOff=lightOffAtSidePoke+lightOffAtStimEnd,
+                                  serialOut=soundclient.STOP_ALL_SOUNDS)
                 self.sm.add_state(name='choiceRight', statetimer=0,
                                   transitions={'Tup':'punishError'},
-                                  outputsOff=lightOffAtSidePoke+lightOffAtStimEnd)
+                                  outputsOff=lightOffAtSidePoke+lightOffAtStimEnd,
+                                  serialOut=soundclient.STOP_ALL_SOUNDS)
             elif correctSidePort=='Rin':
                 self.sm.add_state(name='choiceLeft', statetimer=0,
                                   transitions={'Tup':'punishError'},
-                                  outputsOff=lightOffAtSidePoke+lightOffAtStimEnd)
+                                  outputsOff=lightOffAtSidePoke+lightOffAtStimEnd,
+                                  serialOut=soundclient.STOP_ALL_SOUNDS)
                 self.sm.add_state(name='choiceRight', statetimer=0,
                                   transitions={'Tup':'reward'},
-                                  outputsOff=lightOffAtSidePoke+lightOffAtStimEnd)
+                                  outputsOff=lightOffAtSidePoke+lightOffAtStimEnd,
+                                  serialOut=soundclient.STOP_ALL_SOUNDS)
             #self.sm.add_state(name='earlyWithdrawal', statetimer=punishTimeEarly,
             #                  transitions={'Tup':'readyForNextTrial'},
             #                  outputsOff=stimSync,serialOut=self.punishSoundID)
