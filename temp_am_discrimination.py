@@ -2,6 +2,8 @@
 AM rate discrimination 2AC paradigm.
 
 This paradigm is based on modulation_discrimination.py (by N. Ponvert around 2017)
+
+This version does not average the speaker calibration between L/R speakers.
 '''
 
 import time
