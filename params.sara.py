@@ -92,14 +92,17 @@ amDiscrimStage3LedDelay = { 'experimenter': 'sara', 'outcomeMode': 'only_if_corr
 amDiscrimStage3LedDelayStop = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
                        'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
                        'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.46}
+amDiscrimStage3LedDelayStop1 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.48}
 
-sole072 = {'subject':'sole072', **amDiscrimStage3LedDelayStop}
+sole072 = {'subject':'sole072', **amDiscrimStage3LedDelayStop1}
 sole074 = {'subject':'sole074', **amDiscrimStage3LedDelayStop}
-sole076 = {'subject':'sole076', **amDiscrimStage3LedDelayStop}
+sole076 = {'subject':'sole076', **amDiscrimStage3LedDelayStop1}
 sole077 = {'subject':'sole077', **amDiscrimStage3LedDelayStop}
-sole078 = {'subject':'sole078', **amDiscrimStage3LedDelayStop}
-sole079 = {'subject':'sole079', **amDiscrimStage3LedDelayStop}
-sole080 = {'subject':'sole080', **amDiscrimStage3LedDelayStop}
+sole078 = {'subject':'sole078', **amDiscrimStage3LedDelayStop1}
+sole079 = {'subject':'sole079', **amDiscrimStage3LedDelayStop1}
+sole080 = {'subject':'sole080', **amDiscrimStage3LedDelayStop1}
 sole081 = {'subject':'sole081', **amDiscrimStage3LedDelayStop}
 sole082 = {'subject':'sole082', **amDiscrimStage3LedDelayStop}
 sole083 = {'subject':'sole083', **amDiscrimStage3}
