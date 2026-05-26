@@ -170,6 +170,8 @@ class Paradigm(templates.Paradigm2AFC):
                                                       value=0,group='Light parameters')
         self.params['delayToLight'] = paramgui.NumericParam('Delay to light', value=0.0, units='s', 
                                                             decimals=3, group='Light parameters')
+        self.params['maxDelayToLight'] = paramgui.NumericParam('Max delay to light', value=100.0, units='s',
+                                                               decimals=3, group='Light parameters')
         self.params['lightOffset'] = paramgui.MenuParam('Light offset', ['side_poke','stim_offset'],
                                                         enabled=False,
                                                         value=1,group='Light parameters')
@@ -481,8 +483,9 @@ class Paradigm(templates.Paradigm2AFC):
         laserDuration = self.params['laserDuration'].get_value()
         rewardAvailability = self.params['rewardAvailability'].get_value()
         delayToLight = self.params['delayToLight'].get_value()
-        if delayToLight>=targetDuration:
-            delayToLight = targetDuration
+        maxDelayToLight = self.params['maxDelayToLight'].get_value()
+        if delayToLight >= maxDelayToLight or delayToLight >= targetDuration:
+            delayToLight = min(maxDelayToLight, targetDuration)
             self.params['delayToLight'].set_value(delayToLight)
 
         self.sm.set_extratimer('laserTimer', duration=laserDuration)
@@ -913,8 +916,10 @@ class Paradigm(templates.Paradigm2AFC):
         elif automationMode=='increase_light_delay':
             if nValid>0 and lastTrialWasCorrect and not nRewarded%5:
                 self.params['delayToLight'].add(0.020)
-                if self.params['delayToLight'].get_value()>=self.params['targetDuration'].get_value():
-                    self.params['delayToLight'].set_value(self.params['targetDuration'].get_value())
+                if self.params['delayToLight'].get_value() >= self.params['maxDelayToLight'].get_value() or \
+                        self.params['delayToLight'].get_value() >= self.params['targetDuration'].get_value():
+                    self.params['delayToLight'].set_value(min(self.params['maxDelayToLight'].get_value(),
+                                                              self.params['targetDuration'].get_value()))
 
     def closeEvent(self, event):
         '''
