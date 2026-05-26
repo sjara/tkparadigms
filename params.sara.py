@@ -101,8 +101,7 @@ sole078 = {'subject':'sole078', **amDiscrimStage3LedDelayStop}
 sole079 = {'subject':'sole079', **amDiscrimStage3LedDelayStop}
 sole080 = {'subject':'sole080', **amDiscrimStage3LedDelayStop}
 sole081 = {'subject':'sole081', **amDiscrimStage3LedDelayStop}
-sole082 = {'subject':'sole082', **v
-          }
+sole082 = {'subject':'sole082', **amDiscrimStage3LedDelayStop}
 sole083 = {'subject':'sole083', **amDiscrimStage3}
 sole084 = {'subject':'sole084', **amDiscrimStage3}
 test000 = {'subject':'test000', **amDiscrimStage3LedDelay}
