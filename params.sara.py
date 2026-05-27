@@ -89,12 +89,56 @@ amDiscrimBiasCorr22 = {'experimenter': 'sara', 'outcomeMode': 'only_if_correct',
 amDiscrimStage3LedDelay = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
                        'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
                        'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay'}
-amDiscrimStage3LedDelayStop = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
-                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
-                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.46}
+
 amDiscrimStage3LedDelayStop1 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
                        'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.3}
+amDiscrimStage3LedDelayStop2 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.32}
+amDiscrimStage3LedDelayStop3 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.34}
+amDiscrimStage3LedDelayStop4 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.36}
+amDiscrimStage3LedDelayStop5 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.38}
+amDiscrimStage3LedDelayStop6 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.4}
+amDiscrimStage3LedDelayStop7 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.42}
+amDiscrimStage3LedDelayStop8 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.44}
+amDiscrimStage3LedDelayStop9 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.46}
+amDiscrimStage3LedDelayStop10 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
                        'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.48}
+amDiscrimStage3LedDelayStop1 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.49}
+amDiscrimStage3LedDelayStop11 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.495}
+amDiscrimStage3LedDelayStop12 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.496}
+amDiscrimStage3LedDelayStop13 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.497}
+amDiscrimStage3LedDelayStop14 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.498}
+amDiscrimStage3LedDelayStop15 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.499}
+
 
 sole072 = {'subject':'sole072', **amDiscrimStage3LedDelayStop1}
 sole074 = {'subject':'sole074', **amDiscrimStage3LedDelayStop}
