@@ -151,5 +151,5 @@ sole081 = {'subject':'sole081', **amDiscrimStage3LedDelayStop1}
 sole082 = {'subject':'sole082', **amDiscrimStage3LedDelayStop8}
 sole083 = {'subject':'sole083', **amDiscrimStage3}
 sole084 = {'subject':'sole084', **amDiscrimStage3}
-sole086 =  {'subject':'sole084', **amDiscrimStage0}
+sole086 =  {'subject':'sole086', **amDiscrimStage0}
 test000 = {'subject':'test000', **amDiscrimStage3LedDelay}
