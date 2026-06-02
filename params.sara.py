@@ -141,7 +141,7 @@ amDiscrimStage3LedDelayStop16 = { 'experimenter': 'sara', 'outcomeMode': 'only_i
 
 
 sole072 = {'subject':'sole072', **amDiscrimStage3LedDelayStop10}
-sole074 = {'subject':'sole074', **amDiscrimStage3LedDelayStop1}
+sole074 = {'subject':'sole074', **amDiscrimStage3LedDelayStop8}
 sole076 = {'subject':'sole076', **amDiscrimStage3LedDelayStop11}
 sole077 = {'subject':'sole077', **amDiscrimStage3LedDelayStop10}
 sole078 = {'subject':'sole078', **amDiscrimStage3LedDelayStop12}
