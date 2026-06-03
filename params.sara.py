@@ -49,9 +49,9 @@ amDiscrimBiasCorr0 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'd
                      'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
                      'targetDuration': 0.3, 'antibiasMode':'repeat_mistake'}
                     
-freqDiscrimStage3 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.1, 'delayToTargetHalfRange':0,
-                     'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
-                     'targetDuration': 0.2, 'soundTypeMode': 'tones'}
+freqDiscrimStage3 = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.2, 'delayToTargetHalfRange':0,
+                     'allowEarlyWithdrawal':'on', 'punishTimeEarly': 0, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
+                     'targetDuration': 0.5, 'soundTypeMode': 'tones', 'automationMode': 'increase_delay'}
                                            
 freqDiscrimBiasCorr = {'experimenter':'sara', 'outcomeMode':'only_if_correct', 'delayToTargetMean':0.01, 'delayToTargetHalfRange':0,
                        'allowEarlyWithdrawal':'off', 'punishTimeEarly': 0.2, 'punishSoundIntensity':60, 'targetMaxIntensity':60, 'targetIntensityMode':'fixed',
@@ -152,7 +152,7 @@ sole079 = {'subject':'sole079', **amDiscrimStage3LedDelayStop17}
 sole080 = {'subject':'sole080', **amDiscrimStage3LedDelayStop11}
 sole081 = {'subject':'sole081', **amDiscrimStage3LedDelayStop1}
 sole082 = {'subject':'sole082', **amDiscrimStage3LedDelayStop8}
-sole083 = {'subject':'sole083', **amDiscrimStage3}
+sole083 = {'subject':'sole083', **freqDiscrimStage3}
 sole084 = {'subject':'sole084', **amDiscrimStage3}
 sole086 =  {'subject':'sole086', **amDiscrimStage0}
 test000 = {'subject':'test000', **amDiscrimStage3LedDelay}
