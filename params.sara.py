@@ -141,15 +141,18 @@ amDiscrimStage3LedDelayStop16 = { 'experimenter': 'sara', 'outcomeMode': 'only_i
 amDiscrimStage3LedDelayStop17 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
                        'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
                        'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.5}
+amDiscrimStage3LedDelayStopbias17 = { 'experimenter': 'sara', 'outcomeMode': 'only_if_correct', 'delayToTargetMean': 0.2, 'delayToTargetHalfRange': 0.02, 'targetDuration': 0.5, 
+                       'allowEarlyWithdrawal': 'on', 'punishTimeEarly': 0, 'punishTimeError': 0, 'targetMaxIntensity': 60, 'targetIntensityMode': 'fixed', 
+                       'lightMode': 'delayed', 'lightOffset': 'side_poke', 'automationMode': 'increase_light_delay', 'maxDelayToLight': 0.5, 'antibiasMode':'repeat_mistake'}
 
 
-sole072 = {'subject':'sole072', **amDiscrimStage3LedDelayStop17}
+sole072 = {'subject':'sole072', **amDiscrimStage3LedDelayStopbias17}
 sole074 = {'subject':'sole074', **amDiscrimStage3LedDelayStop17}
-sole076 = {'subject':'sole076', **amDiscrimStage3LedDelayStop17}
-sole077 = {'subject':'sole077', **amDiscrimStage3LedDelayStop17}
-sole078 = {'subject':'sole078', **amDiscrimStage3LedDelayStop17}
-sole079 = {'subject':'sole079', **amDiscrimStage3LedDelayStop17}
-sole080 = {'subject':'sole080', **amDiscrimStage3LedDelayStop17}
+sole076 = {'subject':'sole076', **amDiscrimStage3LedDelayStopbias17}
+sole077 = {'subject':'sole077', **amDiscrimStage3LedDelayStopbias17}
+sole078 = {'subject':'sole078', **amDiscrimStage3LedDelayStopbias17}
+sole079 = {'subject':'sole079', **amDiscrimStage3LedDelayStopbias17}
+sole080 = {'subject':'sole080', **amDiscrimStage3LedDelayStopbias17}
 sole081 = {'subject':'sole081', **amDiscrimStage3LedDelayStop17}
 sole082 = {'subject':'sole082', **amDiscrimStage3LedDelayStop17}
 sole083 = {'subject':'sole083', **freqDiscrimStage3}
