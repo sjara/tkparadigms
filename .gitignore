@@ -4,3 +4,4 @@
 .emacs*
 old
 doc/_build
+.vscode
