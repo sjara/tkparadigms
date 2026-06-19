@@ -11,7 +11,6 @@ x Add suffix for filename.
 """
 
 import numpy as np
-import itertools
 import random
 import time
 from qtpy import QtWidgets
@@ -67,23 +66,23 @@ class Paradigm(QtWidgets.QMainWindow):
                                                        group='Session parameters')
         sessionParams = self.params.layout_group('Session parameters')
 
-        self.params['minFreq'] = paramgui.NumericParam('Min Frequency (Hz)',
+        self.params['freqLow'] = paramgui.NumericParam('Low Frequency (Hz)',
                                                         value=2000,
                                                         group='Stim parameters')
-        self.params['maxFreq'] = paramgui.NumericParam('Max Frequency (Hz)',
+        self.params['intLow'] = paramgui.NumericParam('Low Intensity (dB SPL)',
+                                                       value=60,
+                                                       group='Stim parameters')
+        self.params['freqMid'] = paramgui.NumericParam('Mid Frequency (Hz)',
+                                                        value=8000,
+                                                        group='Stim parameters')
+        self.params['intMid'] = paramgui.NumericParam('Mid Intensity (dB SPL)',
+                                                       value=60,
+                                                       group='Stim parameters')
+        self.params['freqHigh'] = paramgui.NumericParam('High Frequency (Hz)',
                                                         value=40000,
                                                         group='Stim parameters')
-        self.params['numTones'] = paramgui.NumericParam('Number of Frequencies',
-                                                         value=16,
-                                                         group='Stim parameters')
-        self.params['minInt'] = paramgui.NumericParam('Min Intensity (dB SPL)',
+        self.params['intHigh'] = paramgui.NumericParam('High Intensity (dB SPL)',
                                                        value=60,
-                                                       group='Stim parameters')
-        self.params['maxInt'] = paramgui.NumericParam('Max Intensity (dB SPL)',
-                                                       value=60,
-                                                       group='Stim parameters')
-        self.params['numInt'] = paramgui.NumericParam('Number of Intensities',
-                                                       value=1,
                                                        group='Stim parameters')
         self.params['stimDur'] = paramgui.NumericParam('Stimulus Duration (s)',
                                                         value=0.1,
@@ -180,39 +179,26 @@ class Paradigm(QtWidgets.QMainWindow):
 
     def populate_sound_params(self):
 
-        '''This function reads the GUI inputs and populates a list of three-item tuples
-        containing the frequency, and amplitude for each trial. This function is
+        '''This function reads the GUI inputs and populates a list of two-item tuples
+        containing the frequency and intensity for each trial. This function is
         called by prepare_next_trial at the beginning of the experiment and whenever
         we run out of combinations of sounds to present'''
 
         # -- Get the parameters --
-        maxFreq = self.params['maxFreq'].get_value()
-        minFreq = self.params['minFreq'].get_value()
-        numFreqs = self.params['numTones'].get_value()
+        freqIntPairs = [(self.params['freqLow'].get_value(), self.params['intLow'].get_value()),
+                         (self.params['freqMid'].get_value(), self.params['intMid'].get_value()),
+                         (self.params['freqHigh'].get_value(), self.params['intHigh'].get_value())]
 
-        # -- Create a list of frequencies --
-        toneList = np.logspace(np.log10(minFreq), np.log10(maxFreq),num = numFreqs)
-
-
-        minInt = self.params['minInt'].get_value()
-        maxInt = self.params['maxInt'].get_value()
-        numInt = self.params['numInt'].get_value()
-
-        ampList = np.linspace(minInt, maxInt, num=numInt)
-
-        # -- Make a tuple list of all of the products of the three parameter lists
-        productList = list(itertools.product(toneList, ampList))
-
-        # -- If in random presentation mode, shuffle the list of products
+        # -- If in random presentation mode, shuffle the list of pairs
         randomMode = self.params['randomMode'].get_string()
         if randomMode == 'Random':
-            random.shuffle(productList)
+            random.shuffle(freqIntPairs)
         else:
             pass
 
-        # -- Set the sound parameter list to the product list
+        # -- Set the sound parameter list to the list of pairs
 
-        self.soundParamList = productList
+        self.soundParamList = freqIntPairs
 
 
     def prepare_next_trial(self, nextTrial):
