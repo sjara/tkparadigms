@@ -69,22 +69,22 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['freqLow'] = paramgui.NumericParam('Low Frequency (Hz)',
                                                         value=2000,
                                                         group='Stim parameters')
-        self.params['intLow'] = paramgui.NumericParam('Low Intensity (dB SPL)',
+        self.params['intensityLow'] = paramgui.NumericParam('Low Intensity (dB SPL)',
                                                        value=60,
                                                        group='Stim parameters')
         self.params['freqMid'] = paramgui.NumericParam('Mid Frequency (Hz)',
                                                         value=8000,
                                                         group='Stim parameters')
-        self.params['intMid'] = paramgui.NumericParam('Mid Intensity (dB SPL)',
+        self.params['intensityMid'] = paramgui.NumericParam('Mid Intensity (dB SPL)',
                                                        value=60,
                                                        group='Stim parameters')
         self.params['freqHigh'] = paramgui.NumericParam('High Frequency (Hz)',
                                                         value=40000,
                                                         group='Stim parameters')
-        self.params['intHigh'] = paramgui.NumericParam('High Intensity (dB SPL)',
+        self.params['intensityHigh'] = paramgui.NumericParam('High Intensity (dB SPL)',
                                                        value=60,
                                                        group='Stim parameters')
-        self.params['stimDur'] = paramgui.NumericParam('Stimulus Duration (s)',
+        self.params['stimDuration'] = paramgui.NumericParam('Stimulus Duration (s)',
                                                         value=0.1,
                                                         group='Stim parameters')
         self.params['isiMean'] = paramgui.NumericParam('Interstimulus interval mean (s)',
@@ -151,10 +151,6 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1.addWidget(self.dispatcher.widget)
         layoutCol1.addWidget(self.saveData)
 
-        self.clearButton = QtWidgets.QPushButton('Clear Stim List', self)
-        self.clearButton.clicked.connect(self.clear_tone_list)
-        layoutCol1.addWidget(self.clearButton)
-
         layoutCol2.addWidget(stimParams)
         layoutCol2.addStretch()
 
@@ -185,9 +181,9 @@ class Paradigm(QtWidgets.QMainWindow):
         we run out of combinations of sounds to present'''
 
         # -- Get the parameters --
-        freqIntPairs = [(self.params['freqLow'].get_value(), self.params['intLow'].get_value()),
-                         (self.params['freqMid'].get_value(), self.params['intMid'].get_value()),
-                         (self.params['freqHigh'].get_value(), self.params['intHigh'].get_value())]
+        freqIntPairs = [(self.params['freqLow'].get_value(), self.params['intensityLow'].get_value()),
+                         (self.params['freqMid'].get_value(), self.params['intensityMid'].get_value()),
+                         (self.params['freqHigh'].get_value(), self.params['intensityHigh'].get_value())]
 
         # -- If in random presentation mode, shuffle the list of pairs
         randomMode = self.params['randomMode'].get_string()
@@ -230,7 +226,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Prepare the sound using randomly chosen parameters from parameter lists --
         stimType = self.params['stimType'].get_string()
-        stimDur = self.params['stimDur'].get_value()
+        stimDuration = self.params['stimDuration'].get_value()
 
         if stimType in ['Noise', 'AM']:
             targetAmp = self.noiseCal.find_amplitude(self.trialParams[1])
@@ -245,19 +241,19 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
         if stimType == 'Sine':
-            sound = {'type':'tone', 'duration':stimDur,
+            sound = {'type':'tone', 'duration':stimDuration,
                      'amplitude':targetAmp, 'frequency':self.trialParams[0]}
         elif stimType == 'Chord':
-            sound = {'type':'chord', 'frequency':self.trialParams[0], 'duration':stimDur,
+            sound = {'type':'chord', 'frequency':self.trialParams[0], 'duration':stimDuration,
                   'amplitude':targetAmp, 'ntones':12, 'factor':1.2}
         elif stimType == 'Noise':
-            sound = {'type':'noise', 'duration':stimDur,
+            sound = {'type':'noise', 'duration':stimDuration,
                      'amplitude':targetAmp}
         elif stimType == 'AM':
-            sound = {'type':'AM', 'duration':stimDur,
+            sound = {'type':'AM', 'duration':stimDuration,
                      'amplitude':targetAmp,'modFrequency':self.trialParams[0]}
         elif stimType == 'ToneTrain':
-            sound = {'type':'toneTrain', 'duration':stimDur,
+            sound = {'type':'toneTrain', 'duration':stimDuration,
                      'amplitude':targetAmp, 'frequency':self.trialParams[0],
                      'toneDuration':0.025, 'rate':20}
 
@@ -273,7 +269,7 @@ class Paradigm(QtWidgets.QMainWindow):
         # -- Prepare the state transition matrix --
         self.sm.add_state(name='startTrial', statetimer = 0,
                           transitions={'Tup':'outputOn'})
-        self.sm.add_state(name='outputOn', statetimer=stimDur,
+        self.sm.add_state(name='outputOn', statetimer=stimDuration,
                           transitions={'Tup':'outputOff'},
                           outputsOn=stimOutput,
                           serialOut=serialOutput)
@@ -295,13 +291,6 @@ class Paradigm(QtWidgets.QMainWindow):
                               subject=self.params['subject'].get_value(),
                               paradigm=self.name,
                               suffix=suffix)
-
-    def clear_tone_list(self):
-        '''Allow the user to clear the list of tones and assign new tones from the GUI'''
-
-        print(self.soundParamList)
-        self.soundParamList = []
-        print(self.soundParamList)
 
     def closeEvent(self, event):
         '''
