@@ -127,3 +127,4 @@ amlaser = {'allowEarlyWithdrawal':'off', 'punishTimeEarly':0.2, 'laserMode':'ran
 delaylight = {'lightMode':'delayed', 'delayToLight':1, 'targetDuration':2,
               'targetMaxIntensity':70}
 
+wfmap = {'isiMean':0.2, 'isiHalfRange':0}

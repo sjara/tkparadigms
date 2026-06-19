@@ -1,13 +1,5 @@
 """
 Present a set of stimuli at different intensities.
-
-TO DO:
-- Save on stop: add checkbox to savedata.
-- Set intensity for each freq.
-
-x Add suffix for filename.
-
-
 """
 
 import numpy as np
@@ -63,7 +55,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                        group='Session parameters')
         self.params['sessionID'] = paramgui.StringParam('Session ID',value='',
                                                        group='Session parameters')
-        self.params['nTrials'] = paramgui.NumericParam('N trials',value=1000,
+        self.params['nMaxTrials'] = paramgui.NumericParam('N trials (max)',value=99999,
                                                        group='Session parameters')
         sessionParams = self.params.layout_group('Session parameters')
 
@@ -228,7 +220,7 @@ class Paradigm(QtWidgets.QMainWindow):
         frequency, intensity, and amplitude parameters for each trial.
         '''
 
-        if nextTrial > self.params['nTrials'].get_value():
+        if nextTrial > self.params['nMaxTrials'].get_value():
             self.dispatcher.widget.stop()
             if self.saveOnStop.isChecked():
                 self.save_to_file()
