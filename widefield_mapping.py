@@ -51,8 +51,7 @@ class Paradigm(QtWidgets.QMainWindow):
         self.noiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
 
         # -- Create dispatcher --
-        self.dispatcher = dispatcher.Dispatcher(serverType=smServerType,
-                                                     interval=0.1)
+        self.dispatcher = dispatcher.Dispatcher(serverType=smServerType, interval=0.1)
 
         # -- Add parameters --
         self.params = paramgui.Container()
@@ -64,68 +63,73 @@ class Paradigm(QtWidgets.QMainWindow):
                                                        group='Session parameters')
         self.params['sessionID'] = paramgui.StringParam('Session ID',value='',
                                                        group='Session parameters')
+        self.params['nTrials'] = paramgui.NumericParam('N trials',value=1000,
+                                                       group='Session parameters')
         sessionParams = self.params.layout_group('Session parameters')
 
-        self.params['freqLow'] = paramgui.NumericParam('Low Frequency (Hz)',
-                                                        value=2000,
-                                                        group='Stim parameters')
-        self.params['intensityLow'] = paramgui.NumericParam('Low Intensity (dB SPL)',
-                                                       value=60,
-                                                       group='Stim parameters')
-        self.params['freqMid'] = paramgui.NumericParam('Mid Frequency (Hz)',
-                                                        value=8000,
-                                                        group='Stim parameters')
-        self.params['intensityMid'] = paramgui.NumericParam('Mid Intensity (dB SPL)',
-                                                       value=60,
-                                                       group='Stim parameters')
         self.params['freqHigh'] = paramgui.NumericParam('High Frequency (Hz)',
-                                                        value=40000,
-                                                        group='Stim parameters')
+                                                        value=32000,
+                                                        group='Frequency and intensity')
         self.params['intensityHigh'] = paramgui.NumericParam('High Intensity (dB SPL)',
-                                                       value=60,
-                                                       group='Stim parameters')
-        self.params['stimDuration'] = paramgui.NumericParam('Stimulus Duration (s)',
-                                                        value=0.1,
+                                                       value=75,
+                                                       group='Frequency and intensity')
+        self.params['freqMid'] = paramgui.NumericParam('Mid Frequency (Hz)',
+                                                        value=10000,
+                                                        group='Frequency and intensity')
+        self.params['intensityMid'] = paramgui.NumericParam('Mid Intensity (dB SPL)',
+                                                       value=65,
+                                                       group='Frequency and intensity')
+        self.params['freqLow'] = paramgui.NumericParam('Low Frequency (Hz)',
+                                                        value=3000,
+                                                        group='Frequency and intensity')
+        self.params['intensityLow'] = paramgui.NumericParam('Low Intensity (dB SPL)',
+                                                       value=70,
+                                                       group='Frequency and intensity')
+        freqIntParams = self.params.layout_group('Frequency and intensity')
+
+        self.params['stimDuration'] = paramgui.NumericParam('Stim Duration (s)',
+                                                        value=0.5,
                                                         group='Stim parameters')
-        self.params['isiMean'] = paramgui.NumericParam('Interstimulus interval mean (s)',
-                                                       value=2,
+        self.params['isiMean'] = paramgui.NumericParam('ISI Mean (s)',
+                                                       value=1.2,
                                                        group='Stim parameters')
-        self.params['isiHalfRange'] = paramgui.NumericParam('+/-',
-                                                      value=1,
+        self.params['isiHalfRange'] = paramgui.NumericParam('ISI +/-',
+                                                      value=0.2,
                                                       group='Stim parameters')
-        self.params['isi'] = paramgui.NumericParam('Interstimulus interval (s)',
+        self.params['isi'] = paramgui.NumericParam('ISI (s)',
                                                    value=2, enabled=False, decimals=3,
                                                    group='Stim parameters')
-        self.params['randomMode'] = paramgui.MenuParam('Presentation Mode',
+        self.params['stimOrder'] = paramgui.MenuParam('Order',
                                                          ['Ordered','Random'],
                                                          value=1,group='Stim parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
-                                                         ['Sine','Chord', 'Noise', 'AM',
-                                                          'ToneTrain'],
-                                                         value=2,group='Stim parameters')
-        self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
-                                                            value=0, units='Hz',
-                                                            enabled=False, decimals=3,
-                                                            group='Stim parameters')
-        self.params['currentIntensity'] = paramgui.NumericParam('Target Intensity',
-                                                                 value=0,
-                                                                 enabled=False,
-                                                                 group='Stim parameters')
-        self.params['currentAmpL'] = paramgui.NumericParam('Current Amplitude - L',value=0,
-                                                           enabled=False,
-                                                           group='Stim parameters',
-                                                           decimals=4)
-        self.params['currentAmpR'] = paramgui.NumericParam('Current Amplitude - R',value=0,
-                                                           enabled=False,
-                                                           group='Stim parameters',
-                                                           decimals=4)
-        self.params['soundLocation'] = paramgui.MenuParam('Sound location',
+                                                     ['ToneTrain', 'Sine', 'Chord','Noise', 'AM'],
+                                                     value=0, group='Stim parameters')
+        self.params['soundLocation'] = paramgui.MenuParam('Sound Location',
                                                           ['binaural', 'left', 'right'],
                                                           value=0, group='Stim parameters')
         stimParams = self.params.layout_group('Stim parameters')
 
+        self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
+                                                            value=0, units='Hz',
+                                                            enabled=False, decimals=3,
+                                                            group='Current values')
+        self.params['currentIntensity'] = paramgui.NumericParam('Target Intensity',
+                                                                 value=0,
+                                                                 enabled=False,
+                                                                 group='Current values')
+        self.params['currentAmpL'] = paramgui.NumericParam('Current Amplitude - L',value=0,
+                                                           enabled=False,
+                                                           group='Current values',
+                                                           decimals=4)
+        self.params['currentAmpR'] = paramgui.NumericParam('Current Amplitude - R',value=0,
+                                                           enabled=False,
+                                                           group='Current values',
+                                                           decimals=4)
+        currentValues = self.params.layout_group('Current values')
+
         # -- Load parameters from a file --
-        self.params.from_file(paramfile,paramdictname)
+        self.params.from_file(paramfile, paramdictname)
 
         # -- Create an empty state matrix --
         self.sm = statematrix.StateMatrix(inputs=rigsettings.INPUTS,
@@ -133,26 +137,36 @@ class Paradigm(QtWidgets.QMainWindow):
                                           readystate='readyForNextTrial')
 
         # -- Module for savng the data --
-        self.saveData = savedata.SaveData(rigsettings.DATA_DIR,
-                                          remotedir=rigsettings.REMOTE_DIR)
-        self.saveData.checkInteractive.setChecked(True)
+        self.saveData = savedata.SaveData(rigsettings.DATA_DIR)
+        # self.saveData.checkInteractive.setChecked(True)
 
         # -- Add graphical widgets to main window --
         self.centralWidget = QtWidgets.QWidget()
         layoutMain = QtWidgets.QHBoxLayout()
         layoutCol1 = QtWidgets.QVBoxLayout()
         layoutCol2 = QtWidgets.QVBoxLayout()
+        layoutCol3 = QtWidgets.QVBoxLayout()
 
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
+        layoutMain.addLayout(layoutCol3)
+
+        self.saveOnStop = QtWidgets.QCheckBox('Save data on auto-stop')
+        self.saveOnStop.setChecked(True)
 
         layoutCol1.addWidget(sessionParams)
         layoutCol1.addStretch()
         layoutCol1.addWidget(self.dispatcher.widget)
-        layoutCol1.addWidget(self.saveData)
+        layoutCol1.addWidget(self.saveOnStop)
 
         layoutCol2.addWidget(stimParams)
         layoutCol2.addStretch()
+        layoutCol2.addWidget(self.saveData)
+        #layoutCol2.addWidget(self.saveOnStop)
+
+        layoutCol3.addWidget(freqIntParams)
+        layoutCol3.addStretch()
+        layoutCol3.addWidget(currentValues)
 
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
@@ -162,6 +176,15 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Connect the save data button --
         self.saveData.buttonSaveData.clicked.connect(self.save_to_file)
+
+        # -- Connect messenger --
+        self.messagebar = paramgui.Messenger()
+        self.messagebar.timedMessage.connect(self._show_message)
+        self.messagebar.collect('Created window')
+
+        # -- Connect signals to messenger
+        self.saveData.logMessage.connect(self.messagebar.collect)
+        self.dispatcher.logMessage.connect(self.messagebar.collect)
 
         print("Connecting to sound server")
         print('***** FIXME: HARDCODED TIME DELAY TO WAIT FOR SERIAL PORT! *****')
@@ -186,8 +209,8 @@ class Paradigm(QtWidgets.QMainWindow):
                          (self.params['freqHigh'].get_value(), self.params['intensityHigh'].get_value())]
 
         # -- If in random presentation mode, shuffle the list of pairs
-        randomMode = self.params['randomMode'].get_string()
-        if randomMode == 'Random':
+        stimOrder = self.params['stimOrder'].get_string()
+        if stimOrder == 'Random':
             random.shuffle(freqIntPairs)
         else:
             pass
@@ -204,6 +227,12 @@ class Paradigm(QtWidgets.QMainWindow):
         update the list of GUI parameters so that we can save the history of the
         frequency, intensity, and amplitude parameters for each trial.
         '''
+
+        if nextTrial > self.params['nTrials'].get_value():
+            self.dispatcher.widget.stop()
+            if self.saveOnStop.isChecked():
+                self.save_to_file()
+            return
 
         if nextTrial > 0:  # Do not update the history before the first trial
             self.params.update_history(nextTrial-1)
@@ -240,7 +269,11 @@ class Paradigm(QtWidgets.QMainWindow):
             targetAmp = [0, targetAmp[1]]
 
         # -- Determine the sound presentation mode and prepare the appropriate sound
-        if stimType == 'Sine':
+        if stimType == 'ToneTrain':
+            sound = {'type':'toneTrain', 'duration':stimDuration,
+                     'amplitude':targetAmp, 'frequency':self.trialParams[0],
+                     'toneDuration':0.025, 'rate':20}
+        elif stimType == 'Sine':
             sound = {'type':'tone', 'duration':stimDuration,
                      'amplitude':targetAmp, 'frequency':self.trialParams[0]}
         elif stimType == 'Chord':
@@ -252,10 +285,6 @@ class Paradigm(QtWidgets.QMainWindow):
         elif stimType == 'AM':
             sound = {'type':'AM', 'duration':stimDuration,
                      'amplitude':targetAmp,'modFrequency':self.trialParams[0]}
-        elif stimType == 'ToneTrain':
-            sound = {'type':'toneTrain', 'duration':stimDuration,
-                     'amplitude':targetAmp, 'frequency':self.trialParams[0],
-                     'toneDuration':0.025, 'rate':20}
 
         stimOutput = stimSync
         serialOutput = 1
@@ -291,6 +320,10 @@ class Paradigm(QtWidgets.QMainWindow):
                               subject=self.params['subject'].get_value(),
                               paradigm=self.name,
                               suffix=suffix)
+        
+    def _show_message(self, msg):
+        self.statusBar().showMessage(str(msg))
+        print(msg)
 
     def closeEvent(self, event):
         '''
