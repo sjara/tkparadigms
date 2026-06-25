@@ -59,24 +59,21 @@ class Paradigm(QtWidgets.QMainWindow):
                                                        group='Session parameters')
         sessionParams = self.params.layout_group('Session parameters')
 
-        self.params['freqHigh'] = paramgui.NumericParam('High Frequency (Hz)',
-                                                        value=32000,
-                                                        group='Frequency and intensity')
-        self.params['intensityHigh'] = paramgui.NumericParam('High Intensity (dB SPL)',
-                                                       value=75,
-                                                       group='Frequency and intensity')
-        self.params['freqMid'] = paramgui.NumericParam('Mid Frequency (Hz)',
-                                                        value=10000,
-                                                        group='Frequency and intensity')
-        self.params['intensityMid'] = paramgui.NumericParam('Mid Intensity (dB SPL)',
-                                                       value=65,
-                                                       group='Frequency and intensity')
-        self.params['freqLow'] = paramgui.NumericParam('Low Frequency (Hz)',
-                                                        value=3000,
-                                                        group='Frequency and intensity')
-        self.params['intensityLow'] = paramgui.NumericParam('Low Intensity (dB SPL)',
-                                                       value=70,
-                                                       group='Frequency and intensity')
+        self.params['nStim'] = paramgui.MenuParam('Number of stimuli',
+                                                      ['1','2','3'],
+                                                      value=2, group='Frequency and intensity')
+        self.params['freq1'] = paramgui.NumericParam('Frequency 1 (Hz)', value=3000,
+                                                     group='Frequency and intensity')
+        self.params['intensity1'] = paramgui.NumericParam('Intensity 1 (dB SPL)', value=70,
+                                                          group='Frequency and intensity')
+        self.params['freq2'] = paramgui.NumericParam('Frequency 2 (Hz)', value=10000,
+                                                     group='Frequency and intensity')
+        self.params['intensity2'] = paramgui.NumericParam('Intensity 2 (dB SPL)', value=65,
+                                                          group='Frequency and intensity')
+        self.params['freq3'] = paramgui.NumericParam('Frequency 3 (Hz)', value=32000,
+                                                     group='Frequency and intensity')
+        self.params['intensity3'] = paramgui.NumericParam('Intensity 3 (dB SPL)', value=75,
+                                                          group='Frequency and intensity')
         freqIntParams = self.params.layout_group('Frequency and intensity')
 
         self.params['stimDuration'] = paramgui.NumericParam('Stim Duration (s)',
@@ -153,12 +150,11 @@ class Paradigm(QtWidgets.QMainWindow):
 
         layoutCol2.addWidget(stimParams)
         layoutCol2.addStretch()
-        layoutCol2.addWidget(self.saveData)
-        #layoutCol2.addWidget(self.saveOnStop)
+        layoutCol2.addWidget(currentValues)
 
         layoutCol3.addWidget(freqIntParams)
         layoutCol3.addStretch()
-        layoutCol3.addWidget(currentValues)
+        layoutCol3.addWidget(self.saveData)
 
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
@@ -196,9 +192,9 @@ class Paradigm(QtWidgets.QMainWindow):
         we run out of combinations of sounds to present'''
 
         # -- Get the parameters --
-        freqIntPairs = [(self.params['freqLow'].get_value(), self.params['intensityLow'].get_value()),
-                         (self.params['freqMid'].get_value(), self.params['intensityMid'].get_value()),
-                         (self.params['freqHigh'].get_value(), self.params['intensityHigh'].get_value())]
+        nStim = int(self.params['nStim'].get_string())
+        freqIntPairs = [(self.params[f'freq{i}'].get_value(), self.params[f'intensity{i}'].get_value())
+                        for i in range(1, nStim+1)]
 
         # -- If in random presentation mode, shuffle the list of pairs
         stimOrder = self.params['stimOrder'].get_string()
