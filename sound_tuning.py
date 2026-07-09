@@ -213,11 +213,15 @@ class Paradigm(QtWidgets.QMainWindow):
                                        'intensity':amIntensity})
 
         if self.params['includeFading'].get_string() == 'Yes':
-            stimConditions.append({
-                'stimType': 'FadingNoise',
-                'intensityLow': self.params['fadeIntensityLow'].get_value(),
-                'intensityHigh': self.params['fadeIntensityHigh'].get_value(),
-            })
+            intensityLow = self.params['fadeIntensityLow'].get_value()
+            intensityHigh = self.params['fadeIntensityHigh'].get_value()
+            for fadeDirection in ['fade_in','fade_out']:
+                stimConditions.append({
+                    'stimType': 'FadingNoise',
+                    'intensityLow': intensityLow,
+                    'intensityHigh': intensityHigh,
+                    'fadeDirection': fadeDirection,
+                })
 
         if not stimConditions:
             raise ValueError('At least one of AM noise or fading noise must be included.')
@@ -279,7 +283,7 @@ class Paradigm(QtWidgets.QMainWindow):
         elif stimType == 'FadingNoise':
             intensityLow = self.trialParams['intensityLow']
             intensityHigh = self.trialParams['intensityHigh']
-            fadeDirection = random.choice(['fade_in','fade_out'])
+            fadeDirection = self.trialParams['fadeDirection']
             self.params['fadeDirection'].set_string(fadeDirection)
             if fadeDirection == 'fade_in':
                 intensityStart, intensityEnd = intensityLow, intensityHigh
