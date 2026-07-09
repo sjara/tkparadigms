@@ -295,7 +295,7 @@ class Paradigm(QtWidgets.QMainWindow):
             elif soundLocation == 'right':
                 targetAmp = np.array([0, targetAmp[1]])
             ampRatio = 10**((intensityStart-intensityEnd)/20.0)
-            sound = {'type':'loomingNoise', 'duration':stimDuration,
+            sound = {'type':'fadingNoise', 'duration':stimDuration,
                      'amplitude':targetAmp, 'amplitudeStart':ampRatio, 'amplitudeEnd':1.0}
             currentIntensity = intensityEnd
 
