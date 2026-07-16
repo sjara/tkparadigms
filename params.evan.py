@@ -49,6 +49,13 @@ toneTrains = {'subject':'imag02X', 'experimenter':'Willgaston',
               'stimType':'ToneTrain', 'stimDur':0.5,
               'isiMean':1.2, 'isiHalfRange':0.2,
               'minInt':70, 'maxInt':70}
+
+widefieldMapping = {'subject':'imag02X', 'experimenter':'Evan', 
+              'sessionID':'12121212', 'nMaxTrials':285, 'numStim':['3'], 
+              'freq1':3000,'intensity1':75, 'freq2':15500,
+              'intensity2':70, 'freq3':28000,'intensity3':80,
+              'stimDuration':0.5, 'isiMean':1.2, 'isiHalfRange':0.2, 
+              'stimType':'ToneTrain'}
               
               
               
