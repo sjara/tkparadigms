@@ -1,5 +1,5 @@
 """
-This file defines the parameters for taskontrol paradigms.
+This file defines the parameters for taskontrol paradigms WF (top block) and 2p (bottom block)
 """
 
 lowtoneTrains70 = {'subject':'imag02X', 'experimenter':'Willgaston', 
