@@ -53,78 +53,78 @@ class Paradigm(QtWidgets.QMainWindow):
                                                             group='Session parameters')
         self.params['subject'] = paramgui.StringParam('Subject',value='test000',
                                                        group='Session parameters')
-        self.params['sessionID'] = paramgui.StringParam('Session ID',value='',
+        self.params['session_ID'] = paramgui.StringParam('Session ID',value='',
                                                        group='Session parameters')
-        self.params['nMaxTrials'] = paramgui.NumericParam('N trials (max)',value=99999,
+        self.params['n_max_trials'] = paramgui.NumericParam('N trials (max)',value=99999,
                                                        group='Session parameters')
-        sessionParams = self.params.layout_group('Session parameters')
+        session_params = self.params.layout_group('Session parameters')
 
-        self.params['includeAM'] = paramgui.MenuParam('Include AM noise',
+        self.params['include_AM'] = paramgui.MenuParam('Include AM noise',
                                                       ['No','Yes'],
                                                       value=1, group='AM noise')
-        self.params['amRateLow'] = paramgui.NumericParam('Rate Low (Hz)',
+        self.params['AM_rate_low'] = paramgui.NumericParam('Rate Low (Hz)',
                                                          value=4, group='AM noise')
-        self.params['amRateHigh'] = paramgui.NumericParam('Rate High (Hz)',
+        self.params['AM_rate_high'] = paramgui.NumericParam('Rate High (Hz)',
                                                           value=16, group='AM noise')
-        self.params['amNRates'] = paramgui.NumericParam('N Rates', value=3, group='AM noise')
-        self.params['amIntensity'] = paramgui.NumericParam('Intensity (dB SPL)',
+        self.params['AM_n_rates'] = paramgui.NumericParam('N Rates', value=3, group='AM noise')
+        self.params['AM_intensity'] = paramgui.NumericParam('Intensity (dB SPL)',
                                                            value=60, group='AM noise')
-        self.params['currentAMRate'] = paramgui.NumericParam('Current AM Rate (Hz)',
+        self.params['current_AM_rate'] = paramgui.NumericParam('Current AM Rate (Hz)',
                                                              value=0, enabled=False,
                                                              decimals=3,
                                                              group='AM noise')
-        amParams = self.params.layout_group('AM noise')
+        am_params = self.params.layout_group('AM noise')
 
-        self.params['includeFading'] = paramgui.MenuParam('Include fading noise',
+        self.params['include_fading'] = paramgui.MenuParam('Include fading noise',
                                                             ['No','Yes'],
                                                             value=1, group='Fading noise')
-        self.params['fadeIntensityLow'] = paramgui.NumericParam('Lowest Intensity (dB SPL)',
+        self.params['fade_intensity_low'] = paramgui.NumericParam('Lowest Intensity (dB SPL)',
                                                                  value=45, group='Fading noise')
-        self.params['fadeIntensityHigh'] = paramgui.NumericParam('Highest Intensity (dB SPL)',
+        self.params['fade_intensity_high'] = paramgui.NumericParam('Highest Intensity (dB SPL)',
                                                                   value=75, group='Fading noise')
-        self.params['fadeDirection'] = paramgui.MenuParam('Fade Direction',
+        self.params['fade_direction'] = paramgui.MenuParam('Fade Direction',
                                                           ['fade_in','fade_out'],
                                                           value=0, enabled=False,
                                                           group='Fading noise')
-        fadeParams = self.params.layout_group('Fading noise')
+        fade_params = self.params.layout_group('Fading noise')
 
-        self.params['stimDuration'] = paramgui.NumericParam('Stim Duration (s)',
+        self.params['stim_duration'] = paramgui.NumericParam('Stim Duration (s)',
                                                         value=1.0,
                                                         group='Stim parameters')
-        self.params['isiMean'] = paramgui.NumericParam('ISI Mean (s)',
+        self.params['ISI_mean'] = paramgui.NumericParam('ISI Mean (s)',
                                                        value=1.2,
                                                        group='Stim parameters')
-        self.params['isiHalfRange'] = paramgui.NumericParam('ISI +/-',
+        self.params['ISI_half_range'] = paramgui.NumericParam('ISI +/-',
                                                       value=0.2,
                                                       group='Stim parameters')
-        self.params['isi'] = paramgui.NumericParam('ISI (s)',
+        self.params['ISI'] = paramgui.NumericParam('ISI (s)',
                                                    value=2, enabled=False, decimals=3,
                                                    group='Stim parameters')
-        self.params['stimOrder'] = paramgui.MenuParam('Order',
+        self.params['stim_order'] = paramgui.MenuParam('Order',
                                                          ['Ordered','Random'],
                                                          value=1,group='Stim parameters')
-        self.params['soundLocation'] = paramgui.MenuParam('Sound Location',
+        self.params['sound_location'] = paramgui.MenuParam('Sound Location',
                                                           ['binaural', 'left', 'right'],
                                                           value=0, group='Stim parameters')
-        stimParams = self.params.layout_group('Stim parameters')
+        stim_params = self.params.layout_group('Stim parameters')
 
-        self.params['currentStimType'] = paramgui.MenuParam('Current Stim Type',
+        self.params['current_stim_type'] = paramgui.MenuParam('Current Stim Type',
                                                             ['AM_noise','fading_noise'],
                                                             value=0, enabled=False,
                                                             group='Current values')
-        self.params['currentIntensity'] = paramgui.NumericParam('Current Intensity',
+        self.params['current_intensity'] = paramgui.NumericParam('Current Intensity',
                                                                  value=0,
                                                                  enabled=False,
                                                                  group='Current values')
-        self.params['currentAmpL'] = paramgui.NumericParam('Current Amplitude - L',value=0,
+        self.params['current_amp_L'] = paramgui.NumericParam('Current Amplitude - L',value=0,
                                                            enabled=False,
                                                            group='Current values',
                                                            decimals=4)
-        self.params['currentAmpR'] = paramgui.NumericParam('Current Amplitude - R',value=0,
+        self.params['current_amp_R'] = paramgui.NumericParam('Current Amplitude - R',value=0,
                                                            enabled=False,
                                                            group='Current values',
                                                            decimals=4)
-        currentValues = self.params.layout_group('Current values')
+        current_values = self.params.layout_group('Current values')
 
         # -- Load parameters from a file --
         self.params.from_file(paramfile, paramdictname)
@@ -151,17 +151,17 @@ class Paradigm(QtWidgets.QMainWindow):
         self.saveOnStop = QtWidgets.QCheckBox('Save data on auto-stop')
         self.saveOnStop.setChecked(True)
 
-        layoutCol1.addWidget(sessionParams)
+        layoutCol1.addWidget(session_params)
         layoutCol1.addStretch()
         layoutCol1.addWidget(self.dispatcher.widget)
         layoutCol1.addWidget(self.saveOnStop)
 
-        layoutCol2.addWidget(stimParams)
+        layoutCol2.addWidget(stim_params)
         layoutCol2.addStretch()
-        layoutCol2.addWidget(currentValues)
+        layoutCol2.addWidget(current_values)
 
-        layoutCol3.addWidget(amParams)
-        layoutCol3.addWidget(fadeParams)
+        layoutCol3.addWidget(am_params)
+        layoutCol3.addWidget(fade_params)
         layoutCol3.addStretch()
         layoutCol3.addWidget(self.saveData)
 
@@ -190,8 +190,8 @@ class Paradigm(QtWidgets.QMainWindow):
         self.soundClient.start()
 
         # -- Initialize the list of trial parameters --
-        self.trialParams = []
-        self.soundParamList = []
+        self.trial_params = []
+        self.sound_param_list = []
 
     def populate_sound_params(self):
         '''This function reads the GUI inputs and populates a list of dicts, one
@@ -200,132 +200,132 @@ class Paradigm(QtWidgets.QMainWindow):
         prepare_next_trial at the beginning of the experiment and whenever we
         run out of conditions to present.'''
 
-        stimConditions = []
+        stim_conditions = []
 
-        if self.params['includeAM'].get_string() == 'Yes':
-            rateLow = self.params['amRateLow'].get_value()
-            rateHigh = self.params['amRateHigh'].get_value()
-            nRates = int(self.params['amNRates'].get_value())
-            rates = np.logspace(np.log10(rateLow), np.log10(rateHigh), nRates) if nRates>1 else [rateLow]
-            amIntensity = self.params['amIntensity'].get_value()
+        if self.params['include_AM'].get_string() == 'Yes':
+            rate_low = self.params['AM_rate_low'].get_value()
+            rate_high = self.params['AM_rate_high'].get_value()
+            n_rates = int(self.params['AM_n_rates'].get_value())
+            rates = np.logspace(np.log10(rate_low), np.log10(rate_high), n_rates) if n_rates>1 else [rate_low]
+            am_intensity = self.params['AM_intensity'].get_value()
             for rate in rates:
-                stimConditions.append({'stimType':'AM_noise', 'modRate':rate,
-                                       'intensity':amIntensity})
+                stim_conditions.append({'stim_type':'AM_noise', 'mod_rate':rate,
+                                       'intensity':am_intensity})
 
-        if self.params['includeFading'].get_string() == 'Yes':
-            intensityLow = self.params['fadeIntensityLow'].get_value()
-            intensityHigh = self.params['fadeIntensityHigh'].get_value()
-            for fadeDirection in ['fade_in','fade_out']:
-                stimConditions.append({
-                    'stimType': 'fading_noise',
-                    'intensityLow': intensityLow,
-                    'intensityHigh': intensityHigh,
-                    'fadeDirection': fadeDirection,
+        if self.params['include_fading'].get_string() == 'Yes':
+            intensity_low = self.params['fade_intensity_low'].get_value()
+            intensity_high = self.params['fade_intensity_high'].get_value()
+            for fade_direction in ['fade_in','fade_out']:
+                stim_conditions.append({
+                    'stim_type': 'fading_noise',
+                    'intensity_low': intensity_low,
+                    'intensity_high': intensity_high,
+                    'fade_direction': fade_direction,
                 })
 
-        if not stimConditions:
+        if not stim_conditions:
             raise ValueError('At least one of AM noise or fading noise must be included.')
 
-        stimOrder = self.params['stimOrder'].get_string()
-        if stimOrder == 'Random':
-            random.shuffle(stimConditions)
+        stim_order = self.params['stim_order'].get_string()
+        if stim_order == 'Random':
+            random.shuffle(stim_conditions)
 
-        self.soundParamList = stimConditions
+        self.sound_param_list = stim_conditions
 
-    def prepare_next_trial(self, nextTrial):
+    def prepare_next_trial(self, next_trial):
         '''
         Prepare the target sound, send state matrix to the statemachine, and
         update the list of GUI parameters so that we can save the history of the
         type, intensity, and amplitude parameters for each trial.
         '''
 
-        if nextTrial > self.params['nMaxTrials'].get_value():
+        if next_trial > self.params['n_max_trials'].get_value():
             self.dispatcher.widget.stop()
             if self.saveOnStop.isChecked():
                 self.save_to_file()
             return
 
-        if nextTrial > 0:  # Do not update the history before the first trial
-            self.params.update_history(nextTrial-1)
+        if next_trial > 0:  # Do not update the history before the first trial
+            self.params.update_history(next_trial-1)
 
         self.sm.reset_transitions()
 
         # -- Choose an ISI randomly --
-        randNum = (2*np.random.random(1)[0]-1) # In range [-1,1)
-        isi = self.params['isiMean'].get_value() + \
-              self.params['isiHalfRange'].get_value()*randNum
-        self.params['isi'].set_value(isi)
+        rand_num = (2*np.random.random(1)[0]-1) # In range [-1,1)
+        isi = self.params['ISI_mean'].get_value() + \
+              self.params['ISI_half_range'].get_value()*rand_num
+        self.params['ISI'].set_value(isi)
 
         # -- Get the sound condition from the parameter list --
         # If the parameter list is empty, populate it --
         try:
-            self.trialParams = self.soundParamList.pop(0) #pop(0) pops from the left
+            self.trial_params = self.sound_param_list.pop(0) #pop(0) pops from the left
         except IndexError:
             self.populate_sound_params()
-            self.trialParams = self.soundParamList.pop(0)
+            self.trial_params = self.sound_param_list.pop(0)
 
-        stimType = self.trialParams['stimType']
-        stimDuration = self.params['stimDuration'].get_value()
+        stim_type = self.trial_params['stim_type']
+        stim_duration = self.params['stim_duration'].get_value()
 
-        soundLocation = self.params['soundLocation'].get_string()
+        sound_location = self.params['sound_location'].get_string()
 
         # -- Determine the sound presentation mode and prepare the appropriate sound --
-        if stimType == 'AM_noise':
-            targetAmp = self.noiseCal.find_amplitude(self.trialParams['intensity'])
-            if soundLocation == 'left':
-                targetAmp = np.array([targetAmp[0], 0])
-            elif soundLocation == 'right':
-                targetAmp = np.array([0, targetAmp[1]])
-            sound = {'type':'AM', 'duration':stimDuration,
-                     'amplitude':targetAmp, 'modFrequency':self.trialParams['modRate']}
-            currentIntensity = self.trialParams['intensity']
-            self.params['currentAMRate'].set_value(self.trialParams['modRate'])
-        elif stimType == 'fading_noise':
-            intensityLow = self.trialParams['intensityLow']
-            intensityHigh = self.trialParams['intensityHigh']
-            fadeDirection = self.trialParams['fadeDirection']
-            self.params['fadeDirection'].set_string(fadeDirection)
-            if fadeDirection == 'fade_in':
-                intensityStart, intensityEnd = intensityLow, intensityHigh
+        if stim_type == 'AM_noise':
+            target_amp = self.noiseCal.find_amplitude(self.trial_params['intensity'])
+            if sound_location == 'left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'AM', 'duration':stim_duration,
+                     'amplitude':target_amp, 'modFrequency':self.trial_params['mod_rate']}
+            current_intensity = self.trial_params['intensity']
+            self.params['current_AM_rate'].set_value(self.trial_params['mod_rate'])
+        elif stim_type == 'fading_noise':
+            intensity_low = self.trial_params['intensity_low']
+            intensity_high = self.trial_params['intensity_high']
+            fade_direction = self.trial_params['fade_direction']
+            self.params['fade_direction'].set_string(fade_direction)
+            if fade_direction == 'fade_in':
+                intensity_start, intensity_end = intensity_low, intensity_high
             else:
-                intensityStart, intensityEnd = intensityHigh, intensityLow
-            targetAmp = self.noiseCal.find_amplitude(intensityEnd)
-            if soundLocation == 'left':
-                targetAmp = np.array([targetAmp[0], 0])
-            elif soundLocation == 'right':
-                targetAmp = np.array([0, targetAmp[1]])
-            ampRatio = 10**((intensityStart-intensityEnd)/20.0)
-            sound = {'type':'fadingNoise', 'duration':stimDuration,
-                     'amplitude':targetAmp, 'amplitudeStart':ampRatio, 'amplitudeEnd':1.0}
-            currentIntensity = intensityEnd
+                intensity_start, intensity_end = intensity_high, intensity_low
+            target_amp = self.noiseCal.find_amplitude(intensity_end)
+            if sound_location == 'left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'right':
+                target_amp = np.array([0, target_amp[1]])
+            amp_ratio = 10**((intensity_start-intensity_end)/20.0)
+            sound = {'type':'fadingNoise', 'duration':stim_duration,
+                     'amplitude':target_amp, 'amplitudeStart':amp_ratio, 'amplitudeEnd':1.0}
+            current_intensity = intensity_end
 
-        stimOutput = stimSync
-        serialOutput = 1
+        stim_output = stimSync
+        serial_output = 1
         self.soundClient.set_sound(1,sound)
 
-        self.params['currentStimType'].set_string(stimType)
-        self.params['currentIntensity'].set_value(currentIntensity)
-        self.params['currentAmpL'].set_value(targetAmp[0])
-        self.params['currentAmpR'].set_value(targetAmp[1])
+        self.params['current_stim_type'].set_string(stim_type)
+        self.params['current_intensity'].set_value(current_intensity)
+        self.params['current_amp_L'].set_value(target_amp[0])
+        self.params['current_amp_R'].set_value(target_amp[1])
 
         # -- Prepare the state transition matrix --
         self.sm.add_state(name='startTrial', statetimer = 0,
                           transitions={'Tup':'outputOn'})
-        self.sm.add_state(name='outputOn', statetimer=stimDuration,
+        self.sm.add_state(name='outputOn', statetimer=stim_duration,
                           transitions={'Tup':'outputOff'},
-                          outputsOn=stimOutput,
-                          serialOut=serialOutput)
+                          outputsOn=stim_output,
+                          serialOut=serial_output)
         self.sm.add_state(name='outputOff', statetimer=isi,
                           transitions={'Tup':'readyForNextTrial'},
-                          outputsOff=stimOutput)
+                          outputsOff=stim_output)
 
         self.dispatcher.set_state_matrix(self.sm)
         self.dispatcher.ready_to_start_trial()
 
     def save_to_file(self):
         '''Triggered by button-clicked signal'''
-        sessionID = self.params['sessionID'].get_value()
-        suffix = '' if sessionID == '' else '_' + sessionID
+        session_id = self.params['session_ID'].get_value()
+        suffix = '' if session_id == '' else '_' + session_id
         self.saveData.to_file([self.params, self.dispatcher,
                                self.sm],
                               self.dispatcher.currentTrial,
