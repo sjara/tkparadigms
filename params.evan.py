@@ -59,6 +59,27 @@ widefieldMapping = {'subject':'imag03X', 'experimenter':'Evan',
               
               
               
+tuningFreqTrain = {'subject':'imag022','experimenter':'evan', 'minFreq':2000, 'maxFreq':40000,
+                   'numTones':16, 'stimType':'ToneTrain', 'stimDur':0.5, 'isiMean':1.2,
+                   'isiHalfRange':0.2, 'minInt':60, 'maxInt':60, 'numInt':1}
+
+tuningAM = {'subject':'imag022','experimenter':'evan', 'minFreq':4, 'maxFreq':128, 'numTones':11,
+            'stimType':'AM', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2, 'minInt':60,
+            'maxInt':60}
+
+repeatAM = {'subject':'imag022','experimenter':'evan', 'minFreq':8, 'maxFreq':8, 'numTones':1,
+            'stimType':'AM', 'stimDur':0.5, 'isiMean':2.0, 'isiHalfRange':0.0, 'minInt':60,
+            'maxInt':60}
+
+tuningFreq = {'subject':'imag022','experimenter':'evan', 'minFreq':2000, 'maxFreq':40000,
+              'numTones':16, 'stimType':'Sine', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2,
+              'minInt':70, 'maxInt':70, 'numInt':1}
+
+natSounds = {'subject':'imag03X','experimenter':'evan', 'outcomeMode':'passive_exposure',
+                         'delayToTargetMean':3.5, 'delayToTargetHalfRange':0.5,
+                         'targetMaxIntensity':stimInt,'soundLocation':'left'}
+
+
 #toneTrains80LHH = {'subject':'imag02X', 'experimenter':'Willgaston', 
 #              'minFreq':3000, 'maxFreq':32000, 'numTones':3, 
 #              'stimType':'ToneTrain', 'stimDur':0.5,
