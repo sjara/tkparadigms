@@ -77,7 +77,7 @@ tuningFreq = {'subject':'imag022','experimenter':'evan', 'minFreq':2000, 'maxFre
 
 natSounds = {'subject':'imag03X','experimenter':'evan', 'outcomeMode':'passive_exposure',
                          'delayToTargetMean':3.5, 'delayToTargetHalfRange':0.5,
-                         'targetMaxIntensity':stimInt,'soundLocation':'left'}
+                         'targetMaxIntensity':70,'soundLocation':'left'}
 
 
 #toneTrains80LHH = {'subject':'imag02X', 'experimenter':'Willgaston', 
