@@ -2,6 +2,8 @@
 This file defines the parameters for taskontrol paradigms WF (top block) and 2p (bottom block)
 """
 
+#WF
+
 lowtoneTrains70 = {'subject':'imag02X', 'experimenter':'Willgaston', 
               'minFreq':3000, 'maxFreq':3000, 'numTones':1, 
               'stimType':'ToneTrain', 'stimDur':0.5,
@@ -58,7 +60,7 @@ widefieldMapping = {'subject':'imag03X', 'experimenter':'Evan',
               'stimType':'ToneTrain'}
               
 """
-Parameters for taskontrol paradigms.
+Parameters for taskontrol paradigms. (2p)
 """
 
 tuningFreqTrain = {'subject':'imag022','experimenter':'evan', 'minFreq':2000, 'maxFreq':40000,
@@ -76,6 +78,10 @@ repeatAM = {'subject':'imag022','experimenter':'evan', 'minFreq':8, 'maxFreq':8,
 tuningFreq = {'subject':'imag022','experimenter':'evan', 'minFreq':2000, 'maxFreq':40000,
               'numTones':16, 'stimType':'Sine', 'stimDur':0.5, 'isiMean':1.2, 'isiHalfRange':0.2,
               'minInt':60, 'maxInt':60, 'numInt':1}
+
+AMfading = {'subject': 'imag03X', 'experimenter': 'evan', 'session_ID':'000', 'n_max_trials':320,
+            'include_AM':'Yes', 'AM_rate_low':4, 'AM_rate_high':32, 'AM_n_rates':4, 'AM_intensity':70,
+            'include_fading':'Yes', 'fade_intensity_low':45, 'fade_intensity_high':80, 'stim_duration':0.4}
 
 # WARNING! playing natural sounds so that the nominal SPL is actually accomplished depends on the existence of a chord calibration
 # file, and that the settings file has the correct line commented so that this file is actually used
