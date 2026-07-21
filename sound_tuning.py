@@ -83,7 +83,7 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['fade_intensity_high'] = paramgui.NumericParam('Highest Intensity (dB SPL)',
                                                                   value=75, group='Fading noise')
         self.params['fade_direction'] = paramgui.MenuParam('Fade Direction',
-                                                          ['fade_in','fade_out'],
+                                                          ['Fade In','Fade Out'],
                                                           value=0, enabled=False,
                                                           group='Fading noise')
         fade_params = self.params.layout_group('Fading noise')
@@ -109,7 +109,7 @@ class Paradigm(QtWidgets.QMainWindow):
         stim_params = self.params.layout_group('Stim parameters')
 
         self.params['current_stim_type'] = paramgui.MenuParam('Current Stim Type',
-                                                            ['AM_noise','fading_noise'],
+                                                            ['AM Noise','Fading Noise'],
                                                             value=0, enabled=False,
                                                             group='Current values')
         self.params['current_intensity'] = paramgui.NumericParam('Current Intensity',
@@ -209,15 +209,15 @@ class Paradigm(QtWidgets.QMainWindow):
             rates = np.logspace(np.log10(rate_low), np.log10(rate_high), n_rates) if n_rates>1 else [rate_low]
             am_intensity = self.params['AM_intensity'].get_value()
             for rate in rates:
-                stim_conditions.append({'stim_type':'AM_noise', 'mod_rate':rate,
+                stim_conditions.append({'stim_type':'AM Noise', 'mod_rate':rate,
                                        'intensity':am_intensity})
 
         if self.params['include_fading'].get_string() == 'Yes':
             intensity_low = self.params['fade_intensity_low'].get_value()
             intensity_high = self.params['fade_intensity_high'].get_value()
-            for fade_direction in ['fade_in','fade_out']:
+            for fade_direction in ['Fade In','Fade Out']:
                 stim_conditions.append({
-                    'stim_type': 'fading_noise',
+                    'stim_type': 'Fading Noise',
                     'intensity_low': intensity_low,
                     'intensity_high': intensity_high,
                     'fade_direction': fade_direction,
@@ -270,7 +270,7 @@ class Paradigm(QtWidgets.QMainWindow):
         sound_location = self.params['sound_location'].get_string()
 
         # -- Determine the sound presentation mode and prepare the appropriate sound --
-        if stim_type == 'AM_noise':
+        if stim_type == 'AM Noise':
             target_amp = self.noiseCal.find_amplitude(self.trial_params['intensity'])
             if sound_location == 'Left':
                 target_amp = np.array([target_amp[0], 0])
@@ -280,12 +280,12 @@ class Paradigm(QtWidgets.QMainWindow):
                      'amplitude':target_amp, 'modFrequency':self.trial_params['mod_rate']}
             current_intensity = self.trial_params['intensity']
             self.params['current_AM_rate'].set_value(self.trial_params['mod_rate'])
-        elif stim_type == 'fading_noise':
+        elif stim_type == 'Fading Noise':
             intensity_low = self.trial_params['intensity_low']
             intensity_high = self.trial_params['intensity_high']
             fade_direction = self.trial_params['fade_direction']
             self.params['fade_direction'].set_string(fade_direction)
-            if fade_direction == 'fade_in':
+            if fade_direction == 'Fade In':
                 intensity_start, intensity_end = intensity_low, intensity_high
             else:
                 intensity_start, intensity_end = intensity_high, intensity_low
