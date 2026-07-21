@@ -104,7 +104,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                          ['Ordered','Random'],
                                                          value=1,group='Stim parameters')
         self.params['sound_location'] = paramgui.MenuParam('Sound Location',
-                                                          ['binaural', 'left', 'right'],
+                                                          ['Binaural', 'Left', 'Right'],
                                                           value=0, group='Stim parameters')
         stim_params = self.params.layout_group('Stim parameters')
 
@@ -272,9 +272,9 @@ class Paradigm(QtWidgets.QMainWindow):
         # -- Determine the sound presentation mode and prepare the appropriate sound --
         if stim_type == 'AM_noise':
             target_amp = self.noiseCal.find_amplitude(self.trial_params['intensity'])
-            if sound_location == 'left':
+            if sound_location == 'Left':
                 target_amp = np.array([target_amp[0], 0])
-            elif sound_location == 'right':
+            elif sound_location == 'Right':
                 target_amp = np.array([0, target_amp[1]])
             sound = {'type':'AM', 'duration':stim_duration,
                      'amplitude':target_amp, 'modFrequency':self.trial_params['mod_rate']}
@@ -290,9 +290,9 @@ class Paradigm(QtWidgets.QMainWindow):
             else:
                 intensity_start, intensity_end = intensity_high, intensity_low
             target_amp = self.noiseCal.find_amplitude(intensity_end)
-            if sound_location == 'left':
+            if sound_location == 'Left':
                 target_amp = np.array([target_amp[0], 0])
-            elif sound_location == 'right':
+            elif sound_location == 'Right':
                 target_amp = np.array([0, target_amp[1]])
             amp_ratio = 10**((intensity_start-intensity_end)/20.0)
             sound = {'type':'fadingNoise', 'duration':stim_duration,
