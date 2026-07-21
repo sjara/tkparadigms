@@ -128,3 +128,5 @@ delaylight = {'lightMode':'delayed', 'delayToLight':1, 'targetDuration':2,
               'targetMaxIntensity':70}
 
 wfmap = {'isiMean':0.2, 'isiHalfRange':0}
+
+stuning = {'session_ID':'001', 'n_max_trials':20, 'stim_duration':0.2, 'ISI_mean':0.1, 'ISI_half_range':0, 'stim_order':'Ordered'}
