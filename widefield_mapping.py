@@ -68,15 +68,16 @@ class Paradigm(QtWidgets.QMainWindow):
                                                       [str(n) for n in range(1, N_STIM_MAX+1)],
                                                       value=1, group='Frequency and intensity')
         for ind in range(1, N_STIM_MAX+1):
-            self.params[f'freq{ind}'] = paramgui.NumericParam(f'Frequency {ind} (Hz)',
+            self.params[f'freq{ind}'] = paramgui.NumericParam(f'F{ind}',
                                                                value=DEFAULT_FREQS[ind-1],
                                                                group='Frequency and intensity')
-            self.params[f'intensity{ind}'] = paramgui.NumericParam(f'Intensity {ind} (dB SPL)',
+            self.params[f'intensity{ind}'] = paramgui.NumericParam(f'F{ind}',
                                                                     value=DEFAULT_INTENSITIES[ind-1],
                                                                     group='Frequency and intensity')
 
-        # -- Creates self.params['nStim'], self.params['freq1'..'freq9'],
-        #    and self.params['intensity1'..'intensity9'] --
+        # The following function creates a grid of frequency and intensity parameters in the GUI with:
+        # self.params['nStim'], self.params['freq1'], ..., self.params['freq9'], and
+        # self.params['intensity1'], ..., self.params['intensity9']
         freqIntParams = self.layout_freq_intensity_grid('Frequency and intensity', N_STIM_MAX)
 
         self.params['stimDuration'] = paramgui.NumericParam('Stim Duration (s)',
@@ -189,9 +190,9 @@ class Paradigm(QtWidgets.QMainWindow):
     def layout_freq_intensity_grid(self, groupBoxTitle, nStimMax):
         '''
         Create a titled group box with the "Number of frequencies" selector
-        on its own row, followed by one row per stimulus with frequency in
-        the first label/edit column pair and the matching intensity in the
-        second label/edit column pair.
+        on its own row, followed by "Frequency (Hz)" and "Intensity (dB SPL)"
+        column headers, and then one row per stimulus labeled F1, F2, ...
+        with just the frequency and intensity edit boxes.
         '''
         groupBox = QtWidgets.QGroupBox(groupBoxTitle)
         gridLayout = QtWidgets.QGridLayout()
@@ -199,14 +200,18 @@ class Paradigm(QtWidgets.QMainWindow):
         gridLayout.addWidget(self.params['nStim'].labelWidget, 0, 0, QtCore.Qt.AlignRight)
         gridLayout.addWidget(self.params['nStim'].editWidget, 0, 1, QtCore.Qt.AlignLeft)
         gridLayout.setRowStretch(1, 1)
+
+        headerRow = 2
+        gridLayout.addWidget(QtWidgets.QLabel('Frequency (Hz)'), headerRow, 1, QtCore.Qt.AlignCenter)
+        gridLayout.addWidget(QtWidgets.QLabel('Intensity (dB SPL)'), headerRow, 2, QtCore.Qt.AlignCenter)
+
         for ind in range(1, nStimMax+1):
             freqParam = self.params[f'freq{ind}']
             intensityParam = self.params[f'intensity{ind}']
-            row = 2 * ind
-            gridLayout.addWidget(freqParam.labelWidget, row, 0, QtCore.Qt.AlignRight)
+            row = headerRow + 1 + 2 * (ind - 1)
+            gridLayout.addWidget(QtWidgets.QLabel(f'F{ind}'), row, 0, QtCore.Qt.AlignRight)
             gridLayout.addWidget(freqParam.editWidget, row, 1, QtCore.Qt.AlignLeft)
-            gridLayout.addWidget(intensityParam.labelWidget, row, 2, QtCore.Qt.AlignRight)
-            gridLayout.addWidget(intensityParam.editWidget, row, 3, QtCore.Qt.AlignLeft)
+            gridLayout.addWidget(intensityParam.editWidget, row, 2, QtCore.Qt.AlignLeft)
             # -- Stretchable spacer row between this row and the next --
             if ind < nStimMax:
                 gridLayout.setRowStretch(row + 1, 1)
