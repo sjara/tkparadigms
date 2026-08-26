@@ -151,11 +151,10 @@ class Paradigm(QtWidgets.QMainWindow):
 
         layoutCol2.addWidget(stimParams)
         layoutCol2.addStretch()
+        layoutCol2.addWidget(currentValues)
         layoutCol2.addWidget(self.saveData)
 
-        layoutCol3.addWidget(freqIntParams)
-        layoutCol3.addStretch()
-        layoutCol3.addWidget(currentValues)
+        layoutCol3.addWidget(freqIntParams, stretch=1)
 
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
@@ -203,6 +202,9 @@ class Paradigm(QtWidgets.QMainWindow):
             gridLayout.addWidget(freqParam.editWidget, row, 1, QtCore.Qt.AlignLeft)
             gridLayout.addWidget(intensityParam.labelWidget, row, 2, QtCore.Qt.AlignRight)
             gridLayout.addWidget(intensityParam.editWidget, row, 3, QtCore.Qt.AlignLeft)
+        # -- Stretch spacing between rows so the frequencies span the column --
+        for row in range(gridLayout.rowCount()):
+            gridLayout.setRowStretch(row, 1)
         groupBox.setLayout(gridLayout)
         return groupBox
 
