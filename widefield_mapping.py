@@ -192,19 +192,21 @@ class Paradigm(QtWidgets.QMainWindow):
         second label/edit column pair.
         '''
         groupBox = QtWidgets.QGroupBox(groupBoxTitle)
-        gridLayout = paramgui.ParamGroupLayout()
-        gridLayout.add_row(self.params['nStim'].labelWidget, self.params['nStim'].editWidget)
+        gridLayout = QtWidgets.QGridLayout()
+        gridLayout.setVerticalSpacing(0)
+        gridLayout.addWidget(self.params['nStim'].labelWidget, 0, 0, QtCore.Qt.AlignRight)
+        gridLayout.addWidget(self.params['nStim'].editWidget, 0, 1, QtCore.Qt.AlignLeft)
         for ind in range(1, nStimMax+1):
             freqParam = self.params[f'freq{ind}']
             intensityParam = self.params[f'intensity{ind}']
-            row = gridLayout.rowCount()
+            row = 2 * ind
             gridLayout.addWidget(freqParam.labelWidget, row, 0, QtCore.Qt.AlignRight)
             gridLayout.addWidget(freqParam.editWidget, row, 1, QtCore.Qt.AlignLeft)
             gridLayout.addWidget(intensityParam.labelWidget, row, 2, QtCore.Qt.AlignRight)
             gridLayout.addWidget(intensityParam.editWidget, row, 3, QtCore.Qt.AlignLeft)
-        # -- Stretch spacing between rows so the frequencies span the column --
-        for row in range(gridLayout.rowCount()):
-            gridLayout.setRowStretch(row, 1)
+            # -- Stretchable spacer row between this row and the next --
+            if ind < nStimMax:
+                gridLayout.setRowStretch(row + 1, 1)
         groupBox.setLayout(gridLayout)
         return groupBox
 
