@@ -59,22 +59,30 @@ class Paradigm(QtWidgets.QMainWindow):
                                                        group='Session parameters')
         sessionParams = self.params.layout_group('Session parameters')
 
+        N_STIM_MAX = 9
+        DEFAULT_FREQS = [3000, 10000, 32000, 4000, 8000, 16000, 5657, 22627, 2000]
+        DEFAULT_INTENSITIES = [70, 65, 75, 70, 65, 70, 70, 70, 70]
+
         self.params['nStim'] = paramgui.MenuParam('Number of stimuli',
-                                                      ['1','2','3'],
-                                                      value=2, group='Frequency and intensity')
-        self.params['freq1'] = paramgui.NumericParam('Frequency 1 (Hz)', value=3000,
-                                                     group='Frequency and intensity')
-        self.params['intensity1'] = paramgui.NumericParam('Intensity 1 (dB SPL)', value=70,
-                                                          group='Frequency and intensity')
-        self.params['freq2'] = paramgui.NumericParam('Frequency 2 (Hz)', value=10000,
-                                                     group='Frequency and intensity')
-        self.params['intensity2'] = paramgui.NumericParam('Intensity 2 (dB SPL)', value=65,
-                                                          group='Frequency and intensity')
-        self.params['freq3'] = paramgui.NumericParam('Frequency 3 (Hz)', value=32000,
-                                                     group='Frequency and intensity')
-        self.params['intensity3'] = paramgui.NumericParam('Intensity 3 (dB SPL)', value=75,
-                                                          group='Frequency and intensity')
-        freqIntParams = self.params.layout_group('Frequency and intensity')
+                                                      [str(n) for n in range(1, N_STIM_MAX+1)],
+                                                      value=1, group='Frequency and intensity')
+        for ind in range(1, N_STIM_MAX+1):
+            self.params[f'freq{ind}'] = paramgui.NumericParam(f'Frequency {ind} (Hz)',
+                                                               value=DEFAULT_FREQS[ind-1],
+                                                               group='Frequency and intensity')
+            self.params[f'intensity{ind}'] = paramgui.NumericParam(f'Intensity {ind} (dB SPL)',
+                                                                    value=DEFAULT_INTENSITIES[ind-1],
+                                                                    group='Frequency and intensity')
+
+        leftKeys = ['nStim']
+        for ind in range(1, 5):
+            leftKeys += [f'freq{ind}', f'intensity{ind}']
+        rightKeys = []
+        for ind in range(5, N_STIM_MAX+1):
+            rightKeys += [f'freq{ind}', f'intensity{ind}']
+
+        freqIntParams = self.layout_param_subset_columns('Frequency and intensity',
+                                                         [leftKeys, rightKeys])
 
         self.params['stimDuration'] = paramgui.NumericParam('Stim Duration (s)',
                                                         value=0.5,
@@ -151,10 +159,10 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol2.addWidget(stimParams)
         layoutCol2.addStretch()
         layoutCol2.addWidget(currentValues)
+        layoutCol2.addWidget(self.saveData)
 
         layoutCol3.addWidget(freqIntParams)
         layoutCol3.addStretch()
-        layoutCol3.addWidget(self.saveData)
 
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
@@ -184,6 +192,22 @@ class Paradigm(QtWidgets.QMainWindow):
         self.trialParams = []
         self.soundParamList = []
 
+    def layout_param_subset_columns(self, groupBoxTitle, paramKeyColumns):
+        '''
+        Create a single titled group box containing one label/edit row per
+        parameter key, arranged in side-by-side columns. paramKeyColumns is
+        a list of lists of parameter keys, one list per column.
+        '''
+        groupBox = QtWidgets.QGroupBox(groupBoxTitle)
+        outerLayout = QtWidgets.QHBoxLayout()
+        for paramKeys in paramKeyColumns:
+            columnForm = paramgui.ParamGroupLayout()
+            for paramKey in paramKeys:
+                columnForm.add_row(self.params[paramKey].labelWidget, self.params[paramKey].editWidget)
+            outerLayout.addLayout(columnForm)
+        groupBox.setLayout(outerLayout)
+        return groupBox
+
     def populate_sound_params(self):
 
         '''This function reads the GUI inputs and populates a list of two-item tuples
@@ -193,8 +217,8 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Get the parameters --
         nStim = int(self.params['nStim'].get_string())
-        freqIntPairs = [(self.params[f'freq{i}'].get_value(), self.params[f'intensity{i}'].get_value())
-                        for i in range(1, nStim+1)]
+        freqIntPairs = [(self.params[f'freq{ind}'].get_value(), self.params[f'intensity{ind}'].get_value())
+                        for ind in range(1, nStim+1)]
 
         # -- If in random presentation mode, shuffle the list of pairs
         stimOrder = self.params['stimOrder'].get_string()
