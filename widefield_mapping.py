@@ -75,6 +75,8 @@ class Paradigm(QtWidgets.QMainWindow):
                                                                     value=DEFAULT_INTENSITIES[ind-1],
                                                                     group='Frequency and intensity')
 
+        # -- Creates self.params['nStim'], self.params['freq1'..'freq9'],
+        #    and self.params['intensity1'..'intensity9'] --
         freqIntParams = self.layout_freq_intensity_grid('Frequency and intensity', N_STIM_MAX)
 
         self.params['stimDuration'] = paramgui.NumericParam('Stim Duration (s)',
