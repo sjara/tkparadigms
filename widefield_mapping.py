@@ -61,8 +61,8 @@ class Paradigm(QtWidgets.QMainWindow):
         sessionParams = self.params.layout_group('Session parameters')
 
         N_STIM_MAX = 9
-        DEFAULT_FREQS = [3000, 10000, 32000, 4000, 8000, 16000, 5657, 22627, 2000]
-        DEFAULT_INTENSITIES = [70, 65, 75, 70, 65, 70, 70, 70, 70]
+        DEFAULT_FREQS = [2000, 2828, 4000, 5657, 8000, 11314, 16000, 22627, 32000]
+        DEFAULT_INTENSITIES = [70, 69, 68, 66, 65, 68, 70, 72, 75]
 
         self.params['nStim'] = paramgui.MenuParam('Number of frequencies',
                                                       [str(n) for n in range(1, N_STIM_MAX+1)],
@@ -196,6 +196,7 @@ class Paradigm(QtWidgets.QMainWindow):
         gridLayout.setVerticalSpacing(0)
         gridLayout.addWidget(self.params['nStim'].labelWidget, 0, 0, QtCore.Qt.AlignRight)
         gridLayout.addWidget(self.params['nStim'].editWidget, 0, 1, QtCore.Qt.AlignLeft)
+        gridLayout.setRowStretch(1, 1)
         for ind in range(1, nStimMax+1):
             freqParam = self.params[f'freq{ind}']
             intensityParam = self.params[f'intensity{ind}']
