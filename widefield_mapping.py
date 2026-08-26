@@ -64,9 +64,6 @@ class Paradigm(QtWidgets.QMainWindow):
         DEFAULT_FREQS = [3000, 10000, 32000, 4000, 8000, 16000, 5657, 22627, 2000]
         DEFAULT_INTENSITIES = [70, 65, 75, 70, 65, 70, 70, 70, 70]
 
-        self.params['nStim'] = paramgui.MenuParam('Number of stimuli',
-                                                      [str(n) for n in range(1, N_STIM_MAX+1)],
-                                                      value=1, group='Frequency and intensity')
         for ind in range(1, N_STIM_MAX+1):
             self.params[f'freq{ind}'] = paramgui.NumericParam(f'Frequency {ind} (Hz)',
                                                                value=DEFAULT_FREQS[ind-1],
@@ -98,6 +95,9 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['soundLocation'] = paramgui.MenuParam('Sound Location',
                                                           ['binaural', 'left', 'right'],
                                                           value=0, group='Stim parameters')
+        self.params['nStim'] = paramgui.MenuParam('Number of frequencies',
+                                                      [str(n) for n in range(1, N_STIM_MAX+1)],
+                                                      value=1, group='Stim parameters')
         stimParams = self.params.layout_group('Stim parameters')
 
         self.params['currentFreq'] = paramgui.NumericParam('Current Frequency (Hz)',
@@ -136,10 +136,12 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1 = QtWidgets.QVBoxLayout()
         layoutCol2 = QtWidgets.QVBoxLayout()
         layoutCol3 = QtWidgets.QVBoxLayout()
+        layoutCol4 = QtWidgets.QVBoxLayout()
 
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
         layoutMain.addLayout(layoutCol3)
+        layoutMain.addLayout(layoutCol4)
 
         self.saveOnStop = QtWidgets.QCheckBox('Save data on auto-stop')
         self.saveOnStop.setChecked(True)
@@ -151,11 +153,13 @@ class Paradigm(QtWidgets.QMainWindow):
 
         layoutCol2.addWidget(stimParams)
         layoutCol2.addStretch()
-        layoutCol2.addWidget(currentValues)
-        layoutCol2.addWidget(self.saveData)
 
         layoutCol3.addWidget(freqIntParams)
         layoutCol3.addStretch()
+
+        layoutCol4.addWidget(currentValues)
+        layoutCol4.addStretch()
+        layoutCol4.addWidget(self.saveData)
 
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
@@ -187,14 +191,12 @@ class Paradigm(QtWidgets.QMainWindow):
 
     def layout_freq_intensity_grid(self, groupBoxTitle, nStimMax):
         '''
-        Create a titled group box with the "Number of stimuli" selector on
-        its own row, followed by one row per stimulus with frequency in the
-        first label/edit column pair and the matching intensity in the
-        second label/edit column pair.
+        Create a titled group box with one row per stimulus, with frequency
+        in the first label/edit column pair and the matching intensity in
+        the second label/edit column pair.
         '''
         groupBox = QtWidgets.QGroupBox(groupBoxTitle)
         gridLayout = paramgui.ParamGroupLayout()
-        gridLayout.add_row(self.params['nStim'].labelWidget, self.params['nStim'].editWidget)
         for ind in range(1, nStimMax+1):
             freqParam = self.params[f'freq{ind}']
             intensityParam = self.params[f'intensity{ind}']
