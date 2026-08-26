@@ -64,7 +64,7 @@ class Paradigm(QtWidgets.QMainWindow):
         DEFAULT_FREQS = [2000, 2828, 4000, 5657, 8000, 11314, 16000, 22627, 32000]
         DEFAULT_INTENSITIES = [70, 69, 68, 66, 65, 68, 70, 72, 75]
 
-        self.params['nStim'] = paramgui.MenuParam('Number of frequencies',
+        self.params['nStim'] = paramgui.MenuParam('Number of freq.',
                                                       [str(n) for n in range(1, N_STIM_MAX+1)],
                                                       value=1, group='Frequency and intensity')
         for ind in range(1, N_STIM_MAX+1):
@@ -197,8 +197,8 @@ class Paradigm(QtWidgets.QMainWindow):
         groupBox = QtWidgets.QGroupBox(groupBoxTitle)
         gridLayout = QtWidgets.QGridLayout()
         gridLayout.setVerticalSpacing(0)
-        gridLayout.addWidget(self.params['nStim'].labelWidget, 0, 0, QtCore.Qt.AlignRight)
-        gridLayout.addWidget(self.params['nStim'].editWidget, 0, 1, QtCore.Qt.AlignLeft)
+        gridLayout.addWidget(self.params['nStim'].labelWidget, 0, 1, QtCore.Qt.AlignRight)
+        gridLayout.addWidget(self.params['nStim'].editWidget, 0, 2, QtCore.Qt.AlignLeft)
         gridLayout.setRowStretch(1, 1)
 
         headerRow = 2
