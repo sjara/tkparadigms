@@ -150,12 +150,12 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1.addWidget(sessionParams)
         layoutCol1.addStretch()
         layoutCol1.addWidget(self.saveData)
-        layoutCol1.addWidget(self.dispatcher.widget)
+        layoutCol1.addWidget(currentValues)
         layoutCol1.addWidget(self.saveOnStop)
 
         layoutCol2.addWidget(stimParams)
         layoutCol2.addStretch()
-        layoutCol2.addWidget(currentValues)
+        layoutCol2.addWidget(self.dispatcher.widget)
 
         layoutCol3.addWidget(freqIntParams, stretch=1)
 
