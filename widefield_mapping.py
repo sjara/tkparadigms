@@ -6,6 +6,7 @@ import numpy as np
 import random
 import time
 from qtpy import QtWidgets
+from qtpy import QtCore
 from taskontrol import dispatcher
 from taskontrol import paramgui
 from taskontrol import savedata
@@ -74,15 +75,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                                     value=DEFAULT_INTENSITIES[ind-1],
                                                                     group='Frequency and intensity')
 
-        leftKeys = ['nStim']
-        for ind in range(1, 5):
-            leftKeys += [f'freq{ind}', f'intensity{ind}']
-        rightKeys = []
-        for ind in range(5, N_STIM_MAX+1):
-            rightKeys += [f'freq{ind}', f'intensity{ind}']
-
-        freqIntParams = self.layout_param_subset_columns('Frequency and intensity',
-                                                         [leftKeys, rightKeys])
+        freqIntParams = self.layout_freq_intensity_grid('Frequency and intensity', N_STIM_MAX)
 
         self.params['stimDuration'] = paramgui.NumericParam('Stim Duration (s)',
                                                         value=0.5,
@@ -192,20 +185,25 @@ class Paradigm(QtWidgets.QMainWindow):
         self.trialParams = []
         self.soundParamList = []
 
-    def layout_param_subset_columns(self, groupBoxTitle, paramKeyColumns):
+    def layout_freq_intensity_grid(self, groupBoxTitle, nStimMax):
         '''
-        Create a single titled group box containing one label/edit row per
-        parameter key, arranged in side-by-side columns. paramKeyColumns is
-        a list of lists of parameter keys, one list per column.
+        Create a titled group box with the "Number of stimuli" selector on
+        its own row, followed by one row per stimulus with frequency in the
+        first label/edit column pair and the matching intensity in the
+        second label/edit column pair.
         '''
         groupBox = QtWidgets.QGroupBox(groupBoxTitle)
-        outerLayout = QtWidgets.QHBoxLayout()
-        for paramKeys in paramKeyColumns:
-            columnForm = paramgui.ParamGroupLayout()
-            for paramKey in paramKeys:
-                columnForm.add_row(self.params[paramKey].labelWidget, self.params[paramKey].editWidget)
-            outerLayout.addLayout(columnForm)
-        groupBox.setLayout(outerLayout)
+        gridLayout = paramgui.ParamGroupLayout()
+        gridLayout.add_row(self.params['nStim'].labelWidget, self.params['nStim'].editWidget)
+        for ind in range(1, nStimMax+1):
+            freqParam = self.params[f'freq{ind}']
+            intensityParam = self.params[f'intensity{ind}']
+            row = gridLayout.rowCount()
+            gridLayout.addWidget(freqParam.labelWidget, row, 0, QtCore.Qt.AlignRight)
+            gridLayout.addWidget(freqParam.editWidget, row, 1, QtCore.Qt.AlignLeft)
+            gridLayout.addWidget(intensityParam.labelWidget, row, 2, QtCore.Qt.AlignRight)
+            gridLayout.addWidget(intensityParam.editWidget, row, 3, QtCore.Qt.AlignLeft)
+        groupBox.setLayout(gridLayout)
         return groupBox
 
     def populate_sound_params(self):
