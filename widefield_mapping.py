@@ -60,14 +60,14 @@ class Paradigm(QtWidgets.QMainWindow):
                                                        group='Session parameters')
         sessionParams = self.params.layout_group('Session parameters')
 
-        N_STIM_MAX = 9
+        N_FREQ_MAX = 9
         DEFAULT_FREQS = [2000, 2828, 4000, 5657, 8000, 11314, 16000, 22627, 32000]
         DEFAULT_INTENSITIES = [70, 69, 68, 66, 65, 68, 70, 72, 75]
 
         self.params['nFreq'] = paramgui.MenuParam('Number of freq.',
-                                                      [str(n) for n in range(1, N_STIM_MAX+1)],
-                                                      value=1, group='Frequency and intensity')
-        for ind in range(1, N_STIM_MAX+1):
+                                                      [str(n) for n in range(1, N_FREQ_MAX+1)],
+                                                      value=2, group='Frequency and intensity')
+        for ind in range(1, N_FREQ_MAX+1):
             self.params[f'freq{ind}'] = paramgui.NumericParam(f'F{ind}',
                                                                value=DEFAULT_FREQS[ind-1],
                                                                group='Frequency and intensity')
@@ -78,7 +78,7 @@ class Paradigm(QtWidgets.QMainWindow):
         # The following function creates a grid of frequency and intensity parameters in the GUI with:
         # self.params['nFreq'], self.params['freq1'], ..., self.params['freq9'], and
         # self.params['intensity1'], ..., self.params['intensity9']
-        freqIntParams = self.layout_freq_intensity_grid('Frequency and intensity', N_STIM_MAX)
+        freqIntParams = self.layout_freq_intensity_grid('Frequency and intensity', N_FREQ_MAX)
 
         self.params['stimDuration'] = paramgui.NumericParam('Stim Duration (s)',
                                                         value=0.5,
