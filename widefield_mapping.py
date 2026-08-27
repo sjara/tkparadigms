@@ -64,7 +64,7 @@ class Paradigm(QtWidgets.QMainWindow):
         DEFAULT_FREQS = [2000, 2828, 4000, 5657, 8000, 11314, 16000, 22627, 32000]
         DEFAULT_INTENSITIES = [70, 69, 68, 66, 65, 68, 70, 72, 75]
 
-        self.params['nStim'] = paramgui.MenuParam('Number of freq.',
+        self.params['nFreq'] = paramgui.MenuParam('Number of freq.',
                                                       [str(n) for n in range(1, N_STIM_MAX+1)],
                                                       value=1, group='Frequency and intensity')
         for ind in range(1, N_STIM_MAX+1):
@@ -76,7 +76,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                                     group='Frequency and intensity')
 
         # The following function creates a grid of frequency and intensity parameters in the GUI with:
-        # self.params['nStim'], self.params['freq1'], ..., self.params['freq9'], and
+        # self.params['nFreq'], self.params['freq1'], ..., self.params['freq9'], and
         # self.params['intensity1'], ..., self.params['intensity9']
         freqIntParams = self.layout_freq_intensity_grid('Frequency and intensity', N_STIM_MAX)
 
@@ -187,7 +187,7 @@ class Paradigm(QtWidgets.QMainWindow):
         self.trialParams = []
         self.soundParamList = []
 
-    def layout_freq_intensity_grid(self, groupBoxTitle, nStimMax):
+    def layout_freq_intensity_grid(self, groupBoxTitle, nFreqMax):
         '''
         Create a titled group box with the "Number of frequencies" selector
         on its own row, followed by "Frequency (Hz)" and "Intensity (dB SPL)"
@@ -197,15 +197,15 @@ class Paradigm(QtWidgets.QMainWindow):
         groupBox = QtWidgets.QGroupBox(groupBoxTitle)
         gridLayout = QtWidgets.QGridLayout()
         gridLayout.setVerticalSpacing(0)
-        gridLayout.addWidget(self.params['nStim'].labelWidget, 0, 1, QtCore.Qt.AlignRight)
-        gridLayout.addWidget(self.params['nStim'].editWidget, 0, 2, QtCore.Qt.AlignLeft)
+        gridLayout.addWidget(self.params['nFreq'].labelWidget, 0, 1, QtCore.Qt.AlignRight)
+        gridLayout.addWidget(self.params['nFreq'].editWidget, 0, 2, QtCore.Qt.AlignLeft)
         gridLayout.setRowStretch(1, 1)
 
         headerRow = 2
         gridLayout.addWidget(QtWidgets.QLabel('Frequency (Hz)'), headerRow, 1, QtCore.Qt.AlignCenter)
         gridLayout.addWidget(QtWidgets.QLabel('Intensity (dB SPL)'), headerRow, 2, QtCore.Qt.AlignCenter)
 
-        for ind in range(1, nStimMax+1):
+        for ind in range(1, nFreqMax+1):
             freqParam = self.params[f'freq{ind}']
             intensityParam = self.params[f'intensity{ind}']
             row = headerRow + 1 + 2 * (ind - 1)
@@ -213,7 +213,7 @@ class Paradigm(QtWidgets.QMainWindow):
             gridLayout.addWidget(freqParam.editWidget, row, 1, QtCore.Qt.AlignLeft)
             gridLayout.addWidget(intensityParam.editWidget, row, 2, QtCore.Qt.AlignLeft)
             # -- Stretchable spacer row between this row and the next --
-            if ind < nStimMax:
+            if ind < nFreqMax:
                 gridLayout.setRowStretch(row + 1, 1)
         groupBox.setLayout(gridLayout)
         return groupBox
@@ -226,9 +226,9 @@ class Paradigm(QtWidgets.QMainWindow):
         we run out of combinations of sounds to present'''
 
         # -- Get the parameters --
-        nStim = int(self.params['nStim'].get_string())
+        nFreq = int(self.params['nFreq'].get_string())
         freqIntPairs = [(self.params[f'freq{ind}'].get_value(), self.params[f'intensity{ind}'].get_value())
-                        for ind in range(1, nStim+1)]
+                        for ind in range(1, nFreq+1)]
 
         # -- If in random presentation mode, shuffle the list of pairs
         stimOrder = self.params['stimOrder'].get_string()
