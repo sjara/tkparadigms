@@ -7,6 +7,7 @@ import random
 import time
 from qtpy import QtWidgets
 from qtpy import QtCore
+from qtpy import QtGui
 from taskontrol import dispatcher
 from taskontrol import paramgui
 from taskontrol import savedata
@@ -60,13 +61,13 @@ class Paradigm(QtWidgets.QMainWindow):
                                                        group='Session parameters')
         sessionParams = self.params.layout_group('Session parameters')
 
-        N_FREQ_MAX = 9
+        self.nFreqMax = N_FREQ_MAX = 9
         DEFAULT_FREQS = [2000, 2828, 4000, 5657, 8000, 11314, 16000, 22627, 32000]
         DEFAULT_INTENSITIES = [70, 69, 68, 66, 65, 68, 70, 72, 75]
 
-        self.params['nFreq'] = paramgui.MenuParam('Number of freq.',
-                                                      [str(n) for n in range(1, N_FREQ_MAX+1)],
+        self.params['nFreq'] = paramgui.NumericParam('Number of freq.',
                                                       value=2, group='Frequency and intensity')
+        self.params['nFreq'].editWidget.setValidator(QtGui.QIntValidator(1, N_FREQ_MAX))
         for ind in range(1, N_FREQ_MAX+1):
             self.params[f'freq{ind}'] = paramgui.NumericParam(f'F{ind}',
                                                                value=DEFAULT_FREQS[ind-1],
@@ -96,7 +97,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                          ['Ordered','Random'],
                                                          value=1,group='Stim parameters')
         self.params['stimType'] = paramgui.MenuParam('Stim Type',
-                                                     ['ToneTrain', 'Sine', 'Chord','Noise', 'AM'],
+                                                     ['ToneTrain', 'ClickTrain', 'Sine', 'Chord','Noise', 'AM'],
                                                      value=0, group='Stim parameters')
         self.params['soundLocation'] = paramgui.MenuParam('Sound Location',
                                                           ['binaural', 'left', 'right'],
@@ -226,7 +227,7 @@ class Paradigm(QtWidgets.QMainWindow):
         we run out of combinations of sounds to present'''
 
         # -- Get the parameters --
-        nFreq = int(self.params['nFreq'].get_string())
+        nFreq = int(np.clip(self.params['nFreq'].get_value(), 1, self.nFreqMax))
         freqIntPairs = [(self.params[f'freq{ind}'].get_value(), self.params[f'intensity{ind}'].get_value())
                         for ind in range(1, nFreq+1)]
 
@@ -279,7 +280,7 @@ class Paradigm(QtWidgets.QMainWindow):
         stimType = self.params['stimType'].get_string()
         stimDuration = self.params['stimDuration'].get_value()
 
-        if stimType in ['Noise', 'AM']:
+        if stimType in ['ClickTrain', 'Noise', 'AM']:
             targetAmp = self.noiseCal.find_amplitude(self.trialParams[1])
         else:
             targetAmp = self.spkCal.find_amplitude(self.trialParams[0],
@@ -295,6 +296,10 @@ class Paradigm(QtWidgets.QMainWindow):
             sound = {'type':'toneTrain', 'duration':stimDuration,
                      'amplitude':targetAmp, 'frequency':self.trialParams[0],
                      'toneDuration':0.025, 'rate':20}
+        elif stimType == 'ClickTrain':
+            sound = {'type':'clickTrain', 'duration':stimDuration,
+                     'amplitude':targetAmp, 'rate':self.trialParams[0],
+                     'clickDuration':0.005}  # 5ms click duration
         elif stimType == 'Sine':
             sound = {'type':'tone', 'duration':stimDuration,
                      'amplitude':targetAmp, 'frequency':self.trialParams[0]}
