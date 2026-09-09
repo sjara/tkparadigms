@@ -89,20 +89,23 @@ class Paradigm(QtWidgets.QMainWindow):
                                                           group='Fading noise')
         fade_params = self.params.layout_group('Fading noise')
 
-        self.params['include_chord'] = paramgui.MenuParam('Include chord',
+        self.params['include_chord3t'] = paramgui.MenuParam('Include chord',
                                                           ['No','Yes'],
-                                                          value=1, group='Chord tones')
-        self.params['chord_F0'] = paramgui.NumericParam('F0 (Hz)',
-                                                        value=4000, group='Chord tones')
-        self.params['chord_n_middle'] = paramgui.MenuParam('N middle tones',
+                                                          value=1, group='Chord 3 tones')
+        self.params['chord3t_F0'] = paramgui.NumericParam('F0 (Hz)',
+                                                        value=4000, group='Chord 3 tones')
+        self.params['chord3t_n_possible_middle'] = paramgui.MenuParam('N possible middle',
                                                           ['1','3','5','7'],
-                                                          value=2, group='Chord tones')
-        self.params['chord_intensity'] = paramgui.NumericParam('Intensity (dB SPL)',
-                                                               value=60, group='Chord tones')
-        self.params['current_chord_middle_octave'] = paramgui.NumericParam(
+                                                          value=2, group='Chord 3 tones')
+        self.params['chord3t_middle_scheme'] = paramgui.MenuParam('Middle tone scheme',
+                                                          ['Irrational','Linear'],
+                                                          value=0, group='Chord 3 tones')
+        self.params['chord3t_intensity'] = paramgui.NumericParam('Intensity (dB SPL)',
+                                                               value=60, group='Chord 3 tones')
+        self.params['current_chord3t_middle_octave'] = paramgui.NumericParam(
             'Current Middle Octave', value=0, enabled=False, decimals=3,
-            group='Chord tones')
-        chord_params = self.params.layout_group('Chord tones')
+            group='Chord 3 tones')
+        chord_params = self.params.layout_group('Chord 3 tones')
 
         self.params['stim_duration'] = paramgui.NumericParam('Stim Duration (s)',
                                                         value=1.0,
@@ -125,7 +128,7 @@ class Paradigm(QtWidgets.QMainWindow):
         stim_params = self.params.layout_group('Stim parameters')
 
         self.params['current_stim_type'] = paramgui.MenuParam('Current Stim Type',
-                                                            ['AM_noise','Fading_noise','Chord'],
+                                                            ['AM_noise','Fading_noise','Chord_3t'],
                                                             value=0, enabled=False,
                                                             group='Current values')
         self.params['current_intensity'] = paramgui.NumericParam('Current Intensity',
@@ -282,14 +285,18 @@ class Paradigm(QtWidgets.QMainWindow):
                     'fade_direction': fade_direction,
                 })
 
-        if self.params['include_chord'].get_string() == 'Yes':
-            chord_F0 = self.params['chord_F0'].get_value()
-            n_middle_tones = int(self.params['chord_n_middle'].get_string())
-            middle_octaves = np.sort(self.chord_middle_octaves_irrational(n_middle_tones))
-            chord_intensity = self.params['chord_intensity'].get_value()
+        if self.params['include_chord3t'].get_string() == 'Yes':
+            chord_F0 = self.params['chord3t_F0'].get_value()
+            n_middle_tones = int(self.params['chord3t_n_possible_middle'].get_string())
+            middle_scheme = self.params['chord3t_middle_scheme'].get_string()
+            if middle_scheme == 'Linear':
+                middle_octaves = np.sort(self.chord_middle_octaves_linear(n_middle_tones))
+            else:
+                middle_octaves = np.sort(self.chord_middle_octaves_irrational(n_middle_tones))
+            chord_intensity = self.params['chord3t_intensity'].get_value()
             for middle_octave in middle_octaves:
                 stim_conditions.append({
-                    'stim_type': 'Chord',
+                    'stim_type': 'Chord_3t',
                     'F0': chord_F0,
                     'middle_octave': middle_octave,
                     'intensity': chord_intensity,
@@ -370,7 +377,7 @@ class Paradigm(QtWidgets.QMainWindow):
             sound = {'type':'fadingNoise', 'duration':stim_duration,
                      'amplitude':target_amp, 'amplitudeStart':amp_ratio, 'amplitudeEnd':1.0}
             current_intensity = intensity_end
-        elif stim_type == 'Chord':
+        elif stim_type == 'Chord_3t':
             chord_F0 = self.trial_params['F0']
             middle_octave = self.trial_params['middle_octave']
             chord_intensity = self.trial_params['intensity']
@@ -390,7 +397,7 @@ class Paradigm(QtWidgets.QMainWindow):
                      'amplitude':target_amp, 'frequency':chord_F0,
                      'octaves':octaves, 'calibration':calibration}
             current_intensity = chord_intensity
-            self.params['current_chord_middle_octave'].set_value(middle_octave)
+            self.params['current_chord3t_middle_octave'].set_value(middle_octave)
 
         stim_output = stimSync
         serial_output = 1
