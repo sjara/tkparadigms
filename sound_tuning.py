@@ -41,6 +41,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Create the speaker calibration object --
         self.noiseCal = speakercalibration.NoiseCalibration(rigsettings.SPEAKER_CALIBRATION_NOISE)
+        self.sineCal = speakercalibration.Calibration(rigsettings.SPEAKER_CALIBRATION_SINE)
 
         # -- Create dispatcher --
         self.dispatcher = dispatcher.Dispatcher(serverType=smServerType, interval=0.1)
@@ -88,6 +89,21 @@ class Paradigm(QtWidgets.QMainWindow):
                                                           group='Fading noise')
         fade_params = self.params.layout_group('Fading noise')
 
+        self.params['include_chord'] = paramgui.MenuParam('Include chord',
+                                                          ['No','Yes'],
+                                                          value=1, group='Chord tones')
+        self.params['chord_F0'] = paramgui.NumericParam('F0 (Hz)',
+                                                        value=4000, group='Chord tones')
+        self.params['chord_n_middle'] = paramgui.MenuParam('N middle tones',
+                                                          ['1','3','5','7'],
+                                                          value=2, group='Chord tones')
+        self.params['chord_intensity'] = paramgui.NumericParam('Intensity (dB SPL)',
+                                                               value=60, group='Chord tones')
+        self.params['current_chord_middle_octave'] = paramgui.NumericParam(
+            'Current Middle Octave', value=0, enabled=False, decimals=3,
+            group='Chord tones')
+        chord_params = self.params.layout_group('Chord tones')
+
         self.params['stim_duration'] = paramgui.NumericParam('Stim Duration (s)',
                                                         value=1.0,
                                                         group='Stim parameters')
@@ -109,7 +125,7 @@ class Paradigm(QtWidgets.QMainWindow):
         stim_params = self.params.layout_group('Stim parameters')
 
         self.params['current_stim_type'] = paramgui.MenuParam('Current Stim Type',
-                                                            ['AM_noise','Fading_noise'],
+                                                            ['AM_noise','Fading_noise','Chord'],
                                                             value=0, enabled=False,
                                                             group='Current values')
         self.params['current_intensity'] = paramgui.NumericParam('Current Intensity',
@@ -153,6 +169,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         layoutCol1.addWidget(session_params)
         layoutCol1.addStretch()
+        layoutCol1.addWidget(self.saveData)
         layoutCol1.addWidget(self.dispatcher.widget)
         layoutCol1.addWidget(self.saveOnStop)
 
@@ -162,8 +179,8 @@ class Paradigm(QtWidgets.QMainWindow):
 
         layoutCol3.addWidget(am_params)
         layoutCol3.addWidget(fade_params)
+        layoutCol3.addWidget(chord_params)
         layoutCol3.addStretch()
-        layoutCol3.addWidget(self.saveData)
 
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
@@ -192,6 +209,48 @@ class Paradigm(QtWidgets.QMainWindow):
         # -- Initialize the list of trial parameters --
         self.trial_params = []
         self.sound_param_list = []
+
+    def chord_middle_octaves_linear(self, n_middle_tones):
+        '''Return the candidate octave offsets (relative to F0) for the middle
+        tone of the chord, symmetric around 1 octave (i.e. 2*F0).
+        n_middle_tones=1 -> [1]
+        n_middle_tones=3 -> [0.5, 1, 1.5]
+        n_middle_tones=5 -> [1/3, 2/3, 1, 4/3, 5/3]
+        n_middle_tones=7 -> [1/4, 1/2, 3/4, 1, 5/4, 3/2, 7/4]
+        These are all simple rational fractions of an octave, so most of them
+        land close to other harmonic ratios (e.g. 1/2 octave = a just fifth).
+        '''
+        step = 2.0/(n_middle_tones+1)
+        return 1 + step*(np.arange(n_middle_tones) - (n_middle_tones-1)/2.0)
+
+    def chord_middle_octaves_irrational(self, n_middle_tones, irrational_step=(np.sqrt(5)-1)/2):
+        '''Return candidate octave offsets (relative to F0) for the middle tone
+        of the chord, symmetric around 1 octave (i.e. 2*F0). The offsets from
+        the center are generated from integer multiples of an irrational
+        number (a Weyl/golden-ratio equidistribution sequence), so (unlike
+        simple rational fractions of an octave, e.g. 1/2, 1/3, 2/3, which land
+        close to other harmonic ratios) they spread out over the octave
+        without clustering near any simple ratio, and never repeat or
+        coincide with each other.
+
+        n_middle_tones=1 -> [1]
+        n_middle_tones=3 -> [1-d1, 1, 1+d1]
+        n_middle_tones=5 -> [1-d1, 1-d2, 1, 1+d2, 1+d1]
+        (unsorted order shown; sorted by the caller)
+
+        The default irrational_step is the golden ratio conjugate
+        (sqrt(5)-1)/2 ~ 0.618, which is the "most irrational" number (worst
+        rational approximation), making it the standard choice for generating
+        maximally non-resonant / maximally dissonant sampling points. When
+        n_middle_tones is odd, the harmonic octave (1, i.e. 2*F0) is included
+        as the (symmetric) center/reference condition.
+        '''
+        n_pairs = n_middle_tones//2
+        octaves = [1.0] if n_middle_tones%2 else []
+        for pair_index in range(1, n_pairs+1):
+            offset = (pair_index*irrational_step) % 1.0
+            octaves.extend([1.0-offset, 1.0+offset])
+        return np.array(octaves)
 
     def populate_sound_params(self):
         '''This function reads the GUI inputs and populates a list of dicts, one
@@ -223,8 +282,21 @@ class Paradigm(QtWidgets.QMainWindow):
                     'fade_direction': fade_direction,
                 })
 
+        if self.params['include_chord'].get_string() == 'Yes':
+            chord_F0 = self.params['chord_F0'].get_value()
+            n_middle_tones = int(self.params['chord_n_middle'].get_string())
+            middle_octaves = np.sort(self.chord_middle_octaves_irrational(n_middle_tones))
+            chord_intensity = self.params['chord_intensity'].get_value()
+            for middle_octave in middle_octaves:
+                stim_conditions.append({
+                    'stim_type': 'Chord',
+                    'F0': chord_F0,
+                    'middle_octave': middle_octave,
+                    'intensity': chord_intensity,
+                })
+
         if not stim_conditions:
-            raise ValueError('At least one of AM noise or fading noise must be included.')
+            raise ValueError('At least one of AM noise, fading noise, or chord must be included.')
 
         stim_order = self.params['stim_order'].get_string()
         if stim_order == 'Random':
@@ -298,6 +370,27 @@ class Paradigm(QtWidgets.QMainWindow):
             sound = {'type':'fadingNoise', 'duration':stim_duration,
                      'amplitude':target_amp, 'amplitudeStart':amp_ratio, 'amplitudeEnd':1.0}
             current_intensity = intensity_end
+        elif stim_type == 'Chord':
+            chord_F0 = self.trial_params['F0']
+            middle_octave = self.trial_params['middle_octave']
+            chord_intensity = self.trial_params['intensity']
+            octaves = [0, middle_octave, 2]
+            freq_each_comp = chord_F0 * (2.0**np.array(octaves))
+            # -- amp_each_comp has shape (nTones, nChannels) --
+            amp_each_comp = self.sineCal.find_amplitudes(freq_each_comp, chord_intensity)
+            amp_F0 = amp_each_comp[0]
+            # -- Per-tone correction factor relative to F0, averaged across channels --
+            calibration = amp_each_comp.mean(axis=1)/amp_F0.mean()
+            target_amp = amp_F0
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'chordFromOctaves', 'duration':stim_duration,
+                     'amplitude':target_amp, 'frequency':chord_F0,
+                     'octaves':octaves, 'calibration':calibration}
+            current_intensity = chord_intensity
+            self.params['current_chord_middle_octave'].set_value(middle_octave)
 
         stim_output = stimSync
         serial_output = 1
