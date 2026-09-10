@@ -83,6 +83,35 @@ AMfading = {'subject': 'imag03X', 'experimenter': 'evan', 'session_ID':'000', 'n
             'include_AM':'Yes', 'AM_rate_low':4, 'AM_rate_high':32, 'AM_n_rates':4, 'AM_intensity':70,
             'include_fading':'Yes', 'fade_intensity_low':45, 'fade_intensity_high':80, 'stim_duration':0.4}
 
+pure_tones = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':320,
+              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
+              'sound_location':'Left', 
+              'include_tone':'Yes', 'tone_freq_low':2000, 'tone_freq_high':40000,'tone_n_freq':16,
+              'tone_intensity':60}
+
+am_noise= {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':220,
+              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
+              'sound_location':'Left', 
+              'include_AM':'Yes', 'AM_rate_low':4, 'AM_rate_high':32,'AM_n_rates':4,
+              'AM_intensity':70}
+
+fading_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':320,
+              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
+              'sound_location':'Left', 
+              'include_fading':'Yes', 'fade_intensity_low':45, 'fade_intensity_high':80}
+
+chord_tones = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':250,
+              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
+              'sound_location':'Left', 
+              'include_chord3t':'Yes', 'chord3t_F0':4000, 'chord3t_n_possible_middle':'5',
+              'chord3t_middle_scheme':'Irrational','chord3t_intensity':60}
+
+fm_sounds = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':300,
+              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
+              'sound_location':'Left', 
+              'include_FM':'Yes', 'FM_center_freq':4000, 'FM_slope_min':5,'FM_slope_max':80,
+              'FM_n_slopes':10,'FM_intensity':60}
+
 # WARNING! playing natural sounds so that the nominal SPL is actually accomplished depends on the existence of a chord calibration
 # file, and that the settings file has the correct line commented so that this file is actually used
 # in the case that the settings file indicates "none", it is still possible to run by setting the SPL here - the actual loudness then
