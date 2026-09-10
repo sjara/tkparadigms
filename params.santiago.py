@@ -134,4 +134,4 @@ wfmapclicks = {'isiMean':0.5, 'isiHalfRange':0, 'stimType':'ClickTrain', 'stimOr
 stuning = {'session_ID':'001', 'n_max_trials':2000, 'stim_duration':0.5, 
            'ISI_mean':0.1, 'ISI_half_range':0, 'stim_order':'Ordered',
            'include_AM':'No', 'include_fading':'No', 'include_chord3t':'No',
-           'include_FM':'Yes', 'include_tone':'No', 'include_clicktrain':'No'}
+           'include_FM':'No', 'include_tone':'Yes', 'include_clicktrain':'No'}

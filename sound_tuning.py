@@ -60,9 +60,26 @@ class Paradigm(QtWidgets.QMainWindow):
                                                        group='Session parameters')
         session_params = self.params.layout_group('Session parameters')
 
+        self.params['include_tone'] = paramgui.MenuParam('Include pure tones',
+                                                      ['No','Yes'],
+                                                      value=0, group='Pure tones')
+        self.params['tone_freq_low'] = paramgui.NumericParam('Freq Low (Hz)',
+                                                         value=2000, group='Pure tones')
+        self.params['tone_freq_high'] = paramgui.NumericParam('Freq High (Hz)',
+                                                          value=40000, group='Pure tones')
+        self.params['tone_n_freq'] = paramgui.NumericParam('N Frequencies', value=16,
+                                                              group='Pure tones')
+        self.params['tone_intensity'] = paramgui.NumericParam('Intensity (dB SPL)',
+                                                           value=60, group='Pure tones')
+        self.params['current_tone_freq'] = paramgui.NumericParam('Current Frequency (Hz)',
+                                                             value=0, enabled=False,
+                                                             decimals=3,
+                                                             group='Pure tones')
+        tone_params = self.params.layout_group('Pure tones')
+
         self.params['include_AM'] = paramgui.MenuParam('Include AM noise',
                                                       ['No','Yes'],
-                                                      value=1, group='AM noise')
+                                                      value=0, group='AM noise')
         self.params['AM_rate_low'] = paramgui.NumericParam('Rate Low (Hz)',
                                                          value=4, group='AM noise')
         self.params['AM_rate_high'] = paramgui.NumericParam('Rate High (Hz)',
@@ -78,7 +95,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         self.params['include_fading'] = paramgui.MenuParam('Include fading noise',
                                                             ['No','Yes'],
-                                                            value=1, group='Fading noise')
+                                                            value=0, group='Fading noise')
         self.params['fade_intensity_low'] = paramgui.NumericParam('Lowest Intensity (dB SPL)',
                                                                  value=45, group='Fading noise')
         self.params['fade_intensity_high'] = paramgui.NumericParam('Highest Intensity (dB SPL)',
@@ -91,7 +108,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         self.params['include_chord3t'] = paramgui.MenuParam('Include chord',
                                                           ['No','Yes'],
-                                                          value=1, group='Chord 3 tones')
+                                                          value=0, group='Chord 3 tones')
         self.params['chord3t_F0'] = paramgui.NumericParam('F0 (Hz)',
                                                         value=4000, group='Chord 3 tones')
         self.params['chord3t_n_possible_middle'] = paramgui.MenuParam('N possible middle',
@@ -109,7 +126,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         self.params['include_FM'] = paramgui.MenuParam('Include FM',
                                                       ['No','Yes'],
-                                                      value=1, group='FM sounds')
+                                                      value=0, group='FM sounds')
         self.params['FM_center_freq'] = paramgui.NumericParam('Center Frequency (Hz)',
                                                              value=4000, group='FM sounds')
         self.params['FM_slope_min'] = paramgui.NumericParam('Min abs slope (oct/sec)',
@@ -146,7 +163,7 @@ class Paradigm(QtWidgets.QMainWindow):
         stim_params = self.params.layout_group('Stim parameters')
 
         self.params['current_stim_type'] = paramgui.MenuParam('Current Stim Type',
-                                                            ['AM_noise','Fading_noise','Chord_3t','FM'],
+                                                            ['Pure_tone','AM_noise','Fading_noise','Chord_3t','FM'],
                                                             value=0, enabled=False,
                                                             group='Current values')
         self.params['current_intensity'] = paramgui.NumericParam('Current Intensity',
@@ -206,6 +223,7 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol2.addStretch()
         layoutCol2.addWidget(self.saveData)
 
+        layoutCol3.addWidget(tone_params)
         layoutCol3.addWidget(am_params)
         layoutCol3.addWidget(fade_params)
         layoutCol3.addStretch()
@@ -296,6 +314,16 @@ class Paradigm(QtWidgets.QMainWindow):
 
         stim_conditions = []
 
+        if self.params['include_tone'].get_string() == 'Yes':
+            freq_low = self.params['tone_freq_low'].get_value()
+            freq_high = self.params['tone_freq_high'].get_value()
+            n_freq = int(self.params['tone_n_freq'].get_value())
+            freqs = np.logspace(np.log10(freq_low), np.log10(freq_high), n_freq) if n_freq>1 else [freq_low]
+            tone_intensity = self.params['tone_intensity'].get_value()
+            for freq in freqs:
+                stim_conditions.append({'stim_type':'Pure_tone', 'frequency':freq,
+                                       'intensity':tone_intensity})
+
         if self.params['include_AM'].get_string() == 'Yes':
             rate_low = self.params['AM_rate_low'].get_value()
             rate_high = self.params['AM_rate_high'].get_value()
@@ -357,9 +385,6 @@ class Paradigm(QtWidgets.QMainWindow):
                     'intensity': fm_intensity,
                 })
 
-        if not stim_conditions:
-            raise ValueError('At least one of AM noise, fading noise, chord, or FM must be included.')
-
         stim_order = self.params['stim_order'].get_string()
         if stim_order == 'Random':
             random.shuffle(stim_conditions)
@@ -402,6 +427,11 @@ class Paradigm(QtWidgets.QMainWindow):
             self.trial_params = self.sound_param_list.pop(0) #pop(0) pops from the left
         except IndexError:
             self.populate_sound_params()
+            if not self.sound_param_list:
+                print('No sound type is included. Enable at least one "Include ..." '
+                      'parameter (Pure tones, AM noise, Fading noise, Chord, or FM).')
+                self.dispatcher.widget.stop()
+                return
             self.trial_params = self.sound_param_list.pop(0)
 
         stim_type = self.trial_params['stim_type']
@@ -410,7 +440,19 @@ class Paradigm(QtWidgets.QMainWindow):
         sound_location = self.params['sound_location'].get_string()
 
         # -- Determine the sound presentation mode and prepare the appropriate sound --
-        if stim_type == 'AM_noise':
+        if stim_type == 'Pure_tone':
+            tone_freq = self.trial_params['frequency']
+            tone_intensity = self.trial_params['intensity']
+            target_amp = self.sineCal.find_amplitude(tone_freq, tone_intensity)
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'tone', 'duration':stim_duration,
+                     'amplitude':target_amp, 'frequency':tone_freq}
+            current_intensity = tone_intensity
+            self.params['current_tone_freq'].set_value(tone_freq)
+        elif stim_type == 'AM_noise':
             target_amp = self.noiseCal.find_amplitude(self.trial_params['intensity'])
             if sound_location == 'Left':
                 target_amp = np.array([target_amp[0], 0])
