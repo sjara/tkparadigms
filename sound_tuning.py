@@ -100,7 +100,7 @@ class Paradigm(QtWidgets.QMainWindow):
                                                                  value=45, group='Fading noise')
         self.params['fade_intensity_high'] = paramgui.NumericParam('Highest Intensity (dB SPL)',
                                                                   value=75, group='Fading noise')
-        self.params['fade_direction'] = paramgui.MenuParam('Fade Direction',
+        self.params['current_fade_direction'] = paramgui.MenuParam('Fade Direction',
                                                           ['Fade_in','Fade_out'],
                                                           value=0, enabled=False,
                                                           group='Fading noise')
@@ -466,7 +466,7 @@ class Paradigm(QtWidgets.QMainWindow):
             intensity_low = self.trial_params['intensity_low']
             intensity_high = self.trial_params['intensity_high']
             fade_direction = self.trial_params['fade_direction']
-            self.params['fade_direction'].set_string(fade_direction)
+            self.params['current_fade_direction'].set_string(fade_direction)
             if fade_direction == 'Fade_in':
                 intensity_start, intensity_end = intensity_low, intensity_high
             else:
