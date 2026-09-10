@@ -83,8 +83,8 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['AM_rate_low'] = paramgui.NumericParam('Rate Low (Hz)',
                                                          value=4, group='AM noise')
         self.params['AM_rate_high'] = paramgui.NumericParam('Rate High (Hz)',
-                                                          value=16, group='AM noise')
-        self.params['AM_n_rates'] = paramgui.NumericParam('N Rates', value=3, group='AM noise')
+                                                          value=128, group='AM noise')
+        self.params['AM_n_rates'] = paramgui.NumericParam('N Rates', value=11, group='AM noise')
         self.params['AM_intensity'] = paramgui.NumericParam('Intensity (dB SPL)',
                                                            value=60, group='AM noise')
         self.params['current_AM_rate'] = paramgui.NumericParam('Current AM Rate (Hz)',
