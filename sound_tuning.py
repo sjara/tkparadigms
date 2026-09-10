@@ -112,6 +112,8 @@ class Paradigm(QtWidgets.QMainWindow):
                                                       value=1, group='FM sounds')
         self.params['FM_center_freq'] = paramgui.NumericParam('Center Frequency (Hz)',
                                                              value=4000, group='FM sounds')
+        self.params['FM_slope_min'] = paramgui.NumericParam('Min abs slope (oct/sec)',
+                                                            value=1, group='FM sounds')
         self.params['FM_slope_max'] = paramgui.NumericParam('Max abs slope (oct/sec)',
                                                             value=20, group='FM sounds')
         self.params['FM_n_slopes'] = paramgui.NumericParam('N Slopes', value=6, group='FM sounds')
@@ -193,7 +195,8 @@ class Paradigm(QtWidgets.QMainWindow):
 
         layoutCol1.addWidget(session_params)
         layoutCol1.addStretch()
-        layoutCol1.addWidget(self.saveData)
+        layoutCol1.addWidget(self.buttonResetStimSet)
+        layoutCol1.addStretch()
         layoutCol1.addWidget(self.dispatcher.widget)
         layoutCol1.addWidget(self.saveOnStop)
 
@@ -201,7 +204,7 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol2.addStretch()
         layoutCol2.addWidget(current_values)
         layoutCol2.addStretch()
-        layoutCol2.addWidget(self.buttonResetStimSet)
+        layoutCol2.addWidget(self.saveData)
 
         layoutCol3.addWidget(am_params)
         layoutCol3.addWidget(fade_params)
@@ -333,9 +336,18 @@ class Paradigm(QtWidgets.QMainWindow):
 
         if self.params['include_FM'].get_string() == 'Yes':
             fm_center_freq = self.params['FM_center_freq'].get_value()
+            slope_min = self.params['FM_slope_min'].get_value()
             slope_max = self.params['FM_slope_max'].get_value()
             n_slopes = int(self.params['FM_n_slopes'].get_value())
-            slopes = np.linspace(-slope_max, slope_max, n_slopes) if n_slopes>1 else [slope_max]
+            if n_slopes<=1:
+                slopes = [slope_max]
+            else:
+                n_pairs = n_slopes//2
+                slope_magnitudes = np.logspace(np.log10(slope_min), np.log10(slope_max), n_pairs) \
+                    if n_pairs>1 else [slope_max]
+                slopes = np.concatenate([-np.array(slope_magnitudes)[::-1], slope_magnitudes])
+                if n_slopes%2:
+                    slopes = np.concatenate([slopes[:n_pairs], [0], slopes[n_pairs:]])
             fm_intensity = self.params['FM_intensity'].get_value()
             for slope in slopes:
                 stim_conditions.append({
