@@ -113,10 +113,10 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['FM_center_freq'] = paramgui.NumericParam('Center Frequency (Hz)',
                                                              value=4000, group='FM sounds')
         self.params['FM_slope_min'] = paramgui.NumericParam('Min abs slope (oct/sec)',
-                                                            value=1, group='FM sounds')
+                                                            value=5, group='FM sounds')
         self.params['FM_slope_max'] = paramgui.NumericParam('Max abs slope (oct/sec)',
-                                                            value=20, group='FM sounds')
-        self.params['FM_n_slopes'] = paramgui.NumericParam('N Slopes', value=6, group='FM sounds')
+                                                            value=40, group='FM sounds')
+        self.params['FM_n_slopes'] = paramgui.NumericParam('N Slopes', value=8, group='FM sounds')
         self.params['FM_intensity'] = paramgui.NumericParam('Intensity (dB SPL)',
                                                            value=60, group='FM sounds')
         self.params['current_FM_slope'] = paramgui.NumericParam('Current Slope (oct/sec)',
@@ -126,10 +126,10 @@ class Paradigm(QtWidgets.QMainWindow):
         fm_params = self.params.layout_group('FM sounds')
 
         self.params['stim_duration'] = paramgui.NumericParam('Stim Duration (s)',
-                                                        value=1.0,
+                                                        value=0.5,
                                                         group='Stim parameters')
         self.params['ISI_mean'] = paramgui.NumericParam('ISI Mean (s)',
-                                                       value=1.2,
+                                                       value=1.6,
                                                        group='Stim parameters')
         self.params['ISI_half_range'] = paramgui.NumericParam('ISI +/-',
                                                       value=0.2,

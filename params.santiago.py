@@ -131,5 +131,7 @@ wfmap = {'isiMean':0.2, 'isiHalfRange':0, 'stimOrder':'Ordered'}
 wfmapclicks = {'isiMean':0.5, 'isiHalfRange':0, 'stimType':'ClickTrain', 'stimOrder':'Ordered',
                'freq1':8, 'freq2':16, 'freq3':32, 'nFreq':3}
 
-stuning = {'session_ID':'001', 'n_max_trials':20, 'stim_duration':0.2, 
-           'ISI_mean':0.1, 'ISI_half_range':0, 'stim_order':'Ordered'}
+stuning = {'session_ID':'001', 'n_max_trials':2000, 'stim_duration':0.5, 
+           'ISI_mean':0.1, 'ISI_half_range':0, 'stim_order':'Ordered',
+           'include_AM':'No', 'include_fading':'No', 'include_chord3t':'No',
+           'include_FM':'Yes', 'include_tone':'No', 'include_clicktrain':'No'}
