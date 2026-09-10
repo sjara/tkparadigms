@@ -107,6 +107,22 @@ class Paradigm(QtWidgets.QMainWindow):
             group='Chord 3 tones')
         chord_params = self.params.layout_group('Chord 3 tones')
 
+        self.params['include_FM'] = paramgui.MenuParam('Include FM',
+                                                      ['No','Yes'],
+                                                      value=1, group='FM sounds')
+        self.params['FM_center_freq'] = paramgui.NumericParam('Center Frequency (Hz)',
+                                                             value=4000, group='FM sounds')
+        self.params['FM_slope_max'] = paramgui.NumericParam('Max abs slope (oct/sec)',
+                                                            value=20, group='FM sounds')
+        self.params['FM_n_slopes'] = paramgui.NumericParam('N Slopes', value=6, group='FM sounds')
+        self.params['FM_intensity'] = paramgui.NumericParam('Intensity (dB SPL)',
+                                                           value=60, group='FM sounds')
+        self.params['current_FM_slope'] = paramgui.NumericParam('Current Slope (oct/sec)',
+                                                                value=0, enabled=False,
+                                                                decimals=3,
+                                                                group='FM sounds')
+        fm_params = self.params.layout_group('FM sounds')
+
         self.params['stim_duration'] = paramgui.NumericParam('Stim Duration (s)',
                                                         value=1.0,
                                                         group='Stim parameters')
@@ -128,7 +144,7 @@ class Paradigm(QtWidgets.QMainWindow):
         stim_params = self.params.layout_group('Stim parameters')
 
         self.params['current_stim_type'] = paramgui.MenuParam('Current Stim Type',
-                                                            ['AM_noise','Fading_noise','Chord_3t'],
+                                                            ['AM_noise','Fading_noise','Chord_3t','FM'],
                                                             value=0, enabled=False,
                                                             group='Current values')
         self.params['current_intensity'] = paramgui.NumericParam('Current Intensity',
@@ -162,13 +178,18 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1 = QtWidgets.QVBoxLayout()
         layoutCol2 = QtWidgets.QVBoxLayout()
         layoutCol3 = QtWidgets.QVBoxLayout()
+        layoutCol4 = QtWidgets.QVBoxLayout()
 
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
         layoutMain.addLayout(layoutCol3)
+        layoutMain.addLayout(layoutCol4)
 
         self.saveOnStop = QtWidgets.QCheckBox('Save data on auto-stop')
         self.saveOnStop.setChecked(True)
+
+        self.buttonResetStimSet = QtWidgets.QPushButton('Reset stimulus set')
+        self.buttonResetStimSet.setFixedHeight(2*self.buttonResetStimSet.sizeHint().height())
 
         layoutCol1.addWidget(session_params)
         layoutCol1.addStretch()
@@ -179,11 +200,16 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol2.addWidget(stim_params)
         layoutCol2.addStretch()
         layoutCol2.addWidget(current_values)
+        layoutCol2.addStretch()
+        layoutCol2.addWidget(self.buttonResetStimSet)
 
         layoutCol3.addWidget(am_params)
         layoutCol3.addWidget(fade_params)
-        layoutCol3.addWidget(chord_params)
         layoutCol3.addStretch()
+
+        layoutCol4.addWidget(chord_params)
+        layoutCol4.addWidget(fm_params)
+        layoutCol4.addStretch()
 
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
@@ -193,6 +219,9 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Connect the save data button --
         self.saveData.buttonSaveData.clicked.connect(self.save_to_file)
+
+        # -- Connect the reset stimulus set button --
+        self.buttonResetStimSet.clicked.connect(self.reset_stim_set)
 
         # -- Connect messenger --
         self.messagebar = paramgui.Messenger()
@@ -302,14 +331,34 @@ class Paradigm(QtWidgets.QMainWindow):
                     'intensity': chord_intensity,
                 })
 
+        if self.params['include_FM'].get_string() == 'Yes':
+            fm_center_freq = self.params['FM_center_freq'].get_value()
+            slope_max = self.params['FM_slope_max'].get_value()
+            n_slopes = int(self.params['FM_n_slopes'].get_value())
+            slopes = np.linspace(-slope_max, slope_max, n_slopes) if n_slopes>1 else [slope_max]
+            fm_intensity = self.params['FM_intensity'].get_value()
+            for slope in slopes:
+                stim_conditions.append({
+                    'stim_type': 'FM',
+                    'center_freq': fm_center_freq,
+                    'slope': slope,
+                    'intensity': fm_intensity,
+                })
+
         if not stim_conditions:
-            raise ValueError('At least one of AM noise, fading noise, or chord must be included.')
+            raise ValueError('At least one of AM noise, fading noise, chord, or FM must be included.')
 
         stim_order = self.params['stim_order'].get_string()
         if stim_order == 'Random':
             random.shuffle(stim_conditions)
 
         self.sound_param_list = stim_conditions
+
+    def reset_stim_set(self):
+        '''Discard any remaining conditions from the current set, so that the
+        next trial regenerates the list of conditions from the current GUI
+        parameter values. Triggered by button-clicked signal.'''
+        self.sound_param_list = []
 
     def prepare_next_trial(self, next_trial):
         '''
@@ -398,6 +447,20 @@ class Paradigm(QtWidgets.QMainWindow):
                      'octaves':octaves, 'calibration':calibration}
             current_intensity = chord_intensity
             self.params['current_chord3t_middle_octave'].set_value(middle_octave)
+        elif stim_type == 'FM':
+            fm_center_freq = self.trial_params['center_freq']
+            fm_slope = self.trial_params['slope']
+            fm_intensity = self.trial_params['intensity']
+            target_amp = self.sineCal.find_amplitude(fm_center_freq, fm_intensity)
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'FMtrain', 'duration':stim_duration,
+                     'amplitude':target_amp, 'centerFrequency':fm_center_freq,
+                     'slope':fm_slope, 'sweepDuration':0.1, 'silenceDuration':0.1}
+            current_intensity = fm_intensity
+            self.params['current_FM_slope'].set_value(fm_slope)
 
         stim_output = stimSync
         serial_output = 1
