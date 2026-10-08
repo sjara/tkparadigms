@@ -124,23 +124,50 @@ class Paradigm(QtWidgets.QMainWindow):
             group='Chord 3 tones')
         chord_params = self.params.layout_group('Chord 3 tones')
 
-        self.params['include_FM'] = paramgui.MenuParam('Include FM',
+        self.params['include_FMfixeddur'] = paramgui.MenuParam('Include FM',
                                                       ['No','Yes'],
-                                                      value=0, group='FM sounds')
-        self.params['FM_center_freq'] = paramgui.NumericParam('Center Frequency (Hz)',
-                                                             value=4000, group='FM sounds')
-        self.params['FM_slope_min'] = paramgui.NumericParam('Min abs slope (oct/sec)',
-                                                            value=5, group='FM sounds')
-        self.params['FM_slope_max'] = paramgui.NumericParam('Max abs slope (oct/sec)',
-                                                            value=40, group='FM sounds')
-        self.params['FM_n_slopes'] = paramgui.NumericParam('N Slopes', value=8, group='FM sounds')
-        self.params['FM_intensity'] = paramgui.NumericParam('Intensity (dB SPL)',
-                                                           value=60, group='FM sounds')
-        self.params['current_FM_slope'] = paramgui.NumericParam('Current Slope (oct/sec)',
+                                                      value=0, group='FM fixed duration')
+        self.params['FMfixeddur_center_freq'] = paramgui.NumericParam('Center Frequency (Hz)',
+                                                             value=4000, group='FM fixed duration')
+        self.params['FMfixeddur_slope_min'] = paramgui.NumericParam('Min abs slope (oct/sec)',
+                                                            value=5, group='FM fixed duration')
+        self.params['FMfixeddur_slope_max'] = paramgui.NumericParam('Max abs slope (oct/sec)',
+                                                            value=40, group='FM fixed duration')
+        self.params['FMfixeddur_n_slopes_per_direction'] = paramgui.NumericParam('N slopes per direction',
+                                                            value=4, group='FM fixed duration')
+        self.params['FMfixeddur_intensity'] = paramgui.NumericParam('Intensity (dB SPL)',
+                                                           value=60, group='FM fixed duration')
+        self.params['current_FMfixeddur_slope'] = paramgui.NumericParam('Current Slope (oct/sec)',
                                                                 value=0, enabled=False,
                                                                 decimals=3,
-                                                                group='FM sounds')
-        fm_params = self.params.layout_group('FM sounds')
+                                                                group='FM fixed duration')
+        fm_params = self.params.layout_group('FM fixed duration')
+
+        self.params['include_FMfixedrange'] = paramgui.MenuParam('Include FM',
+                                                      ['No','Yes'],
+                                                      value=0, group='FM fixed range')
+        self.params['FMfixedrange_center_freq'] = paramgui.NumericParam('Center Frequency (Hz)',
+                                                             value=4000, group='FM fixed range')
+        self.params['FMfixedrange_octave_range'] = paramgui.NumericParam('Range (octaves)',
+                                                             value=2, group='FM fixed range')
+        self.params['FMfixedrange_slope_min'] = paramgui.NumericParam('Min abs slope (oct/sec)',
+                                                            value=5, group='FM fixed range')
+        self.params['FMfixedrange_slope_max'] = paramgui.NumericParam('Max abs slope (oct/sec)',
+                                                            value=40, group='FM fixed range')
+        self.params['FMfixedrange_n_slopes_per_direction'] = paramgui.NumericParam('N slopes per direction',
+                                                            value=4, group='FM fixed range')
+        self.params['FMfixedrange_intensity'] = paramgui.NumericParam('Intensity (dB SPL)',
+                                                           value=60, group='FM fixed range')
+        self.params['current_FMfixedrange_slope'] = paramgui.NumericParam(
+            'Current Slope (oct/sec)', value=0, enabled=False, decimals=3,
+            group='FM fixed range')
+        self.params['current_FMfixedrange_sweep_duration'] = paramgui.NumericParam(
+            'Current Sweep Duration (s)', value=0, enabled=False, decimals=4,
+            group='FM fixed range')
+        self.params['current_FMfixedrange_sweep_onset'] = paramgui.NumericParam(
+            'Current Sweep Onset (s)', value=0, enabled=False, decimals=4,
+            group='FM fixed range')
+        fm_fixedrange_params = self.params.layout_group('FM fixed range')
 
         self.params['stim_duration'] = paramgui.NumericParam('Stim Duration (s)',
                                                         value=0.5,
@@ -163,7 +190,8 @@ class Paradigm(QtWidgets.QMainWindow):
         stim_params = self.params.layout_group('Stim parameters')
 
         self.params['current_stim_type'] = paramgui.MenuParam('Current Stim Type',
-                                                            ['Pure_tone','AM_noise','Fading_noise','Chord_3t','FM'],
+                                                            ['Pure_tone','AM_noise','Fading_noise','Chord_3t','FM_fixed_dur',
+                                                             'FM_fixed_range'],
                                                             value=0, enabled=False,
                                                             group='Current values')
         self.params['current_intensity'] = paramgui.NumericParam('Current Intensity',
@@ -198,11 +226,13 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol2 = QtWidgets.QVBoxLayout()
         layoutCol3 = QtWidgets.QVBoxLayout()
         layoutCol4 = QtWidgets.QVBoxLayout()
+        layoutCol5 = QtWidgets.QVBoxLayout()
 
         layoutMain.addLayout(layoutCol1)
         layoutMain.addLayout(layoutCol2)
         layoutMain.addLayout(layoutCol3)
         layoutMain.addLayout(layoutCol4)
+        layoutMain.addLayout(layoutCol5)
 
         self.saveOnStop = QtWidgets.QCheckBox('Save data on auto-stop')
         self.saveOnStop.setChecked(True)
@@ -228,9 +258,12 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol3.addWidget(fade_params)
         layoutCol3.addStretch()
 
-        layoutCol4.addWidget(chord_params)
         layoutCol4.addWidget(fm_params)
+        layoutCol4.addWidget(fm_fixedrange_params)
         layoutCol4.addStretch()
+
+        layoutCol5.addWidget(chord_params)
+        layoutCol5.addStretch()
 
         self.centralWidget.setLayout(layoutMain)
         self.setCentralWidget(self.centralWidget)
@@ -362,25 +395,43 @@ class Paradigm(QtWidgets.QMainWindow):
                     'intensity': chord_intensity,
                 })
 
-        if self.params['include_FM'].get_string() == 'Yes':
-            fm_center_freq = self.params['FM_center_freq'].get_value()
-            slope_min = self.params['FM_slope_min'].get_value()
-            slope_max = self.params['FM_slope_max'].get_value()
-            n_slopes = int(self.params['FM_n_slopes'].get_value())
-            if n_slopes<=1:
-                slopes = [slope_max]
-            else:
-                n_pairs = n_slopes//2
-                slope_magnitudes = np.logspace(np.log10(slope_min), np.log10(slope_max), n_pairs) \
-                    if n_pairs>1 else [slope_max]
-                slopes = np.concatenate([-np.array(slope_magnitudes)[::-1], slope_magnitudes])
-                if n_slopes%2:
-                    slopes = np.concatenate([slopes[:n_pairs], [0], slopes[n_pairs:]])
-            fm_intensity = self.params['FM_intensity'].get_value()
+        if self.params['include_FMfixeddur'].get_string() == 'Yes':
+            fm_center_freq = self.params['FMfixeddur_center_freq'].get_value()
+            slope_min = self.params['FMfixeddur_slope_min'].get_value()
+            slope_max = self.params['FMfixeddur_slope_max'].get_value()
+            n_slopes_per_direction = int(self.params['FMfixeddur_n_slopes_per_direction'].get_value())
+            # -- Each abs slope is presented in both directions --
+            slope_magnitudes = np.logspace(np.log10(slope_min), np.log10(slope_max),
+                                           n_slopes_per_direction) \
+                if n_slopes_per_direction>1 else [slope_max]
+            slopes = np.concatenate([-np.array(slope_magnitudes)[::-1], slope_magnitudes])
+            fm_intensity = self.params['FMfixeddur_intensity'].get_value()
             for slope in slopes:
                 stim_conditions.append({
-                    'stim_type': 'FM',
+                    'stim_type': 'FM_fixed_dur',
                     'center_freq': fm_center_freq,
+                    'slope': slope,
+                    'intensity': fm_intensity,
+                })
+
+        if self.params['include_FMfixedrange'].get_string() == 'Yes':
+            fm_center_freq = self.params['FMfixedrange_center_freq'].get_value()
+            fm_octave_range = self.params['FMfixedrange_octave_range'].get_value()
+            slope_min = self.params['FMfixedrange_slope_min'].get_value()
+            slope_max = self.params['FMfixedrange_slope_max'].get_value()
+            n_slopes_per_direction = int(
+                self.params['FMfixedrange_n_slopes_per_direction'].get_value())
+            # -- Each abs slope is presented in both directions --
+            slope_magnitudes = np.logspace(np.log10(slope_min), np.log10(slope_max),
+                                           n_slopes_per_direction) \
+                if n_slopes_per_direction>1 else [slope_max]
+            slopes = np.concatenate([-np.array(slope_magnitudes)[::-1], slope_magnitudes])
+            fm_intensity = self.params['FMfixedrange_intensity'].get_value()
+            for slope in slopes:
+                stim_conditions.append({
+                    'stim_type': 'FM_fixed_range',
+                    'center_freq': fm_center_freq,
+                    'octave_range': fm_octave_range,
                     'slope': slope,
                     'intensity': fm_intensity,
                 })
@@ -501,7 +552,7 @@ class Paradigm(QtWidgets.QMainWindow):
                      'octaves':octaves, 'calibration':calibration}
             current_intensity = chord_intensity
             self.params['current_chord3t_middle_octave'].set_value(middle_octave)
-        elif stim_type == 'FM':
+        elif stim_type == 'FM_fixed_dur':
             fm_center_freq = self.trial_params['center_freq']
             fm_slope = self.trial_params['slope']
             fm_intensity = self.trial_params['intensity']
@@ -514,7 +565,35 @@ class Paradigm(QtWidgets.QMainWindow):
                      'amplitude':target_amp, 'centerFrequency':fm_center_freq,
                      'slope':fm_slope, 'sweepDuration':0.1, 'silenceDuration':0.1}
             current_intensity = fm_intensity
-            self.params['current_FM_slope'].set_value(fm_slope)
+            self.params['current_FMfixeddur_slope'].set_value(fm_slope)
+        elif stim_type == 'FM_fixed_range':
+            fm_center_freq = self.trial_params['center_freq']
+            fm_octave_range = self.trial_params['octave_range']
+            fm_slope = self.trial_params['slope']
+            fm_intensity = self.trial_params['intensity']
+            # -- The sweep is centered in time within the stimulus period --
+            sweep_duration = fm_octave_range/abs(fm_slope)
+            sweep_onset = (stim_duration-sweep_duration)/2
+            if sweep_duration > stim_duration:
+                print('The FM fixed-range sweep for a slope of {:0.3f} oct/sec lasts {:0.3f} s, '
+                      'which does not fit in the stim duration ({:0.3f} s). Increase the stim '
+                      'duration or the min abs slope, or reduce the range.'.format(
+                          fm_slope, sweep_duration, stim_duration))
+                self.sound_param_list = []
+                self.dispatcher.widget.stop()
+                return
+            target_amp = self.sineCal.find_amplitude(fm_center_freq, fm_intensity)
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'FMfixedrange', 'duration':stim_duration,
+                     'amplitude':target_amp, 'centerFrequency':fm_center_freq,
+                     'octaveRange':fm_octave_range, 'slope':fm_slope}
+            current_intensity = fm_intensity
+            self.params['current_FMfixedrange_slope'].set_value(fm_slope)
+            self.params['current_FMfixedrange_sweep_duration'].set_value(sweep_duration)
+            self.params['current_FMfixedrange_sweep_onset'].set_value(sweep_onset)
 
         stim_output = stimSync
         serial_output = 1
