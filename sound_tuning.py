@@ -169,6 +169,26 @@ class Paradigm(QtWidgets.QMainWindow):
             group='FM fixed range')
         fm_fixedrange_params = self.params.layout_group('FM fixed range')
 
+        self.params['include_bandnoise'] = paramgui.MenuParam('Include band noise',
+                                                      ['No','Yes'],
+                                                      value=0, group='Band noise')
+        self.params['bandnoise_center_freq'] = paramgui.NumericParam('Center Frequency (Hz)',
+                                                             value=8000, group='Band noise')
+        self.params['bandnoise_bandwidth_min'] = paramgui.NumericParam('Min bandwidth (octaves)',
+                                                             value=0.25, group='Band noise')
+        self.params['bandnoise_bandwidth_max'] = paramgui.NumericParam('Max bandwidth (octaves)',
+                                                             value=4, group='Band noise')
+        self.params['bandnoise_n_bandwidths'] = paramgui.NumericParam('N Bandwidths', value=5,
+                                                             group='Band noise')
+        self.params['bandnoise_mod_rate'] = paramgui.NumericParam('AM Rate (Hz, 0=none)',
+                                                             value=0, group='Band noise')
+        self.params['bandnoise_intensity'] = paramgui.NumericParam(
+            'White noise intensity (dB SPL)', value=60, group='Band noise')
+        self.params['current_bandnoise_bandwidth'] = paramgui.NumericParam(
+            'Current Bandwidth (octaves)', value=0, enabled=False, decimals=3,
+            group='Band noise')
+        bandnoise_params = self.params.layout_group('Band noise')
+
         self.params['stim_duration'] = paramgui.NumericParam('Stim Duration (s)',
                                                         value=0.5,
                                                         group='Stim parameters')
@@ -191,7 +211,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         self.params['current_stim_type'] = paramgui.MenuParam('Current Stim Type',
                                                             ['Pure_tone','AM_noise','Fading_noise','Chord_3t','FM_fixed_dur',
-                                                             'FM_fixed_range'],
+                                                             'FM_fixed_range','Band_noise'],
                                                             value=0, enabled=False,
                                                             group='Current values')
         self.params['current_intensity'] = paramgui.NumericParam('Current Intensity',
@@ -263,6 +283,7 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol4.addStretch()
 
         layoutCol5.addWidget(chord_params)
+        layoutCol5.addWidget(bandnoise_params)
         layoutCol5.addStretch()
 
         self.centralWidget.setLayout(layoutMain)
@@ -436,6 +457,24 @@ class Paradigm(QtWidgets.QMainWindow):
                     'intensity': fm_intensity,
                 })
 
+        if self.params['include_bandnoise'].get_string() == 'Yes':
+            band_center_freq = self.params['bandnoise_center_freq'].get_value()
+            bandwidth_min = self.params['bandnoise_bandwidth_min'].get_value()
+            bandwidth_max = self.params['bandnoise_bandwidth_max'].get_value()
+            n_bandwidths = int(self.params['bandnoise_n_bandwidths'].get_value())
+            bandwidths = np.logspace(np.log10(bandwidth_min), np.log10(bandwidth_max),
+                                     n_bandwidths) if n_bandwidths>1 else [bandwidth_max]
+            band_mod_rate = self.params['bandnoise_mod_rate'].get_value()
+            band_intensity = self.params['bandnoise_intensity'].get_value()
+            for bandwidth in bandwidths:
+                stim_conditions.append({
+                    'stim_type': 'Band_noise',
+                    'center_freq': band_center_freq,
+                    'bandwidth': bandwidth,
+                    'mod_rate': band_mod_rate,
+                    'intensity': band_intensity,
+                })
+
         stim_order = self.params['stim_order'].get_string()
         if stim_order == 'Random':
             random.shuffle(stim_conditions)
@@ -480,7 +519,7 @@ class Paradigm(QtWidgets.QMainWindow):
             self.populate_sound_params()
             if not self.sound_param_list:
                 print('No sound type is included. Enable at least one "Include ..." '
-                      'parameter (Pure tones, AM noise, Fading noise, Chord, or FM).')
+                      'parameter (Pure tones, AM noise, Fading noise, Chord, FM, or Band noise).')
                 self.dispatcher.widget.stop()
                 return
             self.trial_params = self.sound_param_list.pop(0)
@@ -594,6 +633,22 @@ class Paradigm(QtWidgets.QMainWindow):
             self.params['current_FMfixedrange_slope'].set_value(fm_slope)
             self.params['current_FMfixedrange_sweep_duration'].set_value(sweep_duration)
             self.params['current_FMfixedrange_sweep_onset'].set_value(sweep_onset)
+
+        elif stim_type == 'Band_noise':
+            bandwidth = self.trial_params['bandwidth']
+            band_intensity = self.trial_params['intensity']
+            # -- The amplitude is that of white noise at this intensity, so the spectral
+            #    density inside the band is the same for all bandwidths --
+            target_amp = self.noiseCal.find_amplitude(band_intensity)
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'bandNoise', 'duration':stim_duration,
+                     'amplitude':target_amp, 'centerFrequency':self.trial_params['center_freq'],
+                     'octaves':bandwidth, 'modFrequency':self.trial_params['mod_rate']}
+            current_intensity = band_intensity
+            self.params['current_bandnoise_bandwidth'].set_value(bandwidth)
 
         stim_output = stimSync
         serial_output = 1
