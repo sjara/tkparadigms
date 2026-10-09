@@ -116,8 +116,8 @@ chord_tones = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n
 fm_sounds = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':300,
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left', 
-              'include_FM':'Yes', 'FM_center_freq':4000, 'FM_slope_min':5,'FM_slope_max':80,
-              'FM_n_slopes':10,'FM_intensity':60}
+              'include_FMfixeddur':'Yes', 'FMfixeddur_center_freq':4000, 'FMfixeddur_slope_min':5,'FMfixeddur_slope_max':80,
+              'FMfixeddur_n_slopes_per_direction':5,'FMfixeddur_intensity':60}
 
 # WARNING! playing natural sounds so that the nominal SPL is actually accomplished depends on the existence of a chord calibration
 # file, and that the settings file has the correct line commented so that this file is actually used
