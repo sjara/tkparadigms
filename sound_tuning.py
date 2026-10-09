@@ -181,7 +181,7 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['bandnoise_n_bandwidths'] = paramgui.NumericParam('N Bandwidths', value=5,
                                                              group='Band noise')
         self.params['bandnoise_mod_rate'] = paramgui.NumericParam('AM Rate (Hz, 0=none)',
-                                                             value=0, group='Band noise')
+                                                             value=8, group='Band noise')
         self.params['bandnoise_intensity'] = paramgui.NumericParam(
             'White noise intensity (dB SPL)', value=60, group='Band noise')
         self.params['current_bandnoise_bandwidth'] = paramgui.NumericParam(
