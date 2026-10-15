@@ -152,7 +152,7 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['FMfixedrange_center_freq'] = paramgui.NumericParam('Center Frequency (Hz)',
                                                              value=4000, group='FM fixed range')
         self.params['FMfixedrange_octave_range'] = paramgui.NumericParam('Range (octaves)',
-                                                             value=2, group='FM fixed range')
+                                                             value=4, group='FM fixed range')
         self.params['FMfixedrange_slope_min'] = paramgui.NumericParam('Min abs slope (oct/sec)',
                                                             value=5, group='FM fixed range')
         self.params['FMfixedrange_slope_max'] = paramgui.NumericParam('Max abs slope (oct/sec)',
