@@ -206,6 +206,11 @@ class Paradigm(QtWidgets.QMainWindow):
                                                              group='Noise pair')
         self.params['noisepair_intensity'] = paramgui.NumericParam(
             'Intensity (dB SPL)', value=60, group='Noise pair')
+        self.params['noisepair_frozen'] = paramgui.MenuParam('Frozen noise',
+                                                     ['No','Yes'],
+                                                     value=1, group='Noise pair')
+        self.params['noisepair_seed'] = paramgui.NumericParam('Frozen noise seed', value=0,
+                                                             group='Noise pair')
         self.params['current_noisepair_order'] = paramgui.MenuParam('Current Order',
                                                             ['A_then_B','B_then_A','A_then_A','B_then_B'],
                                                             value=0, enabled=False,
@@ -512,6 +517,11 @@ class Paradigm(QtWidgets.QMainWindow):
             gaps = np.logspace(np.log10(gap_min), np.log10(gap_max),
                                n_gaps) if n_gaps>1 else [gap_max]
             pair_intensity = self.params['noisepair_intensity'].get_value()
+            # -- With frozen noise, A and B are the same waveforms on every trial --
+            if self.params['noisepair_frozen'].get_string() == 'Yes':
+                pair_seed = int(self.params['noisepair_seed'].get_value())
+            else:
+                pair_seed = None
             # -- Each gap is presented with every combination of A and B --
             for pair_order in ['A_then_B','B_then_A','A_then_A','B_then_B']:
                 for gap in gaps:
@@ -523,6 +533,7 @@ class Paradigm(QtWidgets.QMainWindow):
                         'gap': gap,
                         'order': pair_order,
                         'intensity': pair_intensity,
+                        'seed': pair_seed,
                     })
 
         stim_order = self.params['stim_order'].get_string()
@@ -717,7 +728,8 @@ class Paradigm(QtWidgets.QMainWindow):
                      'amplitude':target_amp, 'centerFrequency':self.trial_params['center_freq'],
                      'octaves':self.trial_params['bandwidth'],
                      'soundDuration':self.trial_params['sound_duration'],
-                     'gap':pair_gap, 'order':sound_server_order}
+                     'gap':pair_gap, 'order':sound_server_order,
+                     'seed':self.trial_params['seed']}
             current_intensity = pair_intensity
             self.params['current_noisepair_order'].set_string(pair_order)
             self.params['current_noisepair_gap'].set_value(pair_gap)
