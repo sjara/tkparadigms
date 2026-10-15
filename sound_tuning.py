@@ -189,6 +189,32 @@ class Paradigm(QtWidgets.QMainWindow):
             group='Band noise')
         bandnoise_params = self.params.layout_group('Band noise')
 
+        self.params['include_noisepair'] = paramgui.MenuParam('Include noise pair (A-B)',
+                                                      ['No','Yes'],
+                                                      value=0, group='Noise pair')
+        self.params['noisepair_center_freq'] = paramgui.NumericParam('A Center Frequency (Hz)',
+                                                             value=8000, group='Noise pair')
+        self.params['noisepair_bandwidth'] = paramgui.NumericParam('A Bandwidth (octaves)',
+                                                             value=0.25, group='Noise pair')
+        self.params['noisepair_sound_duration'] = paramgui.NumericParam(
+            'Duration of A and B (s)', value=0.1, group='Noise pair')
+        self.params['noisepair_delay_min'] = paramgui.NumericParam('Min onset delay (s)',
+                                                             value=0.01, group='Noise pair')
+        self.params['noisepair_delay_max'] = paramgui.NumericParam('Max onset delay (s)',
+                                                             value=0.5, group='Noise pair')
+        self.params['noisepair_n_delays'] = paramgui.NumericParam('N Delays', value=5,
+                                                             group='Noise pair')
+        self.params['noisepair_intensity'] = paramgui.NumericParam(
+            'Intensity (dB SPL)', value=60, group='Noise pair')
+        self.params['current_noisepair_order'] = paramgui.MenuParam('Current Order',
+                                                            ['A_then_B','B_then_A'],
+                                                            value=0, enabled=False,
+                                                            group='Noise pair')
+        self.params['current_noisepair_delay'] = paramgui.NumericParam(
+            'Current Onset Delay (s)', value=0, enabled=False, decimals=4,
+            group='Noise pair')
+        noisepair_params = self.params.layout_group('Noise pair')
+
         self.params['stim_duration'] = paramgui.NumericParam('Stim Duration (s)',
                                                         value=0.5,
                                                         group='Stim parameters')
@@ -211,7 +237,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         self.params['current_stim_type'] = paramgui.MenuParam('Current Stim Type',
                                                             ['Pure_tone','AM_noise','Fading_noise','Chord_3t','FM_fixed_dur',
-                                                             'FM_fixed_range','Band_noise'],
+                                                             'FM_fixed_range','Band_noise','Noise_pair'],
                                                             value=0, enabled=False,
                                                             group='Current values')
         self.params['current_intensity'] = paramgui.NumericParam('Current Intensity',
@@ -280,6 +306,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         layoutCol4.addWidget(fm_params)
         layoutCol4.addWidget(fm_fixedrange_params)
+        layoutCol4.addWidget(noisepair_params)
         layoutCol4.addStretch()
 
         layoutCol5.addWidget(chord_params)
@@ -475,6 +502,29 @@ class Paradigm(QtWidgets.QMainWindow):
                     'intensity': band_intensity,
                 })
 
+        if self.params['include_noisepair'].get_string() == 'Yes':
+            pair_center_freq = self.params['noisepair_center_freq'].get_value()
+            pair_bandwidth = self.params['noisepair_bandwidth'].get_value()
+            pair_sound_duration = self.params['noisepair_sound_duration'].get_value()
+            delay_min = self.params['noisepair_delay_min'].get_value()
+            delay_max = self.params['noisepair_delay_max'].get_value()
+            n_delays = int(self.params['noisepair_n_delays'].get_value())
+            delays = np.logspace(np.log10(delay_min), np.log10(delay_max),
+                                 n_delays) if n_delays>1 else [delay_max]
+            pair_intensity = self.params['noisepair_intensity'].get_value()
+            # -- Each delay is presented in both orders --
+            for pair_order in ['A_then_B','B_then_A']:
+                for delay in delays:
+                    stim_conditions.append({
+                        'stim_type': 'Noise_pair',
+                        'center_freq': pair_center_freq,
+                        'bandwidth': pair_bandwidth,
+                        'sound_duration': pair_sound_duration,
+                        'delay': delay,
+                        'order': pair_order,
+                        'intensity': pair_intensity,
+                    })
+
         stim_order = self.params['stim_order'].get_string()
         if stim_order == 'Random':
             random.shuffle(stim_conditions)
@@ -519,7 +569,7 @@ class Paradigm(QtWidgets.QMainWindow):
             self.populate_sound_params()
             if not self.sound_param_list:
                 print('No sound type is included. Enable at least one "Include ..." '
-                      'parameter (Pure tones, AM noise, Fading noise, Chord, FM, or Band noise).')
+                      'parameter (Pure tones, AM noise, Fading noise, Chord, FM, Band noise, or Noise pair).')
                 self.dispatcher.widget.stop()
                 return
             self.trial_params = self.sound_param_list.pop(0)
@@ -649,6 +699,26 @@ class Paradigm(QtWidgets.QMainWindow):
                      'octaves':bandwidth, 'modFrequency':self.trial_params['mod_rate']}
             current_intensity = band_intensity
             self.params['current_bandnoise_bandwidth'].set_value(bandwidth)
+        elif stim_type == 'Noise_pair':
+            pair_delay = self.trial_params['delay']
+            pair_order = self.trial_params['order']
+            pair_intensity = self.trial_params['intensity']
+            # -- Both sounds are in one waveform, so the stimulus lasts until the second ends --
+            stim_duration = pair_delay + self.trial_params['sound_duration']
+            # -- The band noise (A) has the same power as the white noise (B) --
+            target_amp = self.noiseCal.find_amplitude(pair_intensity)
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'noisePair', 'duration':stim_duration,
+                     'amplitude':target_amp, 'centerFrequency':self.trial_params['center_freq'],
+                     'octaves':self.trial_params['bandwidth'],
+                     'soundDuration':self.trial_params['sound_duration'],
+                     'delay':pair_delay, 'order':'AB' if pair_order=='A_then_B' else 'BA'}
+            current_intensity = pair_intensity
+            self.params['current_noisepair_order'].set_string(pair_order)
+            self.params['current_noisepair_delay'].set_value(pair_delay)
 
         stim_output = stimSync
         serial_output = 1
