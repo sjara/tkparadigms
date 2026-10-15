@@ -167,9 +167,6 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['current_FMfixedrange_sweep_duration'] = paramgui.NumericParam(
             'Current Sweep Duration (s)', value=0, enabled=False, decimals=4,
             group='FM fixed range')
-        self.params['current_FMfixedrange_sweep_onset'] = paramgui.NumericParam(
-            'Current Sweep Onset (s)', value=0, enabled=False, decimals=4,
-            group='FM fixed range')
         fm_fixedrange_params = self.params.layout_group('FM fixed range')
 
         self.params['include_bandnoise'] = paramgui.MenuParam('Include band noise',
@@ -658,17 +655,9 @@ class Paradigm(QtWidgets.QMainWindow):
             fm_octave_range = self.trial_params['octave_range']
             fm_slope = self.trial_params['slope']
             fm_intensity = self.trial_params['intensity']
-            # -- The sweep is centered in time within the stimulus period --
+            # -- The stimulus lasts as long as the sweep (it ignores the general stim duration) --
             sweep_duration = fm_octave_range/abs(fm_slope)
-            sweep_onset = (stim_duration-sweep_duration)/2
-            if sweep_duration > stim_duration:
-                print('The FM fixed-range sweep for a slope of {:0.3f} oct/sec lasts {:0.3f} s, '
-                      'which does not fit in the stim duration ({:0.3f} s). Increase the stim '
-                      'duration or the min abs slope, or reduce the range.'.format(
-                          fm_slope, sweep_duration, stim_duration))
-                self.sound_param_list = []
-                self.dispatcher.widget.stop()
-                return
+            stim_duration = sweep_duration
             target_amp = self.sineCal.find_amplitude(fm_center_freq, fm_intensity)
             if sound_location == 'Left':
                 target_amp = np.array([target_amp[0], 0])
@@ -680,7 +669,6 @@ class Paradigm(QtWidgets.QMainWindow):
             current_intensity = fm_intensity
             self.params['current_FMfixedrange_slope'].set_value(fm_slope)
             self.params['current_FMfixedrange_sweep_duration'].set_value(sweep_duration)
-            self.params['current_FMfixedrange_sweep_onset'].set_value(sweep_onset)
 
         elif stim_type == 'Band_noise':
             bandwidth = self.trial_params['bandwidth']
