@@ -295,16 +295,16 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol1.addStretch()
         layoutCol1.addWidget(self.dispatcher.widget)
         layoutCol1.addWidget(self.saveOnStop)
-        layoutCol1.addWidget(self.saveData)
 
         layoutCol2.addWidget(tone_params)
         layoutCol2.addWidget(am_params)
-        layoutCol2.addWidget(bandnoise_params)
+        layoutCol2.addWidget(fade_params)
         layoutCol2.addStretch()
+        layoutCol2.addWidget(self.saveData)
 
         layoutCol3.addWidget(fm_params)
         layoutCol3.addWidget(fm_fixedrange_params)
-        layoutCol3.addWidget(fade_params)
+        layoutCol3.addWidget(bandnoise_params)
         layoutCol3.addStretch()
 
         layoutCol4.addWidget(chord_params)
