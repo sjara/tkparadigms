@@ -289,7 +289,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         layoutCol1.addWidget(session_params)
         layoutCol1.addWidget(stim_params)
-        layoutCol1.addWidget(current_values)
+        layoutCol1.addWidget(self.saveData)
         layoutCol1.addStretch()
         layoutCol1.addWidget(self.buttonResetStimSet)
         layoutCol1.addStretch()
@@ -300,7 +300,7 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol2.addWidget(am_params)
         layoutCol2.addWidget(chord_params)
         layoutCol2.addStretch()
-        layoutCol2.addWidget(self.saveData)
+        layoutCol2.addWidget(current_values)
 
         layoutCol3.addWidget(fm_params)
         layoutCol3.addWidget(fm_fixedrange_params)
