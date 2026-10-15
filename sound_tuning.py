@@ -207,7 +207,7 @@ class Paradigm(QtWidgets.QMainWindow):
         self.params['noisepair_intensity'] = paramgui.NumericParam(
             'Intensity (dB SPL)', value=60, group='Noise pair')
         self.params['current_noisepair_order'] = paramgui.MenuParam('Current Order',
-                                                            ['A_then_B','B_then_A'],
+                                                            ['A_then_B','B_then_A','A_then_A','B_then_B'],
                                                             value=0, enabled=False,
                                                             group='Noise pair')
         self.params['current_noisepair_gap'] = paramgui.NumericParam(
@@ -512,8 +512,8 @@ class Paradigm(QtWidgets.QMainWindow):
             gaps = np.logspace(np.log10(gap_min), np.log10(gap_max),
                                n_gaps) if n_gaps>1 else [gap_max]
             pair_intensity = self.params['noisepair_intensity'].get_value()
-            # -- Each gap is presented in both orders --
-            for pair_order in ['A_then_B','B_then_A']:
+            # -- Each gap is presented with every combination of A and B --
+            for pair_order in ['A_then_B','B_then_A','A_then_A','B_then_B']:
                 for gap in gaps:
                     stim_conditions.append({
                         'stim_type': 'Noise_pair',
@@ -711,11 +711,13 @@ class Paradigm(QtWidgets.QMainWindow):
                 target_amp = np.array([target_amp[0], 0])
             elif sound_location == 'Right':
                 target_amp = np.array([0, target_amp[1]])
+            # -- An order such as 'A_then_B' becomes 'AB' for the sound server --
+            sound_server_order = pair_order[0] + pair_order[-1]
             sound = {'type':'noisePair', 'duration':stim_duration,
                      'amplitude':target_amp, 'centerFrequency':self.trial_params['center_freq'],
                      'octaves':self.trial_params['bandwidth'],
                      'soundDuration':self.trial_params['sound_duration'],
-                     'gap':pair_gap, 'order':'AB' if pair_order=='A_then_B' else 'BA'}
+                     'gap':pair_gap, 'order':sound_server_order}
             current_intensity = pair_intensity
             self.params['current_noisepair_order'].set_string(pair_order)
             self.params['current_noisepair_gap'].set_value(pair_gap)
