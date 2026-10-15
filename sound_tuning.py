@@ -298,7 +298,7 @@ class Paradigm(QtWidgets.QMainWindow):
 
         layoutCol2.addWidget(tone_params)
         layoutCol2.addWidget(am_params)
-        layoutCol2.addWidget(fade_params)
+        layoutCol2.addWidget(chord_params)
         layoutCol2.addStretch()
         layoutCol2.addWidget(self.saveData)
 
@@ -307,7 +307,7 @@ class Paradigm(QtWidgets.QMainWindow):
         layoutCol3.addWidget(bandnoise_params)
         layoutCol3.addStretch()
 
-        layoutCol4.addWidget(chord_params)
+        layoutCol4.addWidget(fade_params)
         layoutCol4.addWidget(noisepair_params)
         layoutCol4.addStretch()
 
