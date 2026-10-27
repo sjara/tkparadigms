@@ -87,49 +87,59 @@ tuningFreq = {'subject':'imag022','experimenter':'evan', 'minFreq':2000, 'maxFre
               'minInt':60, 'maxInt':60, 'numInt':1}
 
 AMfading = {'subject': 'imag03X', 'experimenter': 'evan', 'session_ID':'000', 'n_max_trials':320,
-            'include_AM':'Yes', 'AM_rate_low':4, 'AM_rate_high':32, 'AM_n_rates':4, 'AM_intensity':70,
-            'include_fading':'Yes', 'fade_intensity_low':45, 'fade_intensity_high':80, 'stim_duration':0.4}
+            'include_AM':'Yes', 'AM_rate_low':4, 'AM_rate_high':32, 'AM_n_rates':4, 'AM_intensity':65,
+            'include_fading':'Yes', 'fade_intensity_low':45, 'fade_intensity_high':68, 'stim_duration':0.4}
 
+# block_1: redo band noise, noise pair, and chords at second BF if 2 modes. use mode instead of median if 1 mode.
 pure_tones = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':320,
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left', 
               'include_tone':'Yes', 'tone_freq_low':2000, 'tone_freq_high':40000,'tone_n_freq':16,
-              'tone_intensity':60}
-
-am_noise= {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':220,
-              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
-              'sound_location':'Left', 
-              'include_AM':'Yes', 'AM_rate_low':4, 'AM_rate_high':32,'AM_n_rates':4,
-              'AM_intensity':70}
-
-fading_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':320,
-              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
-              'sound_location':'Left', 
-              'include_fading':'Yes', 'fade_intensity_low':45, 'fade_intensity_high':80}
-
-chord_tones = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':250,
-              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
-              'sound_location':'Left', 
-              'include_chord3t':'Yes', 'chord3t_F0':4000, 'chord3t_n_possible_middle':'5',
-              'chord3t_middle_scheme':'Irrational','chord3t_intensity':60}
-
-fm_sounds_fdur = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':300,
-              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
-              'sound_location':'Left', 
-              'include_FMfixeddur':'Yes', 'FMfixeddur_center_freq':4000, 'FMfixeddur_slope_min':5,'FMfixeddur_slope_max':80,
-              'FMfixeddur_n_slopes_per_direction':5,'FMfixeddur_intensity':60}
-
-fm_sounds_frange = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':300,
-              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
-              'sound_location':'Left', 
-              'include_FMfixedrange':'Yes', 'FMfixedrange_center_freq':4000, 'FMfixedrange_octave_range':6, 'FMfixedrange_slope_min':5,'FMfixedrange_slope_max':80,
-              'FMfixedrange_n_slopes_per_direction':5,'FMfixeddur_intensity':60}
+              'tone_intensity':71}
 
 band_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':300,
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left', 
               'include_bandnoise':'Yes', 'bandnoise_center_freq':8000, 'bandnoise_bandwidth_min':0.25, 'bandnoise_bandwidth_max':4,'bandnoise_n_bandwidths':5,
-              'bandnoise_mode_rate':0,'bandnoise_intensity':60}
+              'bandnoise_mode_rate':0,'bandnoise_intensity':65}
+
+noise_pair = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':320,
+              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
+              'sound_location':'Left',
+              'include_noisepair':'Yes', 'noisepair_center_freq':8000, 'noisepair_bandwidth':0.25, 'noisepair_sound_duration':0.1,
+              'noisepair_gap_min':0.1, 'noisepair_gap_max':0.8, 'noisepair_n_gaps':4,'noisepair_intensity':60}
+
+# do not run chords with an F0 above 10 kHz
+chord_tones = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':250,
+              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
+              'sound_location':'Left', 
+              'include_chord3t':'Yes', 'chord3t_F0':4000, 'chord3t_n_possible_middle':'5',
+              'chord3t_middle_scheme':'Irrational','chord3t_intensity':68}
+
+# block_2: redo pure tones if run separately from block_1
+fm_sounds_frange = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':300,
+              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
+              'sound_location':'Left', 
+              'include_FMfixedrange':'Yes', 'FMfixedrange_center_freq':4000, 'FMfixedrange_octave_range':6, 'FMfixedrange_slope_min':5,'FMfixedrange_slope_max':80,
+              'FMfixedrange_n_slopes_per_direction':5,'FMfixedrange_intensity':70}
+
+am_noise= {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':220,
+              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
+              'sound_location':'Left', 
+              'include_AM':'Yes', 'AM_rate_low':4, 'AM_rate_high':32,'AM_n_rates':4,
+              'AM_intensity':65}
+
+fading_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':320,
+              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
+              'sound_location':'Left', 
+              'include_fading':'Yes', 'fade_intensity_low':45, 'fade_intensity_high':68}
+
+#not currently used, but could be used in the future if we want to test FM sweeps with fixed duration instead of fixed frequency range
+fm_sounds_fdur = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':300,
+              'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
+              'sound_location':'Left', 
+              'include_FMfixeddur':'Yes', 'FMfixeddur_center_freq':4000, 'FMfixeddur_slope_min':5,'FMfixeddur_slope_max':80,
+              'FMfixeddur_n_slopes_per_direction':5,'FMfixeddur_intensity':60}
 
 # WARNING! playing natural sounds so that the nominal SPL is actually accomplished depends on the existence of a chord calibration
 # file, and that the settings file has the correct line commented so that this file is actually used
