@@ -29,6 +29,16 @@ else:
 # -- Seed for frozen noise in 'Noise pair': sounds A and B are the same waveforms on every trial --
 NOISEPAIR_SEED = 0
 
+# -- Waveforms must stay within [-1,1]. Jack clips values outside this range and
+#    pygame (which converts to int16) wraps them around --
+FULL_SCALE = 1.0
+
+# -- Keys of each stimulus condition that describe it when checking saturation --
+CONDITION_KEYS = {'Pure_tone':['frequency'], 'AM_noise':['mod_rate'],
+                  'Fading_noise':['fade_direction'], 'Chord_3t':['middle_octave'],
+                  'FM_fixed_dur':['slope'], 'FM_fixed_range':['slope'],
+                  'Band_noise':['bandwidth'], 'Noise_pair':['order','gap']}
+
 
 class Paradigm(QtWidgets.QMainWindow):
     def __init__(self, parent=None, paramfile=None, paramdictname=None):
@@ -281,14 +291,21 @@ class Paradigm(QtWidgets.QMainWindow):
         self.saveOnStop = QtWidgets.QCheckBox('Save data on auto-stop')
         self.saveOnStop.setChecked(True)
 
-        self.buttonResetStimSet = QtWidgets.QPushButton('Reset stimulus set')
-        self.buttonResetStimSet.setFixedHeight(2*self.buttonResetStimSet.sizeHint().height())
+        self.buttonResetStimSet = QtWidgets.QPushButton('Reset\nstim set')
+        self.buttonResetStimSet.setFixedHeight(self.buttonResetStimSet.sizeHint().height())
+
+        self.buttonCheckSaturation = QtWidgets.QPushButton('Check\nsaturation')
+        self.buttonCheckSaturation.setFixedHeight(self.buttonCheckSaturation.sizeHint().height())
+
+        layoutStimSetButtons = QtWidgets.QHBoxLayout()
+        layoutStimSetButtons.addWidget(self.buttonResetStimSet)
+        layoutStimSetButtons.addWidget(self.buttonCheckSaturation)
 
         layoutCol1.addWidget(session_params)
         layoutCol1.addWidget(stim_params)
         layoutCol1.addWidget(self.saveData)
         layoutCol1.addStretch()
-        layoutCol1.addWidget(self.buttonResetStimSet)
+        layoutCol1.addLayout(layoutStimSetButtons)
         layoutCol1.addStretch()
         layoutCol1.addWidget(self.dispatcher.widget)
         layoutCol1.addWidget(self.saveOnStop)
@@ -319,6 +336,9 @@ class Paradigm(QtWidgets.QMainWindow):
 
         # -- Connect the reset stimulus set button --
         self.buttonResetStimSet.clicked.connect(self.reset_stim_set)
+
+        # -- Connect the check saturation button --
+        self.buttonCheckSaturation.clicked.connect(self.check_saturation)
 
         # -- Connect messenger --
         self.messagebar = paramgui.Messenger()
@@ -381,12 +401,11 @@ class Paradigm(QtWidgets.QMainWindow):
             octaves.extend([1.0-offset, 1.0+offset])
         return np.array(octaves)
 
-    def populate_sound_params(self):
-        '''This function reads the GUI inputs and populates a list of dicts, one
-        per stimulus condition, containing the type and the type-specific
-        parameters needed to build each sound. This function is called by
-        prepare_next_trial at the beginning of the experiment and whenever we
-        run out of conditions to present.'''
+    def get_stim_conditions(self):
+        '''Read the GUI inputs and return a list of dicts, one per stimulus
+        condition (in order), containing the type and the type-specific
+        parameters needed to build each sound. It does not change the list of
+        conditions left to present.'''
 
         stim_conditions = []
 
@@ -520,6 +539,13 @@ class Paradigm(QtWidgets.QMainWindow):
                         'intensity': pair_intensity,
                     })
 
+        return stim_conditions
+
+    def populate_sound_params(self):
+        '''Populate the list of conditions to present (in the order set by the
+        GUI). This function is called by prepare_next_trial at the beginning of
+        the experiment and whenever we run out of conditions to present.'''
+        stim_conditions = self.get_stim_conditions()
         stim_order = self.params['stim_order'].get_string()
         if stim_order == 'Random':
             random.shuffle(stim_conditions)
@@ -531,6 +557,202 @@ class Paradigm(QtWidgets.QMainWindow):
         next trial regenerates the list of conditions from the current GUI
         parameter values. Triggered by button-clicked signal.'''
         self.sound_param_list = []
+
+    def create_sound(self, trial_params):
+        '''Build the sound for one stimulus condition (one of the dicts from
+        get_stim_conditions). Returns the sound dict for the sound server, the
+        intensity, the stimulus duration, and a dict with the values of the
+        read-only current_* parameters for this condition. It does not change
+        any GUI parameter, so it can be called without affecting the trial.'''
+        current_values = {}
+        stim_type = trial_params['stim_type']
+        stim_duration = self.params['stim_duration'].get_value()
+
+        sound_location = self.params['sound_location'].get_string()
+
+        # -- Determine the sound presentation mode and prepare the appropriate sound --
+        if stim_type == 'Pure_tone':
+            tone_freq = trial_params['frequency']
+            tone_intensity = trial_params['intensity']
+            target_amp = self.sineCal.find_amplitude(tone_freq, tone_intensity)
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'tone', 'duration':stim_duration,
+                     'amplitude':target_amp, 'frequency':tone_freq}
+            current_intensity = tone_intensity
+            current_values['current_tone_freq'] = tone_freq
+        elif stim_type == 'AM_noise':
+            target_amp = self.noiseCal.find_amplitude(trial_params['intensity'])
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'AM', 'duration':stim_duration,
+                     'amplitude':target_amp, 'modFrequency':trial_params['mod_rate']}
+            current_intensity = trial_params['intensity']
+            current_values['current_AM_rate'] = trial_params['mod_rate']
+        elif stim_type == 'Fading_noise':
+            intensity_low = trial_params['intensity_low']
+            intensity_high = trial_params['intensity_high']
+            fade_direction = trial_params['fade_direction']
+            current_values['current_fade_direction'] = fade_direction
+            if fade_direction == 'Fade_in':
+                intensity_start, intensity_end = intensity_low, intensity_high
+            else:
+                intensity_start, intensity_end = intensity_high, intensity_low
+            target_amp = self.noiseCal.find_amplitude(intensity_end)
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            amp_ratio = 10**((intensity_start-intensity_end)/20.0)
+            sound = {'type':'fadingNoise', 'duration':stim_duration,
+                     'amplitude':target_amp, 'amplitudeStart':amp_ratio, 'amplitudeEnd':1.0}
+            current_intensity = intensity_end
+        elif stim_type == 'Chord_3t':
+            chord_F0 = trial_params['F0']
+            middle_octave = trial_params['middle_octave']
+            chord_intensity = trial_params['intensity']
+            octaves = [0, middle_octave, 2]
+            freq_each_comp = chord_F0 * (2.0**np.array(octaves))
+            # -- amp_each_comp has shape (nTones, nChannels) --
+            amp_each_comp = self.sineCal.find_amplitudes(freq_each_comp, chord_intensity)
+            amp_F0 = amp_each_comp[0]
+            # -- Per-tone correction factor relative to F0, averaged across channels --
+            calibration = amp_each_comp.mean(axis=1)/amp_F0.mean()
+            target_amp = amp_F0
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'chordFromOctaves', 'duration':stim_duration,
+                     'amplitude':target_amp, 'frequency':chord_F0,
+                     'octaves':octaves, 'calibration':calibration}
+            current_intensity = chord_intensity
+            current_values['current_chord3t_middle_octave'] = middle_octave
+        elif stim_type == 'FM_fixed_dur':
+            fm_center_freq = trial_params['center_freq']
+            fm_slope = trial_params['slope']
+            fm_intensity = trial_params['intensity']
+            target_amp = self.sineCal.find_amplitude(fm_center_freq, fm_intensity)
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'FMtrain', 'duration':stim_duration,
+                     'amplitude':target_amp, 'centerFrequency':fm_center_freq,
+                     'slope':fm_slope, 'sweepDuration':0.1, 'silenceDuration':0.1}
+            current_intensity = fm_intensity
+            current_values['current_FMfixeddur_slope'] = fm_slope
+        elif stim_type == 'FM_fixed_range':
+            fm_center_freq = trial_params['center_freq']
+            fm_octave_range = trial_params['octave_range']
+            fm_slope = trial_params['slope']
+            fm_intensity = trial_params['intensity']
+            # -- The stimulus lasts as long as the sweep (it ignores the general stim duration) --
+            sweep_duration = fm_octave_range/abs(fm_slope)
+            stim_duration = sweep_duration
+            target_amp = self.sineCal.find_amplitude(fm_center_freq, fm_intensity)
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'FMfixedrange', 'duration':stim_duration,
+                     'amplitude':target_amp, 'centerFrequency':fm_center_freq,
+                     'octaveRange':fm_octave_range, 'slope':fm_slope}
+            current_intensity = fm_intensity
+            current_values['current_FMfixedrange_slope'] = fm_slope
+            current_values['current_FMfixedrange_sweep_duration'] = sweep_duration
+
+        elif stim_type == 'Band_noise':
+            bandwidth = trial_params['bandwidth']
+            band_intensity = trial_params['intensity']
+            # -- The amplitude is that of white noise at this intensity, so the spectral
+            #    density inside the band is the same for all bandwidths --
+            target_amp = self.noiseCal.find_amplitude(band_intensity)
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            sound = {'type':'bandNoise', 'duration':stim_duration,
+                     'amplitude':target_amp, 'centerFrequency':trial_params['center_freq'],
+                     'octaves':bandwidth, 'modFrequency':trial_params['mod_rate']}
+            current_intensity = band_intensity
+            current_values['current_bandnoise_bandwidth'] = bandwidth
+        elif stim_type == 'Noise_pair':
+            pair_gap = trial_params['gap']
+            pair_order = trial_params['order']
+            pair_intensity = trial_params['intensity']
+            # -- Both sounds are in one waveform, so the stimulus lasts until the second ends --
+            stim_duration = 2*trial_params['sound_duration'] + pair_gap
+            # -- The band noise (A) has the same power as the white noise (B) --
+            target_amp = self.noiseCal.find_amplitude(pair_intensity)
+            if sound_location == 'Left':
+                target_amp = np.array([target_amp[0], 0])
+            elif sound_location == 'Right':
+                target_amp = np.array([0, target_amp[1]])
+            # -- An order such as 'A_then_B' becomes 'AB' for the sound server --
+            sound_server_order = pair_order[0] + pair_order[-1]
+            sound = {'type':'noisePair', 'duration':stim_duration,
+                     'amplitude':target_amp, 'centerFrequency':trial_params['center_freq'],
+                     'octaves':trial_params['bandwidth'],
+                     'soundDuration':trial_params['sound_duration'],
+                     'gap':pair_gap, 'order':sound_server_order,
+                     'seed':NOISEPAIR_SEED}
+            current_intensity = pair_intensity
+            current_values['current_noisepair_order'] = pair_order
+            current_values['current_noisepair_gap'] = pair_gap
+
+        return (sound, current_intensity, stim_duration, current_values)
+
+    def check_saturation(self):
+        '''Create the waveform of every condition from the current GUI
+        parameters (for the included sound types) and print to the terminal
+        the peak value of each channel and whether it goes beyond full scale.
+        Noise is random, so the peak of noise sounds varies slightly each time.
+        Triggered by button-clicked signal.'''
+        stim_conditions = self.get_stim_conditions()
+        if not stim_conditions:
+            print('No sound type is included, so there is nothing to check.')
+            return
+        sampling_rate = getattr(self.soundClient.soundServer, 'samplingRate', 44100)
+        print('\n===== Checking saturation (sampling rate: {:g} Hz, full scale: +/-{:g}) ====='.format(
+            sampling_rate, FULL_SCALE))
+        header = '{:>26}  {:>8}  {:>8}  {:>8}  {:>8}  {:>8}  {:>13}  {}'.format(
+            'Condition', 'Int (dB)', 'Amp L', 'Amp R', 'Peak L', 'Peak R', 'Headroom (dB)', 'Status')
+        n_saturated_total = 0
+        stim_types = list(dict.fromkeys(cond['stim_type'] for cond in stim_conditions))
+        for stim_type in stim_types:
+            conditions_this_type = [cond for cond in stim_conditions if cond['stim_type']==stim_type]
+            print('\n== {} ({} conditions) =='.format(stim_type, len(conditions_this_type)))
+            print(header)
+            print('-'*len(header))
+            n_saturated = 0
+            for trial_params in conditions_this_type:
+                (sound, current_intensity, stim_duration, current_values) = \
+                    self.create_sound(trial_params)
+                # -- create_soundwave() adds keys to the dict, so give it a copy --
+                time_vec, sound_wave = soundclient.create_soundwave(dict(sound), sampling_rate)
+                peak_each_channel = np.max(np.abs(sound_wave), axis=1)
+                peak = peak_each_channel.max()
+                headroom = 20*np.log10(FULL_SCALE/peak) if peak > 0 else np.inf
+                saturated = peak > FULL_SCALE
+                n_saturated += saturated
+                description = ' '.join('{}={:g}'.format(key, trial_params[key])
+                                       if not isinstance(trial_params[key], str)
+                                       else '{}={}'.format(key, trial_params[key])
+                                       for key in CONDITION_KEYS[stim_type])
+                print('{:>26}  {:8.1f}  {:8.4f}  {:8.4f}  {:8.4f}  {:8.4f}  {:13.1f}  {}'.format(
+                    description, current_intensity, sound['amplitude'][0], sound['amplitude'][1],
+                    peak_each_channel[0], peak_each_channel[1], headroom,
+                    'SATURATED' if saturated else 'OK'))
+            print('{} of {} {} waveforms saturated.'.format(n_saturated, len(conditions_this_type),
+                                                            stim_type))
+            n_saturated_total += n_saturated
+        print('\n===== Total: {} of {} waveforms saturated ====='.format(n_saturated_total,
+                                                                      len(stim_conditions)))
 
     def prepare_next_trial(self, next_trial):
         '''
@@ -569,145 +791,14 @@ class Paradigm(QtWidgets.QMainWindow):
                 return
             self.trial_params = self.sound_param_list.pop(0)
 
+        (sound, current_intensity, stim_duration, current_values) = \
+            self.create_sound(self.trial_params)
         stim_type = self.trial_params['stim_type']
-        stim_duration = self.params['stim_duration'].get_value()
-
-        sound_location = self.params['sound_location'].get_string()
-
-        # -- Determine the sound presentation mode and prepare the appropriate sound --
-        if stim_type == 'Pure_tone':
-            tone_freq = self.trial_params['frequency']
-            tone_intensity = self.trial_params['intensity']
-            target_amp = self.sineCal.find_amplitude(tone_freq, tone_intensity)
-            if sound_location == 'Left':
-                target_amp = np.array([target_amp[0], 0])
-            elif sound_location == 'Right':
-                target_amp = np.array([0, target_amp[1]])
-            sound = {'type':'tone', 'duration':stim_duration,
-                     'amplitude':target_amp, 'frequency':tone_freq}
-            current_intensity = tone_intensity
-            self.params['current_tone_freq'].set_value(tone_freq)
-        elif stim_type == 'AM_noise':
-            target_amp = self.noiseCal.find_amplitude(self.trial_params['intensity'])
-            if sound_location == 'Left':
-                target_amp = np.array([target_amp[0], 0])
-            elif sound_location == 'Right':
-                target_amp = np.array([0, target_amp[1]])
-            sound = {'type':'AM', 'duration':stim_duration,
-                     'amplitude':target_amp, 'modFrequency':self.trial_params['mod_rate']}
-            current_intensity = self.trial_params['intensity']
-            self.params['current_AM_rate'].set_value(self.trial_params['mod_rate'])
-        elif stim_type == 'Fading_noise':
-            intensity_low = self.trial_params['intensity_low']
-            intensity_high = self.trial_params['intensity_high']
-            fade_direction = self.trial_params['fade_direction']
-            self.params['current_fade_direction'].set_string(fade_direction)
-            if fade_direction == 'Fade_in':
-                intensity_start, intensity_end = intensity_low, intensity_high
+        for key, value in current_values.items():
+            if isinstance(value, str):
+                self.params[key].set_string(value)
             else:
-                intensity_start, intensity_end = intensity_high, intensity_low
-            target_amp = self.noiseCal.find_amplitude(intensity_end)
-            if sound_location == 'Left':
-                target_amp = np.array([target_amp[0], 0])
-            elif sound_location == 'Right':
-                target_amp = np.array([0, target_amp[1]])
-            amp_ratio = 10**((intensity_start-intensity_end)/20.0)
-            sound = {'type':'fadingNoise', 'duration':stim_duration,
-                     'amplitude':target_amp, 'amplitudeStart':amp_ratio, 'amplitudeEnd':1.0}
-            current_intensity = intensity_end
-        elif stim_type == 'Chord_3t':
-            chord_F0 = self.trial_params['F0']
-            middle_octave = self.trial_params['middle_octave']
-            chord_intensity = self.trial_params['intensity']
-            octaves = [0, middle_octave, 2]
-            freq_each_comp = chord_F0 * (2.0**np.array(octaves))
-            # -- amp_each_comp has shape (nTones, nChannels) --
-            amp_each_comp = self.sineCal.find_amplitudes(freq_each_comp, chord_intensity)
-            amp_F0 = amp_each_comp[0]
-            # -- Per-tone correction factor relative to F0, averaged across channels --
-            calibration = amp_each_comp.mean(axis=1)/amp_F0.mean()
-            target_amp = amp_F0
-            if sound_location == 'Left':
-                target_amp = np.array([target_amp[0], 0])
-            elif sound_location == 'Right':
-                target_amp = np.array([0, target_amp[1]])
-            sound = {'type':'chordFromOctaves', 'duration':stim_duration,
-                     'amplitude':target_amp, 'frequency':chord_F0,
-                     'octaves':octaves, 'calibration':calibration}
-            current_intensity = chord_intensity
-            self.params['current_chord3t_middle_octave'].set_value(middle_octave)
-        elif stim_type == 'FM_fixed_dur':
-            fm_center_freq = self.trial_params['center_freq']
-            fm_slope = self.trial_params['slope']
-            fm_intensity = self.trial_params['intensity']
-            target_amp = self.sineCal.find_amplitude(fm_center_freq, fm_intensity)
-            if sound_location == 'Left':
-                target_amp = np.array([target_amp[0], 0])
-            elif sound_location == 'Right':
-                target_amp = np.array([0, target_amp[1]])
-            sound = {'type':'FMtrain', 'duration':stim_duration,
-                     'amplitude':target_amp, 'centerFrequency':fm_center_freq,
-                     'slope':fm_slope, 'sweepDuration':0.1, 'silenceDuration':0.1}
-            current_intensity = fm_intensity
-            self.params['current_FMfixeddur_slope'].set_value(fm_slope)
-        elif stim_type == 'FM_fixed_range':
-            fm_center_freq = self.trial_params['center_freq']
-            fm_octave_range = self.trial_params['octave_range']
-            fm_slope = self.trial_params['slope']
-            fm_intensity = self.trial_params['intensity']
-            # -- The stimulus lasts as long as the sweep (it ignores the general stim duration) --
-            sweep_duration = fm_octave_range/abs(fm_slope)
-            stim_duration = sweep_duration
-            target_amp = self.sineCal.find_amplitude(fm_center_freq, fm_intensity)
-            if sound_location == 'Left':
-                target_amp = np.array([target_amp[0], 0])
-            elif sound_location == 'Right':
-                target_amp = np.array([0, target_amp[1]])
-            sound = {'type':'FMfixedrange', 'duration':stim_duration,
-                     'amplitude':target_amp, 'centerFrequency':fm_center_freq,
-                     'octaveRange':fm_octave_range, 'slope':fm_slope}
-            current_intensity = fm_intensity
-            self.params['current_FMfixedrange_slope'].set_value(fm_slope)
-            self.params['current_FMfixedrange_sweep_duration'].set_value(sweep_duration)
-
-        elif stim_type == 'Band_noise':
-            bandwidth = self.trial_params['bandwidth']
-            band_intensity = self.trial_params['intensity']
-            # -- The amplitude is that of white noise at this intensity, so the spectral
-            #    density inside the band is the same for all bandwidths --
-            target_amp = self.noiseCal.find_amplitude(band_intensity)
-            if sound_location == 'Left':
-                target_amp = np.array([target_amp[0], 0])
-            elif sound_location == 'Right':
-                target_amp = np.array([0, target_amp[1]])
-            sound = {'type':'bandNoise', 'duration':stim_duration,
-                     'amplitude':target_amp, 'centerFrequency':self.trial_params['center_freq'],
-                     'octaves':bandwidth, 'modFrequency':self.trial_params['mod_rate']}
-            current_intensity = band_intensity
-            self.params['current_bandnoise_bandwidth'].set_value(bandwidth)
-        elif stim_type == 'Noise_pair':
-            pair_gap = self.trial_params['gap']
-            pair_order = self.trial_params['order']
-            pair_intensity = self.trial_params['intensity']
-            # -- Both sounds are in one waveform, so the stimulus lasts until the second ends --
-            stim_duration = 2*self.trial_params['sound_duration'] + pair_gap
-            # -- The band noise (A) has the same power as the white noise (B) --
-            target_amp = self.noiseCal.find_amplitude(pair_intensity)
-            if sound_location == 'Left':
-                target_amp = np.array([target_amp[0], 0])
-            elif sound_location == 'Right':
-                target_amp = np.array([0, target_amp[1]])
-            # -- An order such as 'A_then_B' becomes 'AB' for the sound server --
-            sound_server_order = pair_order[0] + pair_order[-1]
-            sound = {'type':'noisePair', 'duration':stim_duration,
-                     'amplitude':target_amp, 'centerFrequency':self.trial_params['center_freq'],
-                     'octaves':self.trial_params['bandwidth'],
-                     'soundDuration':self.trial_params['sound_duration'],
-                     'gap':pair_gap, 'order':sound_server_order,
-                     'seed':NOISEPAIR_SEED}
-            current_intensity = pair_intensity
-            self.params['current_noisepair_order'].set_string(pair_order)
-            self.params['current_noisepair_gap'].set_value(pair_gap)
+                self.params[key].set_value(value)
 
         stim_output = stimSync
         serial_output = 1
@@ -715,8 +806,8 @@ class Paradigm(QtWidgets.QMainWindow):
 
         self.params['current_stim_type'].set_string(stim_type)
         self.params['current_intensity'].set_value(current_intensity)
-        self.params['current_amp_L'].set_value(target_amp[0])
-        self.params['current_amp_R'].set_value(target_amp[1])
+        self.params['current_amp_L'].set_value(sound['amplitude'][0])
+        self.params['current_amp_R'].set_value(sound['amplitude'][1])
 
         # -- Prepare the state transition matrix --
         self.sm.add_state(name='startTrial', statetimer = 0,
