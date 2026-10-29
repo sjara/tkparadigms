@@ -126,7 +126,7 @@ fm_sounds_frange = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000
 am_noise= {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':220,
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left', 
-              'include_AM':'Yes', 'AM_rate_low':4, 'AM_rate_high':32,'AM_n_rates':4,
+              'include_AM':'Yes', 'AM_rate_low':4, 'AM_rate_high':128,'AM_n_rates':11,
               'AM_intensity':65}
 
 fading_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':320,
