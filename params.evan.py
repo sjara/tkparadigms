@@ -97,7 +97,7 @@ pure_tones = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_
               'include_tone':'Yes', 'tone_freq_low':2000, 'tone_freq_high':40000,'tone_n_freq':16,
               'tone_intensity':71.4}
 
-band_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':300,
+band_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':350,
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left', 
               'include_bandnoise':'Yes', 'bandnoise_center_freq':8000, 'bandnoise_bandwidth_min':0.25, 'bandnoise_bandwidth_max':4,'bandnoise_n_bandwidths':5,
