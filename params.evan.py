@@ -117,7 +117,7 @@ chord_tones = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n
               'chord3t_middle_scheme':'Irrational','chord3t_intensity':68}
 
 # block_2: redo pure tones if run separately from block_1
-fm_sounds_frange = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':300,
+fm_sounds_frange = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':350,
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left', 
               'include_FMfixedrange':'Yes', 'FMfixedrange_center_freq':8000, 'FMfixedrange_octave_range':6, 'FMfixedrange_slope_min':5,'FMfixedrange_slope_max':80,
