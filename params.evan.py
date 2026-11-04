@@ -103,7 +103,7 @@ band_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_
               'include_bandnoise':'Yes', 'bandnoise_center_freq':8000, 'bandnoise_bandwidth_min':0.25, 'bandnoise_bandwidth_max':4,'bandnoise_n_bandwidths':5,
               'bandnoise_mod_rate':8,'bandnoise_intensity':67}
 
-noise_pair = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':320,
+noise_pair = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':350,
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left',
               'include_noisepair':'Yes', 'noisepair_center_freq':8000, 'noisepair_bandwidth':0.25, 'noisepair_sound_duration':0.1,
