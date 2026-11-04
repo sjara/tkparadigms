@@ -101,13 +101,13 @@ band_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left', 
               'include_bandnoise':'Yes', 'bandnoise_center_freq':8000, 'bandnoise_bandwidth_min':0.25, 'bandnoise_bandwidth_max':4,'bandnoise_n_bandwidths':5,
-              'bandnoise_mod_rate':8,'bandnoise_intensity':65}
+              'bandnoise_mod_rate':8,'bandnoise_intensity':68}
 
 noise_pair = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':320,
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left',
               'include_noisepair':'Yes', 'noisepair_center_freq':8000, 'noisepair_bandwidth':0.25, 'noisepair_sound_duration':0.1,
-              'noisepair_gap_min':0.1, 'noisepair_gap_max':0.8, 'noisepair_n_gaps':4,'noisepair_intensity':60}
+              'noisepair_gap_min':0.1, 'noisepair_gap_max':0.8, 'noisepair_n_gaps':4,'noisepair_intensity':65}
 
 # do not run chords with an F0 above 10 kHz
 chord_tones = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':250,
@@ -127,12 +127,12 @@ am_noise= {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left', 
               'include_AM':'Yes', 'AM_rate_low':4, 'AM_rate_high':128,'AM_n_rates':11,
-              'AM_intensity':65}
+              'AM_intensity':68}
 
 fading_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':320,
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left', 
-              'include_fading':'Yes', 'fade_intensity_low':45, 'fade_intensity_high':68}
+              'include_fading':'Yes', 'fade_intensity_low':45, 'fade_intensity_high':75}
 
 #not currently used, but could be used in the future if we want to test FM sweeps with fixed duration instead of fixed frequency range
 fm_sounds_fdur = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':300,
