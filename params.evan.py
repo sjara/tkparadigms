@@ -101,13 +101,13 @@ band_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left', 
               'include_bandnoise':'Yes', 'bandnoise_center_freq':8000, 'bandnoise_bandwidth_min':0.25, 'bandnoise_bandwidth_max':4,'bandnoise_n_bandwidths':5,
-              'bandnoise_mod_rate':8,'bandnoise_intensity':68}
+              'bandnoise_mod_rate':8,'bandnoise_intensity':67}
 
 noise_pair = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':320,
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left',
               'include_noisepair':'Yes', 'noisepair_center_freq':8000, 'noisepair_bandwidth':0.25, 'noisepair_sound_duration':0.1,
-              'noisepair_gap_min':0.1, 'noisepair_gap_max':0.8, 'noisepair_n_gaps':4,'noisepair_intensity':65}
+              'noisepair_gap_min':0.1, 'noisepair_gap_max':0.8, 'noisepair_n_gaps':4,'noisepair_intensity':62}
 
 # do not run chords with an F0 above 10 kHz
 chord_tones = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':250,
