@@ -129,7 +129,7 @@ am_noise= {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max
               'include_AM':'Yes', 'AM_rate_low':4, 'AM_rate_high':128,'AM_n_rates':11,
               'AM_intensity':68}
 
-fading_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':320,
+fading_noise = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':350,
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left', 
               'include_fading':'Yes', 'fade_intensity_low':45, 'fade_intensity_high':75}
