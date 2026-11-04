@@ -123,7 +123,7 @@ fm_sounds_frange = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000
               'include_FMfixedrange':'Yes', 'FMfixedrange_center_freq':8000, 'FMfixedrange_octave_range':6, 'FMfixedrange_slope_min':5,'FMfixedrange_slope_max':80,
               'FMfixedrange_n_slopes_per_direction':5,'FMfixedrange_intensity':70}
 
-am_noise= {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':220,
+am_noise= {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':250,
               'stim_duration':0.5, 'ISI_mean':1.6, 'ISI_half_range':0.2, 'stim_order':'Random',
               'sound_location':'Left', 
               'include_AM':'Yes', 'AM_rate_low':4, 'AM_rate_high':128,'AM_n_rates':11,
