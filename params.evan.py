@@ -116,6 +116,7 @@ chord_tones = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n
               'sound_location':'Left', 
               'include_chord3t':'Yes', 'chord3t_F0':4000, 'chord3t_n_possible_middle':'5',
               'chord3t_middle_scheme':'Irrational','chord3t_intensity':68}
+#max F0 for chords is 8 kHz. if BF mode is higher than 8 kHz, F0 = BF mode / 4? or, skip chords
 
 # block_2: redo pure tones if run separately from block_1
 fm_sounds_frange = {'experimenter':'evan','subject':'imag03X', 'session_ID':'000', 'n_max_trials':350,
